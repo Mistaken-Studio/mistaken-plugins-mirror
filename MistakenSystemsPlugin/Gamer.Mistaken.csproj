@@ -56,38 +56,48 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Desktop\Ex\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+      <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="0NPCS">
-      <HintPath>..\..\..\EXILED\EXILED\Plugins\0NPCS.dll</HintPath>
+    <Reference Include="0NPCS, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\0NPCS.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\References\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\..\EXILED\Assembly-CSharp_publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandSystem.Core">
-      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Exiled.API, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="Assembly-CSharp_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
+      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED\EXILED\Plugins\Exiled.Events.dll</HintPath>
+      <HintPath>..\References\BaseGame\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions, Version=2.1.19.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="Exiled.API, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
+      <HintPath>..\References\Exiled.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Events, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Exiled.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Permissions, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Gamer.Mistaken.Utilities.APILib.Private, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Gamer.Mistaken.Utilities.APILib.Private.dll</HintPath>
     </Reference>
     <Reference Include="Gamer.Mistaken.Utilities.APILib.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED\EXILED\Plugins\dependencies\Gamer.Mistaken.Utilities.APILib.Public.dll</HintPath>
+      <HintPath>..\References\Gamer.Mistaken.Utilities.APILib.Public.dll</HintPath>
     </Reference>
-    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
+    </Reference>
     <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\MistakenSockets\MistakenSocket\Client\Lib\bin\Debug\MistakenSocket.Client.dll</HintPath>
@@ -95,22 +105,26 @@
     <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\MistakenSockets\MistakenSocket\Client\SL\Lib\bin\Debug\MistakenSocket.Client.SL.Lib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MistakenSocket.Shared">
       <HintPath>..\..\MistakenSockets\MistakenSocket\Shared\bin\Debug\MistakenSocket.Shared.dll</HintPath>
     </Reference>
-    <Reference Include="NetCoreServer">
-      <HintPath>..\..\MistakenSockets\MistakenSocket\Odwołania\Client.Lib\NetCoreServer.dll</HintPath>
+    <Reference Include="NetCoreServer, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\NetCoreServer.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\EXILED\EXILED\Plugins\dependencies\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NorthwoodLib">
-      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\NorthwoodLib.dll</HintPath>
+    <Reference Include="NorthwoodLib, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\NorthwoodLib.dll</HintPath>
     </Reference>
     <Reference Include="Octokit, Version=0.48.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.0.48.0\lib\net46\Octokit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -122,14 +136,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="UnidecodeSharpFork, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\UnidecodeSharpFork.dll</HintPath>
+      <HintPath>..\References\UnidecodeSharpFork.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>G:\Steam\steamapps\common\SCP SL DS EXILED\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\BaseGame\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\References\BaseGame\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
