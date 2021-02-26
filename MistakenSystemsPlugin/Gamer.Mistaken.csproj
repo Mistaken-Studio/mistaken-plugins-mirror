@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{55DC9D88-E32A-4176-AD17-9502A0440341}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Gamer.Mistaken</RootNamespace>
+    <AssemblyName>Gamer.Mistaken</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Desktop\Ex\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="0NPCS">
+      <HintPath>..\..\..\EXILED\EXILED\Plugins\0NPCS.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp_publicized">
+      <HintPath>..\..\..\EXILED\Assembly-CSharp_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandSystem.Core">
+      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.API, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\EXILED\EXILED\Plugins\dependencies\Exiled.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Events, Version=2.1.11.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\EXILED\EXILED\Plugins\Exiled.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Permissions, Version=2.1.19.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\EXILED\EXILED\Plugins\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Gamer.Mistaken.Utilities.APILib.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\EXILED\EXILED\Plugins\dependencies\Gamer.Mistaken.Utilities.APILib.Public.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\Lib\bin\Debug\MistakenSocket.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\SL\Lib\bin\Debug\MistakenSocket.Client.SL.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MistakenSocket.Shared">
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Shared\bin\Debug\MistakenSocket.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="NetCoreServer">
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Odwołania\Client.Lib\NetCoreServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\EXILED\EXILED\Plugins\dependencies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NorthwoodLib">
+      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\NorthwoodLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Octokit, Version=0.48.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Octokit.0.48.0\lib\net46\Octokit.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnidecodeSharpFork, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\UnidecodeSharpFork.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>G:\Steam\steamapps\common\SCP SL DS EXILED\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>G:\Steam\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\AIRS\AIRSHandler.cs" />
+    <Compile Include="Code\AIRS\ReportHandler.cs" />
+    <Compile Include="Code\AIRS\ReportStatusUpdateHandler.cs" />
+    <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
+    <Compile Include="Code\Ban2\BansHandler.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\FakeNickCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\LastVictimCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\LongOverwatchCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\SpawnSamsaraCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\RoundStatsCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ModRACommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\PetCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\ChangelogCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\LastAttackerCmd.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TalkCommand.cs" />
+    <Compile Include="Code\CustomAchievements\Achievement.cs" />
+    <Compile Include="Code\CustomAchievements\Achievements.cs" />
+    <Compile Include="Code\LOFH\MenuSystem.cs" />
+    <Compile Include="Code\Ranks\RanksCommandHandler.cs" />
+    <Compile Include="Code\Ranks\RanksHandler.cs" />
+    <Compile Include="Code\Systems\AntiAfk\AntiAFK.cs" />
+    <Compile Include="Code\BetterMutes\BetterMutesHandler.cs" />
+    <Compile Include="Code\BetterMutes\Commands.cs" />
+    <Compile Include="Code\BetterMutes\MuteHandler.cs" />
+    <Compile Include="Code\BetterRP\Ambients.cs" />
+    <Compile Include="Code\BetterRP\CommandHandler.cs" />
+    <Compile Include="Code\BetterRP\NicknameHandler.cs" />
+    <Compile Include="Code\BetterRP\NicknameManager.cs" />
+    <Compile Include="Code\BetterRP\NoCIDrumPatch.cs" />
+    <Compile Include="Code\BetterRP\BetterRPHandler.cs" />
+    <Compile Include="Code\BetterRP\RoundModifiersManager.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\HubCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TeslaOffCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\UnloadGunCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TryUnHandcuffCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\CustomInfoCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\SpeedTestCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\AudioCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\ResurectCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\HideCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TestCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\PoliceCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\AfkCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\AmmoCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\AutoMessageCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\BansCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\BlackoutCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\C106Command.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\CassiePrivateCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\CEHelpCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ChangeSCPCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\CheckIPCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClearMapCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\SwapSCPCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\Controll079Command.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\CustomRoundTimeCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\DLCZCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\DmgInfoCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\DoorRestartCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\DropAllCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\GetAttCmd.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\GiveRankCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\Grenades\BallCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\Grenades\CandelaCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\Grenades\FlashCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\Grenades\GrenadeCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\HintCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\IntercomCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\KillCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\LockElevatorCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\MCommands\MCloseCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\MCommands\MDestroyCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\MCommands\MLockCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\MCommands\MOpenCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\MCommands\MUnLockCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\MuteAllCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\OverchargeCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\OverheatCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\PBCClearCmd.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\PBCCmd.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\BigItemsCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TimerCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\WantedCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\WarheadCommand.cs" />
+    <Compile Include="Code\Suicide\Command.cs" />
+    <Compile Include="Code\Suicide\SuicideHandler.cs" />
+    <Compile Include="Code\Systems\Bans\BansAnalizer.cs" />
+    <Compile Include="Code\Systems\End\OverwatchHandler.cs" />
+    <Compile Include="Code\Systems\End\AutoUpdateHandler.cs" />
+    <Compile Include="Code\Systems\End\GrenadeLauncherHandler.cs" />
+    <Compile Include="Code\Systems\End\NoEndlessRoundHandler.cs" />
+    <Compile Include="Code\Systems\End\FireworkManager.cs" />
+    <Compile Include="Code\Systems\End\RandomItemSpawnsHandler.cs" />
+    <Compile Include="Code\Systems\End\VanishHandler.cs" />
+    <Compile Include="Code\Systems\Extensions\ShuffleList.cs" />
+    <Compile Include="Code\Systems\InfoMessage\InfoMessageManager.cs" />
+    <Compile Include="Code\Systems\Logs\Commands\FlashLogCommand.cs" />
+    <Compile Include="Code\Systems\Logs\Commands\SCP914LogCommand.cs" />
+    <Compile Include="Code\Systems\Logs\Commands\PlayerLogCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\PlayerTeamKillsCmd.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\RespawnCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\RespawnLockCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\SayCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\SetSizeCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ShakeCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\SpawnDummyCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\SpecRoleCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TeslaCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TpcCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TTRCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\TutorialMeCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\UnBanCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\UnMuteAllCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\VanishCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\WarpCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\WeaponCustomAmmoCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\WorkstationCommand.cs" />
+    <Compile Include="Code\CommandsExtender\CommandsHandler.cs" />
+    <Compile Include="Code\CustomAchievements\CustomAchievements.cs" />
+    <Compile Include="Code\CustomAchievements\RoundEventHandler.cs" />
+    <Compile Include="Code\CustomWhitelist\CustomWhitelistHandler.cs" />
+    <Compile Include="Code\CustomWhitelist\Patch.cs" />
+    <Compile Include="Code\EVO\Achievement.cs" />
+    <Compile Include="Code\EVO\CommandHandler.cs" />
+    <Compile Include="Code\EVO\EVOHandler.cs" />
+    <Compile Include="Code\LOFH\LOFH.cs" />
+    <Compile Include="Code\LOFH\LOFHHandler.cs" />
+    <Compile Include="Code\LOFH\LOFHPatch.cs" />
+    <Compile Include="Code\Systems\Misc\CustomItemsHandler.cs" />
+    <Compile Include="Code\Systems\Misc\DoorHandler.cs" />
+    <Compile Include="Code\Systems\Misc\MassTKDetectionHandler.cs" />
+    <Compile Include="Code\Systems\NicknameFixer\NicknameFixerHandler.cs" />
+    <Compile Include="Code\PluginHandler.cs" />
+    <Compile Include="Code\Systems\CustomEvents.cs" />
+    <Compile Include="Code\Systems\Logs\Commands\DoorLogCommand.cs" />
+    <Compile Include="Code\Systems\Logs\Commands\ElevatorLogCommand.cs" />
+    <Compile Include="Code\Systems\Logs\LogManager.cs" />
+    <Compile Include="Code\Systems\Misc\PlayerRoundStatisticsHandler.cs" />
+    <Compile Include="Code\Systems\Misc\CustomSpeedHandler.cs" />
+    <Compile Include="Code\Systems\Misc\BetterWarheadHandler.cs" />
+    <Compile Include="Code\Systems\End\CamperEscapeHandler.cs" />
+    <Compile Include="Code\Systems\Misc\ClassDCellsDecontaminationHandler.cs" />
+    <Compile Include="Code\Systems\Misc\CustomMaxHealthHandler.cs" />
+    <Compile Include="Code\Systems\Misc\ResurectionHandler.cs" />
+    <Compile Include="Code\Systems\Patches\ComparePatchFix.cs" />
+    <Compile Include="Code\Systems\Patches\RAPatch.cs" />
+    <Compile Include="Code\Systems\Patches\RagdollManagerPatch.cs" />
+    <Compile Include="Code\Systems\Pets\PetsHandler.cs" />
+    <Compile Include="Code\Systems\PseudoGUI\InformerHandler.cs" />
+    <Compile Include="Code\Systems\End\LeaveZombieHandler.cs" />
+    <Compile Include="Code\Systems\End\RandomMessagesHandler.cs" />
+    <Compile Include="Code\Systems\End\RandomSizeHandler.cs" />
+    <Compile Include="Code\Systems\Misc\RespawnPlayerHandler.cs" />
+    <Compile Include="Code\Systems\Misc\ReusableItemsHandler.cs" />
+    <Compile Include="Code\Systems\End\RoundEndHandler.cs" />
+    <Compile Include="Code\Systems\Misc\SpawnProtectHandler.cs" />
+    <Compile Include="Code\Systems\PseudoGUI\SpecInfoHandler.cs" />
+    <Compile Include="Code\Systems\End\WaitingScreenHandler.cs" />
+    <Compile Include="Code\Systems\Misc\WearableItemsHandler.cs" />
+    <Compile Include="Code\Systems\Patches\BroadcastPatch.cs" />
+    <Compile Include="Code\Systems\Patches\FixPatch.cs" />
+    <Compile Include="Code\Systems\Patches\HintPatch.cs" />
+    <Compile Include="Code\Systems\Patches\LogRemoverPatch.cs" />
+    <Compile Include="Code\Systems\Patches\PickingItemPatch.cs" />
+    <Compile Include="Code\Systems\Patches\GhostMode.cs" />
+    <Compile Include="Code\Systems\Patches\SCP079RecontainPatch.cs" />
+    <Compile Include="Code\Systems\Patches\SCPVoiceChatPatch.cs" />
+    <Compile Include="Code\Systems\Shield\ShieldedManager.cs" />
+    <Compile Include="Code\Systems\Staff\StaffHandler.cs" />
+    <Compile Include="Code\Systems\ThreatLevel\ThreatLevelManager.cs" />
+    <Compile Include="Code\Systems\Utilities\API.cs" />
+    <Compile Include="Code\Systems\Utilities\UtilitiesHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Code\Systems\Bans\BansManager.cs" />
+    <Compile Include="Code\Systems\SystemsHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">
+      <Project>{bd286ef8-b757-4ab8-8f4f-af1871902fd5}</Project>
+      <Name>Gamer.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gamer.API\Gamer.API.csproj">
+      <Project>{594fc7bb-8b93-4346-8c28-6ab0ea0a4430}</Project>
+      <Name>Gamer.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gamer.Diagnostics\Gamer.Diagnostics.csproj">
+      <Project>{c50d9525-091d-4176-acae-890b5750d2b0}</Project>
+      <Name>Gamer.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MistakenBasePlugins\Gamer.Mistaken.Base.csproj">
+      <Project>{6eecbfa8-dbcb-47cd-9c23-ff15bc11b40c}</Project>
+      <Name>Gamer.Mistaken.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Code\Systems\NicknameFixer\GitHubBlacklist.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
