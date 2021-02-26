@@ -109,6 +109,8 @@ namespace Gamer.Utilities
             return false;
         }
 
+        public static string GetDisplayName(this Player player) => player == null ? "NULL" : player.DisplayNickname ?? player.Nickname;
+
         private static bool HasGroupInheritancePermission(Group group, string permission)
         {
             foreach (string text in group.Inheritance.ToArray())
