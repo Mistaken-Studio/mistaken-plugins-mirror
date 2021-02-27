@@ -15,9 +15,10 @@ namespace Gamer.Mistaken.Systems.Patches
 	[HarmonyPatch(typeof(Recontainer079), "_Recontain")]
 	public static class SCP079RecontainPatch
 	{
-		public static int SecondsLeft = -1;
-		public static bool Waiting = false;
-		public static bool Recontained = false;
+		public static bool ErrorMode { get; private set; } = false;
+		public static int SecondsLeft { get; private set; } = -1;
+		public static bool Waiting { get; private set; } = false;
+		public static bool Recontained { get; private set; } = false;
 
 		public static CoroutineHandle? Handle;
 
@@ -28,7 +29,20 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Warn("Duplicate of Recontain Request");
 				return false;
             }
-			Handle = Timing.RunCoroutine(Recontain(forced));
+			Handle = Timing.RunCoroutine(Recontain(forced).CancelWith(global::Recontainer079.singleton.gameObject).RerouteExceptions((ex) =>
+			{
+				Log.Error("SCP 079 Recontainment Failed");
+				Log.Error(ex.Message);
+				Log.Error(ex.StackTrace);
+				Log.Info("Running base SCP 079 Recontainment Code");
+				ErrorMode = true;
+				Timing.RunCoroutine(Recontainer079.singleton._Recontain(forced).CancelWith(global::Recontainer079.singleton.gameObject).Append(() =>
+				{
+					ErrorMode = false;
+					Handle = null;
+					Recontained = true;
+				}));
+			}), Segment.FixedUpdate);
 			return false;
 		}
 
@@ -39,27 +53,15 @@ namespace Gamer.Mistaken.Systems.Patches
 			Waiting = false;
 			SecondsLeft = -1;
 			Recontained = false;
+			ErrorMode = false;
 		}
 
 		private static IEnumerator<float> Recontain(bool forced)
 		{
+			Log.Debug("Starting SCP079 Recontainment");
 			int rId = RoundPlus.RoundId;
-			bool skipSpeaking;
 			Waiting = true;
-			try
-            {
-				skipSpeaking = false;
-				_ = Cassie.IsSpeaking;
-			}
-			catch (System.Exception ex)
-			{
-				Log.Error("Error on SCP079 Recontainment|Cassie.IsSpeaking is null");
-				Log.Error(ex.Message);
-				Log.Error(ex.StackTrace);
-				skipSpeaking = true;
-			}
-			if(skipSpeaking)
-				yield return Timing.WaitUntilFalse(() =>
+			yield return Timing.WaitUntilFalse(() =>
 				{
 					try
 					{
@@ -67,7 +69,7 @@ namespace Gamer.Mistaken.Systems.Patches
 					}
 					catch (System.Exception ex)
 					{
-						Log.Error("Error on SCP079 Recontainment|Cassie.IsSpeaking is null|2");
+						Log.Error("Error on SCP079 Recontainment|Cassie.IsSpeaking is null");
 						Log.Error(ex.Message);
 						Log.Error(ex.StackTrace);
 						return false;
@@ -111,33 +113,20 @@ namespace Gamer.Mistaken.Systems.Patches
 				yield break;
 			}
 			Waiting = true;
-			try
+			yield return Timing.WaitUntilFalse(() =>
 			{
-				skipSpeaking = false;
-				_ = Cassie.IsSpeaking;
-			}
-			catch (System.Exception ex)
-			{
-				Log.Error("Error on SCP079 Recontainment|Cassie.IsSpeaking is null");
-				Log.Error(ex.Message);
-				Log.Error(ex.StackTrace);
-				skipSpeaking = true;
-			}
-			if (skipSpeaking)
-				yield return Timing.WaitUntilFalse(() =>
+				try 
+				{ 
+					return Cassie.IsSpeaking; 
+				} 
+				catch (System.Exception ex) 
 				{
-					try 
-					{ 
-						return Cassie.IsSpeaking; 
-					} 
-					catch (System.Exception ex) 
-					{
-						Log.Error("Error on SCP079 Recontainment|Cassie.IsSpeaking is null|2"); 
-						Log.Error(ex.Message); 
-						Log.Error(ex.StackTrace);
-						return false;
-					}
-				});
+					Log.Error("Error on SCP079 Recontainment|Cassie.IsSpeaking is null|2"); 
+					Log.Error(ex.Message); 
+					Log.Error(ex.StackTrace);
+					return false;
+				}
+			});
 			if (rId != RoundPlus.RoundId)
 			{
 				Restart();
