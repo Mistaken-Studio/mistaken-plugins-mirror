@@ -7,6 +7,7 @@ using Exiled.API.Features;
 using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
 using Newtonsoft.Json;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.Mistaken.LOFH
 {
@@ -20,21 +21,7 @@ namespace Gamer.Mistaken.LOFH
         public static Dictionary<string, Systems.ThreatLevel.ThreadLevelData> ThreatLevelDatas { get; } = new Dictionary<string, Systems.ThreatLevel.ThreadLevelData>();
 
         public static HashSet<string> Hidden { get; } = new HashSet<string>();
-
-        public static void ReloadData()
-        {
-            MistakenStaff.Clear();
-            foreach (var user in Systems.Staff.StaffHandler.Staff)
-            {
-                if (user.active == 1)
-                {
-                    MistakenStaff.Add($"{user.steamid}@steam");
-                    MistakenStaff.Add($"{user.discordid}@discord");
-                }
-            }
-        }
         public static Dictionary<string, MistakenSocket.Shared.Blacklist.BlacklistEntry> WarningFlags { get; } = new Dictionary<string, MistakenSocket.Shared.Blacklist.BlacklistEntry>();
-        public static HashSet<string> MistakenStaff { get; } = new HashSet<string>();
         private static Dictionary<string, int> InVanish { get; } = new Dictionary<string, int>();
         public static void AddVanish(string userId, int level)
         {
@@ -45,8 +32,7 @@ namespace Gamer.Mistaken.LOFH
         public static void RemoveVanish(string userId) => InVanish.Remove(userId);
         public static void ClearVanish() => InVanish.Clear();
 
-        public static bool HasStaffFlag(string userId) => 
-            userId.IsDevUserId() || MistakenStaff.Contains(userId);      
+        public static bool HasStaffFlag(string userId) => userId.IsStaff();      
 
         public static string[] GetFlags(string userId)
         {
@@ -72,7 +58,7 @@ namespace Gamer.Mistaken.LOFH
                 tor = $"[<color=#808080>V <{vanishLevel}></color>] ";
             if (userId.IsDevUserId())
                 return $"{tor}[<color=#FF0000>|</color><b><color=#FFD700><b>DEV</b></color></b><color=#FF0000>|</color>] ";    
-            if (MistakenStaff.Contains(userId))
+            if (userId.IsStaff())
                 return $"{tor}[<color=blue>M</color> <color=white>STAFF</color>] ";
             return tor;
         }

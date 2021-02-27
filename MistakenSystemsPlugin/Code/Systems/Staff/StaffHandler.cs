@@ -92,7 +92,6 @@ namespace Gamer.Mistaken.Systems.Staff
         private static void RequestStaffCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             Staff = JsonConvert.DeserializeObject<UsersInfo>(Encoding.Default.GetString(e.Result)).users;
-            LOFH.LOFH.ReloadData();
         }
 
 

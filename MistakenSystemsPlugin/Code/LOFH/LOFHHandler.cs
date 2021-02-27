@@ -43,8 +43,6 @@ namespace Gamer.Mistaken.LOFH
                     }
                 });
             });
-            
-            LOFH.ReloadData();
         }
         public override void OnDisable()
         {
@@ -54,7 +52,6 @@ namespace Gamer.Mistaken.LOFH
 
         private void Server_RestartingRound()
         {
-            LOFH.ReloadData();
             MenuSystem.CurrentMenus.Clear();
             MenuSystem.PlayerLogSelectedRound.Clear();
             MenuSystem.InMuteMode.Clear();
