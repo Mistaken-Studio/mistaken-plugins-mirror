@@ -52,4 +52,23 @@ namespace Gamer.Mistaken.Ranks
             return new string[] { "Done" };
         }
     }
+
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
+    internal class StaffTagCommand : IBetterCommand
+    {
+        public override string Command => "stafftag";
+
+        public override string[] Aliases => new string[] { "stag" };
+
+        public override string Description => "Staff Tags";
+
+        public override string[] Execute(CommandSystem.ICommandSender sender, string[] args, out bool success)
+        {
+            var player = sender.GetPlayer();
+            RanksHandler.ApplyStaffRoles(player);
+            success = true;
+            return new string[] { "Done" };
+        }
+    }
 }

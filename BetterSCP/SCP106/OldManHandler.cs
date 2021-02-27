@@ -123,7 +123,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         {
             get
             {
-                if (Rooms == null)
+                if (Rooms == null || Rooms.Length == 0)
                     return null;
                 return Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
             }
@@ -143,7 +143,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         {
             Cooldown.Clear();
             Log.Info("Setting Rooms");
-            Rooms = Map.Rooms.Where(r => !DisallowedRoomTypes.Contains(r.Type) && r != null).ToArray();
+            Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
             LastRooms.Clear();
             InTeleportExecution.Clear();
             Timing.RunCoroutine(LockStart());

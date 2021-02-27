@@ -103,6 +103,8 @@ namespace Gamer.Mistaken.Systems.Staff
         public class UserInfo
         {
             public string nick;
+            public string role;
+            public string role_color;
             public string role_id;
             public string type_id;
             public string steamid;
@@ -119,9 +121,9 @@ namespace Gamer.Mistaken.Systems.Staff
         {
             if (UserId.IsDevUserId())
                 return true;
-            if (StaffHandler.Staff.Any(i => i.steamid.Split('@')[0] + "@steam" == UserId))
+            if (StaffHandler.Staff.Any(i => i.steamid == UserId))
                 return true;
-            if (StaffHandler.Staff.Any(i => i.discordid.Split('@')[0] + "@discord" == UserId))
+            if (StaffHandler.Staff.Any(i => i.discordid + "@discord" == UserId))
                 return true;
             return false;
         }
