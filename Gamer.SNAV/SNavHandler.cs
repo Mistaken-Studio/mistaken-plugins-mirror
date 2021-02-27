@@ -605,10 +605,20 @@ namespace Gamer.SNAV
         private void Server_WaitingForPlayers()
         {
             {
+                if(!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
+                {
+                    MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
+                    return;
+                }
                 var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
                 OffsetClassD = GetRotateion(room);
             }
             {
+                if (!Map.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
+                {
+                    MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
+                    return;
+                }
                 var room = Map.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
                 OffsetCheckpoint = (Rotation)(((int)GetRotateion(room) + (int)OffsetClassD) % 4);
             }
