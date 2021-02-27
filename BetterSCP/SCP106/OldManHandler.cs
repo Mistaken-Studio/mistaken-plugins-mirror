@@ -98,14 +98,20 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         {
             Vector3 newTarget = Map.Doors.FirstOrDefault(d => d.Type() == DoorType.Scp106Primary)?.transform.position ?? default;
             if (newTarget == default)
+            {
+                RealPlayers.Get(RoleType.Scp106).ToList().ForEach(p => p.SendConsoleMessage("[106] Not teleporting to cell, cell not found | Code: 5.1", "red"));
                 return;
+            }
             foreach (var player in Player.Get(RoleType.Scp106).ToArray())
             {
                 player.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Scp207>();
                 player.ReferenceHub.playerEffectsController.ChangeEffectIntensity<CustomPlayerEffects.Scp207>(4);
                 if (Vector3.Distance(player.Position, newTarget) < 20)
+                {
+                    player.SendConsoleMessage("[106] Not teleporting to cell, too close | Code: 5.2", "red");
                     continue;
-                TeleportOldMan(player, newTarget);
+                }
+                TeleportOldMan(player, newTarget, true);
             }
         }
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
@@ -114,7 +120,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             {
                 if (player.CurrentRoom?.Zone != ZoneType.LightContainment)
                     continue;
-                TeleportOldMan(player, GetRandomRoom(player, false));
+                TeleportOldMan(player, GetRandomRoom(player, false), true);
             }
         }
 
@@ -124,7 +130,10 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             get
             {
                 if (Rooms == null || Rooms.Length == 0)
-                    return null;
+                {
+                    Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
+                    return RandomRoom;
+                }
                 return Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
             }
         }
@@ -143,7 +152,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         {
             Cooldown.Clear();
             Log.Info("Setting Rooms");
-            Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
+            Rooms = null;//Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
             LastRooms.Clear();
             InTeleportExecution.Clear();
             Timing.RunCoroutine(LockStart());
@@ -243,32 +252,35 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             }
         }
 
-        private void TeleportOldMan(Player player, Vector3 target)
+        private void TeleportOldMan(Player player, Vector3 target, bool force = false)
         {
-            if (player.Role != RoleType.Scp106)
+            if (!force)
             {
-                player.SendConsoleMessage("[106] Not 106 | Code: 1.1", "red");
-                return;
-            }
-            if(player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Ensnared>().Enabled)
-            {
-                player.SendConsoleMessage("[106] Ensnared active | Code: 1.2", "red");
-                return;
-            }
-            if (InTeleportExecution.Contains(player.Id))
-            {
-                player.SendConsoleMessage("[106] Already teleporting | Code: 1.3", "red");
-                return;
-            }
-            if (Warhead.IsDetonated)
-            {
-                player.SendConsoleMessage("[106] Detonated | Code: 1.4", "red");
-                return;
-            }
-            if (Cooldown.Contains(player.Id) && Round.ElapsedTime.TotalSeconds > 25)
-            {
-                player.SendConsoleMessage("[106] Cooldown | Code: 1.5", "red");
-                return;
+                if (player.Role != RoleType.Scp106)
+                {
+                    player.SendConsoleMessage("[106] Not 106 | Code: 1.1", "red");
+                    return;
+                }
+                if (player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Ensnared>().Enabled)
+                {
+                    player.SendConsoleMessage("[106] Ensnared active | Code: 1.2", "red");
+                    return;
+                }
+                if (InTeleportExecution.Contains(player.Id))
+                {
+                    player.SendConsoleMessage("[106] Already teleporting | Code: 1.3", "red");
+                    return;
+                }
+                if (Warhead.IsDetonated)
+                {
+                    player.SendConsoleMessage("[106] Detonated | Code: 1.4", "red");
+                    return;
+                }
+                if (Cooldown.Contains(player.Id) && Round.ElapsedTime.TotalSeconds > 25)
+                {
+                    player.SendConsoleMessage("[106] Cooldown | Code: 1.5", "red");
+                    return;
+                }
             }
             InTeleportExecution.Add(player.Id);
             Vector3 oldPos = player.Position;
