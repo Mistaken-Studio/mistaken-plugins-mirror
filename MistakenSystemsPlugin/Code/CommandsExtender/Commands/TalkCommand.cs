@@ -49,7 +49,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         {
                             if (!p.IsConnected)
                                 return;
-                            p.Position = data.Pos;
+                            if(!Warhead.IsDetonated)
+                            {
+                                if(!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
+                                    p.Position = data.Pos;
+                            }
+                            
                             p.Health = data.HP;
                             p.AdrenalineHealth = data.AP;
                             p.Inventory.Clear();
