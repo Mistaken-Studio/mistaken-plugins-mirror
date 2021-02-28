@@ -604,85 +604,95 @@ namespace Gamer.SNAV
 
         private void Server_WaitingForPlayers()
         {
+            try
             {
-                if(!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
+                Log.Debug("[SNAV] Try WaitingForPlayers");
                 {
-                    MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
-                    return;
+                    if (!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
+                    {
+                        MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
+                        return;
+                    }
+                    var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
+                    OffsetClassD = GetRotateion(room);
                 }
-                var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
-                OffsetClassD = GetRotateion(room);
-            }
-            {
-                if (!Map.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
                 {
-                    MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
-                    return;
+                    if (!Map.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
+                    {
+                        MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
+                        return;
+                    }
+                    var room = Map.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
+                    OffsetCheckpoint = (Rotation)(((int)GetRotateion(room) + (int)OffsetClassD) % 4);
                 }
-                var room = Map.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
-                OffsetCheckpoint = (Rotation)(((int)GetRotateion(room) + (int)OffsetClassD) % 4);
-            }
 
 
-            List<int> Zzzzs = new List<int>();
-            List<int> Xxxxs = new List<int>();
-            foreach (var item in Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment))
-            {
-                int z = (int)Math.Floor(item.Position.z);
-                int x = (int)Math.Floor(item.Position.x);
-                if (!Zzzzs.Contains(z))
-                    Zzzzs.Add(z);
-                if (!Xxxxs.Contains(x))
-                    Xxxxs.Add(x);
-            }
-            Xxxxs.Sort();
-            Zzzzs.Sort();
-            Zzzzs.Reverse();
-            LCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
-            for (int i = 0; i < Zzzzs.Count; i++)
-            {
-                var z = Zzzzs[i];
-                List<Room> roomsList = new List<Room>();
-                for (int j = 0; j < Xxxxs.Count; j++)
+                List<int> Zzzzs = new List<int>();
+                List<int> Xxxxs = new List<int>();
+                foreach (var item in Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment))
                 {
-                    var x = Xxxxs[j];
-                    LCZRooms[i, j] = Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                    int z = (int)Math.Floor(item.Position.z);
+                    int x = (int)Math.Floor(item.Position.x);
+                    if (!Zzzzs.Contains(z))
+                        Zzzzs.Add(z);
+                    if (!Xxxxs.Contains(x))
+                        Xxxxs.Add(x);
                 }
-            }
+                Xxxxs.Sort();
+                Zzzzs.Sort();
+                Zzzzs.Reverse();
+                LCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
+                for (int i = 0; i < Zzzzs.Count; i++)
+                {
+                    var z = Zzzzs[i];
+                    List<Room> roomsList = new List<Room>();
+                    for (int j = 0; j < Xxxxs.Count; j++)
+                    {
+                        var x = Xxxxs[j];
+                        LCZRooms[i, j] = Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                    }
+                }
 
-            Zzzzs.Clear();
-            Xxxxs.Clear();
-            foreach (var item in Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket))
-            {
-                int z = (int)Math.Floor(item.Position.z);
-                int x = (int)Math.Floor(item.Position.x);
-                if (!Zzzzs.Contains(z))
-                    Zzzzs.Add(z);
-                if (!Xxxxs.Contains(x))
-                    Xxxxs.Add(x);
-            }
-            Xxxxs.Sort();
-            Zzzzs.Sort();
-            for (int i = 0; i < Xxxxs.Count; i++)
-            {
-                var x = Xxxxs[i];
-                if(!Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).Any(p => (int)Math.Floor(p.Position.x) == x))
+                Zzzzs.Clear();
+                Xxxxs.Clear();
+                foreach (var item in Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket))
                 {
-                    Xxxxs.RemoveAt(i);
-                    i--;
+                    int z = (int)Math.Floor(item.Position.z);
+                    int x = (int)Math.Floor(item.Position.x);
+                    if (!Zzzzs.Contains(z))
+                        Zzzzs.Add(z);
+                    if (!Xxxxs.Contains(x))
+                        Xxxxs.Add(x);
+                }
+                Xxxxs.Sort();
+                Zzzzs.Sort();
+                for (int i = 0; i < Xxxxs.Count; i++)
+                {
+                    var x = Xxxxs[i];
+                    if (!Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).Any(p => (int)Math.Floor(p.Position.x) == x))
+                    {
+                        Xxxxs.RemoveAt(i);
+                        i--;
+                    }
+                }
+                Zzzzs.Reverse();
+                EZ_HCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
+                for (int i = 0; i < Zzzzs.Count; i++)
+                {
+                    var z = Zzzzs[i];
+                    List<Room> roomsList = new List<Room>();
+                    for (int j = 0; j < Xxxxs.Count; j++)
+                    {
+                        var x = Xxxxs[j];
+                        EZ_HCZRooms[i, j] = Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                    }
                 }
             }
-            Zzzzs.Reverse();
-            EZ_HCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
-            for (int i = 0; i < Zzzzs.Count; i++)
+            catch (System.Exception ex)
             {
-                var z = Zzzzs[i];
-                List<Room> roomsList = new List<Room>();
-                for (int j = 0; j < Xxxxs.Count; j++)
-                {
-                    var x = Xxxxs[j];
-                    EZ_HCZRooms[i, j] = Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
-                }
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+                MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
             }
         }
 
