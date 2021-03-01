@@ -607,6 +607,7 @@ namespace Gamer.SNAV
             try
             {
                 Log.Debug("[SNAV] Try WaitingForPlayers");
+                try
                 {
                     if (!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
                     {
@@ -616,6 +617,13 @@ namespace Gamer.SNAV
                     var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
                     OffsetClassD = GetRotateion(room);
                 }
+                catch(System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 1");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+                try
                 {
                     if (!Map.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
                     {
@@ -625,71 +633,176 @@ namespace Gamer.SNAV
                     var room = Map.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
                     OffsetCheckpoint = (Rotation)(((int)GetRotateion(room) + (int)OffsetClassD) % 4);
                 }
-
+                catch (System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 2");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
 
                 List<int> Zzzzs = new List<int>();
                 List<int> Xxxxs = new List<int>();
-                foreach (var item in Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment))
+                try
                 {
-                    int z = (int)Math.Floor(item.Position.z);
-                    int x = (int)Math.Floor(item.Position.x);
-                    if (!Zzzzs.Contains(z))
-                        Zzzzs.Add(z);
-                    if (!Xxxxs.Contains(x))
-                        Xxxxs.Add(x);
+                    foreach (var item in Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment))
+                    {
+                        int z = (int)Math.Floor(item.Position.z);
+                        int x = (int)Math.Floor(item.Position.x);
+                        if (!Zzzzs.Contains(z))
+                            Zzzzs.Add(z);
+                        if (!Xxxxs.Contains(x))
+                            Xxxxs.Add(x);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 3");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
                 Xxxxs.Sort();
                 Zzzzs.Sort();
                 Zzzzs.Reverse();
-                LCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
-                for (int i = 0; i < Zzzzs.Count; i++)
+                try
                 {
-                    var z = Zzzzs[i];
-                    List<Room> roomsList = new List<Room>();
-                    for (int j = 0; j < Xxxxs.Count; j++)
+                    LCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
+                    for (int i = 0; i < Zzzzs.Count; i++)
                     {
-                        var x = Xxxxs[j];
-                        LCZRooms[i, j] = Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                        try
+                        {
+                            var z = Zzzzs[i];
+                            List<Room> roomsList = new List<Room>();
+                            for (int j = 0; j < Xxxxs.Count; j++)
+                            {
+                                try
+                                {
+                                    var x = Xxxxs[j];
+                                    LCZRooms[i, j] = Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                                }
+                                catch (System.Exception ex)
+                                {
+                                    Log.Error("[SNAV] CatchId: 4.2");
+                                    Log.Error(ex.Message);
+                                    Log.Error(ex.StackTrace);
+                                }
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Error("[SNAV] CatchId: 4.1");
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                        }
                     }
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 4");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
 
                 Zzzzs.Clear();
                 Xxxxs.Clear();
-                foreach (var item in Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket))
+                try
                 {
-                    int z = (int)Math.Floor(item.Position.z);
-                    int x = (int)Math.Floor(item.Position.x);
-                    if (!Zzzzs.Contains(z))
-                        Zzzzs.Add(z);
-                    if (!Xxxxs.Contains(x))
-                        Xxxxs.Add(x);
+                    foreach (var item in Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket))
+                    {
+                        try
+                        {
+                            int z = (int)Math.Floor(item.Position.z);
+                            int x = (int)Math.Floor(item.Position.x);
+                            if (!Zzzzs.Contains(z))
+                                Zzzzs.Add(z);
+                            if (!Xxxxs.Contains(x))
+                                Xxxxs.Add(x);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Error("[SNAV] CatchId: 5.1");
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                        }
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 5");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
                 Xxxxs.Sort();
                 Zzzzs.Sort();
-                for (int i = 0; i < Xxxxs.Count; i++)
+                try
                 {
-                    var x = Xxxxs[i];
-                    if (!Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).Any(p => (int)Math.Floor(p.Position.x) == x))
+                    for (int i = 0; i < Xxxxs.Count; i++)
                     {
-                        Xxxxs.RemoveAt(i);
-                        i--;
+                        try
+                        {
+                            var x = Xxxxs[i];
+                            if (!Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).Any(p => (int)Math.Floor(p.Position.x) == x))
+                            {
+                                Xxxxs.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Error("[SNAV] CatchId: 6.1");
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                        }
                     }
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 6");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
                 Zzzzs.Reverse();
                 EZ_HCZRooms = new Room[Zzzzs.Count, Xxxxs.Count];
-                for (int i = 0; i < Zzzzs.Count; i++)
+                try
                 {
-                    var z = Zzzzs[i];
-                    List<Room> roomsList = new List<Room>();
-                    for (int j = 0; j < Xxxxs.Count; j++)
+                    for (int i = 0; i < Zzzzs.Count; i++)
                     {
-                        var x = Xxxxs[j];
-                        EZ_HCZRooms[i, j] = Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                        try
+                        {
+                            var z = Zzzzs[i];
+                            List<Room> roomsList = new List<Room>();
+                            for (int j = 0; j < Xxxxs.Count; j++)
+                            {
+                                try
+                                {
+                                    var x = Xxxxs[j];
+                                    EZ_HCZRooms[i, j] = Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                                }
+                                catch (System.Exception ex)
+                                {
+                                    Log.Error("[SNAV] CatchId: 7.2");
+                                    Log.Error(ex.Message);
+                                    Log.Error(ex.StackTrace);
+                                }
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Error("[SNAV] CatchId: 7.1");
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                        }
                     }
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error("[SNAV] CatchId: 7");
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
             }
             catch (System.Exception ex)
             {
+                Log.Error("[SNAV] CatchId: 0");
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
                 MEC.Timing.CallDelayed(5, Server_WaitingForPlayers);
@@ -698,15 +811,11 @@ namespace Gamer.SNAV
 
         private static IEnumerator<float> UpdateInterface(Player player)
         {
-            Log.Debug("Holding Snav");
             yield return Timing.WaitForSeconds(0.5f);
             while (player.CurrentItem.id == ItemType.WeaponManagerTablet)
             {
                 if (!((player.CurrentItem.durability >= 1.301 && player.CurrentItem.durability <= 1.3011) || player.CurrentItem.durability == 1.401f))
-                {
-                    Log.Debug("Not Snav");
                     break;
-                }
                 bool Ultimate = player.CurrentItem.durability == 1.401f;
                 var rooms = GetRooms(player.Position.y);
                 string[] toWrite = new string[rooms.GetLength(0) * 3];
