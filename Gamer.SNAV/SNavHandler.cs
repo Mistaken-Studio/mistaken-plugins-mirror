@@ -692,7 +692,7 @@ namespace Gamer.SNAV
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
-                MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
+                MEC.Timing.CallDelayed(5, Server_WaitingForPlayers);
             }
         }
 
