@@ -30,6 +30,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension += this.Handle<Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs>((ev) => Player_FailingEscapePocketDimension(ev));
             Exiled.Events.Handlers.Player.EscapingPocketDimension += this.Handle<Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs>((ev) => Player_EscapingPocketDimension(ev));
             Exiled.Events.Handlers.Player.EnteringFemurBreaker += this.Handle<Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs>((ev) => Player_EnteringFemurBreaker(ev));
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
         public override void OnDisable()
         {
@@ -43,6 +44,17 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= this.Handle<Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs>((ev) => Player_FailingEscapePocketDimension(ev));
             Exiled.Events.Handlers.Player.EscapingPocketDimension -= this.Handle<Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs>((ev) => Player_EscapingPocketDimension(ev));
             Exiled.Events.Handlers.Player.EnteringFemurBreaker -= this.Handle<Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs>((ev) => Player_EnteringFemurBreaker(ev));
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+        }
+
+        private void Server_WaitingForPlayers()
+        {
+            MEC.Timing.CallDelayed(5, () =>
+            {
+                if (Rooms == null || Rooms.Length == 0)
+                    Server_WaitingForPlayers();
+            });
+            Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
         }
 
         private readonly string WelcomeMessage;
@@ -130,10 +142,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             get
             {
                 if (Rooms == null || Rooms.Length == 0)
-                {
-                    Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
-                    return RandomRoom;
-                }
+                    throw new System.Exception("Rooms are not ready to generate");
                 return Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
             }
         }
@@ -152,7 +161,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         {
             Cooldown.Clear();
             Log.Info("Setting Rooms");
-            Rooms = null;//Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
+            Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
             LastRooms.Clear();
             InTeleportExecution.Clear();
             Timing.RunCoroutine(LockStart());
