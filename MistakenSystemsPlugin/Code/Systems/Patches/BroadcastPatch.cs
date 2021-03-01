@@ -60,7 +60,13 @@ namespace Gamer.Mistaken.Systems.Patches
 					Targets.Remove(data);
 				});
 			}
-			Targets[data].Add(ReferenceHub.GetHub(conn.identity.gameObject).characterClassManager.UserId);
+			if (conn?.identity?.gameObject == null)
+				return true;
+			var user = ReferenceHub.GetHub(conn.identity.gameObject);
+			string uid = user?.characterClassManager?.UserId;
+			if (uid == null)
+				return true;
+			Targets[data].Add(uid);
 			return true;
 		}
 	}
