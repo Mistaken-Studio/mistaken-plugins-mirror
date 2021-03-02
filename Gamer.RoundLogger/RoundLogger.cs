@@ -82,7 +82,7 @@ namespace Gamer.RoundLoggerSystem
             Initiated = true;
             Exiled.API.Features.Log.Debug("Initiated RoundLogger");
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
-            Log("INFORMATION", "ROUND LOGGER", "Start of log");
+            Log("INFO", "LOGGER", "Start of log");
         }
 
         private static readonly List<LogMessage> Logs = new List<LogMessage>();
@@ -91,11 +91,11 @@ namespace Gamer.RoundLoggerSystem
         private static byte ModulesMaxLength = 0;
         private static readonly HashSet<string> Types = new HashSet<string>()
         {
-            "INFORMATION"
+            "INFO"
         };
         private static readonly HashSet<string> Modules = new HashSet<string>()
         {
-            "ROUND LOGGER"
+            "LOGGER"
         };
 
 
@@ -104,10 +104,10 @@ namespace Gamer.RoundLoggerSystem
         private static async Task Server_RestartingRoundTask()
         {
             await Task.Delay(1000);
-            Log("INFORMATION", "ROUND LOGGER", "End of log");
+            Log("INFO", "LOGGER", "End of log");
             var logsArray = Logs.ToArray();
             Logs.Clear();
-            Log("INFORMATION", "ROUND LOGGER", "Start of log");
+            Log("INFO", "LOGGER", "Start of log");
             OnEnd?.Invoke(logsArray);
         }
     }
