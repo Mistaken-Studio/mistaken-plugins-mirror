@@ -609,13 +609,22 @@ namespace Gamer.SNAV
                 Log.Debug("[SNAV] Try WaitingForPlayers");
                 try
                 {
-                    if (!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
+                    if (Map.Rooms == null)
+                        Log.Error("[SNAV] Room List is Null");
+                    else if (Map.Rooms.Any(r => r == null))
+                        Log.Error("[SNAV] Some Rooms Are Null");
+                    else if (!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
+                        Log.Error("[SNAV] No ClassDSpwan Room");
+                    else
                     {
-                        MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
-                        return;
+                        var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
+                        if(room == null)
+                            Log.Error("[SNAV] Found ClassDSpwan Room but null");
+                        else if(room.gameObject == null)
+                            Log.Error("[SNAV] Found ClassDSpwan Room but gameObject is null");
+                        else
+                            OffsetClassD = GetRotateion(room);
                     }
-                    var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
-                    OffsetClassD = GetRotateion(room);
                 }
                 catch(System.Exception ex)
                 {
