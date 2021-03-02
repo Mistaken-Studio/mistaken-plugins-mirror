@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.Taser", "Gamer.Taser\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.AudioLog", "Gamer.AudioLog\Gamer.AudioLog.csproj", "{CAB7DE98-58B9-4A94-A77A-2D87FBA13103}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.RoundLogger", "Gamer.RoundLogger\Gamer.RoundLogger.csproj", "{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -138,6 +140,14 @@ Global
 		{CAB7DE98-58B9-4A94-A77A-2D87FBA13103}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAB7DE98-58B9-4A94-A77A-2D87FBA13103}.Release|x86.ActiveCfg = Release|Any CPU
 		{CAB7DE98-58B9-4A94-A77A-2D87FBA13103}.Release|x86.Build.0 = Release|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Debug|x86.Build.0 = Debug|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|x86.ActiveCfg = Release|Any CPU
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +159,7 @@ Global
 		{167C3B54-4155-478F-8363-A1BE38860D01} = {5A3F6F10-857C-4161-AF24-906979B26244}
 		{5A3F6F10-857C-4161-AF24-906979B26244} = {DF2465A6-2DB6-4C0A-BCE3-0489D16C1CDE}
 		{594FC7BB-8B93-4346-8C28-6AB0EA0A4430} = {DF2465A6-2DB6-4C0A-BCE3-0489D16C1CDE}
+		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184} = {DF2465A6-2DB6-4C0A-BCE3-0489D16C1CDE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAFDF84E-3871-48F4-818B-DC40833D6532}
