@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gamer.RoundLogger
+namespace Gamer.RoundLoggerSystem
 {
     public static class RoundLogger
     {
@@ -79,15 +79,24 @@ namespace Gamer.RoundLogger
         private static bool Initiated = false;
         private static void Ini()
         {
+            Initiated = true;
+            Exiled.API.Features.Log.Debug("Initiated RoundLogger");
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
+            Log("INFORMATION", "ROUND LOGGER", "Start of log");
         }
 
         private static readonly List<LogMessage> Logs = new List<LogMessage>();
 
         private static byte TypesMaxLength = 0;
         private static byte ModulesMaxLength = 0;
-        private static readonly HashSet<string> Types = new HashSet<string>();
-        private static readonly HashSet<string> Modules = new HashSet<string>();
+        private static readonly HashSet<string> Types = new HashSet<string>()
+        {
+            "INFORMATION"
+        };
+        private static readonly HashSet<string> Modules = new HashSet<string>()
+        {
+            "ROUND LOGGER"
+        };
 
 
         private static void Server_RestartingRound() => _ = Server_RestartingRoundTask();
@@ -95,13 +104,11 @@ namespace Gamer.RoundLogger
         private static async Task Server_RestartingRoundTask()
         {
             await Task.Delay(1000);
-            var start = DateTime.Now;
-
-            Log("ROUND LOGGER", "LOGGER", "Ending Log");
-            OnEnd?.Invoke(Logs.ToArray());
+            Log("INFORMATION", "ROUND LOGGER", "End of log");
+            var logsArray = Logs.ToArray();
             Logs.Clear();
-            Log("ROUND LOGGER", "LOGGER", "Starting Log");
-            Gamer.Diagnostics.MasterHandler.LogTime("RoundLogger", "Server_RestartingRound", start, DateTime.Now);
+            Log("INFORMATION", "ROUND LOGGER", "Start of log");
+            OnEnd?.Invoke(logsArray);
         }
     }
 }

@@ -51,11 +51,5 @@
     <Compile Include="RoundLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Gamer.Diagnostics\Gamer.Diagnostics.csproj">
-      <Project>{c50d9525-091d-4176-acae-890b5750d2b0}</Project>
-      <Name>Gamer.Diagnostics</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

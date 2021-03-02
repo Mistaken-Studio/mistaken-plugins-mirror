@@ -71,5 +71,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gamer.RoundLogger\Gamer.RoundLogger.csproj">
+      <Project>{4bffbb2d-a061-4e50-a8b0-99cbfbfb7184}</Project>
+      <Name>Gamer.RoundLogger</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
