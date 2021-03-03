@@ -247,7 +247,7 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void CustomEvents_OnFirstTimeJoined(Exiled.Events.EventArgs.FirstTimeJoinedEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER JOINED FIRST TIME", $"{PTS(ev.Player)} joined first time");
+            RoundLogger.Log("NETWORK EVENT", "PLAYER JOINED", $"{PTS(ev.Player)} joined first time");
         }
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
