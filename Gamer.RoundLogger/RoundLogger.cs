@@ -46,7 +46,7 @@ namespace Gamer.RoundLoggerSystem
 
         public static void Log(string module, string type, string message)
         {
-            Logs.Add(new LogMessage(DateTime.Now, type, module, message));
+            Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
         }
 
         public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId})";
