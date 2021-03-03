@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -55,9 +56,13 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (RespawnSCP(currentPlayer))
             {
+                RoundLogger.Log("RESPAWN", "SCP", "Respawning SCP");
             }
-            else if (currentPlayer.Team != Team.RIP) 
+            else if (currentPlayer.Team != Team.RIP)
+            {
                 currentPlayer.Kill("Heart Attack");
+                RoundLogger.Log("RESPAWN", "HUMAN", "Respawning human");
+            }
         }
 
         internal static bool RespawnSCP(Player currentSCP)

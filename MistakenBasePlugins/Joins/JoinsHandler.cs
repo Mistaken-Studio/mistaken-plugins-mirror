@@ -10,6 +10,7 @@ using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Base
 {
@@ -109,6 +110,7 @@ namespace Gamer.Mistaken.Base
                         Log.Error("FAILED TO BAN PLAYER ON IP");
 
                     SendBans("W: " + wanted.Reason, wanted.PlayerUserId, wanted.AdminUserId, wanted.Duration);
+                    RoundLogger.Log("WANTED", "BAN", $"{player.PlayerToString()} was banned because of wanted");
                     wanted.Remove();
                 }
                 catch (Exception e)

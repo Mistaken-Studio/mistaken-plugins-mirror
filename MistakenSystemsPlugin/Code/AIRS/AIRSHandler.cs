@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using MEC;
 using MistakenSocket.Client.SL;
@@ -44,6 +45,7 @@ namespace Gamer.Mistaken.AIRS
                 ev.IsAllowed = false;
                 return;
             }
+            RoundLogger.Log("AIRS", "REPORT", $"{ev.Target.PlayerToString()} was reportd by {ev.Issuer.PlayerToString()} for \"{ev.Reason}\"");
             int id = ev.Target.Id;
             AlreadyReported.Add(id);
             MEC.Timing.CallDelayed(60, () => AlreadyReported.Remove(id));

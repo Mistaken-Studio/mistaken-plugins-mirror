@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using UnityEngine;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -24,8 +25,11 @@ namespace Gamer.Mistaken.Systems.End
         public override string Name => "CamperEscape";
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            MEC.Timing.CallDelayed(0.1f, () =>
+            {
+                Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+                Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            });
         }
         public override void OnDisable()
         {
@@ -96,7 +100,7 @@ namespace Gamer.Mistaken.Systems.End
                                 {
                                     if (player.IsCuffed || player.UserId == "") 
                                         break;
-
+                                    RoundLogger.Log("ANTY CAMPER", "DAMAGE", $"{player.PlayerToString()} was damaged for staing in escape");
                                     player.ShowHint("<color=red><b>Warning!</b></color><br>If you stay here you will receive <b>damage</b>", 1);
                                     if (player.Team == Team.SCP) 
                                         player.Hurt(10, new DamageTypes.DamageType("*Anty Camper"));
@@ -110,6 +114,7 @@ namespace Gamer.Mistaken.Systems.End
                     else if ((pos.x >= 12 && pos.x <= 15 && pos.z <= -18 && pos.z >= -22) && pos.y >= 1000 && pos.y <= 1005)
                     {
                         player.ShowHint("<color=red><b>Warning!</b></color><br>If you stay here you will receive <b>damage</b>", 1);
+                        RoundLogger.Log("ANTY CAMPER", "DAMAGE", $"{player.PlayerToString()} was damaged for staing above GATE A Stairs");
                         if (player.Team == Team.SCP) 
                             player.Hurt(10, new DamageTypes.DamageType("*Anty Camper"));
                         else 
@@ -128,6 +133,7 @@ namespace Gamer.Mistaken.Systems.End
                                 default:
                                     {
                                         player.ShowHint("<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>", 1);
+                                        RoundLogger.Log("ANTY CAMPER", "DAMAGE", $"{player.PlayerToString()} was damaged for staing in SCP012");
                                         player.Hurt(5, new DamageTypes.DamageType("*Anty Camper"));
                                         Log.Debug("Done damage to " + player.Nickname + " because of unauthorizated 012!");
                                         break;

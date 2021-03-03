@@ -73,6 +73,7 @@ namespace Gamer.Mistaken.Systems.End
                 Exiled.Events.Handlers.Map.Decontaminating += this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => Map_Decontaminating(ev));
                 Exiled.Events.Handlers.Map.GeneratorActivated += this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => Map_GeneratorActivated(ev));
                 Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
+                Exiled.Events.Handlers.CustomEvents.OnBroadcast += this.Handle<Exiled.Events.EventArgs.BroadcastEventArgs>((ev) => CustomEvents_OnBroadcast(ev));
             });
         }
         public override void OnDisable()
@@ -114,6 +115,7 @@ namespace Gamer.Mistaken.Systems.End
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= this.Handle<Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs>((ev) => Server_SendingRemoteAdminCommand(ev));
             Exiled.Events.Handlers.Server.SendingConsoleCommand -= this.Handle<Exiled.Events.EventArgs.SendingConsoleCommandEventArgs>((ev) => Server_SendingConsoleCommand(ev));
+            Exiled.Events.Handlers.CustomEvents.OnBroadcast -= this.Handle<Exiled.Events.EventArgs.BroadcastEventArgs>((ev) => CustomEvents_OnBroadcast(ev));
         }
 
         private void RoundLogHandler_OnEnd(RoundLogger.LogMessage[] logs)
@@ -125,6 +127,18 @@ namespace Gamer.Mistaken.Systems.End
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             File.AppendAllLines(dir + $"{DateTime.Now:yyyy-MM-dd_HH:mm:ss}.log", logs.Select(i => i.ToString()));
+        }
+
+        private void CustomEvents_OnBroadcast(Exiled.Events.EventArgs.BroadcastEventArgs ev)
+        {
+            if (ev.Type == Broadcast.BroadcastFlags.AdminChat)
+            {
+                RoundLogger.Log("GAME EVENT", "ADMIN CHAT", $"{ev.AdminName} sent \"{ev.Content}\"");
+            }
+            else
+            {
+                RoundLogger.Log("GAME EVENT", "BROADCAST", $"Broadcasted \"{ev.Content}\" to {ev.Targets.Length} players");
+            }
         }
 
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
@@ -249,11 +263,11 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER PREAUTHED", $"Preauthing {ev.UserId} from {ev.Country} with flags {ev.Flags}, {(ev.IsAllowed ? "allowed" : "denied")}");
+            RoundLogger.Log("NETWORK EVENT", "PLAYER PREAUTHED", $"Preauthing {ev.UserId} from {ev.Request.RemoteEndPoint.Address} ({ev.Country}) with flags {ev.Flags}, {(ev.IsAllowed ? "allowed" : "denied")}");
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "HURT", $"{PTS(ev.Target)} was hurt by {PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
+            RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} was hurt by {PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
         }
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {

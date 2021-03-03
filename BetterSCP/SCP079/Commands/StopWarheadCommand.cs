@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Gamer.Utilities.RoomSystemAPI;
 using System;
@@ -51,6 +52,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         Cassie.Message("PITCH_0.8 You jam_070_3 will jam_050_5 .g5 no jam_040_9 detonate me", false, false);
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
+
+                        RoundLogger.Log("SCP079", "STOPWARHEAD", $"{player.PlayerToString()} requested stopwarhead");
 
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };

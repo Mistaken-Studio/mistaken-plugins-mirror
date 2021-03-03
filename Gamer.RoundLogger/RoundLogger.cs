@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,8 @@ namespace Gamer.RoundLoggerSystem
                 Message = message
             });
         }
+
+        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId})";
 
         public static void RegisterTypes(string type)
         {

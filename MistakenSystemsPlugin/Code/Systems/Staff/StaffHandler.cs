@@ -11,6 +11,7 @@ using MEC;
 using Newtonsoft.Json;
 using UnidecodeSharpFork;
 using UnityEngine;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Systems.Staff
 {
@@ -56,6 +57,7 @@ namespace Gamer.Mistaken.Systems.Staff
                         player.Group.BadgeColor = "white";
                         player.Group.BadgeText = "";
                         player.Group.KickPower = 0;
+                        RoundLogger.Log("STAFF", "REVOKE", $"Revoked staff permissions for {ev.Player.PlayerToString()}");
                     }
                 });
                 return;
@@ -68,6 +70,7 @@ namespace Gamer.Mistaken.Systems.Staff
             ev.NewGroup.BadgeColor = "white";
             ev.NewGroup.BadgeText = "";
             ev.NewGroup.KickPower = 0;
+            RoundLogger.Log("STAFF", "REVOKE", $"Revoked staff permissions for {ev.Player.PlayerToString()}");
         }
 
         private static void Server_RestartingRound()

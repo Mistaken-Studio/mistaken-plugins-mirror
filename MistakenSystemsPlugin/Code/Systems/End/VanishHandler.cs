@@ -2,6 +2,7 @@
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -96,6 +97,7 @@ namespace Gamer.Mistaken.Systems.End
         {
             if (value)
             {
+                RoundLogger.Log("VANISH", "ENABLED", $"Vanish enabled for {player.PlayerToString()}, type {level}");
                 if (Vanished.ContainsKey(player.Id))
                     SetGhost(player, false, level);
                 Vanished.Add(player.Id, level);
@@ -103,6 +105,7 @@ namespace Gamer.Mistaken.Systems.End
             }
             else
             {
+                RoundLogger.Log("VANISH", "DISABLED", $"Vanish disabled for {player.PlayerToString()}, type {level}");
                 Vanished.Remove(player.Id);
                 LOFH.LOFH.RemoveVanish(player.UserId);
             }

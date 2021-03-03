@@ -55,8 +55,12 @@ namespace Gamer.Mistaken.Systems.End
             }
             else
             {
-                if(File.ReadAllText(VersionPath) != release.TagName)
+                var version = File.ReadAllText(VersionPath);
+                if (version != release.TagName)
+                {
+                    RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
                     Update(release, github);
+                }
             }
         }
 

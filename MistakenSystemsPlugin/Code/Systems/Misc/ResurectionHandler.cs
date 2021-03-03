@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -138,6 +139,7 @@ namespace Gamer.Mistaken.Systems.Misc
                             target.EnableEffect<CustomPlayerEffects.Disabled>(30);
                             target.EnableEffect<CustomPlayerEffects.Concussed>(15);
                             target.EnableEffect<CustomPlayerEffects.Flashed>(5);
+                            RoundLogger.Log("RESURECT", "RESURECT", $"Resurected {target.PlayerToString()}");
                         });
                     }
                 });

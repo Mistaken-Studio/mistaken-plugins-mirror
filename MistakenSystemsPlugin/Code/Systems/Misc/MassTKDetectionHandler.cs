@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -76,11 +77,13 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 var value = GreneadedDeadPlayers[ev.Thrower];
                 Log.Info($"Detected Greneade TK, {value} killed");
-                if(value > 3)
+                RoundLogger.Log("MASS TK", "DETECTED", $"{ev.Thrower.PlayerToString()} team killed {value} players");
+                if (value > 3)
                 {
                     //Log.Debug("MTKD Execute Code: 3");
                     MapPlus.Broadcast("MassTK Detection System", 10, $"Detected Grenade Mass TeamKill ({value}) by {ev.Thrower.Nickname}\nRespawning team killed players", Broadcast.BroadcastFlags.AdminChat);
                     MapPlus.Broadcast("MassTK Detection System", 10, "Wykryto MassTK, respienie graczy ...", Broadcast.BroadcastFlags.Normal);
+                    RoundLogger.Log("MASS TK", "RESPAWN", $"Respawning {value} players");
                     foreach (var player in GreneadedPlayers[ev.Thrower])
                     {
                         if (player == null || player.IsAlive)
