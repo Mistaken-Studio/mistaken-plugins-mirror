@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Assembly-CSharp_publicized">
+      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
+    </Reference>
     <Reference Include="Exiled.API">
       <HintPath>..\References\Exiled.API.dll</HintPath>
     </Reference>

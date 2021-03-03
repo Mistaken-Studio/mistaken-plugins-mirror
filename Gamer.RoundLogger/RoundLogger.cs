@@ -49,7 +49,7 @@ namespace Gamer.RoundLoggerSystem
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
         }
 
-        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId})";
+        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}| Class: {player.Role})";
 
         public static void RegisterTypes(string type)
         {
