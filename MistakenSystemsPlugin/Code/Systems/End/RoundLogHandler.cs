@@ -282,6 +282,6 @@ namespace Gamer.Mistaken.Systems.End
             RoundLogger.Log("ADMIN EVENT", "BAN", $"{PTS(ev.Target)} was banned by {PTS(ev.Issuer)} with reason {ev.Details.Reason}");
         }
 
-        private string PTS(Player player) => player == null ? null : $"({player.Id}) {player.Nickname}";
+        private string PTS(Player player) => player.PlayerToString();
     }
 }
