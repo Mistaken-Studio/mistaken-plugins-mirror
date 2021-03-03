@@ -97,15 +97,16 @@ namespace Gamer.Mistaken.Systems.End
         {
             if (value)
             {
-                RoundLogger.Log("VANISH", "ENABLED", $"Vanish enabled for {player.PlayerToString()}, type {level}");
                 if (Vanished.ContainsKey(player.Id))
                     SetGhost(player, false, level);
+                RoundLogger.Log("VANISH", "ENABLED", $"Vanish enabled for {player.PlayerToString()}, type {level}");
                 Vanished.Add(player.Id, level);
                 LOFH.LOFH.AddVanish(player.UserId, level);
             }
             else
             {
-                RoundLogger.Log("VANISH", "DISABLED", $"Vanish disabled for {player.PlayerToString()}, type {level}");
+                if(Vanished.ContainsKey(player.Id))
+                    RoundLogger.Log("VANISH", "DISABLED", $"Vanish disabled for {player.PlayerToString()}, type {level}");
                 Vanished.Remove(player.Id);
                 LOFH.LOFH.RemoveVanish(player.UserId);
             }
