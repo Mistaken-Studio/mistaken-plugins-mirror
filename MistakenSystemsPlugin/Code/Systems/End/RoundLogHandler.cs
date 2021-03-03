@@ -133,7 +133,7 @@ namespace Gamer.Mistaken.Systems.End
         {
             if (ev.Type == Broadcast.BroadcastFlags.AdminChat)
             {
-                RoundLogger.Log("GAME EVENT", "ADMIN CHAT", $"{ev.AdminName} sent \"{ev.Content}\"");
+                RoundLogger.Log("ADMIN EVENT", "ADMIN CHAT", $"{ev.AdminName} sent \"{ev.Content}\"");
             }
             else
             {
@@ -159,7 +159,7 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "RA", $"{PTS(ev.Sender) ?? "Consols"} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.Success ? "Success" : "Failure")}");
+            RoundLogger.Log("ADMIN EVENT", "RA", $"{PTS(ev.Sender) ?? "Console"} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.Success ? "Success" : "Failure")}");
         }
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
         {
