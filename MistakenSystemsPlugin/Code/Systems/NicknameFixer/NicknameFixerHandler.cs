@@ -76,6 +76,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "twitch.tv",
             "key drop com",
             "skindrop.pl",
+            "polski-survival.pl",
 
             "~~",
             "```",
