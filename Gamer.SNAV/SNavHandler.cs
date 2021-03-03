@@ -609,15 +609,15 @@ namespace Gamer.SNAV
                 Log.Debug("[SNAV] Try WaitingForPlayers");
                 try
                 {
-                    if (Map.Rooms == null)
+                    if (MapPlus.Rooms == null)
                         Log.Error("[SNAV] Room List is Null");
-                    else if (Map.Rooms.Any(r => r == null))
+                    else if (MapPlus.Rooms.Any(r => r == null))
                         Log.Error("[SNAV] Some Rooms Are Null");
-                    else if (!Map.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
+                    else if (!MapPlus.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
                         Log.Error("[SNAV] No ClassDSpwan Room");
                     else
                     {
-                        var room = Map.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
+                        var room = MapPlus.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
                         if(room == null)
                             Log.Error("[SNAV] Found ClassDSpwan Room but null");
                         else if(room.gameObject == null)
@@ -634,12 +634,12 @@ namespace Gamer.SNAV
                 }
                 try
                 {
-                    if (!Map.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
+                    if (!MapPlus.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
                     {
                         MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
                         return;
                     }
-                    var room = Map.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
+                    var room = MapPlus.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
                     OffsetCheckpoint = (Rotation)(((int)GetRotateion(room) + (int)OffsetClassD) % 4);
                 }
                 catch (System.Exception ex)
@@ -653,7 +653,7 @@ namespace Gamer.SNAV
                 List<int> Xxxxs = new List<int>();
                 try
                 {
-                    foreach (var item in Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment))
+                    foreach (var item in MapPlus.Rooms.Where(r => r.Zone == ZoneType.LightContainment))
                     {
                         int z = (int)Math.Floor(item.Position.z);
                         int x = (int)Math.Floor(item.Position.x);
@@ -686,7 +686,7 @@ namespace Gamer.SNAV
                                 try
                                 {
                                     var x = Xxxxs[j];
-                                    LCZRooms[i, j] = Map.Rooms.Where(r => r.Zone == ZoneType.LightContainment).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                                    LCZRooms[i, j] = MapPlus.Rooms.Where(r => r.Zone == ZoneType.LightContainment).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
                                 }
                                 catch (System.Exception ex)
                                 {
@@ -715,7 +715,7 @@ namespace Gamer.SNAV
                 Xxxxs.Clear();
                 try
                 {
-                    foreach (var item in Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket))
+                    foreach (var item in MapPlus.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket))
                     {
                         try
                         {
@@ -749,7 +749,7 @@ namespace Gamer.SNAV
                         try
                         {
                             var x = Xxxxs[i];
-                            if (!Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).Any(p => (int)Math.Floor(p.Position.x) == x))
+                            if (!MapPlus.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).Any(p => (int)Math.Floor(p.Position.x) == x))
                             {
                                 Xxxxs.RemoveAt(i);
                                 i--;
@@ -784,7 +784,7 @@ namespace Gamer.SNAV
                                 try
                                 {
                                     var x = Xxxxs[j];
-                                    EZ_HCZRooms[i, j] = Map.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
+                                    EZ_HCZRooms[i, j] = MapPlus.Rooms.Where(r => (r.Zone == ZoneType.HeavyContainment || r.Zone == ZoneType.Entrance) && r.Type != RoomType.Pocket).FirstOrDefault(p => (int)Math.Floor(p.Position.z) == z && (int)Math.Floor(p.Position.x) == x);
                                 }
                                 catch (System.Exception ex)
                                 {

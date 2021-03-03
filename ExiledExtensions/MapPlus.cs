@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Exiled.API.Features;
 using Mirror;
+using NorthwoodLib.Pools;
 using RemoteAdmin;
 using UnityEngine;
 
@@ -92,6 +95,57 @@ namespace Gamer.Utilities
         {
             lczTime = DecontaminationEndTime - (float)LightContainmentZoneDecontamination.DecontaminationController.GetServerTime;
             return lczTime < minTimeLeft;
+        }
+
+        private static (ReadOnlyCollection<Room> Rooms, int round) _rooms = (new ReadOnlyCollection<Room>(new List<Room>()), -1);
+        public static ReadOnlyCollection<Room> Rooms
+        {
+            get
+            {
+                if((Map.Rooms?.Count ?? 0) == 0)
+                {
+                    if(_rooms.round == RoundPlus.RoundId)
+                    {
+                        Log.Debug("Returning Rooms from Cache");
+                        return _rooms.Rooms;
+                    }
+                    Log.Warn("Running Rooms Cache Code");
+                    var tmpRooms = GameObject.FindObjectsOfType<Room>();
+                    if (tmpRooms.Length > 0)
+                    {
+                        Log.Info("Running Rooms Cache Code");
+                        _rooms = (tmpRooms.ToList().AsReadOnly(), RoundPlus.RoundId);
+                        return _rooms.Rooms;
+                    }
+                    Log.Warn("Running Rooms Cache Code");
+                    List<GameObject> list = ListPool<GameObject>.Shared.Rent();
+                    list.AddRange(GameObject.FindGameObjectsWithTag("Room"));
+                    if (list.Count == 0)
+                    {
+                        ListPool<GameObject>.Shared.Return(list);
+                        throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
+                    }
+                    GameObject gameObject = GameObject.Find("HeavyRooms/PocketWorld");
+                    if (gameObject != null)
+                        list.Add(gameObject);
+                    GameObject gameObject2 = GameObject.Find("Outside");
+                    if (gameObject2 != null)
+                        list.Add(gameObject2);
+                    List<Room> tor = new List<Room>();
+                    foreach (GameObject roomGameObject in list)
+                    {
+                        if (roomGameObject.TryGetComponent<Room>(out Room room))
+                            tor.Add(room);
+                        else
+                            tor.Add(roomGameObject.AddComponent<Room>());
+                    }
+                    ListPool<GameObject>.Shared.Return(list);
+                    _rooms = (tor.AsReadOnly(), RoundPlus.RoundId);
+                    return _rooms.Rooms;
+                }
+                return Map.Rooms;
+            }
+
         }
     }
 }

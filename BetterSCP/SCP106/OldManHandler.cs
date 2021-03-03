@@ -142,7 +142,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             get
             {
                 if (Rooms == null || Rooms.Length == 0)
-                    throw new System.Exception("Rooms are not ready to generate");
+                    Rooms = MapPlus.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();//throw new System.Exception("Rooms are not ready to generate");
                 return Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
             }
         }

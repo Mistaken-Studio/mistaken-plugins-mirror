@@ -49,9 +49,14 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             get
             {
                 if (Rooms == null)
-                    return null;
+                    SetRooms();
                 return Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
             }
+        }
+
+        private void SetRooms()
+        {
+            Rooms = MapPlus.Rooms.Where(r => !DisallowedRoomTypes.Contains(r.Type) && r != null).ToArray();
         }
 
         private static readonly RoomType[] DisallowedRoomTypes = new RoomType[]
@@ -77,7 +82,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
         private void Server_RoundStarted()
         {
             Log.Info("Setting Rooms");
-            Rooms = Map.Rooms.Where(r => !DisallowedRoomTypes.Contains(r.Type) && r != null).ToArray();
+            SetRooms();
         }
 
         private void Player_EscapingPocketDimension(Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs ev)
