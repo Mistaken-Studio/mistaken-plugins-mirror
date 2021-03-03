@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
 
-                        RoundLogger.Log("SCP079", "STOPWARHEAD", $"{player.PlayerToString()} requested stopwarhead");
+                        RoundLogger.Log("SCP079 EVENT", "STOPWARHEAD", $"{player.PlayerToString()} requested stopwarhead");
 
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };

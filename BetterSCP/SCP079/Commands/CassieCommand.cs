@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         Cassie.Message("PITCH_0.9 SCP 0 PITCH_0.9 7 PITCH_0.9 9 PITCH_0.9 jam_050_5 OVERRIDE PITCH_1 . . . " + message);
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
-                        RoundLogger.Log("SCP079", "CASSIE", $"{player.PlayerToString()} requested cassie \"{message}\"");
+                        RoundLogger.Log("SCP079 EVENT", "CASSIE", $"{player.PlayerToString()} requested cassie \"{message}\"");
 
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };

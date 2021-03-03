@@ -66,7 +66,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         Lastuse = DateTime.Now;
                         CustomAchievements.RoundEventHandler.AddProggress("Informant", player);
 
-                        RoundLogger.Log("SCP079", "FULLSCAN", $"{player.PlayerToString()} requested fullscan");
+                        RoundLogger.Log("SCP079 EVENT", "FULLSCAN", $"{player.PlayerToString()} requested fullscan");
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };
                     }

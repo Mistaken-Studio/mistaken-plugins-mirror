@@ -54,7 +54,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         Lastuse = DateTime.Now;
                         CustomAchievements.RoundEventHandler.AddProggress("Manipulator", player);
 
-                        RoundLogger.Log("SCP079", "FAKEMTF", $"{player.PlayerToString()} requested fakemtf");
+                        RoundLogger.Log("SCP079 EVENT", "FAKEMTF", $"{player.PlayerToString()} requested fakemtf");
 
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };
