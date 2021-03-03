@@ -44,7 +44,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (p == null)
                             continue;
                         p.DisableAllEffects();
+                        p.SessionVariables["NO_SPAWN_PROTECT"] = true;
                         p.Role = data.Role;
+                        p.SessionVariables["NO_SPAWN_PROTECT"] = false;
                         Timing.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)

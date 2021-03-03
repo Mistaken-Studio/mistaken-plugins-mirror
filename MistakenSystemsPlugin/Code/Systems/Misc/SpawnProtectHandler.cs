@@ -53,6 +53,8 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null) return;
+            if (ev.Player.SessionVariables.TryGetValue("NO_SPAWN_PROTECT", out object disallow) && (bool)disallow)
+                return;
             if (ev.NewRole == RoleType.NtfCadet || ev.NewRole == RoleType.NtfLieutenant || ev.NewRole == RoleType.NtfCommander || ev.NewRole == RoleType.NtfScientist || ev.NewRole == RoleType.ChaosInsurgency)
             {
                 var pid = ev.Player.Id;

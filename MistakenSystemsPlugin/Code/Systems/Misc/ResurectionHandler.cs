@@ -124,8 +124,9 @@ namespace Gamer.Mistaken.Systems.Misc
                             player.Inventory.items.Remove(player.CurrentItem);
                         else
                             player.Inventory.items.ModifyDuration(player.CurrentItemIndex, player.CurrentItem.durability - 1);
+                        target.SessionVariables["NO_SPAWN_PROTECT"] = true;
                         target.Role = nearest.Role;
-                        Misc.SpawnProtectHandler.SpawnKillProtected.RemoveAll(i => i.Key == target.Id);
+                        target.SessionVariables["NO_SPAWN_PROTECT"] = false;
                         target.ClearInventory();
                         Timing.CallDelayed(0.5f, () =>
                         {
