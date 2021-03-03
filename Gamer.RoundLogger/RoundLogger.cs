@@ -26,9 +26,9 @@ namespace Gamer.RoundLoggerSystem
                 Message = message;
 
                 if (!Types.Contains(Type))
-                    Exiled.API.Features.Log.Warn($"{Type} is not registered type");
+                    RegisterTypes(Type);
                 if (!Modules.Contains(Module))
-                    Exiled.API.Features.Log.Warn($"{Module} is not registered module");
+                    RegisterModules(Module);
             }
 
             public override string ToString()
@@ -43,7 +43,7 @@ namespace Gamer.RoundLoggerSystem
             }
         }
 
-        public static void Log(string type, string module, string message)
+        public static void Log(string module, string type, string message)
         {
             Logs.Add(new LogMessage
             {
@@ -54,18 +54,16 @@ namespace Gamer.RoundLoggerSystem
             });
         }
 
-        public static void RegisterTypes(params string[] types)
+        public static void RegisterTypes(string type)
         {
-            foreach (var item in types)
-                Types.Add(item);
-            TypesMaxLength = (byte)Types.Max(i => i.Length);
+            Types.Add(type);
+            TypesMaxLength = (byte)Math.Max(TypesMaxLength, type.Length);
         }
 
-        public static void RegisterModules(params string[] modules)
+        public static void RegisterModules(string module)
         {
-            foreach (var item in modules)
-                Modules.Add(item);
-            ModulesMaxLength = (byte)Modules.Max(i => i.Length);
+            Modules.Add(module);
+            ModulesMaxLength = (byte)Math.Max(ModulesMaxLength, module.Length);
         }
 
         public static void IniIfNotAlready()

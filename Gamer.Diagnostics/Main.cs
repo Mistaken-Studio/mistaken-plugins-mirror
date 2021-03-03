@@ -31,7 +31,7 @@ namespace Gamer.Diagnostics
                     ErrorBacklog.Add($"[{module.Name}: {Name}] Caused Exception");
                     ErrorBacklog.Add(ex.Message);
                     ErrorBacklog.Add(ex.StackTrace);
-                    RoundLoggerSystem.RoundLogger.Log("ERROR", "DIAGNOSTICS", $"[{module.Name}: {Name}] Caused Exception | {ex.Message}");
+                    RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {Name}] Caused Exception | {ex.Message}");
                 }
                 end = DateTime.Now;
                 diff = end - start;
@@ -64,7 +64,7 @@ namespace Gamer.Diagnostics
                     ErrorBacklog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
                     ErrorBacklog.Add(ex.Message);
                     ErrorBacklog.Add(ex.StackTrace);
-                    RoundLoggerSystem.RoundLogger.Log("ERROR", "DIAGNOSTICS", $"[{module.Name}: {ev.GetType().Name}] Caused Exception | {ex.Message}");
+                    RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {ev.GetType().Name}] Caused Exception | {ex.Message}");
                 }
                 end = DateTime.Now;
                 diff = end - start;
