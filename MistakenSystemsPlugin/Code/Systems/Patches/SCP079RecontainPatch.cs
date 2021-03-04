@@ -29,14 +29,14 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Warn("Duplicate of Recontain Request");
 				return false;
             }
-			Handle = Timing.RunCoroutine(Recontain(forced).CancelWith(global::Recontainer079.singleton.gameObject).RerouteExceptions((ex) =>
+			Handle = Timing.RunCoroutine(Recontain(forced).CancelWith(global::Recontainer079.singleton?.gameObject).RerouteExceptions((ex) =>
 			{
 				Log.Error("SCP 079 Recontainment Failed");
 				Log.Error(ex.Message);
 				Log.Error(ex.StackTrace);
 				Log.Info("Running base SCP 079 Recontainment Code");
 				ErrorMode = true;
-				Timing.RunCoroutine(Recontainer079.singleton._Recontain(forced).CancelWith(global::Recontainer079.singleton.gameObject).Append(() =>
+				Timing.RunCoroutine(Recontainer079.singleton._Recontain(forced).CancelWith(global::Recontainer079.singleton?.gameObject).Append(() =>
 				{
 					ErrorMode = false;
 					Handle = null;
