@@ -54,56 +54,77 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\Desktop\odwołania\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="0NPCS">
-      <HintPath>..\..\..\..\Desktop\odwołania\0NPCS.dll</HintPath>
+    <Reference Include="0NPCS, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\0NPCS.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\Desktop\odwołania\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp_publicized">
-      <HintPath>..\..\..\..\Desktop\odwołania\Assembly-CSharp_publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
-    <Reference Include="CommandSystem.Core">
-      <HintPath>..\..\..\..\Desktop\odwołania\CommandSystem.Core.dll</HintPath>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API">
-      <HintPath>..\..\..\..\Desktop\odwołania\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Exiled.API.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Events">
-      <HintPath>..\..\..\..\Desktop\odwołania\Exiled.Events.dll</HintPath>
+    <Reference Include="Exiled.Events, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Exiled.Events.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.Permissions">
-      <HintPath>..\..\..\..\Desktop\odwołania\Exiled.Permissions.dll</HintPath>
+    <Reference Include="Exiled.Permissions, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Exiled.Permissions.dll</HintPath>
     </Reference>
-    <Reference Include="Gamer.Mistaken.Utilities.APILib.Public">
-      <HintPath>..\..\..\..\Desktop\odwołania\Gamer.Mistaken.Utilities.APILib.Public.dll</HintPath>
+    <Reference Include="Gamer.Mistaken.Utilities.APILib.Private, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Gamer.Mistaken.Utilities.APILib.Private.dll</HintPath>
     </Reference>
-    <Reference Include="Mirror">
-      <HintPath>..\..\..\..\Desktop\odwołania\Mirror.dll</HintPath>
+    <Reference Include="Gamer.Mistaken.Utilities.APILib.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Gamer.Mistaken.Utilities.APILib.Public.dll</HintPath>
     </Reference>
-    <Reference Include="MistakenSocket.Client">
-      <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Client.dll</HintPath>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
     </Reference>
-    <Reference Include="MistakenSocket.Client.SL.Lib">
-      <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Client.SL.Lib.dll</HintPath>
+    <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\Lib\bin\Debug\MistakenSocket.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\SL\Lib\bin\Debug\MistakenSocket.Client.SL.Lib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MistakenSocket.Shared">
       <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Shared.dll</HintPath>
     </Reference>
-    <Reference Include="NetCoreServer">
-      <HintPath>..\..\..\..\Desktop\odwołania\NetCoreServer.dll</HintPath>
+    <Reference Include="NetCoreServer, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\NetCoreServer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Desktop\odwołania\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NorthwoodLib">
-      <HintPath>..\..\..\..\Desktop\odwołania\NorthwoodLib.dll</HintPath>
+    <Reference Include="NorthwoodLib, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\NorthwoodLib.dll</HintPath>
     </Reference>
     <Reference Include="Octokit, Version=0.48.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Octokit.0.48.0\lib\net46\Octokit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Octokit.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -113,14 +134,20 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnidecodeSharpFork">
-      <HintPath>..\..\..\..\Desktop\odwołania\UnidecodeSharpFork.dll</HintPath>
+    <Reference Include="UnidecodeSharpFork, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\UnidecodeSharpFork.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Desktop\odwołania\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\BaseGame\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\Desktop\odwołania\UnityEngine.PhysicsModule.dll</HintPath>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +238,7 @@
     <Compile Include="Code\Suicide\Command.cs" />
     <Compile Include="Code\Suicide\SuicideHandler.cs" />
     <Compile Include="Code\Systems\Bans\BansAnalizer.cs" />
+    <Compile Include="Code\Systems\End\RoundLogHandler.cs" />
     <Compile Include="Code\Systems\End\OverwatchHandler.cs" />
     <Compile Include="Code\Systems\End\AutoUpdateHandler.cs" />
     <Compile Include="Code\Systems\End\GrenadeLauncherHandler.cs" />
@@ -315,6 +343,10 @@
     <ProjectReference Include="..\Gamer.Diagnostics\Gamer.Diagnostics.csproj">
       <Project>{c50d9525-091d-4176-acae-890b5750d2b0}</Project>
       <Name>Gamer.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gamer.RoundLogger\Gamer.RoundLogger.csproj">
+      <Project>{4bffbb2d-a061-4e50-a8b0-99cbfbfb7184}</Project>
+      <Name>Gamer.RoundLogger</Name>
     </ProjectReference>
     <ProjectReference Include="..\MistakenBasePlugins\Gamer.Mistaken.Base.csproj">
       <Project>{6eecbfa8-dbcb-47cd-9c23-ff15bc11b40c}</Project>

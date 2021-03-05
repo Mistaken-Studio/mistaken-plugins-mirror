@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -40,6 +41,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 ev.IsAllowed = false;
                 ev.Shooter.ShowHintPulsating("You can't shoot if your spawn protected", 2, true, false);
+                RoundLogger.Log("SPAWN PROTECT", "BLOCK", $"Blocked shooting because of spawn protect for {ev.Shooter.PlayerToString()}");
             }
         }
 
@@ -51,6 +53,8 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null) return;
+            if (ev.Player.SessionVariables.TryGetValue("NO_SPAWN_PROTECT", out object disallow) && (bool)disallow)
+                return;
             if (ev.NewRole == RoleType.NtfCadet || ev.NewRole == RoleType.NtfLieutenant || ev.NewRole == RoleType.NtfCommander || ev.NewRole == RoleType.NtfScientist || ev.NewRole == RoleType.ChaosInsurgency)
             {
                 var pid = ev.Player.Id;
@@ -88,9 +92,15 @@ namespace Gamer.Mistaken.Systems.Misc
                 if (ev.Attacker.Side == ev.Target.Side)
                     ev.Attacker.ShowHint("<size=300%>Watch <color=yellow>your</color> fire, <br>you'r hiting <color=yellow>friendlies</color></size>", true, 5, true);
                 else if (SpawnKillProtected.Any(i => i.Key == ev.Target.Id && i.Value == true))
+                {
                     ev.Attacker.Kill("You have tried to spawn kill");
+                    RoundLogger.Log("SPAWN PROTECT", "KILL", $"Killed {ev.Attacker.PlayerToString()} for attacking spawn protected player");
+                }
                 else
+                {
                     ev.Attacker.ShowHint("<size=150%>Player you're <color=yellow>attaking</color> has spawn protect</size>", true, 5, true);
+                    RoundLogger.Log("SPAWN PROTECT", "WARN", $"Warned {ev.Attacker.PlayerToString()} about spawn protect");
+                }
             }
         }
 

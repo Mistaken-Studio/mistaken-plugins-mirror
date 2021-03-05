@@ -1,6 +1,8 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
+using Respawning.NamingRules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +53,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
                         CustomAchievements.RoundEventHandler.AddProggress("Manipulator", player);
+
+                        RoundLogger.Log("SCP079 EVENT", "FAKEMTF", $"{player.PlayerToString()} requested fakemtf");
+
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };
                     }

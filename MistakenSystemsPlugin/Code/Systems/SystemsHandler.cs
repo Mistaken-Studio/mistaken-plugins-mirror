@@ -71,6 +71,7 @@ namespace Gamer.Mistaken.Systems
             new End.GrenadeLauncherHandler(plugin);
             new End.OverwatchHandler(plugin);
             new End.RandomItemSpawnsHandler(plugin);
+            new End.RoundLogHandler(plugin);
 
             new End.FireworkManager(plugin);
 

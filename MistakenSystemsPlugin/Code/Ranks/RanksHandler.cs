@@ -12,12 +12,12 @@ using System.Text;
 using Gamer.Diagnostics;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.Mistaken.Ranks
 {
     public class RanksHandler : Module
     {
-        internal static readonly Dictionary<string, PlayerInfo> StaffRolesList = new Dictionary<string, PlayerInfo>();
         internal static readonly Dictionary<string, PlayerInfo> TopSLRolesList = new Dictionary<string, PlayerInfo>();
         internal static readonly List<(string, PlayerInfo)> TopMostHoursSLRolesList = new List<(string, PlayerInfo)>();
         internal static readonly Dictionary<string, PlayerInfo> TopDscRolesList = new Dictionary<string, PlayerInfo>();
@@ -50,29 +50,19 @@ namespace Gamer.Mistaken.Ranks
         {
             if (ev.Player?.IsDev() ?? false)
             {
-                string badge = ev.NewGroup?.BadgeText ?? "error";
-                if (badge == "Developer Frontend")
-                    badge = "Frontend Developer";
-                else if (badge == "Developer Plugins")
-                    badge = "Plugins Developer";
-                else if (badge == "Developer Backend")
-                    badge = "Backend Developer";
-                string color = ev.NewGroup?.BadgeColor ?? "red";
-
                 ev.NewGroup = new UserGroup
                 {
                     RequiredKickPower = 0xFF,
                     KickPower = 0xFF,
                     Permissions = ServerStatic.GetPermissionsHandler().FullPerm,
                     HiddenByDefault = ev.NewGroup?.HiddenByDefault ?? false,
-                    BadgeText = badge,
-                    BadgeColor = color,
+                    BadgeText = ev.NewGroup?.BadgeText ?? "error",
+                    BadgeColor = ev.NewGroup?.BadgeColor ?? "red",
                     Shared = ev.NewGroup?.Shared ?? false
                 };
             }
             Log.Debug($"Changing User Group for {ev.Player?.Nickname} to \"{ev.NewGroup?.BadgeText}\"");
         }
-
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (!VipList.TryGetValue(ev.Player?.UserId, out PlayerInfo role))
@@ -232,13 +222,7 @@ namespace Gamer.Mistaken.Ranks
         {
             if (PluginHandler.IsSSLSleepMode)
             {
-                if (!Utilities.APILib.API.GetUrl(APIType.RANKS_STAFF, out string url, ""))
-                    return;
-                using (var client = new WebClient())
-                {
-                    client.DownloadDataCompleted += DownloadDataCompletedStaff;
-                    client.DownloadDataAsync(new Uri(url));
-                }
+                string url;
                 if (!Utilities.APILib.API.GetUrl(APIType.RANKS_SL, out url, ""))
                     return;
                 using (var client = new WebClient())
@@ -305,7 +289,7 @@ namespace Gamer.Mistaken.Ranks
                         else if (VipList[playerInfo.UserId].VipLevel < playerInfo.VipLevel)
                             VipList[playerInfo.UserId] = playerInfo;
                     }
-                    return;
+                    //return;
 #pragma warning disable CS0162 // Wykryto nieosiągalny kod
                     VipList["76561198134629649@steam"] = new PlayerInfo()
                     {
@@ -315,38 +299,7 @@ namespace Gamer.Mistaken.Ranks
                         RoleType = RoleType.VIP,
                         VipLevel = VipLevel.APOLLYON
                     };
-                    if (HasReservedSlot(VipList["76561198134629649@steam"].VipLevel))
-                        ReservedSlots.Add("76561198134629649@steam");
 #pragma warning restore CS0162 // Wykryto nieosiągalny kod
-                });
-
-                SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
-                {
-                    Type = MistakenSocket.Shared.API.DataType.SL_RANK_STAFF,
-                    argument = null
-                }).GetResponseDataCallback((data) =>
-                {
-                    if (data.Type != MistakenSocket.Shared.API.ResponseType.OK)
-                        return;
-                    var ranks = data.Payload.DeserializeArray<KeyValuePair<string, (string Name, string Color)>>(0, 0, out _, false);
-                    StaffRolesList.Clear();
-                    foreach (var rank in ranks)
-                    {
-                        PlayerInfo playerInfo = new PlayerInfo
-                        {
-                            UserId = rank.Key,
-                            RoleName = rank.Value.Name,
-                            RoleColor = rank.Value.Color.ToLower(),
-                            RoleType = RoleType.STAFF
-                        };
-                        if (playerInfo.RoleName == "Developer Frontend")
-                            playerInfo.RoleName = "Frontend Developer";
-                        else if (playerInfo.RoleName == "Developer Plugins")
-                            playerInfo.RoleName = "Plugins Developer";
-                        else if (playerInfo.RoleName == "Developer Backend")
-                            playerInfo.RoleName = "Backend Developer";
-                        StaffRolesList.Add(playerInfo.UserId, playerInfo);
-                    }
                 });
 
                 SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
@@ -433,37 +386,7 @@ namespace Gamer.Mistaken.Ranks
 
             return uId;
         }
-        static void DownloadDataCompletedStaff(object sender, DownloadDataCompletedEventArgs e)
-        {
-            byte[] raw = e.Result;
-            string body = Encoding.Default.GetString(raw);
-            if (body == "")
-                Log.Debug("Staff list is empty!");
-            else
-            {
-                string[] poses = body.Split(';');
-                StaffRolesList.Clear();
-                foreach (string item in poses)
-                {
-                    if (item != "")
-                    {
-                        string[] pos = item.Split(':');
 
-                        PlayerInfo playerInfo = new PlayerInfo
-                        {
-                            UserId = GetUserId(pos[0]),
-                            RoleName = pos[1],
-                            RoleColor = pos[2],
-                            RoleType = RoleType.STAFF,
-                            VipLevel = VipLevel.NONE
-                        };
-                        //if (playerInfo.PlayerUserId == "76561198134629649@steam") playerInfo.PatronLVL = PatronLVL.TIER_III;
-                        if (!StaffRolesList.ContainsKey(playerInfo.UserId))
-                            StaffRolesList.Add(playerInfo.UserId, playerInfo);
-                    }
-                }
-            }
-        }
         static void DownloadDataCompletedTop10(object sender, DownloadDataCompletedEventArgs e)
         {
             byte[] raw = e.Result;
@@ -584,27 +507,10 @@ namespace Gamer.Mistaken.Ranks
                     return false;
             }
         }
-        static internal void ApplyRoles(Player player, RoleType toshow = RoleType.UNKNOWN)
+        internal static void ApplyRoles(Player player, RoleType toshow = RoleType.UNKNOWN)
         {
-            if (StaffRolesList.TryGetValue(player.UserId, out PlayerInfo role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.STAFF))
-            {
-                if (role.VipLevel != VipLevel.NONE)
-                {
-                    player.SendConsoleMessage("You have item " + role.VipLevel, "yellow");
-                }
-                if (toshow != RoleType.UNKNOWN)
-                {
-                    player.SendConsoleMessage($"Your role \"{role.RoleName}\" with color {role.RoleColor} has been granted to you.", "cyan");
-                    SetRank(player, role.RoleColor, role.RoleName, null);
-                    return;
-                }
-                else
-                {
-                    player.SendConsoleMessage($"Your role \"{role.RoleName}\" with color {role.RoleColor} has been granted to you.", "cyan");
-                    SetRank(player, role.RoleColor, role.RoleName, null);
-                }
-            }
-            else if (VipList.TryGetValue(player.UserId, out role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.VIP))
+            PlayerInfo role;
+            if (VipList.TryGetValue(player.UserId, out role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.VIP))
             {
                 if (role.VipLevel != VipLevel.NONE)
                 {
@@ -668,6 +574,13 @@ namespace Gamer.Mistaken.Ranks
 
             ApplyDA(player);
         }
+        internal static void ApplyStaffRoles(Player player)
+        {
+            if (!StaffHandler.Staff.Any(i => i.discordid + "@discord" == player.UserId || i.steamid == player.UserId))
+                return;
+            var rank = StaffHandler.Staff.FirstOrDefault(i => i.discordid + "@discord" == player.UserId || i.steamid == player.UserId);
+            SetRank(player, rank.role_color, rank.role, null);
+        }
         public static void SetRank(Player player, string Color = null, string Name = null, string Group = null)
         {
             if (Color != null)
@@ -708,17 +621,14 @@ namespace Gamer.Mistaken.Ranks
             public RoleType RoleType { get; set; }
             public VipLevel VipLevel { get; set; }
         }
-
         public enum RoleType
         {
             UNKNOWN = -1,
-            STAFF = 0,
             TOPSCP = 1,
             TOPDISCORD = 2,
             VIP = 3,
             TOPHOURSSCP = 4,
         }
-
         public enum VipLevel
         {
             NONE,
@@ -727,7 +637,6 @@ namespace Gamer.Mistaken.Ranks
             KETER,
             APOLLYON
         }
-
         public struct VipInfo
         {
             public string userid;

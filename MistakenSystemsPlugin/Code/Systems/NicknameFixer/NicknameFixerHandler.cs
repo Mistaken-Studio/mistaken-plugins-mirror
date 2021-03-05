@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using MEC;
 using UnidecodeSharpFork;
@@ -74,6 +75,9 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "empire.com",
             "keycase.pl",
             "twitch.tv",
+            "key drop com",
+            "skindrop.pl",
+            "polski-survival.pl",
 
             "~~",
             "```",
@@ -81,8 +85,8 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
 
         private void CustomEvents_OnFirstTimeJoined(Exiled.Events.EventArgs.FirstTimeJoinedEventArgs ev)
         {
-            string oldnick = ev.Player.Nickname;
-            string newNick = ev.Player.Nickname.ToLower();
+            string oldnick = ev.Player.Nickname.Trim();
+            string newNick = ev.Player.Nickname.ToLower().Trim();
 
             foreach (var item in ToRemove)
             {
@@ -98,6 +102,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             if (newNick == "")
             {
                 Log.Debug("Player's(" + ev.Player.UserId + ") nick was " + oldnick + " and it couldn't be converted");
+                RoundLogger.Log("NICKNAME FIXER", "FAILED", $"Failed to change nickname for {ev.Player.PlayerToString()}");
                 if (PluginHandler.Config.IsRP())
                     ev.Player.Disconnect(plugin.ReadTranslation("nickfix_change_msg_critical"));
                 else
@@ -118,6 +123,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
                     Log.Debug("Player's(" + ev.Player.UserId + ") nick changed from " + oldnick + " to " + newNick);
                     ev.Player.Broadcast(10, plugin.ReadTranslation("nickfix_change_msg").Replace("$newnick", newNick));
                     ev.Player.DisplayNickname = newNick;
+                    RoundLogger.Log("NICKNAME FIXER", "CHANGED", $"Changed nickname for {ev.Player.PlayerToString()} from \"{oldnick}\" to \"{newNick}\"");
                 }
             }
         }

@@ -7,6 +7,7 @@ using Gamer.Utilities;
 using MEC;
 using UnityEngine;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Systems.AntiAFK
 {
@@ -74,7 +75,10 @@ namespace Gamer.Mistaken.Systems.AntiAFK
                             case 12:
                                 {
                                     if (!player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
+                                    {
+                                        RoundLogger.Log("ANTY AFK", "WARN", $"{player.PlayerToString()} was warned for being afk");
                                         Timing.RunCoroutine(InformAFK(player));
+                                    }
                                     break;
                                 }
                             case 18:
@@ -83,6 +87,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
                                     if (!player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
                                     {
                                         player.Disconnect("Anti AFK: You were AFK");
+                                        RoundLogger.Log("ANTY AFK", "DISCONNECT", $"{player.PlayerToString()} was disconnected for being afk");
                                         MapPlus.Broadcast("Anti AFK", 10, $"{player.Nickname} was disconnected for being AFK", Broadcast.BroadcastFlags.AdminChat);
                                     }
                                     break;

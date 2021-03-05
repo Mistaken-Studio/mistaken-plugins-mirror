@@ -11,6 +11,7 @@ using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
 using Gamer.Diagnostics;
 using MEC;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Base
 {
@@ -218,6 +219,8 @@ namespace Gamer.Mistaken.Base
             killer.Broadcast(5, $"<color=red>You have teamKilled {victim} using {type.name}\n - Total TeamKills: {tks}\n <b>This will not be tolerated</b></color>");
             victim.Broadcast(5, $"<color=red>You have been teamKilled by {killer.Nickname} using {type.name}</color>");
 
+            RoundLogger.Log("TK", "KILL", $"{killer.PlayerToString()} teamkilled {victim.PlayerToString()} using {type.name}, it's killers {tks} teamkill");
+
             victim.SendConsoleMessage(
                 $"You have been TeamKilled:" +
                 $"\n- TeamKiller: {killer.ToString(true)}" +
@@ -245,6 +248,7 @@ namespace Gamer.Mistaken.Base
             }
 
             int tks = TeamKillsCounter[player.UserId];
+            RoundLogger.Log("TK", "PUNISH", $"{player.PlayerToString()} was punished for {tks} teamkills");
             switch (tks)
             {
                 case 1:
@@ -283,6 +287,8 @@ namespace Gamer.Mistaken.Base
         {
             victim.Broadcast(2, $"<color=yellow>You have been attacked by team mate {attacker.Nickname} using {type.name} and he done {amount} damage</color>");
             attacker.Broadcast(5, $"<color=yellow>You have attacked teammate {victim} using {type.name} and done {amount} damage\n <b>This will not be tolerated</b></color>");
+
+            RoundLogger.Log("TK", "DAMAGE", $"{attacker.PlayerToString()} teamattacked {victim.PlayerToString()} using {type.name} and done {amount} damage");
 
             victim.SendConsoleMessage(
                 $"You have been team attacked:" +

@@ -49,9 +49,9 @@ namespace Gamer.Utilities
                 //Hyper
                 case "76561198215262787":
                 case "365499281215586326":
-                //Lamda
-                case "76561198796704471":
-                case "450669501952819200":
+                //Lambda
+                //case "76561198796704471":
+                //case "450669501952819200":
                     return true;
                 default:
                     return false;
@@ -108,6 +108,8 @@ namespace Gamer.Utilities
             }
             return false;
         }
+
+        public static string GetDisplayName(this Player player) => player == null ? "NULL" : player.DisplayNickname ?? player.Nickname;
 
         private static bool HasGroupInheritancePermission(Group group, string permission)
         {

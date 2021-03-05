@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                             SCP079Handler.GainXP(player, Cost);
                             Lastuse = DateTime.Now;
                             CustomAchievements.RoundEventHandler.AddProggress("SneakyFox", player);
+
+                            RoundLogger.Log("SCP079 EVENT", "FAKESCP", $"{player.PlayerToString()} requested fakescp of SCP {processedtonumber} with reason: {reason}");
+
                             success = true;
                             return new string[] { SCP079Handler.Translations.trans_success };
                         }

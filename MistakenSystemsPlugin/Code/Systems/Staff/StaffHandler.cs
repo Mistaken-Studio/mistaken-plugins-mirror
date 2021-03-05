@@ -11,6 +11,7 @@ using MEC;
 using Newtonsoft.Json;
 using UnidecodeSharpFork;
 using UnityEngine;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Systems.Staff
 {
@@ -56,6 +57,7 @@ namespace Gamer.Mistaken.Systems.Staff
                         player.Group.BadgeColor = "white";
                         player.Group.BadgeText = "";
                         player.Group.KickPower = 0;
+                        RoundLogger.Log("STAFF", "REVOKE", $"Revoked staff permissions for {ev.Player.PlayerToString()}");
                     }
                 });
                 return;
@@ -68,6 +70,7 @@ namespace Gamer.Mistaken.Systems.Staff
             ev.NewGroup.BadgeColor = "white";
             ev.NewGroup.BadgeText = "";
             ev.NewGroup.KickPower = 0;
+            RoundLogger.Log("STAFF", "REVOKE", $"Revoked staff permissions for {ev.Player.PlayerToString()}");
         }
 
         private static void Server_RestartingRound()
@@ -92,7 +95,6 @@ namespace Gamer.Mistaken.Systems.Staff
         private static void RequestStaffCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             Staff = JsonConvert.DeserializeObject<UsersInfo>(Encoding.Default.GetString(e.Result)).users;
-            LOFH.LOFH.ReloadData();
         }
 
 
@@ -103,6 +105,8 @@ namespace Gamer.Mistaken.Systems.Staff
         public class UserInfo
         {
             public string nick;
+            public string role;
+            public string role_color;
             public string role_id;
             public string type_id;
             public string steamid;
@@ -119,9 +123,9 @@ namespace Gamer.Mistaken.Systems.Staff
         {
             if (UserId.IsDevUserId())
                 return true;
-            if (StaffHandler.Staff.Any(i => i.steamid.Split('@')[0] + "@steam" == UserId))
+            if (StaffHandler.Staff.Any(i => i.steamid == UserId))
                 return true;
-            if (StaffHandler.Staff.Any(i => i.discordid.Split('@')[0] + "@discord" == UserId))
+            if (StaffHandler.Staff.Any(i => i.discordid + "@discord" == UserId))
                 return true;
             return false;
         }

@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -123,8 +124,9 @@ namespace Gamer.Mistaken.Systems.Misc
                             player.Inventory.items.Remove(player.CurrentItem);
                         else
                             player.Inventory.items.ModifyDuration(player.CurrentItemIndex, player.CurrentItem.durability - 1);
+                        target.SessionVariables["NO_SPAWN_PROTECT"] = true;
                         target.Role = nearest.Role;
-                        Misc.SpawnProtectHandler.SpawnKillProtected.RemoveAll(i => i.Key == target.Id);
+                        target.SessionVariables["NO_SPAWN_PROTECT"] = false;
                         target.ClearInventory();
                         Timing.CallDelayed(0.5f, () =>
                         {
@@ -138,6 +140,7 @@ namespace Gamer.Mistaken.Systems.Misc
                             target.EnableEffect<CustomPlayerEffects.Disabled>(30);
                             target.EnableEffect<CustomPlayerEffects.Concussed>(15);
                             target.EnableEffect<CustomPlayerEffects.Flashed>(5);
+                            RoundLogger.Log("RESURECT", "RESURECT", $"Resurected {target.PlayerToString()}");
                         });
                     }
                 });

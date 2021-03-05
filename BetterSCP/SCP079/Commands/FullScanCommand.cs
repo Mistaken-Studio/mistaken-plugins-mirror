@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Gamer.Utilities.RoomSystemAPI;
 using System;
@@ -64,6 +65,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
                         CustomAchievements.RoundEventHandler.AddProggress("Informant", player);
+
+                        RoundLogger.Log("SCP079 EVENT", "FULLSCAN", $"{player.PlayerToString()} requested fullscan");
                         success = true;
                         return new string[] { SCP079Handler.Translations.trans_success };
                     }

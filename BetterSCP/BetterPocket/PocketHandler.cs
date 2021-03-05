@@ -49,9 +49,14 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             get
             {
                 if (Rooms == null)
-                    return null;
+                    SetRooms();
                 return Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
             }
+        }
+
+        private void SetRooms()
+        {
+            Rooms = MapPlus.Rooms.Where(r => !DisallowedRoomTypes.Contains(r.Type) && r != null).ToArray();
         }
 
         private static readonly RoomType[] DisallowedRoomTypes = new RoomType[]
@@ -77,7 +82,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
         private void Server_RoundStarted()
         {
             Log.Info("Setting Rooms");
-            Rooms = Map.Rooms.Where(r => !DisallowedRoomTypes.Contains(r.Type) && r != null).ToArray();
+            SetRooms();
         }
 
         private void Player_EscapingPocketDimension(Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs ev)
@@ -103,9 +108,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
                 }
             }
             Log.Debug($"Teleported {ev.Player?.Nickname} to {position} | {targetRoom?.Type} | {targetRoom?.Zone}");
-            Log.Debug("LCZ DECONTAMINATED: " + MapPlus.IsLCZDecontaminated(60));
-            Log.Debug("LCZ DECONTAMINATED WITHOUT OFFSET: " + MapPlus.IsLCZDecontaminated());
-            ev.Player.SendConsoleMessage($"[BETTER POCKET] Teleported to {position} | {targetRoom?.Type} | {targetRoom?.Zone}\nDebugInfo: With Offset - {MapPlus.IsLCZDecontaminated(60)} | Without Offset -  {MapPlus.IsLCZDecontaminated()}", "yellow");
+            ev.Player.SendConsoleMessage($"[BETTER POCKET] Teleported to {position} | {targetRoom?.Type} | {targetRoom?.Zone}", "yellow");
             ev.TeleportPosition = position;
             ev.IsAllowed = false;
             ev.Player.Position = ev.TeleportPosition;
@@ -115,6 +118,10 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             pec.EnableEffect<CustomPlayerEffects.Deafened>(10);
             pec.EnableEffect<CustomPlayerEffects.Concussed>(10);
             InPocket.Remove(ev.Player.Id);
+            if (global::PocketDimensionTeleport.RefreshExit)
+                MapGeneration.ImageGenerator.pocketDimensionGenerator.GenerateRandom();
+            else
+                Log.Debug("Randomizing Pocket Exits disabled");
         }
 
         private bool IsRoomOK(Room room)

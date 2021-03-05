@@ -43,7 +43,7 @@ namespace Gamer.Mistaken.Systems.End
             if(ev.Target.Role == RoleType.Scp0492)
             {
                 if (ev.HitInformation.GetDamageType() == DamageTypes.Wall)
-                    MapPlus.Broadcast("SCP049-2", 10, $"({ev.Target.Id}) {ev.Target.Nickname} was killed by \"WALL\" | Room: {ev.Target.CurrentRoom?.Name ?? "Unknown"} | Pos: {ev.Target.Position}", Broadcast.BroadcastFlags.AdminChat);
+                    MapPlus.Broadcast("SCP049-2", 10, $"({ev.Target.Id}) {ev.Target.Nickname} was killed by \"WALL\" | Room: {ev.Target.CurrentRoom?.Type.ToString() ?? "Unknown"} | Pos: {ev.Target.Position}", Broadcast.BroadcastFlags.AdminChat);
             }
         }
 

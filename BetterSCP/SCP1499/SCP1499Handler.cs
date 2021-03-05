@@ -302,7 +302,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             });
 
 
-            Rooms = Map.Rooms.ToArray();
+            Rooms = MapPlus.Rooms.ToArray();
             FirstFlashRoom = GetFreeRoom(null);
             SecondFlashRoom = GetFreeRoom(null);
         }
@@ -425,7 +425,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         };
 
         private static Room[] Rooms;
-        private static Room RandomRoom => Rooms[UnityEngine.Random.Range(0, Rooms.Length)];
+        private static Room RandomRoom => Rooms[UnityEngine.Random.Range(0, Rooms.Length)] ?? RandomRoom;
 
         private static Room GetFreeRoom(Room current)
         {

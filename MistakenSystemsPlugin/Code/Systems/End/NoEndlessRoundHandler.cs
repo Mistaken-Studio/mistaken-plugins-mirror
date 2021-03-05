@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using UnityEngine;
 using Gamer.Diagnostics;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -69,6 +70,7 @@ namespace Gamer.Mistaken.Systems.End
                 ev.Items.Add(ItemType.KeycardO5);
                 MEC.Timing.CallDelayed(0.5f, () =>
                 {
+                    RoundLogger.Log("TAU-5", "SPAWN", $"{ev.Player.PlayerToString()} was spawned as TAU-5 Samsara");
                     Systems.Utilities.API.Map.RespawnLock = true;
                     ev.Player.Health *= 5;
                     ev.Player.AdrenalineHealth = 50;
@@ -120,6 +122,7 @@ namespace Gamer.Mistaken.Systems.End
                 yield return Timing.WaitForOneFrame;
             Systems.Misc.BetterWarheadHandler.Warhead.StopLock = true;
             Warhead.Start();
+            RoundLogger.Log("TAU-5", "WARHEAD", $"Warhead forced");
         }
 
         public static void SpawnAsSamsara(List<Player> toSpawn = null)

@@ -44,12 +44,19 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (p == null)
                             continue;
                         p.DisableAllEffects();
+                        p.SessionVariables["NO_SPAWN_PROTECT"] = true;
                         p.Role = data.Role;
+                        p.SessionVariables["NO_SPAWN_PROTECT"] = false;
                         Timing.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
                                 return;
-                            p.Position = data.Pos;
+                            if(!Warhead.IsDetonated)
+                            {
+                                if(!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
+                                    p.Position = data.Pos;
+                            }
+                            
                             p.Health = data.HP;
                             p.AdrenalineHealth = data.AP;
                             p.Inventory.Clear();

@@ -284,11 +284,11 @@ namespace Gamer.Mistaken.Systems.GUI
                 lczString = plugin.ReadTranslation("lcz_info_decontcaminated");
             var roundTimeString = plugin.ReadTranslation("round_info", Round.ElapsedTime.Minutes.ToString("00"), Round.ElapsedTime.Seconds.ToString("00"));
             var repsawnString = plugin.ReadTranslation("respawn_info", ((ttr - (ttr % 60)) / 60).ToString("00"), (ttr % 60).ToString("00"));
-            var specatorString = plugin.ReadTranslation("spectator_info", spectators - 1);
+            var specatorString = spectators < 2 ? "Jesteś <color=yellow>jedynym</color> martwym graczem" : plugin.ReadTranslation("spectator_info", spectators - 1);
             var playersString = plugin.ReadTranslation("players_info", PlayerManager.players.Count, CustomNetworkManager.slots);
             //var deadTimeString = plugin.ReadTranslation("dead_time_info", deadTime.Minutes.ToString("00"), deadTime.Seconds.ToString("00"));
             var generatorString = plugin.ReadTranslation("generator_info", Patches.SCP079RecontainPatch.Recontained ? "5" : Map.ActivatedGenerators.ToString()) + (cache_nearestGenerator == null ? "" : $"(<color=yellow>{Math.Round(cache_nearestGenerator.remainingPowerup % 80)}</color>s)");
-            var overchargeString = plugin.ReadTranslation("overcharge_info", Exiled.Events.Handlers.CustomEvents.SCP079.IsRecontainmentPaused ? $"<color=red>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>" : $"<color=yellow>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>");
+            var overchargeString = plugin.ReadTranslation("overcharge_info", Patches.SCP079RecontainPatch.ErrorMode ? $"[<color=red><b>ERROR</b></color>|Code: {(Patches.SCP079RecontainPatch.Recontained ? 1 : 0)}{(Patches.SCP079RecontainPatch.Waiting ? 1 : 0)}{Patches.SCP079RecontainPatch.SecondsLeft}]" : (Exiled.Events.Handlers.CustomEvents.SCP079.IsRecontainmentPaused ? $"<color=red>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>" : $"<color=yellow>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>"));
             var genString = Exiled.Events.Handlers.CustomEvents.SCP079.IsBeingRecontained ? overchargeString : generatorString;
             var recontainmentReadyString = plugin.ReadTranslation("recontainment_ready");
             var recontainmentNotReadyString = plugin.ReadTranslation("recontainment_not_ready");
