@@ -134,7 +134,7 @@ namespace Gamer.Mistaken.Systems.Misc
                             target.Position = pos + Vector3.up;
                             target.ShowHintPulsating($"Zostałeś <color=yellow>wskrzeszony</color> przez {player.Nickname}", 5, true, true);
                             target.Health = 5;
-                            target.AdrenalineHealth = 75;
+                            target.ArtificialHealth = 75;
                             target.EnableEffect<CustomPlayerEffects.Blinded>(10);
                             target.EnableEffect<CustomPlayerEffects.Deafened>(15);
                             target.EnableEffect<CustomPlayerEffects.Disabled>(30);

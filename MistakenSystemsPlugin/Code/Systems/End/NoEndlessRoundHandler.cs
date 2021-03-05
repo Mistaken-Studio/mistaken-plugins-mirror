@@ -73,7 +73,7 @@ namespace Gamer.Mistaken.Systems.End
                     RoundLogger.Log("TAU-5", "SPAWN", $"{ev.Player.PlayerToString()} was spawned as TAU-5 Samsara");
                     Systems.Utilities.API.Map.RespawnLock = true;
                     ev.Player.Health *= 5;
-                    ev.Player.AdrenalineHealth = 50;
+                    ev.Player.ArtificialHealth = 50;
                     ev.Player.CustomInfo = "Tau-5 Samsara";
                     ev.Player.Ammo[(int)AmmoType.Nato556] = 500;
                     ev.Player.Ammo[(int)AmmoType.Nato9] = 500;
@@ -160,7 +160,7 @@ namespace Gamer.Mistaken.Systems.End
                 MEC.Timing.CallDelayed(0.5f, () =>
                 {
                     player.Health *= 5;
-                    player.AdrenalineHealth = 50;
+                    player.ArtificialHealth = 50;
                     player.CustomInfo = "Tau-5 Samsara";
                     player.Ammo[(int)AmmoType.Nato556] = 500;
                     player.Ammo[(int)AmmoType.Nato9] = 500;

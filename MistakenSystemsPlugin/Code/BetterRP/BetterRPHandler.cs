@@ -163,13 +163,13 @@ namespace Gamer.Mistaken.BetterRP
                 if (ev.DamageType == DamageTypes.Scp0492)
                 {
                     CustomAchievements.RoundEventHandler.AddProggress("Plague", ev.Attacker);
-                    if(ev.Amount < ev.Target.Health + ev.Target.AdrenalineHealth)
+                    if(ev.Amount < ev.Target.Health + ev.Target.ArtificialHealth)
                         ev.Target.EnableEffect<CustomPlayerEffects.Poisoned>();
                 }
             }
             if (ev.HitInformations.GetDamageType() == DamageTypes.Bleeding)
                 ev.Amount *= ev.Target.UserId == "76561198861875204@steam" ? 0.5f : 0.45f;
-            if (ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth)
+            if (ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth)
                 return;
             if (!PluginHandler.Config.IsRP()) 
                 return;
@@ -200,7 +200,7 @@ namespace Gamer.Mistaken.BetterRP
                         var oldColaIntensityValue = cola.Intensity;
                         var oldColaDurationValue = cola.Duration;
                         pec.EnableEffect<CustomPlayerEffects.Scp207>(5, true);
-                        ev.Target.AdrenalineHealth += 7;
+                        ev.Target.ArtificialHealth += 7;
                         if (cola.Intensity < 1)
                             cola.Intensity = 1;
                         MEC.Timing.CallDelayed(6, () => {

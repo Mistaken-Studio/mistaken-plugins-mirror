@@ -83,7 +83,7 @@ namespace Gamer.Mistaken.Systems.Shield
             set
             {
                 if(player != null)
-                    player.MaxAdrenalineHealth += (value - _maxShield);
+                    player.MaxArtificialHealth += (value - _maxShield);
                 _maxShield = value;
             }
         }
@@ -161,7 +161,7 @@ namespace Gamer.Mistaken.Systems.Shield
         }
         internal void DoRegenerationCicle()
         {
-            if (player.AdrenalineHealth > MaxShield)
+            if (player.ArtificialHealth > MaxShield)
             {
                 if (ShieldDecay != -1)
                     player.ReferenceHub.playerStats.artificialHpDecay = originalShieldDecay;
@@ -172,14 +172,14 @@ namespace Gamer.Mistaken.Systems.Shield
                 if (ShieldDecay != -1)
                     player.ReferenceHub.playerStats.artificialHpDecay = ShieldDecay;
             }
-            if (player.AdrenalineHealth == MaxShield)
+            if (player.ArtificialHealth == MaxShield)
                 return;
 
             if (SafeTime == -1 || !IsSafe)
                 return;
-            player.AdrenalineHealth += Regeneration;
-            if (player.AdrenalineHealth > MaxShield)
-                player.AdrenalineHealth = MaxShield;
+            player.ArtificialHealth += Regeneration;
+            if (player.ArtificialHealth > MaxShield)
+                player.ArtificialHealth = MaxShield;
         }
 
         internal void Disable()
@@ -188,8 +188,8 @@ namespace Gamer.Mistaken.Systems.Shield
             Exiled.Events.Handlers.Player.ChangingRole -= Player_ChangingRole;
             Exiled.Events.Handlers.Player.Hurting -= Player_Hurting;
 
-            player.MaxAdrenalineHealth = 75;
-            player.AdrenalineHealth = 0;
+            player.MaxArtificialHealth = 75;
+            player.ArtificialHealth = 0;
             var ps = player.ReferenceHub.playerStats;
             if (ShieldEffectivnes != -1)
                 ps.artificialNormalRatio = originalShieldEffectivnes;

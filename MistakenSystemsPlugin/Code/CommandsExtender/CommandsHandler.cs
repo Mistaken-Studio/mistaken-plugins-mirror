@@ -139,7 +139,7 @@ namespace Gamer.Mistaken.CommandsExtender
                                 return;
                             p.Position = data.Pos;
                             p.Health = data.HP;
-                            p.AdrenalineHealth = data.AP;
+                            p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
                             foreach (var item in data.Inventory)
                                 p.Inventory.items.Add(item);

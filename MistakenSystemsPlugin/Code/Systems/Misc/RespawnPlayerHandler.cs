@@ -89,8 +89,8 @@ namespace Gamer.Mistaken.Systems.Misc
                             spectators[0].Position = currentSCP.Position + Vector3.up;
                         });
                         spectators[0].Health = currentSCP.Health;
-                        spectators[0].AdrenalineHealth = currentSCP.AdrenalineHealth;
-                        spectators[0].MaxAdrenalineHealth = currentSCP.MaxAdrenalineHealth;
+                        spectators[0].ArtificialHealth = currentSCP.ArtificialHealth;
+                        spectators[0].MaxArtificialHealth = currentSCP.MaxArtificialHealth;
                     }
                     currentSCP.Role = RoleType.Spectator;
                     spectators[0].Broadcast(10, $"Player {currentSCP.Nickname} left game so you were moved to his position");
