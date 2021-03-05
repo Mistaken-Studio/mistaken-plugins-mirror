@@ -250,8 +250,8 @@ namespace Gamer.Mistaken.Systems.Misc
                     Timing.CallDelayed(2 * (fast ? 0 : 1), () => {
                         player.EnableEffect<CustomPlayerEffects.Panic>();
                         Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durablility), durablility / 60, 30, 0, 0.85f));
-                        if(player.AdrenalineHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
-                            player.AdrenalineHealth = 10;
+                        if(player.ArtificialHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
+                            player.ArtificialHealth = 10;
                         WearableItems.FirstOrDefault(i => i.Type == ItemType.Coin)?.WearedBy.Add(player.Id);
                         Working[player.Id] = false;
                     });

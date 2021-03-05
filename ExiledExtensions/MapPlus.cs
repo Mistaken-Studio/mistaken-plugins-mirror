@@ -98,11 +98,11 @@ namespace Gamer.Utilities
         }
 
         private static (ReadOnlyCollection<Room> Rooms, int round) _rooms = (new ReadOnlyCollection<Room>(new List<Room>()), -1);
-        public static ReadOnlyCollection<Room> Rooms
+        public static IEnumerable<Room> Rooms
         {
             get
             {
-                if((Map.Rooms?.Count ?? 0) == 0)
+                if((Map.Rooms?.Where(r => r != null).Count() ?? 0) == 0)
                 {
                     if(_rooms.round == RoundPlus.RoundId)
                     {
@@ -143,9 +143,8 @@ namespace Gamer.Utilities
                     _rooms = (tor.AsReadOnly(), RoundPlus.RoundId);
                     return _rooms.Rooms;
                 }
-                return Map.Rooms;
+                return Map.Rooms.Where(r => r != null);
             }
-
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             }
                             
                             p.Health = data.HP;
-                            p.AdrenalineHealth = data.AP;
+                            p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
                             foreach (var item in data.Inventory)
                                 p.Inventory.items.Add(item);
@@ -78,7 +78,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     var p = Player.Get(playerId);
                     if (p == null || !p.IsConnected)
                         continue;
-                    SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.AdrenalineHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
+                    SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
                     p.DisableAllEffects();
                     if(!p.IsStaff())

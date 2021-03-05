@@ -62,8 +62,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP939
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if ((ev.Attacker?.Role.Is939() ?? false) && ev.Attacker.AdrenalineHealth + 5 <= ev.Attacker.MaxAdrenalineHealth)
-                ev.Attacker.AdrenalineHealth += 5;
+            if ((ev.Attacker?.Role.Is939() ?? false) && ev.Attacker.ArtificialHealth + 5 <= ev.Attacker.MaxArtificialHealth)
+                ev.Attacker.ArtificialHealth += 5;
         }
     }
 }
