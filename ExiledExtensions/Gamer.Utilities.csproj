@@ -132,11 +132,5 @@
       <Name>Gamer.Diagnostics</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\..\..\Desktop\odwołania\0NPCS.dll" />
-    <Analyzer Include="..\..\..\..\Desktop\odwołania\Assembly-CSharp-firstpass.dll" />
-    <Analyzer Include="..\..\..\..\Desktop\odwołania\Assembly-CSharp_publicized.dll" />
-    <Analyzer Include="..\..\..\..\Desktop\odwołania\Mirror.dll" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
