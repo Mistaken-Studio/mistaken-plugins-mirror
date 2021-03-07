@@ -235,7 +235,7 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)
         {
-            RoundLogger.Log("ADMIN EVENT", "CHANGE GROUP", $"{PTS(ev.Player)}'s group was changed to {ev.NewGroup.BadgeText} ({(ev.IsAllowed ? "allowed" : "denied")})");
+            RoundLogger.Log("ADMIN EVENT", "CHANGE GROUP", $"{PTS(ev.Player)}'s group was changed to {ev.NewGroup?.BadgeText} ({(ev.IsAllowed ? "allowed" : "denied")})");
         }
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {

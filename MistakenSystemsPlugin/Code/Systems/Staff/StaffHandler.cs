@@ -26,18 +26,29 @@ namespace Gamer.Mistaken.Systems.Staff
         {
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.ChangingGroup += this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => Player_ChangingGroup(ev));
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Server_RestartingRound();
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.ChangingGroup -= this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => Player_ChangingGroup(ev));
+            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+        }
+
+        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        {
+            if (ev.Player.IsStaff())
+            {
+                var cgea = new Exiled.Events.EventArgs.ChangingGroupEventArgs(ev.Player, ev.Player.Group);
+                Player_ChangingGroup(cgea);
+                if (cgea.IsAllowed && ev.Player.Group != cgea.NewGroup)
+                    ev.Player.Group = cgea.NewGroup;
+            }
         }
 
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)
         {
-            if ((ev.NewGroup?.Permissions ?? 0) == 0)
-                return;
             if (Staff.Length == 0)
             {
                 Log.Warn("Skipped Permission Validation, Staff List is empty");
@@ -62,7 +73,44 @@ namespace Gamer.Mistaken.Systems.Staff
                 });
                 return;
             }
-            if (ev.Player.IsStaff() || ev.Player.AuthenticationType == Exiled.API.Enums.AuthenticationType.Northwood)
+            if (ev.Player.AuthenticationType == Exiled.API.Enums.AuthenticationType.Northwood)
+                return;
+            if (ev.Player.IsStaff())
+            {
+                var info = ev.Player.GetStaff();
+                if (info.slperms != 0)
+                {
+                    if (ev.NewGroup == null)
+                    {
+                        ev.Player.Group = new UserGroup
+                        {
+                            Permissions = info.slperms,
+                            HiddenByDefault = true,
+                            BadgeText = info.role,
+                            BadgeColor = info.role_color,
+                            KickPower = 2,
+                            RequiredKickPower = 3,
+                            Shared = true,
+                            Cover = false
+                        };
+                        ev.IsAllowed = false;
+                        return;
+                    }
+                    else
+                        ev.NewGroup.Permissions |= info.slperms;
+                    //ev.Player.ReferenceHub.serverRoles.RemoteAdmin = true;
+                    //ev.Player.ReferenceHub.serverRoles.RemoteAdminMode = ServerRoles.AccessMode.LocalAccess;
+                    RoundLogger.Log("STAFF", "GRANT", $"Granted staff permissions for {ev.Player.PlayerToString()}");
+                    ev.Player.SendConsoleMessage("You have been granted additional permissions", "red");
+                    Log.Debug("Giving " + info.slperms);
+                }
+                else
+                    Log.Debug("No perms");
+                return;
+            }
+            else
+                Log.Debug("Not staff");
+            if ((ev.NewGroup?.Permissions ?? 0) == 0)
                 return;
             //ev.IsAllowed = false;
             ev.Player.SendConsoleMessage("Warning, You are not staff but you have permissions, permissions revoked\nIf you think this is an error contact Gamer", "red");
@@ -112,6 +160,7 @@ namespace Gamer.Mistaken.Systems.Staff
             public string steamid;
             public string discordid;
             public int active;
+            public ulong slperms;
         }
     }
 
@@ -128,6 +177,16 @@ namespace Gamer.Mistaken.Systems.Staff
             if (StaffHandler.Staff.Any(i => i.discordid + "@discord" == UserId))
                 return true;
             return false;
+        }
+
+        public static StaffHandler.UserInfo GetStaff(this Player player) => player.UserId.GetStaff();
+        public static StaffHandler.UserInfo GetStaff(this string UserId)
+        {
+            if(StaffHandler.Staff.Any(i => i.steamid == UserId || i.discordid + "@discord" == UserId))
+            {
+                return StaffHandler.Staff.First(i => i.steamid == UserId || i.discordid + "@discord" == UserId);
+            }
+            return null;
         }
     }
 }
