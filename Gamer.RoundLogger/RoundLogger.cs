@@ -10,7 +10,8 @@ namespace Gamer.RoundLoggerSystem
     public static class RoundLogger
     {
         #region Public
-        public static event Action<LogMessage[]> OnEnd;
+        public static event Action<LogMessage[], DateTime> OnEnd;
+        public static DateTime BeginLog = DateTime.Now;
 
         public struct LogMessage
         {
@@ -40,7 +41,7 @@ namespace Gamer.RoundLoggerSystem
                 string tmpModule = Module;
                 while (tmpModule.Length < ModulesMaxLength)
                     tmpModule += " ";
-                return $"{Time:HH:mm:ss:fff} | {tmpType} | {tmpModule} | {Message}";
+                return $"{Time:HH:mm:ss:fff} | {tmpModule} | {tmpType} | {Message}";
             }
         }
 
@@ -78,6 +79,7 @@ namespace Gamer.RoundLoggerSystem
             Exiled.API.Features.Log.Debug("Initiated RoundLogger");
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
             Log("INFO", "LOGGER", "Start of log");
+            BeginLog = DateTime.Now;
         }
 
         private static readonly List<LogMessage> Logs = new List<LogMessage>();
@@ -103,7 +105,8 @@ namespace Gamer.RoundLoggerSystem
             var logsArray = Logs.ToArray();
             Logs.Clear();
             Log("INFO", "LOGGER", "Start of log");
-            OnEnd?.Invoke(logsArray);
+            OnEnd?.Invoke(logsArray, BeginLog);
+            BeginLog = DateTime.Now;
         }
     }
 }

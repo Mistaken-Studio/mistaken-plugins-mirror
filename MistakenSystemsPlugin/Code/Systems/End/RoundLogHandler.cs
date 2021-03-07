@@ -118,7 +118,7 @@ namespace Gamer.Mistaken.Systems.End
             Exiled.Events.Handlers.CustomEvents.OnBroadcast -= this.Handle<Exiled.Events.EventArgs.BroadcastEventArgs>((ev) => CustomEvents_OnBroadcast(ev));
         }
 
-        private void RoundLogHandler_OnEnd(RoundLogger.LogMessage[] logs)
+        private void RoundLogHandler_OnEnd(RoundLogger.LogMessage[] logs, DateTime roundStart)
         {
             string dir = Paths.Plugins + "/RoundLogger/";
             if (!Directory.Exists(dir))
@@ -126,7 +126,7 @@ namespace Gamer.Mistaken.Systems.End
             dir += Server.Port + "/";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-            File.AppendAllLines(dir + $"{DateTime.Now:yyyy-MM-dd_HH:mm:ss}.log", logs.Select(i => i.ToString()));
+            File.AppendAllLines(dir + $"{roundStart:yyyy-MM-dd_HH-mm-ss}.log", logs.Select(i => i.ToString()));
         }
 
         private void CustomEvents_OnBroadcast(Exiled.Events.EventArgs.BroadcastEventArgs ev)
