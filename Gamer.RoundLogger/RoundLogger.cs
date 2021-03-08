@@ -41,7 +41,7 @@ namespace Gamer.RoundLoggerSystem
                 string tmpModule = Module;
                 while (tmpModule.Length < ModulesMaxLength)
                     tmpModule += " ";
-                return $"{Time:HH:mm:ss:fff} | {tmpModule} | {tmpType} | {Message}";
+                return $"{Time:HH:mm:ss.fff} | {tmpModule} | {tmpType} | {Message}";
             }
         }
 
