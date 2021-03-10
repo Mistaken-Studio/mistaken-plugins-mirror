@@ -267,11 +267,19 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} was hurt by {PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
+            if(ev.DamageType == DamageTypes.Scp207)
+                RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
+            else if (ev.Target.Id == ev.Attacker?.Id)
+                RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} hurt himself using {ev.DamageType.name}, done {ev.Amount} damage");
+            else
+                RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} was hurt by {PTS(ev.Attacker) ?? "WORLD"} using {ev.DamageType.name}, done {ev.Amount} damage");
         }
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "KILL", $"{PTS(ev.Target)} was killed by {PTS(ev.Killer) ?? "WORLD"} using {ev.HitInformations.GetDamageName()}");
+            if (ev.Target.Id == ev.Killer?.Id)
+                RoundLogger.Log("GAME EVENT", "SUICIDE", $"{PTS(ev.Target)} killed himself using {ev.HitInformations.GetDamageName()}");
+            else
+                RoundLogger.Log("GAME EVENT", "KILL", $"{PTS(ev.Target)} was killed by {PTS(ev.Killer) ?? "WORLD"} using {ev.HitInformations.GetDamageName()}");
         }
         private void Player_Kicked(Exiled.Events.EventArgs.KickedEventArgs ev)
         {
