@@ -78,6 +78,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "key drop com",
             "skindrop.pl",
             "polski-survival.pl",
+            "trade.tf",
 
             "~~",
             "```",
