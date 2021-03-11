@@ -267,6 +267,8 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
+            if (ev.Target.IsDead)
+                return;
             if(ev.DamageType == DamageTypes.Scp207)
                 RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
             else if (ev.Target.Id == ev.Attacker?.Id)
