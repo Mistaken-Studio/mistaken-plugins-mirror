@@ -86,14 +86,8 @@ namespace Gamer.RoundLoggerSystem
 
         private static byte TypesMaxLength = 0;
         private static byte ModulesMaxLength = 0;
-        private static readonly HashSet<string> Types = new HashSet<string>()
-        {
-            "INFO"
-        };
-        private static readonly HashSet<string> Modules = new HashSet<string>()
-        {
-            "LOGGER"
-        };
+        private static readonly HashSet<string> Types = new HashSet<string>();
+        private static readonly HashSet<string> Modules = new HashSet<string>();
 
 
         private static void Server_RestartingRound() => _ = Server_RestartingRoundTask();
@@ -101,10 +95,10 @@ namespace Gamer.RoundLoggerSystem
         private static async Task Server_RestartingRoundTask()
         {
             await Task.Delay(1000);
-            Log("INFO", "LOGGER", "End of log");
+            Log("LOGGER", "INFO", "End of log");
             var logsArray = Logs.ToArray();
             Logs.Clear();
-            Log("INFO", "LOGGER", "Start of log");
+            Log("LOGGER", "INFO", "Start of log");
             OnEnd?.Invoke(logsArray, BeginLog);
             BeginLog = DateTime.Now;
         }
