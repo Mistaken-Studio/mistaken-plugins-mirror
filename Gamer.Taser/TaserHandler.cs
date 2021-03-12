@@ -35,7 +35,7 @@ namespace Gamer.Taser
                 int dur = (int)this.GetInternalDurability(item);
                 if(!Cooldowns.TryGetValue(dur, out DateTime time))
                     Cooldowns.Add(dur, DateTime.Now);
-                if (DateTime.Now > time)
+                if (DateTime.Now < time)
                     player.ShowHint("You have <color=yellow>no ammo</color>", true, 3, true);
                 else
                 {
