@@ -6,6 +6,7 @@ using RemoteAdmin;
 using HarmonyLib;
 using UnityEngine;
 using Exiled.API.Features;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
@@ -36,6 +37,12 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Warn("Skipped debug, contains Socket Key");
 				return false;
 			}
+
+			if(txt.Contains("[ERROR]"))
+				RoundLogger.Log("LOGGER", "ERROR", string.Join(" ", txt.Split(' ').Skip(1)));
+			else if (txt.Contains("[WARN]"))
+				RoundLogger.Log("LOGGER", "WARN", string.Join(" ", txt.Split(' ').Skip(1)));
+
 			return true;
 		}
 	}

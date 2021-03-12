@@ -10,7 +10,8 @@ namespace Gamer.RoundLoggerSystem
     public static class RoundLogger
     {
         #region Public
-        public static event Action<LogMessage[]> OnEnd;
+        public static event Action<LogMessage[], DateTime> OnEnd;
+        public static DateTime BeginLog = DateTime.Now;
 
         public struct LogMessage
         {
@@ -40,7 +41,7 @@ namespace Gamer.RoundLoggerSystem
                 string tmpModule = Module;
                 while (tmpModule.Length < ModulesMaxLength)
                     tmpModule += " ";
-                return $"{Time:HH:mm:ss:fff} | {tmpType} | {tmpModule} | {Message}";
+                return $"{Time:HH:mm:ss.fff} | {tmpModule} | {tmpType} | {Message}";
             }
         }
 
@@ -49,7 +50,7 @@ namespace Gamer.RoundLoggerSystem
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
         }
 
-        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}| Class: {player.Role})";
+        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role})";
 
         public static void RegisterTypes(string type)
         {
@@ -78,20 +79,15 @@ namespace Gamer.RoundLoggerSystem
             Exiled.API.Features.Log.Debug("Initiated RoundLogger");
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
             Log("INFO", "LOGGER", "Start of log");
+            BeginLog = DateTime.Now;
         }
 
         private static readonly List<LogMessage> Logs = new List<LogMessage>();
 
         private static byte TypesMaxLength = 0;
         private static byte ModulesMaxLength = 0;
-        private static readonly HashSet<string> Types = new HashSet<string>()
-        {
-            "INFO"
-        };
-        private static readonly HashSet<string> Modules = new HashSet<string>()
-        {
-            "LOGGER"
-        };
+        private static readonly HashSet<string> Types = new HashSet<string>();
+        private static readonly HashSet<string> Modules = new HashSet<string>();
 
 
         private static void Server_RestartingRound() => _ = Server_RestartingRoundTask();
@@ -99,11 +95,12 @@ namespace Gamer.RoundLoggerSystem
         private static async Task Server_RestartingRoundTask()
         {
             await Task.Delay(1000);
-            Log("INFO", "LOGGER", "End of log");
+            Log("LOGGER", "INFO", "End of log");
             var logsArray = Logs.ToArray();
             Logs.Clear();
-            Log("INFO", "LOGGER", "Start of log");
-            OnEnd?.Invoke(logsArray);
+            Log("LOGGER", "INFO", "Start of log");
+            OnEnd?.Invoke(logsArray, BeginLog);
+            BeginLog = DateTime.Now;
         }
     }
 }

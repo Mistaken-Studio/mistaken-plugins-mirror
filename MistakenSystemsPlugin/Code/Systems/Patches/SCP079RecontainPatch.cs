@@ -29,14 +29,14 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Warn("Duplicate of Recontain Request");
 				return false;
             }
-			Handle = Timing.RunCoroutine(Recontain(forced).CancelWith(global::Recontainer079.singleton?.gameObject).RerouteExceptions((ex) =>
+			Handle = Timing.RunCoroutine(Recontain(forced).CancelWith(Recontainer079.singleton.gameObject).RerouteExceptions((ex) =>
 			{
 				Log.Error("SCP 079 Recontainment Failed");
 				Log.Error(ex.Message);
 				Log.Error(ex.StackTrace);
 				Log.Info("Running base SCP 079 Recontainment Code");
 				ErrorMode = true;
-				Timing.RunCoroutine(Recontainer079.singleton._Recontain(forced).CancelWith(global::Recontainer079.singleton?.gameObject).Append(() =>
+				Timing.RunCoroutine(Recontainer079.singleton._Recontain(forced).CancelWith(Recontainer079.singleton.gameObject).Append(() =>
 				{
 					ErrorMode = false;
 					Handle = null;
@@ -59,6 +59,7 @@ namespace Gamer.Mistaken.Systems.Patches
 		private static IEnumerator<float> Recontain(bool forced)
 		{
 			Log.Debug("Starting SCP079 Recontainment");
+			Log.Debug("RECONT: 0");
 			int rId = RoundPlus.RoundId;
 			Waiting = true;
 			yield return Timing.WaitUntilFalse(() =>
@@ -80,6 +81,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Restart();
 				yield break;
 			}
+			Log.Debug("RECONT: 1");
 			Waiting = false;
             SecondsLeft = 62;
 			if (!forced)
@@ -102,6 +104,7 @@ namespace Gamer.Mistaken.Systems.Patches
 					Log.Error(ex.StackTrace);
                 }
 			}
+			Log.Debug("RECONT: 2");
 			for (int i = 0; i < 55; i++)
 			{
 				SecondsLeft--;
@@ -112,6 +115,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Handle = null;
 				yield break;
 			}
+			Log.Debug("RECONT: 3");
 			Waiting = true;
 			yield return Timing.WaitUntilFalse(() =>
 			{
@@ -132,6 +136,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Restart();
 				yield break;
 			}
+			Log.Debug("RECONT: 4");
 			Waiting = false;
 			try
 			{
@@ -151,6 +156,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Error(ex.Message);
 				Log.Error(ex.StackTrace);
 			}
+			Log.Debug("RECONT: 5");
 			for (int i = 0; i < 7; i++)
 			{
 				SecondsLeft--;
@@ -166,6 +172,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Restart();
 				yield break;
 			}
+			Log.Debug("RECONT: 6");
 			SecondsLeft = -1;
 			Recontained = true;
 			HashSet<DoorVariant> lockedDoors = new HashSet<DoorVariant>();
@@ -188,7 +195,9 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Error(ex.Message);
 				Log.Error(ex.StackTrace);
 			}
+			Log.Debug("RECONT: 9");
 			Recontainer079.isLocked = true;
+			Utilities.API.Map.TeslaMode = Utilities.API.TeslaMode.DISABLED;
 			try
 			{
 				PlayerStats ps = Server.Host.ReferenceHub.playerStats;
@@ -201,6 +210,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Error(ex.Message);
 				Log.Error(ex.StackTrace);
 			}
+			Log.Debug("RECONT: 10");
 			yield return Timing.WaitForSeconds(10);
 			try
 			{
@@ -213,6 +223,8 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Error(ex.Message);
 				Log.Error(ex.StackTrace);
 			}
+			Log.Debug("RECONT: 11");
+			Utilities.API.Map.TeslaMode = Utilities.API.TeslaMode.ENABLED;
 			Recontainer079.isLocked = false;
 			Handle = null;
 			yield break;
