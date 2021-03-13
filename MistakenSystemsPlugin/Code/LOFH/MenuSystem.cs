@@ -467,7 +467,7 @@ namespace Gamer.Mistaken.LOFH
             {
                 if (data.Type != MistakenSocket.Shared.API.ResponseType.OK)
                     return;
-                var lists = data.Payload.DeserializeArray<KeyValuePair<int, SL_Player[]>>(0, 0, out _, false);
+                var lists = data.Payload.Deserialize<KeyValuePair<int, SL_Player[]>[]>(0, 0, out _, false);
                 foreach (var item in lists)
                 {
                     if (!PlayerLists.ContainsKey(item.Key))
@@ -495,7 +495,7 @@ namespace Gamer.Mistaken.LOFH
             {
                 if (data.Type != ResponseType.OK)
                     return;
-                var tmp = data.Payload.DeserializeArray<(ReportData Report, ReportStatusType Status, DateTime Timestamp)>(0, 0, out _, false).ToList();
+                var tmp = data.Payload.Deserialize<(ReportData Report, ReportStatusType Status, DateTime Timestamp)[]>(0, 0, out _, false).ToList();
                 Reports = tmp.Where(i => (DateTime.Now - i.Timestamp).TotalMinutes < 30).OrderBy(i => -i.Timestamp.Ticks).ToArray();
                 ForceRefreshPlayerList(13);
             });

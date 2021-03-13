@@ -35,7 +35,7 @@ namespace Gamer.Mistaken.LOFH
                 {
                     if (response.Type == MistakenSocket.Shared.API.ResponseType.OK)
                     {
-                        var data = response.Payload.DeserializeArray<MistakenSocket.Shared.Blacklist.BlacklistEntry>(0, 0, out _, false);
+                        var data = response.Payload.Deserialize<MistakenSocket.Shared.Blacklist.BlacklistEntry[]>(0, 0, out _, false);
 
                         LOFH.WarningFlags.Clear();
                         foreach (var item in data)
