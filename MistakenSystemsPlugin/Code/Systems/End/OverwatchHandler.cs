@@ -100,11 +100,13 @@ namespace Gamer.Mistaken.Systems.End
                         {
                             InOverwatch.Remove(player.UserId);
                             InLongOverwatch.Remove(player.UserId);
+                            player.SessionVariables["LONG_OVERWATCH"] = false;
                         }
                         else if ((DateTime.Now - updateTime).TotalMinutes >= 5)
                         {
                             InOverwatch.Remove(player.UserId);
                             InLongOverwatch.Add(player.UserId);
+                            player.SessionVariables["LONG_OVERWATCH"] = true;
                         }
                     }
                     else if(!InLongOverwatch.Contains(player.UserId))

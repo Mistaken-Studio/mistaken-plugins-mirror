@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
@@ -31,6 +30,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 Systems.End.OverwatchHandler.InLongOverwatch.Remove(senderPlayer.UserId);
                 senderPlayer.IsOverwatchEnabled = false;
+                senderPlayer.SessionVariables["LONG_OVERWATCH"] = false;
                 return new string[] { "Disabled" };
             }
             else
@@ -38,6 +38,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Systems.End.OverwatchHandler.InOverwatch.Remove(senderPlayer.UserId);
                 Systems.End.OverwatchHandler.InLongOverwatch.Add(senderPlayer.UserId);
                 senderPlayer.IsOverwatchEnabled = true;
+                senderPlayer.SessionVariables["LONG_OVERWATCH"] = true;
                 return new string[] { "Enabled" };
             }
         }
