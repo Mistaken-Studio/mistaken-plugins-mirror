@@ -62,7 +62,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         }
                         if (processed.Length <= 5)
                         {
-                            if (!short.TryParse(processed, out short tmp))
+                            if (!short.TryParse(processed, out _))
                                 return new string[] { SCP079Handler.Translations.trans_failed_wrongnumber.Replace("${max}", short.MaxValue.ToString()) };
                             string processedtonumber = " ";
                             foreach (char item in processed.ToCharArray())

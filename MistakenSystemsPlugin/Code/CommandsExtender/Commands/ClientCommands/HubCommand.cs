@@ -26,10 +26,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 "1 - Ranked",
                 "2 - RP",
                 "3 - Casual",
-                //"4 - RP 2"
+                "4 - RP 2"
             };
             var player = sender.GetPlayer();
-            Server.Host.ReferenceHub.playerStats.CallTargetRpc(nameof(PlayerStats.RpcRoundrestartRedirect), player.Connection, 0.1f, 7776 + serverId);
+            Exiled.API.Extensions.MirrorExtensions.SendFakeTargetRpc(player, player.Connection.identity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestartRedirect), new object[] { 0.1f, (ushort)(7776 + serverId) });
             success = true;
             return new string[] { "Redirecting" };
         }

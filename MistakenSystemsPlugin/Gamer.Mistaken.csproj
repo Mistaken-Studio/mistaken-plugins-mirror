@@ -58,9 +58,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="0NPCS, Version=1.4.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\0NPCS.dll</HintPath>
+    <Reference Include="0NPCS_publicized">
+      <HintPath>..\References\0NPCS_publicized.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,9 +73,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\CommandSystem.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Exiled.API, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Exiled.API.dll</HintPath>
+    <Reference Include="Exiled.API_publicized">
+      <HintPath>..\References\Exiled.API_publicized.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Events, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -106,8 +104,9 @@
       <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Client.SL.Lib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MistakenSocket.Shared">
-      <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Shared.dll</HintPath>
+    <Reference Include="MistakenSocket.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Shared\bin\Debug\MistakenSocket.Shared.dll</HintPath>
     </Reference>
     <Reference Include="NetCoreServer, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -140,6 +139,7 @@
     <Reference Include="UnityEngine">
       <HintPath>..\References\BaseGame\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
@@ -155,6 +155,7 @@
     <Compile Include="Code\AIRS\ReportStatusUpdateHandler.cs" />
     <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
     <Compile Include="Code\Ban2\BansHandler.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TestCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\FakeNickCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LastVictimCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LongOverwatchCommand.cs" />

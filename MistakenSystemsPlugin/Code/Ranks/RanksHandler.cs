@@ -255,7 +255,7 @@ namespace Gamer.Mistaken.Ranks
                 {
                     if (data.Type != ResponseType.OK)
                         return;
-                    var ranks = data.Payload.DeserializeArray<KeyValuePair<string, (string Name, string Color)>>(0, 0, out _, false);
+                    var ranks = data.Payload.Deserialize<KeyValuePair<string, (string Name, string Color)>[]>(0, 0, out _, false);
                     VipList.Clear();
                     ReservedSlots.Clear();
                     foreach (var rank in ranks)
@@ -333,7 +333,7 @@ namespace Gamer.Mistaken.Ranks
                 {
                     if (data.Type != ResponseType.OK)
                         return;
-                    var ranks = data.Payload.DeserializeArray<(string userId, (string Name, string Color) Rank)>(0, 0, out _, false);
+                    var ranks = data.Payload.Deserialize<(string userId, (string Name, string Color) Rank)[]>(0, 0, out _, false);
                     TopMostHoursSLRolesList.Clear();
                     foreach (var rank in ranks)
                     {

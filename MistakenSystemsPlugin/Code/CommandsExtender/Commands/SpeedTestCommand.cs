@@ -49,7 +49,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             }
             var success = this.ForeachPlayer(args[0], (p) =>
             {
-                Systems.Misc.CustomSpeedHandler.SetSpeeds(p, walkSpeed, runSpeed);
+                p.SetSpeed(walkSpeed, runSpeed);
+                //Systems.Misc.CustomSpeedHandler.SetSpeeds(p, walkSpeed, runSpeed);
             });
             if (success == false)
                 return new string[] { "Player not found" };

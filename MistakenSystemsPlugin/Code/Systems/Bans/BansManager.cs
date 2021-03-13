@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.Systems.Bans
                     return;
                 if (BansCache.ContainsKey(userId))
                     BansCache.Remove(userId);
-                BansCache.Add(userId, data.Payload.DeserializeArray<(string AdminId, string Reason, int Duration, DateTime Time)>(0, 0, out _, false));
+                BansCache.Add(userId, data.Payload.Deserialize<(string AdminId, string Reason, int Duration, DateTime Time)[]>(0, 0, out _, false));
             });
         }
 

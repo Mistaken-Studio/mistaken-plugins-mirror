@@ -62,12 +62,6 @@ namespace Gamer.Mistaken.BetterSCP.Global
                 ev.IsAllowed = true;
                 ev.ReturnMessage = "Done";
             }
-            else if (ev.Name == "test")
-            {
-                ev.Player.CurrentItem = ev.Player.Inventory.items[0];
-                ev.IsAllowed = true;
-                ev.ReturnMessage = "Done";
-            }
         }
 
         private void Server_RoundStarted()

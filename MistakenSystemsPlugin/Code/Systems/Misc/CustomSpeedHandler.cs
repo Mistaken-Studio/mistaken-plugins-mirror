@@ -24,6 +24,7 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             Timing.RunCoroutine(AutoUpdate());
         }
+        public override bool Enabled => false;
         public override string Name => "CustomSpeed";
         public override void OnEnable()
         {
@@ -38,11 +39,9 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
 
-        private static bool Initiated = false;
-
         private void Server_RoundStarted()
         {
-            Initiated = false;
+            
         }
 
         private IEnumerator<float> AutoUpdate()
@@ -75,34 +74,16 @@ namespace Gamer.Mistaken.Systems.Misc
             var result = GetSpeeds(player);
             if (!result.HasValue)
                 return;
-            player.SendCustomSync(ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), null, (writer) =>
-            {
-                writer.WritePackedUInt64(6UL);
-                writer.WriteSingle(result.Value.Item1);
-                writer.WriteSingle(result.Value.Item2);
-            });
+            player.SetSpeed(result.Value.Item1, result.Value.Item2);
         }
 
         public static void SetSpeeds(Player player, float? walkSpeed, float? runSpeed)
         {
-            if(!Initiated)
-            {
-                ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier = 10;
-                ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier = 10;
-                Initiated = true;
-            }
             if (!walkSpeed.HasValue)
                 walkSpeed = 1.2f;
-            else if (10 < walkSpeed)
-                walkSpeed = 10;
             if (!runSpeed.HasValue)
                 runSpeed = 1.05f;
-            else if (ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier < runSpeed)
-                runSpeed = 10f;
-            if (!Speeds.ContainsKey(player.Id))
-                Speeds.Add(player.Id, (walkSpeed.Value, runSpeed.Value));
-            else
-                Speeds[player.Id] = (walkSpeed.Value, runSpeed.Value);
+            Speeds[player.Id] = (walkSpeed.Value, runSpeed.Value);
             ForceUpdate(player);
         }
 

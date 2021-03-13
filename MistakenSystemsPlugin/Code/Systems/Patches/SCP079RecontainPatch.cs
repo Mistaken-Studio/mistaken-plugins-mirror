@@ -12,7 +12,7 @@ using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
-	[HarmonyPatch(typeof(Recontainer079), "_Recontain")]
+	[HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
 	public static class SCP079RecontainPatch
 	{
 		public static bool ErrorMode { get; private set; } = false;
@@ -29,6 +29,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				Log.Warn("Duplicate of Recontain Request");
 				return false;
             }
+			Log.Debug("RECONT: -2");
 			Handle = Timing.RunCoroutine(Recontain(forced).CancelWith(Recontainer079.singleton.gameObject).RerouteExceptions((ex) =>
 			{
 				Log.Error("SCP 079 Recontainment Failed");
@@ -43,6 +44,7 @@ namespace Gamer.Mistaken.Systems.Patches
 					Recontained = true;
 				}));
 			}), Segment.FixedUpdate);
+			Log.Debug("RECONT: -1");
 			return false;
 		}
 

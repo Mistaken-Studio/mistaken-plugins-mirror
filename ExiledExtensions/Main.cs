@@ -8,6 +8,7 @@ using Mirror;
 using UnityEngine;
 using MEC;
 using System.Security.Cryptography;
+using Exiled.API.Extensions;
 
 namespace Gamer.Utilities
 {
@@ -63,6 +64,19 @@ namespace Gamer.Utilities
 
         public static bool IsPlayer(this CommandSender me) => GetPlayer(me) != null;
         public static bool IsPlayer(this ICommandSender me) => GetPlayer(me) != null;
+
+        public static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)
+        {
+            if (me.SessionVariables.TryGetValue(name, out object value))
+            {
+                if (value is T)
+                    return (T)value;
+                else
+                    throw new ArgumentException($"Expected to see SessionVariable of type {typeof(T).FullName} but got {value.GetType().FullName}");
+            }
+            else
+                return defaultValue;
+        }
         
         public static bool CheckPermission(this ICommandSender me, string permission) => CheckPermission(me as CommandSender, permission);      
         public static bool CheckPermission(this CommandSender cs, string permission) => CheckPermission(cs.GetPlayer(), permission);
@@ -196,49 +210,6 @@ namespace Gamer.Utilities
         {
             var tor = ForeachPlayer(me, arg, out Player[] _, out success, toExecute);
             return tor;
-        }
-
-        public static void PrivateCassie(this Player me, string message, bool isHold = false, bool isNoisy = true)
-        {
-            if (me?.Connection == null || me == Server.Host)
-                return;
-            foreach (var controller in Respawning.RespawnEffectsController.AllControllers)
-            {
-                if(controller.connectionToClient == me.Connection)
-                    controller?.CallTargetRpc(nameof(controller.RpcCassieAnnouncement), me.Connection, message, isHold, isNoisy);
-            }
-        }
-
-        public static void CallTargetRpc<T>(this T me, string name, NetworkConnection conn, params object[] args) where T : NetworkBehaviour
-        {
-            if(!Player.Dictionary.ContainsKey(conn?.identity?.gameObject))
-            {
-                Log.Error("Tried to call CallTargetRpc on not real player !");
-                return;
-            }
-            NetworkWriter writer = NetworkWriterPool.GetWriter();
-            foreach (var arg in args)
-            {
-                if (arg is string)
-                    writer.WriteString((string)arg);
-                else if (arg is bool)
-                    writer.WriteBoolean((bool)arg);
-                else if (arg is short)
-                    writer.WriteInt16((short)arg);
-                else if (arg is int)
-                    writer.WriteInt32((int)arg);
-                else if (arg is long)
-                    writer.WriteInt64((long)arg);
-                else if (arg is float)
-                    writer.WriteSingle((float)arg);
-                else if (arg is double)
-                    writer.WriteDouble((double)arg);
-                else
-                    throw new System.ArgumentException("Args is unsupported type | " + arg.GetType().FullName, nameof(args));
-            }
-            System.Reflection.MethodInfo dynMethod = me.GetType().GetMethod("SendTargetRPCInternal", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            dynMethod.Invoke(me, new object[] { conn, typeof(T), name, writer, 0 });
-            NetworkWriterPool.Recycle(writer);
         }
 
         public static void DropGrenadeUnder(this Player me, int grenadeType, int amount = 1)

@@ -143,6 +143,7 @@ namespace Gamer.Mistaken.Systems.GUI
             Timing.RunCoroutine(Update268());
         }
 
+        private readonly HashSet<string> ToUpdate = new HashSet<string>();
         public int NextUpdate = 5;
         IEnumerator<float> Update()
         {
@@ -182,10 +183,18 @@ namespace Gamer.Mistaken.Systems.GUI
                     }
                     if (infoMessage != "")
                         player.ShowHint("<br><br><br><br><br><br><br><br><br><size=50%>" + infoMessage + "</size>", false, 6);
+                    if (customInfoMessage != "")
+                        ToUpdate.Add(player.UserId);
                     customInfoMessage = "<color=red>" + customInfoMessage.Trim('|').Trim() + "</color>";
                     var value = customInfoMessage == "" ? null : customInfoMessage;
-                    if (player.ReferenceHub.nicknameSync.CustomPlayerInfo != value && player.ReferenceHub.nicknameSync.CustomPlayerInfo != "Tau-5 Samsara")
-                        player.ReferenceHub.nicknameSync.CustomPlayerInfo = value;
+                    if (player.ReferenceHub.nicknameSync.Network_customPlayerInfoString != value && player.ReferenceHub.nicknameSync.Network_customPlayerInfoString != "Tau-5 Samsara")
+                    {
+                        if (!ToUpdate.Contains(player.UserId))
+                            continue;
+                        if(value == null)
+                            ToUpdate.Remove(player.UserId);
+                        player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+                    }
                 }
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update", start, DateTime.Now);
             }
@@ -237,7 +246,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 {
                     if (data.Type != MistakenSocket.Shared.API.ResponseType.OK)
                         return;
-                    var info = data.Payload.DeserializeArray<(string Type, string Message, int ServerId)>(0, 0, out _, false);
+                    var info = data.Payload.Deserialize<(string Type, string Message, int ServerId)[]>(0, 0, out _, false);
                     foreach (var item in info)
                     {
                         if (item.Type == "welcome" && item.ServerId == Server.Port - 7776)

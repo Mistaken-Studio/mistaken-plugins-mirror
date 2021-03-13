@@ -45,8 +45,10 @@ namespace Gamer.Mistaken.Systems.End
             if (!Gamer.Mistaken.Utilities.APILib.API.GetGithubKey(out string githubKey))
                 return;
             var tokenAuth = new Credentials(githubKey);
-            var github = new GitHubClient(new ProductHeaderValue("SL-Plugin"));
-            github.Credentials = tokenAuth;
+            var github = new GitHubClient(new ProductHeaderValue("SL-Plugin"))
+            {
+                Credentials = tokenAuth
+            };
             var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
             if (!File.Exists(VersionPath))
             {
