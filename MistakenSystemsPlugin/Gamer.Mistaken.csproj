@@ -107,8 +107,9 @@
       <HintPath>..\..\MistakenSockets\MistakenSocket\Client\SL\Lib\bin\Debug\MistakenSocket.Client.SL.Lib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MistakenSocket.Shared">
-      <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Shared.dll</HintPath>
+    <Reference Include="MistakenSocket.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Shared\bin\Debug\MistakenSocket.Shared.dll</HintPath>
     </Reference>
     <Reference Include="NetCoreServer, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -156,6 +157,7 @@
     <Compile Include="Code\AIRS\ReportStatusUpdateHandler.cs" />
     <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
     <Compile Include="Code\Ban2\BansHandler.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TestCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\FakeNickCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LastVictimCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LongOverwatchCommand.cs" />
