@@ -4,54 +4,55 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Exiled.API.Extensions;
 
 namespace Gamer.Utilities
 {
     public static class SyncVar
     {
-		public static void TargetBadge(this Player player, Player target, string name, string color)
+		/// <summary>
+		/// Zmienia rangę <paramref name="player"/> dla <paramref name="target"/>
+		/// </summary>
+		/// <param name="player">Osob</param>
+		/// <param name="target">Osoba która ma widzieć inną rangę</param>
+		/// <param name="name">Nazwa</param>
+		/// <param name="color">Kolor</param>
+		public static void TargetSetBadge(this Player player, Player target, string name, string color)
         {
-			player.SendCustomSync(target.ReferenceHub.networkIdentity, typeof(ServerRoles), null, (writer) =>
+			MirrorExtensions.SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(ServerRoles), nameof(ServerRoles.NetworkMyText), name);
+			MirrorExtensions.SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(ServerRoles), nameof(ServerRoles.NetworkMyColor), color);
+		}
+
+		public static void TargetSetNickname(this Player player, Player target, string nickname)
+		{
+			MirrorExtensions.SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), nickname);
+		}
+
+		public static void SetSpeed(this Player player, float walkSpeed, float sprintSpeed)
+		{
+			//MirrorExtensions.SendFakeSyncVar(player, Server.Host.ReferenceHub.networkIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.NetworkHumanWalkSpeedMultiplier), walkSpeed);
+			//MirrorExtensions.SendFakeSyncVar(player, Server.Host.ReferenceHub.networkIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.NetworkHumanSprintSpeedMultiplier), sprintSpeed);
+			SendCustomSync(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), (writer) =>
 			{
-				writer.WritePackedUInt64(3UL);            // DirtyBit
-				writer.WriteString(color);                // Color
-				writer.WriteString(name);                 // Name
+				writer.WritePackedUInt64(6UL);
+				writer.WriteSingle(walkSpeed);
+				writer.WriteSingle(sprintSpeed);
 			});
 		}
 
-		public static void TargetNickname(this Player player, Player target, string nickname)
+		//Only for internal for Speed
+		private static void SendCustomSync(this Player player, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncVar)
 		{
-			player.SendCustomSync(target.ReferenceHub.networkIdentity, typeof(NicknameSync), null, (writer) =>
-			{
-				writer.WritePackedUInt64(2UL);            // DirtyBit
-				writer.WriteString(nickname);             // Nickname
-			});
+			NetworkWriter owner = NetworkWriterPool.GetWriter();
+			NetworkWriter observer = NetworkWriterPool.GetWriter();
+			MakeCustomSyncWriter(behaviorOwner, targetType, customSyncVar, owner, observer);
+			NetworkServer.SendToClientOfPlayer(player.ReferenceHub.networkIdentity, new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = owner.ToArraySegment() });
+			NetworkWriterPool.Recycle(owner);
+			NetworkWriterPool.Recycle(observer);
 		}
 
-		public static void SendCustomSync(this Player player, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar)
-		{
-			/* 
-
-			Example(SyncList) [EffectOnlySCP207]:
-			player.SendCustomSync(player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
-				writer.WritePackedUInt64(1ul);					// DirtyObjectsBit
-				writer.WritePackedUInt32((uint)1);				// DirtyIndexCount
-				writer.WriteByte((byte)SyncList<byte>.Operation.OP_SET);	// Operations
-				writer.WritePackedUInt32((uint)0);				// EditIndex
-				writer.WriteByte((byte)1);					// Item
-			}, null);
-
-			*/
-			NetworkWriter writer = NetworkWriterPool.GetWriter();
-			NetworkWriter writer2 = NetworkWriterPool.GetWriter();
-			MakeCustomSyncWriter(behaviorOwner, targetType, customSyncObject, customSyncVar, writer, writer2);
-			NetworkServer.SendToClientOfPlayer(player.ReferenceHub.networkIdentity, new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
-			NetworkWriterPool.Recycle(writer);
-			NetworkWriterPool.Recycle(writer2);
-		}
-
-		public static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
+		//Only for internal for Speed
+		private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
 		{
 			ulong dirty = 0ul;
 			ulong dirty_o = 0ul;
@@ -72,10 +73,7 @@ namespace Gamer.Utilities
 			owner.WriteInt32(0);
 			int position2 = owner.Position;
 
-			if (customSyncObject != null)
-				customSyncObject.Invoke(owner);
-			else
-				behaviour.SerializeObjectsDelta(owner);
+			behaviour.SerializeObjectsDelta(owner);
 
 			customSyncVar?.Invoke(owner);
 
@@ -89,6 +87,11 @@ namespace Gamer.Utilities
 				ArraySegment<byte> arraySegment = owner.ToArraySegment();
 				observer.WriteBytes(arraySegment.Array, position, owner.Position - position);
 			}
+		}
+
+		public static void ChangeAppearance(this Player player, Player target, RoleType type)
+		{
+			MirrorExtensions.SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurClass), (sbyte)type);
 		}
 	}
 }
