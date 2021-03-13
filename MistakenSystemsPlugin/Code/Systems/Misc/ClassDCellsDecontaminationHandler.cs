@@ -22,7 +22,6 @@ namespace Gamer.Mistaken.Systems.Misc
         {
         }
 
-        //This is broken, and private cassie is not working | Disabled
         public override bool Enabled => false;
         public override string Name => "ClassDCellsDecontamination";
         public override void OnEnable()
@@ -135,11 +134,11 @@ namespace Gamer.Mistaken.Systems.Misc
     
         private static void InformOnlyInLCZ(string message)
         {
-            foreach (var player in RealPlayers.List.Where(p => p.CurrentRoom?.Zone == ZoneType.LightContainment).ToArray())
+            foreach (var player in RealPlayers.List.Where(p => p.CurrentRoom?.Zone == ZoneType.LightContainment))
             {
                 try
                 {
-                    player.PrivateCassie(message);
+                    player.PlayCassieAnnouncement(message);
                 }
                 catch(System.Exception ex) 
                 {
