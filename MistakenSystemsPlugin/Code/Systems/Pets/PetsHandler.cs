@@ -13,6 +13,11 @@ using UnityEngine;
 using Exiled.API.Extensions;
 using Gamer.Mistaken.Utilities.APILib;
 using Gamer.Diagnostics;
+using RemoteAdmin;
+using NPCS;
+using NPCS.Talking;
+using NPCS.Events;
+using Gamer.Mistaken.CommandsExtender.Commands;
 
 namespace Gamer.Mistaken.Systems.Pets
 {
@@ -22,7 +27,7 @@ namespace Gamer.Mistaken.Systems.Pets
         {
         }
 
-        public override bool Enabled => false;
+        //public override bool Enabled => false;
 
         public override string Name => "Pets";
         public override void OnEnable()
@@ -30,6 +35,7 @@ namespace Gamer.Mistaken.Systems.Pets
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Left += this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => Player_Left(ev));
         }
+
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
