@@ -301,6 +301,8 @@
     <Compile Include="Code\Systems\Patches\LCZPatch.cs" />
     <Compile Include="Code\Systems\Patches\RAPatch.cs" />
     <Compile Include="Code\Systems\Patches\RagdollManagerPatch.cs" />
+    <Compile Include="Code\Systems\Patches\Vars\EnableVarPatchs.cs" />
+    <Compile Include="Code\Systems\Patches\Vars\GodModePatch.cs" />
     <Compile Include="Code\Systems\Pets\PetsHandler.cs" />
     <Compile Include="Code\Systems\PseudoGUI\InformerHandler.cs" />
     <Compile Include="Code\Systems\End\LeaveZombieHandler.cs" />

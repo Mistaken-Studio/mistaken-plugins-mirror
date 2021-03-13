@@ -12,6 +12,34 @@ using Exiled.API.Extensions;
 
 namespace Gamer.Utilities
 {
+    public static class AnnonymousEvents
+    {
+        private static readonly Dictionary<string, List<Action<object>>> Subscribers = new Dictionary<string, List<Action<object>>>();
+
+        public static void Call(string name, object arg)
+        {
+            Log.Debug("Running " + name);
+            if(Subscribers.TryGetValue(name, out List<Action<object>> handlers))
+            {
+                foreach (var item in handlers)
+                    item(arg);
+            }
+        }
+        public static void Subscribe(string name, Action<object> handler)
+        {
+            Log.Debug("Subscribing to " + name);
+            if (!Subscribers.ContainsKey(name))
+                Subscribers[name] = new List<Action<object>>();
+            Subscribers[name].Add(handler);
+        }
+        public static void UnSubscribe(string name, Action<object> handler)
+        {
+            Log.Debug("UnSubscribing to " + name);
+            if (Subscribers.ContainsKey(name))
+                Subscribers[name].Remove(handler);
+        }
+    }
+
     public static class Main
     {
         public static void Broadcast(this Player me, string tag, ushort duration, string message, Broadcast.BroadcastFlags flags = global::Broadcast.BroadcastFlags.Normal)

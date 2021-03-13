@@ -6,6 +6,7 @@ using System.Text;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.API;
+using Gamer.Mistaken.Systems.Patches.Vars;
 using Gamer.Utilities;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
@@ -20,7 +21,7 @@ namespace Gamer.Mistaken
         public override string Prefix => "msp";
         public override PluginPriority Priority => PluginPriority.Highest - 1;
 
-        public static string PluginName => Instance.Name;   
+        public static string PluginName => Instance.Name;
 
         public static bool IsSSLSleepMode
         {
@@ -38,6 +39,7 @@ namespace Gamer.Mistaken
         }
 
         public static PluginHandler Instance { get; private set; }
+        internal static HarmonyLib.Harmony Harmony {get; private set; }
         public override void OnEnabled()
         {
             Instance = this;
@@ -64,11 +66,12 @@ namespace Gamer.Mistaken
             else
                 Log.SendRaw("Whitelist is NOT enabled", ConsoleColor.Green);
 
-            var harmony = new HarmonyLib.Harmony("com.gamer.mistaken");
-            harmony.Patch(typeof(PlayerMovementSync).GetMethod(nameof(PlayerMovementSync.ReceiveRotation), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.Fix1Patch).GetMethod(nameof(Systems.Patches.Fix1Patch.Prefix))), null, null, null);
-            harmony.Patch(typeof(PlayerMovementSync).GetMethod(nameof(PlayerMovementSync.ReceivePosition), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.Fix2Patch).GetMethod(nameof(Systems.Patches.Fix2Patch.Prefix))), null, null, null);
+            Harmony = new HarmonyLib.Harmony("com.gamer.mistaken");
+            Harmony.Patch(typeof(PlayerMovementSync).GetMethod(nameof(PlayerMovementSync.ReceiveRotation), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.Fix1Patch).GetMethod(nameof(Systems.Patches.Fix1Patch.Prefix))), null, null, null);
+            Harmony.Patch(typeof(PlayerMovementSync).GetMethod(nameof(PlayerMovementSync.ReceivePosition), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.Fix2Patch).GetMethod(nameof(Systems.Patches.Fix2Patch.Prefix))), null, null, null);
             //harmony.Patch(typeof(Exiled.Permissions.Extensions.Permissions).GetMethod(nameof(Exiled.Permissions.Extensions.Permissions.CheckPermission), BindingFlags.Static | BindingFlags.Public), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.PermissionsPatch).GetMethod(nameof(Systems.Patches.PermissionsPatch.Prefix))), null, null, null);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            Harmony.PatchAll(Assembly.GetExecutingAssembly());
+            EnableVarPatchs.Patch();
 
             MistakenSocket.Client.Handlers.HandlerBase.RegisterAll();
 

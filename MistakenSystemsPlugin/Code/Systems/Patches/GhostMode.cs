@@ -13,7 +13,6 @@ using Mirror;
 using Exiled.Events;
 using Gamer.Utilities;
 
-#pragma warning disable CS0618 // Type or member is obsolete (Player.TargetGhosts)
 
 namespace Gamer.Mistaken.Systems.Patches
 {
