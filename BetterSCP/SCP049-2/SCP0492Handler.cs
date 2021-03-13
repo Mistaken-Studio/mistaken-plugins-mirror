@@ -20,6 +20,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
         {
         }
 
+        public override bool Enabled => false;
         public override string Name => nameof(SCP0492Handler);
         public override void OnEnable()
         {
@@ -49,7 +50,12 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
         {
             var zombie = NPCS.Methods.CreateNPC(room.Position + Vector3.up, Vector2.zero, Vector3.one, RoleType.Scp0492, ItemType.None, "Zombie");
 
-            zombie.NPCPlayer.ReferenceHub.playerMovementSync._hub = zombie.NPCPlayer.ReferenceHub;
+            //zombie.NPCPlayer.ReferenceHub.playerMovementSync._hub = zombie.NPCPlayer.ReferenceHub;
+            zombie.AIEnabled = true;
+            zombie.GotoRoom(Map.Rooms.First(r => r.Type == Exiled.API.Enums.RoomType.LczArmory));
+            yield break;
+
+            //PIERDOLE TE NPCE, JA SIĘ PRĘDZEJ ZAJEBIE NIŻ ZROBIE ŻEBY LOSOWE ZOMBIE DZIAŁAŁY
 
             //zombie.AddNavTarget(NPCS.Navigation.NavigationNode.FromRoom());
             var AIFindTarget = NPCS.AI.AITarget.GetFromToken("AIFindPlayerTarget");
@@ -77,9 +83,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
             AINavigateToRoom.Construct();
 
             zombie.OnTargetLostBehaviour = NPCS.Npc.TargetLostBehaviour.SEARCH;
-            zombie.AIQueue.AddLast(AIFindTarget);
-            zombie.AIQueue.AddLast(AIAttackTarget);
-            //zombie.AIQueue.AddLast(AINavigateToRoom);
+            //zombie.AIQueue.AddLast(AIFindTarget);
+            //zombie.AIQueue.AddLast(AIAttackTarget);
+            zombie.AIQueue.AddLast(AINavigateToRoom);
             zombie.AIEnabled = true;
 
             while (zombie.NPCPlayer.IsAlive)
