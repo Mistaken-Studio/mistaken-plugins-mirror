@@ -228,6 +228,7 @@ namespace Gamer.Mistaken.Systems
 
         private void Server_RoundStarted()
         {
+            LeftOnStart.Clear();
             LastIntercomUser = null;
             Generators.Clear();
             Timing.RunCoroutine(InformCommanderDeath());
@@ -400,11 +401,13 @@ namespace Gamer.Mistaken.Systems
             else
                 DisplayNameChangend.Remove(ev.Player.UserId);
         }
-
+        private readonly Dictionary<string, RoleType> LeftOnStart = new Dictionary<string, RoleType>();
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
         {
             AutoRoundRestart();
             JoinedButNotLeft.Remove(ev.Player.UserId);
+            if (Round.ElapsedTime.TotalSeconds < 30)
+                LeftOnStart[ev.Player.UserId] = ev.Player.Role;
         }
 
         private void AutoRoundRestart()
@@ -444,6 +447,9 @@ namespace Gamer.Mistaken.Systems
                 JoinedButNotLeft.Add(ev.Player.UserId);
                 Exiled.Events.Handlers.CustomEvents.InvokeOnFirstTimeJoined(new Exiled.Events.EventArgs.FirstTimeJoinedEventArgs(ev.Player));
             }
+
+            if (Round.ElapsedTime.TotalSeconds < 30 && LeftOnStart.ContainsKey(ev.Player.UserId))
+                ev.Player.Role = LeftOnStart[ev.Player.UserId];
 
             Bans.BansManager.GetBans(ev.Player.UserId);
             if (!Logs.LogManager.PlayerLogs.ContainsKey(RoundPlus.RoundId))
