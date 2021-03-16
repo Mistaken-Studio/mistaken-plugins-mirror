@@ -12,7 +12,7 @@ using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
-	[HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
+	//[HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
 	public static class SCP079RecontainPatch
 	{
 		public static bool ErrorMode { get; private set; } = false;

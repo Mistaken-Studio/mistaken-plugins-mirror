@@ -31,6 +31,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Systems.End.OverwatchHandler.InLongOverwatch.Remove(senderPlayer.UserId);
                 senderPlayer.IsOverwatchEnabled = false;
                 senderPlayer.SessionVariables["LONG_OVERWATCH"] = false;
+                AnnonymousEvents.Call("LONG_OVERWATCH", (senderPlayer, false));
                 return new string[] { "Disabled" };
             }
             else
@@ -39,6 +40,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Systems.End.OverwatchHandler.InLongOverwatch.Add(senderPlayer.UserId);
                 senderPlayer.IsOverwatchEnabled = true;
                 senderPlayer.SessionVariables["LONG_OVERWATCH"] = true;
+                AnnonymousEvents.Call("LONG_OVERWATCH", (senderPlayer, true));
                 return new string[] { "Enabled" };
             }
         }

@@ -93,15 +93,18 @@ namespace Gamer.Mistaken.Systems.End
         //Level 1 -> All Admin
         //Level 2 -> Tutorial and Spectator Admins Only
         //Level 3 -> Older and Same Admin Only
-        internal static void SetGhost(Player player, bool value, int level = 1)
+        internal static void SetGhost(Player player, bool value, byte level = 1, bool silent = false)
         {
             if (value)
             {
                 if (Vanished.ContainsKey(player.Id))
-                    SetGhost(player, false, level);
+                    SetGhost(player, false, level, true);
                 RoundLogger.Log("VANISH", "ENABLED", $"Vanish enabled for {player.PlayerToString()}, type {level}");
                 Vanished.Add(player.Id, level);
                 LOFH.LOFH.AddVanish(player.UserId, level);
+                player.SessionVariables["VANISH"] = level;
+                if (!silent)
+                    AnnonymousEvents.Call("VANISH", (player, level));
             }
             else
             {
@@ -109,6 +112,9 @@ namespace Gamer.Mistaken.Systems.End
                     RoundLogger.Log("VANISH", "DISABLED", $"Vanish disabled for {player.PlayerToString()}, type {level}");
                 Vanished.Remove(player.Id);
                 LOFH.LOFH.RemoveVanish(player.UserId);
+                player.SessionVariables["VANISH"] = (byte)0;
+                if (!silent)
+                    AnnonymousEvents.Call("VANISH", (player, (byte)0));
             }
         }
 

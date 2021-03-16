@@ -20,11 +20,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
-            string id = sender.GetPlayer().UserId;
-            if(!LOFH.LOFH.Hidden.Contains(id)) 
-                LOFH.LOFH.Hidden.Add(id);
+            var player = sender.GetPlayer();
+            if(!LOFH.LOFH.Hidden.Contains(player.UserId)) 
+                LOFH.LOFH.Hidden.Add(player.UserId);
             else
-                LOFH.LOFH.Hidden.Remove(id);
+                LOFH.LOFH.Hidden.Remove(player.UserId);
+            player.SessionVariables["HIDDEN"] = LOFH.LOFH.Hidden.Contains(player.UserId);
+            AnnonymousEvents.Call("HIDDEN", (player, LOFH.LOFH.Hidden.Contains(player.UserId)));
             _s = true;
             return new string[] { "Done" };
         }

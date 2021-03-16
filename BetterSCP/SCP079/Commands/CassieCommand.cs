@@ -55,7 +55,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                             message = message.Replace(".g", "");
                         while (message.Contains("yield_"))
                             message = message.Replace("yield_", "");
-                        while (message.Contains("pitch_")) ;
+                        while (message.Contains("pitch_"))
                             message = message.Replace("pitch_", "");
                         Cassie.Message("PITCH_0.9 SCP 0 PITCH_0.9 7 PITCH_0.9 9 PITCH_0.9 jam_050_5 OVERRIDE PITCH_1 . . . " + message);
                         SCP079Handler.GainXP(player, Cost);
