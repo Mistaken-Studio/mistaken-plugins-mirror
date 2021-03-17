@@ -218,9 +218,9 @@ namespace Gamer.Mistaken.Ranks
             ApplyRoles(ev.Player);
         }
 
-        static public void UpdateRoles()
+        static public void UpdateRoles(bool forceOld = false)
         {
-            if (PluginHandler.IsSSLSleepMode)
+            if (PluginHandler.IsSSLSleepMode || forceOld)
             {
                 string url;
                 if (!Utilities.APILib.API.GetUrl(APIType.RANKS_SL, out url, ""))
@@ -368,6 +368,15 @@ namespace Gamer.Mistaken.Ranks
                             RoleType = RoleType.TOPDISCORD
                         };
                         TopDscRolesList.Add(playerInfo.UserId, playerInfo);
+                    }
+                });
+
+                MEC.Timing.CallDelayed(15, () =>
+                {
+                    if (VipList.Count == 0)
+                    {
+                        Log.Warn("VIP List failed to load, loading using old method, tring with API");
+                        UpdateRoles(true);
                     }
                 });
             }
