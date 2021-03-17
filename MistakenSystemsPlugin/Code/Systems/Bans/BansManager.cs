@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using Gamer.Mistaken.Utilities.APILib;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
@@ -20,7 +21,7 @@ namespace Gamer.Mistaken.Systems.Bans
         {
             BansCache.Clear();
         }
-
+        private static readonly HashSet<string> Requesting = new HashSet<string>();
         public static (string AdminId, string Reason, int Duration, DateTime Time)[] GetBans(string userId)
         {
             if (BansCache.TryGetValue(userId, out (string AdminId, string Reason, int Duration, DateTime Time)[] tor))
@@ -31,6 +32,10 @@ namespace Gamer.Mistaken.Systems.Bans
 
         private static void GetBansFromDB(string userId)
         {
+            if(Requesting.Contains(userId))
+                return;
+            Requesting.Add(userId);
+            MEC.Timing.CallDelayed(15, () => Requesting.Remove(userId));
             if (PluginHandler.IsSSLSleepMode)
             {
                 using (var client = new WebClient())
@@ -54,6 +59,7 @@ namespace Gamer.Mistaken.Systems.Bans
                 if (BansCache.ContainsKey(userId))
                     BansCache.Remove(userId);
                 BansCache.Add(userId, data.Payload.Deserialize<(string AdminId, string Reason, int Duration, DateTime Time)[]>(0, 0, out _, false));
+                Requesting.Remove(userId);
             });
         }
 
@@ -66,6 +72,7 @@ namespace Gamer.Mistaken.Systems.Bans
                 var data = JsonConvert.DeserializeObject<BansObject[]>(body);
 
                 BansCache[userId] = data.Select(i => (i.AdminUserId, i.Reason, i.Duration, i.Time)).ToArray();
+                Requesting.Remove(userId);
             }
             catch
             {

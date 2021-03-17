@@ -420,15 +420,15 @@ namespace RemoteAdmin
                                             }
                                             text3 = string.Concat(new object[]
                                             {
-                                            text3,
-                                            text4,
-                                            $"<color={RoleToColor(player.Role, ovrm)}>",
-                                            "(",
-                                            queryProcessor.PlayerId,
-                                            ") ",
-                                            player.ReferenceHub.nicknameSync.CombinedName.Replace("\n", string.Empty),
-                                            ovrm ? "<OVRM>" : string.Empty,
-                                            "</color>"
+                                                text3,
+                                                text4,
+                                                $"<color={RoleToColor(player.Role, ovrm)}>",
+                                                "(",
+                                                queryProcessor.PlayerId,
+                                                ") ",
+                                                player.ReferenceHub.nicknameSync.CombinedName.Replace("\n", string.Empty),
+                                                ovrm ? "<OVRM>" : string.Empty,
+                                                "</color>"
                                             });
                                             text3 += "\n";
                                         }
