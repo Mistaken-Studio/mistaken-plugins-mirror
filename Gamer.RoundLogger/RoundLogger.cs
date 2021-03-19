@@ -94,7 +94,7 @@ namespace Gamer.RoundLoggerSystem
         
         private static async Task Server_RestartingRoundTask()
         {
-            await Task.Delay(1000);
+            await Task.Delay(10);
             Log("LOGGER", "INFO", "End of log");
             var logsArray = Logs.ToArray();
             Logs.Clear();
