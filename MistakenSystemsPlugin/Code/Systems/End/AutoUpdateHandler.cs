@@ -21,6 +21,7 @@ using MistakenSocket.Shared.CentralToSL;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared.ClientToCentral;
 using MistakenSocket.Shared;
+using UnityEngine.Assertions.Must;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -101,15 +102,52 @@ namespace Gamer.Mistaken.Systems.End
                 File.Copy(item, Paths.Plugins + "/" + item.Split('/').Last(), true);
             foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
                 File.Copy(item, Paths.Dependencies + "/" + item.Split('/').Last(), true);
-            for (int i = 1; i <= 4; i++)
+            SSL.Client.Send(MessageType.CMD_MULTI_MESSAGE, new MultiMessage
             {
-                //Log.Error("Tu powinnien być autoupdate ale ....");
-                SSL.Client.Send(MessageType.CMD_REQUEST_EXECUTE, new RequestExecute
+                Messages = new Message[]
                 {
-                    Type = ExecuteType.SL_RESTART_NEXT_ROUND,
-                    Argument = ((MistakenSocket.Shared.API.ServerType)i).Serialize(false)
-                });
-            }
+                    new Message
+                    {
+                        MsgType = MessageType.CMD_REQUEST_EXECUTE,
+                        MessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER),
+                        Data = new RequestExecute
+                        {
+                            Type = ExecuteType.SL_RESTART_NEXT_ROUND,
+                            Argument = ((MistakenSocket.Shared.API.ServerType)1).Serialize(false)
+                        }.Serialize(false)
+                    },
+                    new Message
+                    {
+                        MsgType = MessageType.CMD_REQUEST_EXECUTE,
+                        MessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER),
+                        Data = new RequestExecute
+                        {
+                            Type = ExecuteType.SL_RESTART_NEXT_ROUND,
+                            Argument = ((MistakenSocket.Shared.API.ServerType)2).Serialize(false)
+                        }.Serialize(false)
+                    },
+                    new Message
+                    {
+                        MsgType = MessageType.CMD_REQUEST_EXECUTE,
+                        MessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER),
+                        Data = new RequestExecute
+                        {
+                            Type = ExecuteType.SL_RESTART_NEXT_ROUND,
+                            Argument = ((MistakenSocket.Shared.API.ServerType)3).Serialize(false)
+                        }.Serialize(false)
+                    },
+                    new Message
+                    {
+                        MsgType = MessageType.CMD_REQUEST_EXECUTE,
+                        MessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER),
+                        Data = new RequestExecute
+                        {
+                            Type = ExecuteType.SL_RESTART_NEXT_ROUND,
+                            Argument = ((MistakenSocket.Shared.API.ServerType)4).Serialize(false)
+                        }.Serialize(false)
+                    }
+                }
+            });
             File.WriteAllText(VersionPath, release.TagName);
         }
 
