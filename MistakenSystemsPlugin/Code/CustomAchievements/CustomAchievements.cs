@@ -32,6 +32,7 @@ namespace Gamer.Mistaken.CustomAchievements
         private static string T_achiv_get_def { get; } =    "<color=#dddddd>Achievement unlocked: </color><color={lvlcolor}>{name}</color>" + "|_n" +
                                                             "<color=#696969>Check list of your achievements on </color><color={lvlcolor}>discord.mistaken.pl</color>";
 
+        [System.Obsolete("Achievements are disabled")]
         public static void ForceLevel(string userId, uint Id, Level level)
         {
             ForceLevelRequests.Add(new KeyValuePair<string, KeyValuePair<uint, Level>>(userId, new KeyValuePair<uint, Level>(Id, level)));
@@ -41,6 +42,7 @@ namespace Gamer.Mistaken.CustomAchievements
         private static readonly List<KeyValuePair<string, KeyValuePair<uint, Level>>> ForceLevelRequests = new List<KeyValuePair<string, KeyValuePair<uint, Level>>>();
 
         private static readonly HashSet<(string, uint)> OnCooldown = new HashSet<(string, uint)>();
+        [System.Obsolete("Achievements are disabled")]
         private static void OnAchievementInfoResponse(uint Id, string UserId, uint Proggres, uint CurrentLevel)
         {
             Achievement achievement = GetAchievement(Id);
@@ -91,7 +93,7 @@ namespace Gamer.Mistaken.CustomAchievements
                 }
             }
         }
-
+        [System.Obsolete("Achievements are disabled")]
         private static void HandleAchievementData(MessageIdentificator? messageId)
         {
             messageId.GetResponseDataCallback((response) => {
@@ -102,18 +104,21 @@ namespace Gamer.Mistaken.CustomAchievements
             });
         }
 
+        [System.Obsolete("Achievements are disabled")]
         public static void SaveAchievementProggres(string UserId, uint Id, uint Proggres, uint CurrentLevel)
         {
             SSL.Client.Send(MessageType.ACHIEVEMENT_SAVE_PROGGRES, new AchievementSaveProggres(Id, UserId, Proggres, CurrentLevel));
             HandleAchievementData(SSL.Client.Send(MessageType.ACHIEVEMENT_REQUEST_INFO, new AchievementRequestProggres(Id, UserId)));
         }
 
+        [System.Obsolete("Achievements are disabled")]
         public static void AddAchievementProggres(string UserId, uint Id)
         {
             SSL.Client.Send(MessageType.ACHIEVEMENT_ADD_PROGGRES, new AchievementAddProggres(Id, UserId));
             HandleAchievementData(SSL.Client.Send(MessageType.ACHIEVEMENT_REQUEST_INFO, new AchievementRequestProggres(Id, UserId)));
         }
 
+        [System.Obsolete("Achievements are disabled")]
         internal static void AddAchievementLevel(string UserId, uint Id)
         {
             SSL.Client.Send(MessageType.ACHIEVEMENT_ADD_LEVEL, new AchievementAddLevel(Id, UserId));

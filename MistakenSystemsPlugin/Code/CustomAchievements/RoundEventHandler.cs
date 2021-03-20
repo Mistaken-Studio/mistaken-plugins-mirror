@@ -7,6 +7,7 @@ using MistakenSocket.Shared.API;
 using System.Collections.Generic;
 using System.Linq;
 
+#pragma warning disable CS0618 // Typ lub składowa jest przestarzała
 namespace Gamer.Mistaken.CustomAchievements
 {
     public class RoundEventHandler : Module
@@ -553,16 +554,18 @@ namespace Gamer.Mistaken.CustomAchievements
             if (CustomAchievements.DisableForRound) return;
             if (LastDetonator != null)
             {
+
                 AddProggress("BumBum", LastDetonator);
             }
         }
-
+        [System.Obsolete("Achievements are disabled")]
         public static void AddProggress(string Name, Player player)
         {
             if (player.DoNotTrack)
                 return;
             CustomAchievements.AddAchievementProggres(player.UserId, CustomAchievements.GetAchievement(Name).Id);
         }
+        [System.Obsolete("Achievements are disabled")]
         public static void ForceLevel(string Name, Player player, CustomAchievements.Level level)
         {
             if (player.DoNotTrack)
@@ -612,3 +615,4 @@ namespace Gamer.Mistaken.CustomAchievements
         private Player last914User;
     }
 }
+#pragma warning restore CS0618 // Typ lub składowa jest przestarzała

@@ -247,11 +247,56 @@ namespace Gamer.Mistaken.Ranks
             }
             else
             {
-                SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
+                MessageIdentificator? premiumMessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER);
+                MessageIdentificator? slMessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER);
+                MessageIdentificator? discordMessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER);
+                MessageIdentificator? slhoursMessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER);
+                SSL.Client.Send(MessageType.CMD_MULTI_MESSAGE, new MultiMessage
                 {
-                    Type = MistakenSocket.Shared.API.DataType.SL_RANK_PREMIUM,
-                    argument = null
-                }).GetResponseDataCallback((data) =>
+                    Messages = new Message[] { 
+                        new Message 
+                        {
+                            MsgType = MessageType.CMD_REQUEST_DATA,
+                            MessageId = premiumMessageId ?? default,
+                            Data = new RequestData
+                            {
+                                Type = MistakenSocket.Shared.API.DataType.SL_RANK_PREMIUM,
+                                argument = null
+                            }.Serialize(false)
+                        },
+                        new Message
+                        {
+                            MsgType = MessageType.CMD_REQUEST_DATA,
+                            MessageId = slMessageId ?? default,
+                            Data = new RequestData
+                            {
+                                Type = MistakenSocket.Shared.API.DataType.SL_RANK_ACIVE_SL,
+                                argument = null
+                            }.Serialize(false)
+                        },
+                        new Message
+                        {
+                            MsgType = MessageType.CMD_REQUEST_DATA,
+                            MessageId = slhoursMessageId ?? default,
+                            Data = new RequestData
+                            {
+                                Type = MistakenSocket.Shared.API.DataType.SL_RANK_ACIVE_SL_MOST_HOURS,
+                                argument = null
+                            }.Serialize(false)
+                        },
+                        new Message
+                        {
+                            MsgType = MessageType.CMD_REQUEST_DATA,
+                            MessageId = discordMessageId ?? default,
+                            Data = new RequestData
+                            {
+                                Type = MistakenSocket.Shared.API.DataType.SL_RANK_ACIVE_DISCORD,
+                                argument = null
+                            }.Serialize(false)
+                        },
+                    }
+                });
+                premiumMessageId.GetResponseDataCallback((data) =>
                 {
                     if (data.Type != ResponseType.OK)
                         return;
@@ -301,12 +346,7 @@ namespace Gamer.Mistaken.Ranks
                     };
 #pragma warning restore CS0162 // Wykryto nieosiągalny kod
                 });
-
-                SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
-                {
-                    Type = MistakenSocket.Shared.API.DataType.SL_RANK_ACIVE_SL,
-                    argument = null
-                }).GetResponseDataCallback((data) =>
+                slMessageId.GetResponseDataCallback((data) =>
                 {
                     if (data.Type != ResponseType.OK)
                         return;
@@ -324,12 +364,7 @@ namespace Gamer.Mistaken.Ranks
                         TopSLRolesList.Add(playerInfo.UserId, playerInfo);
                     }
                 });
-
-                SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
-                {
-                    Type = MistakenSocket.Shared.API.DataType.SL_RANK_ACIVE_SL_MOST_HOURS,
-                    argument = null
-                }).GetResponseDataCallback((data) =>
+                slhoursMessageId.GetResponseDataCallback((data) =>
                 {
                     if (data.Type != ResponseType.OK)
                         return;
@@ -347,12 +382,7 @@ namespace Gamer.Mistaken.Ranks
                         TopMostHoursSLRolesList.Add((playerInfo.UserId, playerInfo));
                     }
                 });
-
-                SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
-                {
-                    Type = MistakenSocket.Shared.API.DataType.SL_RANK_ACIVE_DISCORD,
-                    argument = null
-                }).GetResponseDataCallback((data) =>
+                discordMessageId.GetResponseDataCallback((data) =>
                 {
                     if (data.Type != ResponseType.OK)
                         return;
