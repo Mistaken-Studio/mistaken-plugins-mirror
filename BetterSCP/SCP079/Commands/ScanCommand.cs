@@ -62,7 +62,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         }
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
-                        CustomAchievements.RoundEventHandler.AddProggress("Informant", player);
+                        //CustomAchievements.RoundEventHandler.AddProggress("Informant", player);
 
                         RoundLogger.Log("SCP079 EVENT", "SCAN", $"{player.PlayerToString()} requested scan");
 

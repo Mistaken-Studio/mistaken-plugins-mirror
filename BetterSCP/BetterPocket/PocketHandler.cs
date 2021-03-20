@@ -206,8 +206,8 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             {
                 try
                 {
-                    foreach (var p in Player.Get(RoleType.Scp106))
-                        Mistaken.CustomAchievements.RoundEventHandler.AddProggress("OldMan", p);
+                    //foreach (var p in Player.Get(RoleType.Scp106))
+                    //    Mistaken.CustomAchievements.RoundEventHandler.AddProggress("OldMan", p);
                 }
                 catch(System.Exception ex)
                 {

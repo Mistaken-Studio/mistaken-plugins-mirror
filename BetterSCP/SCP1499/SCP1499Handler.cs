@@ -362,7 +362,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                     FirstFlashRoom = GetFreeRoom(FirstFlashRoom);
                     SecondFlashRoom = GetFreeRoom(SecondFlashRoom);
 
-                    Achievement(player);
+                    //Achievement(player);
                 }
                 if (damage != 0)
                     player.Health -= damage;
@@ -386,6 +386,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         }
 
         private static readonly List<Player> Used1499 = new List<Player>();
+        [System.Obsolete("Achievements are disabled")]
         private static void Achievement(Player player)
         {
             try

@@ -52,7 +52,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         Cassie.Message($"MTFUNIT EPSILON 11 DESIGNATED NATO_{letter} {number} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {scps} SCPSUBJECT{(scps == 1 ? "" : "S")}");
                         SCP079Handler.GainXP(player, Cost);
                         Lastuse = DateTime.Now;
-                        CustomAchievements.RoundEventHandler.AddProggress("Manipulator", player);
+                        //CustomAchievements.RoundEventHandler.AddProggress("Manipulator", player);
 
                         RoundLogger.Log("SCP079 EVENT", "FAKEMTF", $"{player.PlayerToString()} requested fakemtf");
 

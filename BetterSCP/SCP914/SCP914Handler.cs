@@ -71,7 +71,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
                             var hitInfo = new PlayerStats.HitInfo(damage, "*" + plugin.ReadTranslation("scp914_rough"), new DamageTypes.DamageType("914"), 0);
                             if (player.Health <= damage)
                             {
-                                CustomAchievements.RoundEventHandler.AddProggress("914Killer", player);
+                                //CustomAchievements.RoundEventHandler.AddProggress("914Killer", player);
                                 if (Mistaken.Base.AntyTeamKillHandler.IsTeamkill(Last914User, player))
                                     Mistaken.Base.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo));
                                 if (player.UserId == Last914User.UserId && player.Role == RoleType.Scp0492)
@@ -87,7 +87,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
                             var hitInfo = new PlayerStats.HitInfo(damage, "*" + plugin.ReadTranslation("scp914_coarse"), new DamageTypes.DamageType("914"), 0);
                             if (player.Health <= damage)
                             {
-                                CustomAchievements.RoundEventHandler.AddProggress("914Killer", player);
+                                //CustomAchievements.RoundEventHandler.AddProggress("914Killer", player);
                                 if (Mistaken.Base.AntyTeamKillHandler.IsTeamkill(Last914User, player))
                                     Mistaken.Base.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo));
                                 if (player.UserId == Last914User.UserId && player.Role == RoleType.Scp0492)

@@ -58,9 +58,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                                 SCP079Handler.GainXP(player, ToDrain);
                                 Lastuse = DateTime.Now.AddSeconds(Cooldown);
                                 LastCooldown = Cooldown;
-                                CustomAchievements.RoundEventHandler.AddProggress("LightsOut", player);
-                                if(ToDrain == 200) 
-                                    CustomAchievements.RoundEventHandler.AddProggress("Darkness", player);
+                                //CustomAchievements.RoundEventHandler.AddProggress("LightsOut", player);
+                                //if(ToDrain == 200) 
+                                //    CustomAchievements.RoundEventHandler.AddProggress("Darkness", player);
                                 RoundLogger.Log("SCP079 EVENT", "BLACKOUT", $"{player.PlayerToString()} requested blackout for {duration}s");
                                 success = true;
                                 return new string[] { SCP079Handler.Translations.trans_success };

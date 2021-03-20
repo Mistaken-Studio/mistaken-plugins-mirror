@@ -97,7 +97,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 
                             SCP079Handler.GainXP(player, Cost);
                             Lastuse = DateTime.Now;
-                            CustomAchievements.RoundEventHandler.AddProggress("SneakyFox", player);
+                            //CustomAchievements.RoundEventHandler.AddProggress("SneakyFox", player);
 
                             RoundLogger.Log("SCP079 EVENT", "FAKESCP", $"{player.PlayerToString()} requested fakescp of SCP {processedtonumber} with reason: {reason}");
 
