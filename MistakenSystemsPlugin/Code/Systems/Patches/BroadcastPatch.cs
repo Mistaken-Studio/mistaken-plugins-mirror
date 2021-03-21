@@ -26,7 +26,9 @@ namespace Gamer.Mistaken.Systems.Patches
 				Targets.Add(content, NorthwoodLib.Pools.ListPool<string>.Shared.Rent());
 				MEC.Timing.CallDelayed(2, () => {
 					var tmp = content.Split('~');
-					var admin = tmp.Length == 1 || !tmp.Contains(" ~") || !tmp.Contains("'~'") ? "SYSTEM" : tmp.Last();
+					var admin = "SYSTEM"; //tmp.Length == 1 || !tmp.Contains(" ~") || !tmp.Contains("'~'") ? "SYSTEM" : tmp.Last();
+					if (tmp.Length > 1 && !content.Contains("'~'"))
+						admin = tmp.Last();
 					var contentWithoutAdmin = tmp.Length == 1 ? content : content.Substring(0, content.Length - (admin.Length + 1));
 					var ev = new BroadcastEventArgs(Broadcast.BroadcastFlags.AdminChat, contentWithoutAdmin, admin, Targets[content].ToArray());
 					CustomEvents.InvokeOnBroadcast(ref ev);
@@ -51,7 +53,9 @@ namespace Gamer.Mistaken.Systems.Patches
 				Targets.Add(data, NorthwoodLib.Pools.ListPool<string>.Shared.Rent());
 				MEC.Timing.CallDelayed(2, () => {
 					var tmp = data.Split('~');
-					var admin = tmp.Length == 1 || !data.Contains(" ~") || !data.Contains("'~'") ? "SYSTEM" : tmp.Last();
+					var admin = "SYSTEM"; //tmp.Length == 1 || !tmp.Contains(" ~") || !tmp.Contains("'~'") ? "SYSTEM" : tmp.Last();
+					if (tmp.Length > 1 && !data.Contains("'~'"))
+						admin = tmp.Last();
 					var contentWithoutAdmin = tmp.Length == 1 ? data : data.Substring(0, data.Length - (admin.Length + 1));
 					var ev = new BroadcastEventArgs(flags, contentWithoutAdmin, admin, Targets[data].ToArray());
 					CustomEvents.InvokeOnBroadcast(ref ev);
@@ -77,7 +81,9 @@ namespace Gamer.Mistaken.Systems.Patches
 		public static bool Prefix(string data, ushort time, Broadcast.BroadcastFlags flags)
 		{
 			var tmp = data.Split('~');
-			var admin = tmp.Length == 1 || !data.Contains(" ~") || !data.Contains("'~'") ? "SYSTEM" : tmp.Last();
+			var admin = "SYSTEM"; //tmp.Length == 1 || !tmp.Contains(" ~") || !tmp.Contains("'~'") ? "SYSTEM" : tmp.Last();
+			if (tmp.Length > 1 && !data.Contains("'~'"))
+				admin = tmp.Last();
 			var contentWithoutAdmin = tmp.Length == 1 ? data : data.Substring(0, data.Length - (admin.Length + 1));
 			var ev = new BroadcastEventArgs(flags, contentWithoutAdmin, admin, Exiled.API.Features.Player.UserIdsCache.Keys.ToArray());
 			CustomEvents.InvokeOnBroadcast(ref ev);
