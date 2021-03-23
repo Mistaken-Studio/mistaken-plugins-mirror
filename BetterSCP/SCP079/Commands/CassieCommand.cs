@@ -19,7 +19,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 
         public override string[] Aliases => new string[] { };
 
-        public override string Description => "Stop Warhead";
+        public override string Description => "Play custom cassie";
 
         public string GetUsage()
         {

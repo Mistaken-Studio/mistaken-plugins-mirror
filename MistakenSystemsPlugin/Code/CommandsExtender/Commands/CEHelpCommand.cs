@@ -5,7 +5,8 @@ using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class CEHelpCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    class CEHelpCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ceh";
         public override string Description =>
