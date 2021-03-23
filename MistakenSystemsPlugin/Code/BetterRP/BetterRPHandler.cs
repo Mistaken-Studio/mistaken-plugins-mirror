@@ -12,7 +12,7 @@ using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.BetterRP
 {
-    class Handler : Module
+    public class Handler : Module
     {
         public Handler(PluginHandler plugin) : base(plugin)
         {
@@ -54,7 +54,7 @@ namespace Gamer.Mistaken.BetterRP
             if (UnityEngine.Random.Range(1, 101) < 25)
                 Cassie.Message(CIAnnouncments[UnityEngine.Random.Range(0, CIAnnouncments.Length)]);
         }
-        private static string[] CIAnnouncments = new string[]
+        public static string[] CIAnnouncments = new string[]
         {
             "pitch_0.97 .g6 WARNING . DETECTED UNAUTHORIZED ENTRANCE ZONE SECURITY SYSTEM ACCESS ATTEMPT . POSSIBLE UNAUTHORIZED PERSONNEL IN THE FACILITY . KEEP CAUTION .g6",
             "pitch_0.97 ACCESS ANALYSIS . INITIATED . . . pitch_0.9 DANGER . pitch_0.97 UNKNOWN PERSONNEL DETECTED IN THE FACILITY . ALL FOUNDATION PERSONNEL REPORT TO ANY SAFE AREA IMMEDIATELY",

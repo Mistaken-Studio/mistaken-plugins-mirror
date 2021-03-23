@@ -116,6 +116,7 @@
     <Compile Include="SCP049-2\SCP0492Handler.cs" />
     <Compile Include="SCP049\ContainCommand.cs" />
     <Compile Include="SCP079\Commands\CassieCommand.cs" />
+    <Compile Include="SCP079\Commands\FakeCICommand.cs" />
     <Compile Include="SCP079\Commands\StopWarheadCommand.cs" />
     <Compile Include="SCP1499\SCP1499Handler.cs" />
     <Compile Include="SCP939\SCP939Handler.cs" />
