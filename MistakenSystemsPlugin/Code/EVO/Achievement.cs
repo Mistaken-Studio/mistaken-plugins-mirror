@@ -126,6 +126,17 @@ namespace Gamer.Mistaken.EVO
                     new KeyValuePair<int, string>(20, "Apprentice of Darkness"),
                     new KeyValuePair<int, string>(40, "Necromancy Overlord")
                 }
+            },
+            new Achievement()
+            {
+                Id = 1011,
+                Name = "SCP",
+                Description = "Be an SCP (excluding 049-2) X times",
+                Levels = new KeyValuePair<int, string>[] {
+                    new KeyValuePair<int, string>(15, "Anomaly"),
+                    new KeyValuePair<int, string>(35, "Murder Monster"),
+                    new KeyValuePair<int, string>(60, "Reality Bender")
+                }
             }
         };
     }
