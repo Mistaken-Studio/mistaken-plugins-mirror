@@ -16,8 +16,6 @@ namespace Gamer.Mistaken.BetterRP
     {
         public Handler(PluginHandler plugin) : base(plugin)
         {
-            
-
             new NicknameHandler(plugin);
         }
 
@@ -33,8 +31,7 @@ namespace Gamer.Mistaken.BetterRP
             Exiled.Events.Handlers.Player.MedicalItemUsed += this.Handle<Exiled.Events.EventArgs.UsedMedicalItemEventArgs>((ev) => Player_MedicalItemUsed(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Escaping += this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
-            if (PluginHandler.Config.Type == MSP_ServerType.HARD_RP)
-                Exiled.Events.Handlers.CustomEvents.OnTransmitPositionData += this.Handle<Exiled.Events.EventArgs.TransmitPositionEventArgs>((ev) => CustomEvents_OnTransmitPositionData(ev));
+            Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
         }
         public override void OnDisable()
         {
@@ -47,38 +44,26 @@ namespace Gamer.Mistaken.BetterRP
             Exiled.Events.Handlers.Player.MedicalItemUsed -= this.Handle<Exiled.Events.EventArgs.UsedMedicalItemEventArgs>((ev) => Player_MedicalItemUsed(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Escaping -= this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
-            if (PluginHandler.Config.Type == MSP_ServerType.HARD_RP)
-                Exiled.Events.Handlers.CustomEvents.OnTransmitPositionData -= this.Handle<Exiled.Events.EventArgs.TransmitPositionEventArgs>((ev) => CustomEvents_OnTransmitPositionData(ev));
+            Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
         }
 
-        private readonly Dictionary<int, Camera079> CamerasToPlayers = new Dictionary<int, Camera079>();
-        private readonly Dictionary<Camera079, float> Cameras = new Dictionary<Camera079, float>();
-        private void CustomEvents_OnTransmitPositionData(Exiled.Events.EventArgs.TransmitPositionEventArgs ev)
+        private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
         {
-            if (ev.Player.Role == RoleType.None)
+            if (!PluginHandler.Config.IsRP())
                 return;
-            if(ev.Player.Team == Team.RIP && !ev.Player.IsOverwatchEnabled)
-            {
-                for (int i = 0; i < ev.PositionMessages.Length; i++)
-                {
-                    var data = ev.PositionMessages[i];
-                    if (!CamerasToPlayers.TryGetValue(data.playerID, out Camera079 camera)) 
-                    {
-                        camera = Map.Cameras[UnityEngine.Random.Range(0, Map.Cameras.Count)];
-                        CamerasToPlayers.Add(data.playerID, camera);
-                    }
-                    int Cycles = Mathf.FloorToInt(((float)NetworkTime.time * 10) / 90);
-                    float defRot = Cameras[camera];
-                    float tor = defRot + (Cycles % 2 == 0 ? -45 : 45);
-                    if(Cycles % 2 == 0) 
-                        tor += ((float)NetworkTime.time * 10) % 90;
-                    else
-                        tor -= ((float)NetworkTime.time * 10) % 90;
-
-                    ev.PositionMessages[i] = new PlayerPositionData(camera.targetPosition.position + Vector3.down, tor, data.playerID);
-                }
-            }
+            if (UnityEngine.Random.Range(1, 101) < 25)
+                Cassie.Message(CIAnnouncments[UnityEngine.Random.Range(0, CIAnnouncments.Length)]);
         }
+        private static string[] CIAnnouncments = new string[]
+        {
+            "pitch_0.97 .g6 WARNING . DETECTED UNAUTHORIZED ENTRANCE ZONE SECURITY SYSTEM ACCESS ATTEMPT . POSSIBLE UNAUTHORIZED PERSONNEL IN THE FACILITY . KEEP CAUTION .g6",
+            "pitch_0.97 ACCESS ANALYSIS . INITIATED . . . pitch_0.9 DANGER . pitch_0.97 UNKNOWN PERSONNEL DETECTED IN THE FACILITY . ALL FOUNDATION PERSONNEL REPORT TO ANY SAFE AREA IMMEDIATELY",
+            "pitch_0.97 .g6 WARNING . NOT AUTHORIZED P A SYSTEM ACCESS ATTEMPT .g3 . . . PRIMARY SYSTEMS ARE UNDER ATTACK .g6",
+            "pitch_0.97 ATTENTION ALL M T F UNITS . FACILITY IS UNDER ATTACK . RETREAT IMMEDIATELY",
+            "pitch_0.97 SYSTEM SCAN INITIATED . . . . . DETECTED UNKNOWN SOFTWARE OVERRIDE . . . pitch_1.5 .g4 . . .g4 . . pitch_0.2 .g2 pitch_0.85 ATTENTION ALL FOUNDATION PERSONNEL . THIS P A SYSTEM IS NOW . UNDER . MILITARY . COMMAND2 pitch_0.1 .g1 pitch_0.85 SURRENDER IMMEDIATELY OR YOU WILL BE TERMINATED",
+            "pitch_0.5 .g5 .g5 . . . . pitch_0.9 SYSTEM OVERRIDE .g4 . .g4 . .g6 SECURITY SYSTEMS DISENGAGED . . . pitch_0.3 .g1 pitch_0.9 INTERNAL ACCESS DEVICE DETECTED . PROCEED TO ENTRANCE ZONE IMMEDIATELY",
+            "pitch_0.97 ALL SECURITY SYSTEMS DEACTIVATED . . . pitch_0.85 WARNING . EXECUTIVE SYSTEM ACCESS DENIED . SECURITY BREACH PROTOCOL IN EFFECT pitch_0.2 .g4 pitch_0.85 UNAUTHORIZED PERSONNEL IN THE FACILITY . CASSIE SYSTEM CORE LOCKDOWN IN PROGRESS pitch_0.2 .g6",
+        };
 
         private void Player_Escaping(Exiled.Events.EventArgs.EscapingEventArgs ev)
         {
@@ -162,7 +147,7 @@ namespace Gamer.Mistaken.BetterRP
             {
                 if (ev.DamageType == DamageTypes.Scp0492)
                 {
-                    CustomAchievements.RoundEventHandler.AddProggress("Plague", ev.Attacker);
+                    //CustomAchievements.RoundEventHandler.AddProggress("Plague", ev.Attacker);
                     if(ev.Amount < ev.Target.Health + ev.Target.ArtificialHealth)
                         ev.Target.EnableEffect<CustomPlayerEffects.Poisoned>();
                 }
@@ -352,8 +337,6 @@ namespace Gamer.Mistaken.BetterRP
             {
                 ev.Items.RemoveAll(item => item == ItemType.KeycardNTFLieutenant || item == ItemType.KeycardChaosInsurgency);
             }
-            if(PluginHandler.Config.Type == MSP_ServerType.HARD_RP)
-                CamerasToPlayers.Remove(ev.Player.Id);
         }
 
         private void Warhead_Detonated()
@@ -379,10 +362,6 @@ namespace Gamer.Mistaken.BetterRP
             Timing.RunCoroutine(DoAmbients());
             Timing.RunCoroutine(DoHeathEffects());
             RoundModifiersManager.Instance.ExecuteFags();
-            CamerasToPlayers.Clear();
-            Cameras.Clear();
-            foreach (var item in Map.Cameras)
-                Cameras.Add(item, item.curRot);
         }
 
         private void Server_RoundEnded(Exiled.Events.EventArgs.RoundEndedEventArgs ev)
