@@ -10,7 +10,7 @@ namespace Gamer.Utilities
         public static IEnumerable<Player> Get(Team value) => List.Where(p => p.Team == value && p.IsConnected && p.IsVerified);
         public static IEnumerable<Player> Get(RoleType value) => List.Where(p => p.Role == value && p.IsConnected && p.IsVerified);
         public static Player Get(int value) => List.FirstOrDefault(p => p.Id == value && p.IsConnected && p.IsVerified);
-        public static Player Get(string value) => (Player.UserIdsCache.ContainsKey(value) ? Player.UserIdsCache[value] : null);
+        public static Player Get(string value) => List.FirstOrDefault(p => p.UserId == value && p.IsConnected && p.IsVerified);
 
         public static bool Any(Team value) => List.Any(p => p.Team == value && p?.GameObject != null);
         public static bool Any(RoleType value) => List.Any(p => p.Role == value && p?.GameObject != null);
