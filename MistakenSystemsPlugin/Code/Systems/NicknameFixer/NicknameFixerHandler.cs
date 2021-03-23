@@ -83,11 +83,23 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "~~",
             "```",
         };
-
+        private static readonly string[] Links = new string[]
+        {
+            "discord.gg/",
+            "twitch.tv/"
+        };
         private void CustomEvents_OnFirstTimeJoined(Exiled.Events.EventArgs.FirstTimeJoinedEventArgs ev)
         {
             string oldnick = ev.Player.Nickname.Trim();
             string newNick = ev.Player.Nickname.ToLower().Trim();
+
+            foreach (var item in Links)
+            {
+                if (!newNick.Contains(item))
+                    continue;
+                var tmp = newNick.Split(' ');
+                newNick = string.Join(" ", tmp.Select(i => !i.Contains(item)));
+            }
 
             foreach (var item in ToRemove)
             {
