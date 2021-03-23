@@ -9,23 +9,25 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
-    class TeslaOffCommand : IBetterCommand
+    class TeslaOnCommand : IBetterCommand
     {       
-        public override string Description => "Disabled all tesla gates";
-        public override string Command => "teslaOff";
+        public override string Description => "Enables all tesla gates";
+        public override string Command => "teslaOn";
+
+        internal static readonly HashSet<string> AlreadyUsed = new HashSet<string>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
             var player = sender.GetPlayer();
             if (player.Role != RoleType.NtfCommander)
                 return new string[] { "Nie jesteś dowódcą" };
-            if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.DISABLED)
+            if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
                 return new string[] { "Tesle są już wyłączone" };
-            if (TeslaOnCommand.AlreadyUsed.Contains(player.UserId))
+            if (AlreadyUsed.Contains(player.UserId))
                 return new string[] { "Możesz użyć tylko komendy raz na życie" };
-            Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
-            TeslaOnCommand.AlreadyUsed.Add(player.UserId);
-            Cassie.Message("Tesla gates deactivated by order of NINETAILEDFOX COMMANDER");
+            Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
+            AlreadyUsed.Add(player.UserId);
+            Cassie.Message("Tesla gates activated by order of NINETAILEDFOX COMMANDER");
             success = true;
             return new string[] { "Zrobione" };
         }

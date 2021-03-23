@@ -177,6 +177,8 @@ namespace Gamer.Mistaken.CommandsExtender
         {
             if (!ev.Target.IsVerified)
                 return;
+            if(ev.Target.Role == RoleType.NtfCommander)
+                TeslaOnCommand.AlreadyUsed.Remove(ev.Target.UserId);
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
                 LastAttackers[ev.Target.UserId] = (ev.Killer, null);
             else
@@ -222,6 +224,7 @@ namespace Gamer.Mistaken.CommandsExtender
             VanishHandler.Vanished.Clear();
             TalkCommand.SavedInfo.Clear();
             TalkCommand.Active.Clear();
+            TeslaOnCommand.AlreadyUsed.Clear();
         }
     }
 }
