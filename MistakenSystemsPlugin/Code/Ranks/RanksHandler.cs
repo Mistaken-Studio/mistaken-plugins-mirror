@@ -22,7 +22,7 @@ namespace Gamer.Mistaken.Ranks
         internal static readonly List<(string, PlayerInfo)> TopMostHoursSLRolesList = new List<(string, PlayerInfo)>();
         internal static readonly Dictionary<string, PlayerInfo> TopDscRolesList = new Dictionary<string, PlayerInfo>();
         internal static readonly Dictionary<string, PlayerInfo> VipList = new Dictionary<string, PlayerInfo>();
-        public static HashSet<string> Vips = VipList.Keys.ToHashSet();
+        public static HashSet<string> Vips => VipList.Keys.ToHashSet();
 
         public static readonly HashSet<string> ReservedSlots = new HashSet<string>();
 

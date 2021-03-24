@@ -54,6 +54,5 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             return "WCA [Type] True/False\n ";
         }
-
     }
 }

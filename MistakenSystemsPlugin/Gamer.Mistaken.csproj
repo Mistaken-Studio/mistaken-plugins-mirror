@@ -164,7 +164,7 @@
     <Compile Include="Code\CommandsExtender\Commands\SpawnSamsaraCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\RoundStatsCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ModRACommand.cs" />
-    <Compile Include="Code\CommandsExtender\Commands\PetCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\PetCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\ChangelogCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LastAttackerCmd.cs" />
     <Compile Include="Code\CommandsExtender\Commands\TalkCommand.cs" />
