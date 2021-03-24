@@ -24,9 +24,9 @@ namespace Gamer.Mistaken.Ban2
 
         private int duration;
 
-        public static void CompleteBan(Player senderPlayer, string reason, Player target, int duration, string textTime, bool loud)
+        public static void CompleteBan(CommandSender senderPlayer, string reason, Player target, int duration, string textTime, bool loud)
         {
-            Server.BanPlayer.BanUser(target.GameObject, duration * 60, $"[{textTime}] {reason}", senderPlayer?.UserId ?? "UNKNOWN", false);
+            Server.BanPlayer.BanUser(target.GameObject, duration * 60, $"[{textTime}] {reason}", senderPlayer?.SenderId ?? "UNKNOWN", false);
             if (loud)
                 Map.Broadcast(5, target?.Nickname + " has been <color=red>banned</color> from this server", Broadcast.BroadcastFlags.Normal);
         }
@@ -92,7 +92,7 @@ namespace Gamer.Mistaken.Ban2
             return "BAN2 [ID] [DURATION] [REASON]";
         }
 
-        public void GetDurationAndReason(Player Admin, int dur, string[] args, out int duration, out string type, out string reason, out string textTime, out bool loud)
+        public void GetDurationAndReason(int dur, string[] args, out int duration, out string type, out string reason, out string textTime, out bool loud)
         {
             type = "";
             duration = dur;
@@ -129,21 +129,27 @@ namespace Gamer.Mistaken.Ban2
             {
                 try
                 {
-                    var Admin = ((CommandSender)sender).GetPlayer();
+                    var Sender = sender as CommandSender;
                     if (!int.TryParse(args[0], out int pid))
                         return new string[] { "Failed to parse playerId to int32" };
                     var target = Player.Get(pid);
-                    if(target == null)
+                    if (target == null)
                         return new string[] { "Player not found" };
 
-                    if (Admin.ReferenceHub.serverRoles.KickPower <= target.ReferenceHub.serverRoles.Group?.RequiredKickPower && false) 
-                        return new string[] { $"Access denied | Too low kickpower | {Admin.ReferenceHub.serverRoles.KickPower} <= {target.ReferenceHub.serverRoles.Group?.RequiredKickPower}" };
-                    if (int.TryParse(args[1].ToLower().Replace("mo", "").Trim(new char[] { 'm', 'h', 'd', 'w', 'y' }), out int value))
-                        duration = value;
-                    else
-                        return new string[] { "Detected error with number convertion", "Failed to convert |" + args[1].ToLower().Replace("mo", "").Trim(new char[] { 'm', 'h', 'd', 'w', 'y' }) + "| to Int32" };
+                    if(Sender.IsPlayer())
+                    {
+                        var Admin = Sender.GetPlayer();
+
+                        if (Admin.ReferenceHub.serverRoles.KickPower <= target.ReferenceHub.serverRoles.Group?.RequiredKickPower && false)
+                            return new string[] { $"Access denied | Too low kickpower | {Admin.ReferenceHub.serverRoles.KickPower} <= {target.ReferenceHub.serverRoles.Group?.RequiredKickPower}" };
+                        if (int.TryParse(args[1].ToLower().Replace("mo", "").Trim(new char[] { 'm', 'h', 'd', 'w', 'y' }), out int value))
+                            duration = value;
+                        else
+                            return new string[] { "Detected error with number convertion", "Failed to convert |" + args[1].ToLower().Replace("mo", "").Trim(new char[] { 'm', 'h', 'd', 'w', 'y' }) + "| to Int32" };
+
+                    }
                     var baseDur = duration;
-                    GetDurationAndReason(Admin, duration, args, out duration, out string type, out string reason, out string textTime, out bool loud);
+                    GetDurationAndReason(duration, args, out duration, out string type, out string reason, out string textTime, out bool loud);
 
                     bool requireConfirmation = false;
                     string confirmationReason = "Error";
@@ -164,12 +170,12 @@ namespace Gamer.Mistaken.Ban2
                     success = true;
                     if (!requireConfirmation)
                     {
-                        CompleteBan(Admin, reason, target, duration, textTime, loud);
+                        CompleteBan(Sender, reason, target, duration, textTime, loud);
                         return StyleBan(pid, target, baseDur, duration, type, reason);
                     }
                     else
                     {
-                        BanData data = new BanData(Admin, reason, target, duration, baseDur, textTime, loud);
+                        BanData data = new BanData(Sender, reason, target, duration, baseDur, textTime, loud);
                         AwaitingBans.Add(data);
                         Timing.CallDelayed(15, () => AwaitingBans.Remove(data));
 
@@ -188,7 +194,7 @@ namespace Gamer.Mistaken.Ban2
 
         public class BanData
         {
-            public Player Admin;
+            public CommandSender Admin;
             public string Reason;
             public Player Target;
             public int Duration;
@@ -196,7 +202,7 @@ namespace Gamer.Mistaken.Ban2
             public string TextTime;
             public bool isLoud;
 
-            public BanData(Player admin, string reason, Player target, int duration, int baseDur, string textTime, bool loud = false)
+            public BanData(CommandSender admin, string reason, Player target, int duration, int baseDur, string textTime, bool loud = false)
             {
                 this.Admin = admin;
                 this.Reason = reason;
@@ -237,7 +243,7 @@ namespace Gamer.Mistaken.Ban2
             bool bc = args.Length != 0 && args[0].ToLower().Trim() == "-bc";
             foreach (Ban2Command.BanData item in Ban2Command.AwaitingBans.ToArray())
             {
-                if (item.Admin?.UserId == senderPlayer.UserId)
+                if (item.Admin?.SenderId == senderPlayer.UserId)
                 {
                     item.Execute();
                     if (bc)
