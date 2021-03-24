@@ -100,7 +100,7 @@ namespace Gamer.Mistaken.Systems.Pets
         public static NPCS.Npc CreateFolowingNPC(Player player, RoleType role, string name)
         {
             role = player.Role;
-            var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name);
+            var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name ?? "(NULL)");
             npc.VisibleForRoles.Add(RoleType.Tutorial);
             npc.VisibleForRoles.Add(RoleType.Spectator);
             switch (role)
@@ -156,11 +156,11 @@ namespace Gamer.Mistaken.Systems.Pets
             npc.AffectRoundSummary = false;
             npc.DontCleanup = true;
             npc.ShouldTrigger096 = false;
-            if(role == RoleType.Scp106) 
+            if (role == RoleType.Scp106)
                 npc.ProcessSCPLogic = true;
-            else 
+            else
                 npc.ProcessSCPLogic = false;
-            if(AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
+            if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
             {
                 value.Kill(false);
                 AlivePets.Remove(player.UserId);
