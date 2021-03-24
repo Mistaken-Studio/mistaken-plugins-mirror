@@ -31,7 +31,7 @@ namespace Gamer.Utilities
             _start = DateTime.Now;
             if (sender.IsPlayer())
             {
-                if (this is IPermissionLocked && !((CommandSender)sender).CheckPermission(this.FullPermission))
+                if (this is IPermissionLocked && !((CommandSender)sender).SenderId.CheckPermission(this.FullPermission))
                 {
                     response = $"<b>Access Denied</b>\nMissing {this.FullPermission}";
                     Diagnostics.MasterHandler.LogTime("Command", this.Command, _start, DateTime.Now);
