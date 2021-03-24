@@ -31,7 +31,6 @@ namespace Gamer.Mistaken.BetterRP
             Exiled.Events.Handlers.Player.MedicalItemUsed += this.Handle<Exiled.Events.EventArgs.UsedMedicalItemEventArgs>((ev) => Player_MedicalItemUsed(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Escaping += this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
-            Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
         }
         public override void OnDisable()
         {
@@ -44,15 +43,6 @@ namespace Gamer.Mistaken.BetterRP
             Exiled.Events.Handlers.Player.MedicalItemUsed -= this.Handle<Exiled.Events.EventArgs.UsedMedicalItemEventArgs>((ev) => Player_MedicalItemUsed(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Escaping -= this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
-            Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
-        }
-
-        private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
-        {
-            if (!PluginHandler.Config.IsRP())
-                return;
-            if (UnityEngine.Random.Range(1, 101) < 25)
-                Cassie.Message(CIAnnouncments[UnityEngine.Random.Range(0, CIAnnouncments.Length)]);
         }
         public static string[] CIAnnouncments = new string[]
         {
