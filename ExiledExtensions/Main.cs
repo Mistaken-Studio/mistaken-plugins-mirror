@@ -302,8 +302,8 @@ namespace Gamer.Utilities
         public static string ToString(this Player me, bool userId, bool autoHideUserId = true)
         {
             if (autoHideUserId)
-                return $"({me.Id}) {me.Nickname}";
-            return $"({me.Id}) {me.Nickname}" + (userId ? $" | {me.UserId}" : "");
+                return $"({me.Id}) {me.GetDisplayName()}";
+            return $"({me.Id}) {me.GetDisplayName()}" + (userId ? $" | {me.UserId}" : "");
         }
 
         public static bool IsLCZDecontaminated(this LightContainmentZoneDecontamination.DecontaminationController _, float minTimeLeft = 0)
