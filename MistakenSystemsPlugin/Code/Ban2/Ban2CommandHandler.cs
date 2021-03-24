@@ -239,11 +239,15 @@ namespace Gamer.Mistaken.Ban2
         {
             success = false;
             Log.Debug("Confirming ban");
+            var Sender = sender as CommandSender;
+
             Player senderPlayer = sender.GetPlayer();
             bool bc = args.Length != 0 && args[0].ToLower().Trim() == "-bc";
+            if (senderPlayer == null)
+                bc = false;
             foreach (Ban2Command.BanData item in Ban2Command.AwaitingBans.ToArray())
             {
-                if (item.Admin?.SenderId == senderPlayer.UserId)
+                if (item.Admin?.SenderId == Sender.SenderId)
                 {
                     item.Execute();
                     if (bc)
