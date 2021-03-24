@@ -43,11 +43,13 @@ namespace Gamer.Mistaken.Systems.Utilities.API
                 }
                 set
                 {
-                    if (Handle.HasValue) 
-                        Timing.KillCoroutines(Handle.Value);
                     _enabled = value;
-                    if(value)
+                    if (value)
+                    {
+                        if (Handle.HasValue)
+                            Timing.KillCoroutines(Handle.Value);
                         Handle = Timing.RunCoroutine(ExecuteBlackout());
+                    }
                 }
             }
             public static float Length = 10;
