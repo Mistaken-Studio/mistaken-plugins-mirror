@@ -129,7 +129,7 @@ namespace Gamer.Mistaken.CommandsExtender
                     if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
-                        Player p = Player.Get(playerId);
+                        Player p = RealPlayers.Get(playerId);
                         if (p == null)
                             continue;
                         p.Role = data.Role;

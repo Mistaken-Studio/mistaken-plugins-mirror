@@ -233,7 +233,7 @@ namespace Gamer.Utilities
             {
                 if (int.TryParse(item, out int pid))
                 {
-                    var p = Player.Get(pid);
+                    var p = RealPlayers.Get(pid);
                     if (p != null)
                         tor.Add(p);
                 }

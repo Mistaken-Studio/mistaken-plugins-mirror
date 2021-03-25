@@ -114,7 +114,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     success = false;
                     return new string[] { GetUsage() };
             }
-            foreach (var item in Player.Get(RoleType.Spectator))
+            foreach (var item in RealPlayers.Get(RoleType.Spectator))
                 item.Role = SpecRole;
             return new string[] { "SpecRole is now " + SpecRole };
         }

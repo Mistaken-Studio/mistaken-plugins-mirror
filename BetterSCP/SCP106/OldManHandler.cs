@@ -114,7 +114,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 RealPlayers.Get(RoleType.Scp106).ToList().ForEach(p => p.SendConsoleMessage("[106] Not teleporting to cell, cell not found | Code: 5.1", "red"));
                 return;
             }
-            foreach (var player in Player.Get(RoleType.Scp106).ToArray())
+            foreach (var player in RealPlayers.Get(RoleType.Scp106).ToArray())
             {
                 player.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Scp207>();
                 player.ReferenceHub.playerEffectsController.ChangeEffectIntensity<CustomPlayerEffects.Scp207>(4);
@@ -128,7 +128,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         }
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
         {
-            foreach (var player in Player.Get(RoleType.Scp106).ToArray())
+            foreach (var player in RealPlayers.Get(RoleType.Scp106).ToArray())
             {
                 if (player.CurrentRoom?.Zone != ZoneType.LightContainment)
                     continue;
@@ -183,7 +183,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             while (Round.IsStarted && !Map.IsLCZDecontaminated)
             {
                 //bool added = false;
-                foreach (var player in Player.Get(Team.SCP))
+                foreach (var player in RealPlayers.Get(Team.SCP))
                 {
                     if (player.Role == RoleType.Scp0492)
                         continue;
@@ -212,7 +212,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
         private IEnumerator<float> LockStart()
         {
             yield return Timing.WaitForSeconds(0.1f);
-            foreach (var player in Player.Get(RoleType.Scp106))
+            foreach (var player in RealPlayers.Get(RoleType.Scp106))
             {
                 player.Position = new Vector3(0, -1998, 0);
                 Cooldown.Add(player.Id);
@@ -220,7 +220,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             }
             while (Round.ElapsedTime.TotalSeconds < 25)
             {
-                foreach (var player in Player.Get(RoleType.Scp106))
+                foreach (var player in RealPlayers.Get(RoleType.Scp106))
                 {
                     TeleportOldMan(player, new Vector3(UnityEngine.Random.Range(-2, 2), -2000, UnityEngine.Random.Range(-2, 2)));
                 }
@@ -228,7 +228,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 yield return Timing.WaitForSeconds(1);
             }
             Gamer.Mistaken.Systems.InfoMessage.InfoMessageManager.WelcomeMessages[RoleType.Scp106] = WelcomeMessage;
-            foreach (var player in Player.Get(Team.SCP))
+            foreach (var player in RealPlayers.Get(Team.SCP))
             {
                 while ((player.Position.y < -1900 || (player.Role != RoleType.Scp106 && Vector3.Distance(player.Position, Map.GetRandomSpawnPoint(RoleType.Scp106)) < 10)) && player.Team == Team.SCP)
                 {

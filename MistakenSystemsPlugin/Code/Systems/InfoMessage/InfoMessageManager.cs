@@ -64,7 +64,7 @@ namespace Gamer.Mistaken.Systems.InfoMessage
             message.Add("<br><br><br>");
             if (p.Role != RoleType.Scp0492 && 30 - Round.ElapsedTime.TotalSeconds > 0)
                 message.Add(PluginHandler.Instance.ReadTranslation("Info_SCP_Swap", Mathf.RoundToInt(30 - (float)Round.ElapsedTime.TotalSeconds)));
-            if (Player.Get(Team.SCP).Count() > 1)
+            if (RealPlayers.Get(Team.SCP).Count() > 1)
                 message.Add(PluginHandler.Instance.ReadTranslation("Info_SCP_List"));
 
             foreach (var player in RealPlayers.List.Where(player => player.Team == Team.SCP && player.Role != RoleType.Scp0492 && p.Id != player.Id))

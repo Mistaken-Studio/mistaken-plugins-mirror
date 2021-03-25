@@ -90,7 +90,7 @@ namespace Gamer.Mistaken.EVO
                 if (result.Type != MistakenSocket.Shared.API.ResponseType.OK)
                     return;
                 var data = result.Payload.Deserialize<EVOResponseAllRanksData>(0, 0, out _, false);
-                var player = Player.Get(data.UserId);
+                var player = RealPlayers.Get(data.UserId);
                 if (player == null)
                     return;
 

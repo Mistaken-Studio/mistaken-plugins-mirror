@@ -150,7 +150,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                             msg = $"You have <color=yellow>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>s untill recontainment";
                     }
                 }
-                foreach (var player in Player.Get(RoleType.Scp079))
+                foreach (var player in RealPlayers.Get(RoleType.Scp079))
                 {
                     string fakeSCP = $"<color=yellow>READY</color>";
                     string fakeMTF = $"<color=yellow>READY</color>";

@@ -48,7 +48,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     if(SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
                     {
                         SavedInfo.Remove(playerId);
-                        Player p = Player.Get(playerId);
+                        Player p = RealPlayers.Get(playerId);
                         if (p == null)
                             continue;
                         p.DisableAllEffects();
@@ -85,7 +85,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Warps.Enqueue(pos);
                 foreach (var playerId in targets)
                 {
-                    var p = Player.Get(playerId);
+                    var p = RealPlayers.Get(playerId);
                     if (p == null || !p.IsConnected)
                         continue;
                     SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
@@ -107,7 +107,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             if (!Active.TryGetValue(p.UserId, out int[] playerIds))
                 yield break;
-            Player[] players = playerIds.Select(pId => Player.Get(pId)).ToArray();
+            Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).ToArray();
             int i = 0;
             bool plus = true;
             while (Active.ContainsKey(p.UserId))

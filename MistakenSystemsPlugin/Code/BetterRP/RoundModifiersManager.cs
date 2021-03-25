@@ -405,7 +405,7 @@ namespace Gamer.Mistaken.BetterRP
                     toWrite += $"\n- {(RandomEvents)i}";
                 }
             }
-            foreach (var item in Player.List.Where(p => p.RemoteAdminAccess))
+            foreach (var item in RealPlayers.List.Where(p => p.RemoteAdminAccess))
                 item.SendConsoleMessage(toWrite, "green");
             MapPlus.Broadcast("RPE", 10, "RandomRPEvents activated, check console for more info", Broadcast.BroadcastFlags.AdminChat);
         }
@@ -417,11 +417,11 @@ namespace Gamer.Mistaken.BetterRP
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(interval);
-                int SCP = Player.Get(Team.SCP).Count();
-                int CDP = Player.Get(Team.CDP).Count();
-                int RSC = Player.Get(Team.RSC).Count();
-                int MTF = Player.Get(Team.MTF).Count();
-                int CHI = Player.Get(Team.CHI).Count();
+                int SCP = RealPlayers.Get(Team.SCP).Count();
+                int CDP = RealPlayers.Get(Team.CDP).Count();
+                int RSC = RealPlayers.Get(Team.RSC).Count();
+                int MTF = RealPlayers.Get(Team.MTF).Count();
+                int CHI = RealPlayers.Get(Team.CHI).Count();
                 while (Cassie.IsSpeaking)
                     yield return Timing.WaitForOneFrame;
                 Cassie.Message($"FACILITY SCAN RESULT . {(SCP == 0 ? "NO" : SCP.ToString())} SCPSUBJECT{(SCP == 1 ? "" : "S")} . {(CDP == 0 ? "NO" : CDP.ToString())} CLASSD . {(RSC == 0 ? "NO" : RSC.ToString())} scientist{(RSC == 1 ? "" : "S")} . {(MTF == 0 ? "NO" : MTF.ToString())} FoUNDATION FORCES . {(CHI == 0 ? "NO" : CHI.ToString())} CHAOSINSURGENCY");

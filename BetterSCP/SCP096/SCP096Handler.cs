@@ -117,7 +117,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
             yield return Timing.WaitForSeconds(1f);
             int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
-                foreach (var scp096 in Player.Get(RoleType.Scp096))
+                foreach (var scp096 in RealPlayers.Get(RoleType.Scp096))
                 {
                     if (scp096.ReferenceHub.scpsController.CurrentScp is PlayableScps.Scp096 scp096script && scp096.Role == RoleType.Scp096 && (scp096script.Enraged || scp096script.Enraging))
                     {

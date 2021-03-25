@@ -26,7 +26,7 @@ namespace Gamer.Mistaken.BetterMutes
         {
             success = false;
             if (args.Length < 3) return new string[] { GetUsage() };
-            var target = Player.Get(args[0]);
+            var target = RealPlayers.Get(args[0]);
             if (target == null) return new string[] { "Player not found", GetUsage() };
             if (!MuteHandler.GetDuration(args[1], out int duration))
                 return new string[] { "Wrong duration, Too bad" };
@@ -59,7 +59,7 @@ namespace Gamer.Mistaken.BetterMutes
         {
             success = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var target = Player.Get(args[0]);
+            var target = RealPlayers.Get(args[0]);
             if (target == null && args[0].Length != 17) return new string[] { "Player not found", GetUsage() };
             var uId = target?.UserId ?? args[0];
             if (!uId.Contains("@"))
@@ -92,7 +92,7 @@ namespace Gamer.Mistaken.BetterMutes
         {
             success = false;
             if (args.Length < 3) return new string[] { GetUsage() };
-            var target = Player.Get(args[0]);
+            var target = RealPlayers.Get(args[0]);
             if (target == null) return new string[] { "Player not found", GetUsage() };
             if (!MuteHandler.GetDuration(args[1], out int duration))
                 return new string[] { "Wrong duration, Too bad" };
@@ -125,7 +125,7 @@ namespace Gamer.Mistaken.BetterMutes
         {
             success = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var target = Player.Get(args[0]);
+            var target = RealPlayers.Get(args[0]);
             if (target == null && args[0].Length != 17) return new string[] { "Player not found", GetUsage() };
             var uId = target?.UserId ?? args[0];
             if (!uId.Contains("@"))

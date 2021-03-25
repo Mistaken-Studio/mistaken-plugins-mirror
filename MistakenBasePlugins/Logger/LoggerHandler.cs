@@ -7,6 +7,7 @@ using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Utilities.APILib;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Base
 {
@@ -75,12 +76,12 @@ namespace Gamer.Mistaken.Base
                         {
                             if(ev.Arguments[0].Split('.').Length > 2)
                             {
-                                Player player = Player.Get(ev.Arguments[0].Split('.')[0]);
+                                Player player = RealPlayers.Get(ev.Arguments[0].Split('.')[0]);
                                 SendCommand(ev.Name.ToLower(), ev.Arguments[0], ev, player?.UserId);
                             }
                             else
                             {
-                                Player player = Player.Get(ev.Arguments[0]);
+                                Player player = RealPlayers.Get(ev.Arguments[0]);
                                 SendCommand(ev.Name.ToLower(), "NONE", ev, player?.UserId);
                             }
                         }
@@ -97,7 +98,7 @@ namespace Gamer.Mistaken.Base
                         if (ev.Arguments.Count == 0)
                             break;
                         string playerstring = ev.Arguments[0]?.Split('.')?[0];
-                        Player player = Player.Get(playerstring);
+                        Player player = RealPlayers.Get(playerstring);
 
                         SendCommand(ev.Name.ToLower(), "NONE", ev, player?.UserId);
                         break;
@@ -113,7 +114,7 @@ namespace Gamer.Mistaken.Base
                     }
                 case "doortp":
                     {
-                        Player player = Player.Get(ev.Arguments[0]?.Split('.')?[0]);
+                        Player player = RealPlayers.Get(ev.Arguments[0]?.Split('.')?[0]);
                         SendCommand(ev.Name.ToLower(), ev.Arguments[0] + ev.Arguments[1], ev, player?.UserId);
                         break;
                     }
@@ -184,7 +185,7 @@ namespace Gamer.Mistaken.Base
                     }
                 case "pbc":
                     {
-                        Player player = Player.Get(ev.Arguments[0]?.Split('.')?[0]);
+                        Player player = RealPlayers.Get(ev.Arguments[0]?.Split('.')?[0]);
                         SendCommand(ev.Name.ToLower(), string.Join(" ", ev.Arguments.Skip(1)), ev, player?.UserId ?? "0");
                         break;
                     }
@@ -207,7 +208,7 @@ namespace Gamer.Mistaken.Base
                                 playerstring = ev.Arguments[0]?.Split('.')?[0];
                             Player player = null;
                             if (playerstring != "")
-                                player = Player.Get(playerstring);
+                                player = RealPlayers.Get(playerstring);
                             string argString = string.Join(" ", ev.Arguments);
                             SendCommand(ev.Name.ToLower(), string.IsNullOrWhiteSpace(argString) ? "NONE" : argString, ev, player?.UserId ?? "0");
                         }

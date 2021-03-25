@@ -244,7 +244,7 @@ namespace Gamer.Mistaken.Base
             }
             if (ev.HitInformation.GetDamageType() == DamageTypes.Pocket || ev.Target.Position.y < -1800)
             {
-                foreach (var player in Player.Get(RoleType.Scp106))
+                foreach (var player in RealPlayers.Get(RoleType.Scp106))
                     if(Stats.ContainsKey(player.UserId)) Stats[player.UserId].Kills++;
             }
 

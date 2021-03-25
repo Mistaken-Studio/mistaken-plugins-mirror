@@ -26,16 +26,16 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     GameObject.FindObjectOfType<AmbientSoundPlayer>().RpcPlaySound(int.Parse(args[1]));
                     break;
                 case "tfc":
-                    player.ChangeAppearance(Player.Get(args[1]), (RoleType)sbyte.Parse(args[2]));
+                    player.ChangeAppearance(RealPlayers.Get(args[1]), (RoleType)sbyte.Parse(args[2]));
                     break;
                 case "fc":
                     player.ChangeAppearance((RoleType)sbyte.Parse(args[1]));
                     break;
                 case "nick":
-                    player.TargetSetNickname(Player.Get(args[1]), args[2]);
+                    player.TargetSetNickname(RealPlayers.Get(args[1]), args[2]);
                     break;
                 case "badge":
-                    player.TargetSetBadge(Player.Get(args[1]), args[2], args[3]);
+                    player.TargetSetBadge(RealPlayers.Get(args[1]), args[2], args[3]);
                     break;
                 case "spawn":
                     var basePos = player.CurrentRoom.Position;

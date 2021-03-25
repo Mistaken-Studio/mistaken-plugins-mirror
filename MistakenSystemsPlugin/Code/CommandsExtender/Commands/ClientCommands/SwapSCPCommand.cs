@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if(RoleRequests.Any(i => i.Value.Key == player.Id))
             {
                 var data = RoleRequests.First(i => i.Value.Key == player.Id);
-                var requester = Player.Get(data.Key);
+                var requester = RealPlayers.Get(data.Key);
                 if (args[0].ToLower() == "yes")
                 {
                     player.Role = requester.Role;

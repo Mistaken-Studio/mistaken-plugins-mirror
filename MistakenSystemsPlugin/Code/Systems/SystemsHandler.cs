@@ -318,7 +318,7 @@ namespace Gamer.Mistaken.Systems
                     return;
                 }
             }
-            if (ev.Attacker != null && Player.Get(ev.Attacker.Id) == null)
+            if (ev.Attacker != null && RealPlayers.Get(ev.Attacker.Id) == null)
                 ev.IsAllowed = false;
             if (!ev.IsAllowed) return;
             if (ev.DamageType == DamageTypes.Tesla && ev.Target.Team == Team.SCP && ev.Amount < ev.Target.Health)
@@ -358,7 +358,7 @@ namespace Gamer.Mistaken.Systems
             {
                 Timing.CallDelayed(5, () =>
                 {
-                    var scps = Player.Get(Team.SCP).ToArray();
+                    var scps = RealPlayers.Get(Team.SCP).ToArray();
                     if (scps.Length == 1 && scps[0].Role == RoleType.Scp079 && !Generator079.mainGenerator.forcedOvercharge)
                     {
                         Generator079.mainGenerator.forcedOvercharge = true;
