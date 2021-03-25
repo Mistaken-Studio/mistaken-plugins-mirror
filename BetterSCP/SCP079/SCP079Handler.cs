@@ -154,6 +154,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                 {
                     string fakeSCP = $"<color=yellow>READY</color>";
                     string fakeMTF = $"<color=yellow>READY</color>";
+                    string fakeCI = $"<color=yellow>READY</color>";
                     string scan = $"<color=yellow>READY</color>";
                     string fullScan = $"<color=yellow>READY</color>";
                     string blackout = $"<color=yellow>READY</color>";
@@ -173,6 +174,13 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                         fakeMTF = $"<color=red>Require <color=yellow>{Math.Round(new TimeSpan(FakeMTFCommand.TimeLeft).TotalSeconds)}</color>s</color>";
                     else if (FakeMTFCommand.Cost > player.Energy)
                         fakeMTF = $"<color=red>Require <color=yellow>{FakeMTFCommand.Cost}</color> AP</color>";
+
+                    if (FakeCICommand.ReqLvl > player.Level + 1)
+                        fakeCI = $"<color=red>Require <color=yellow>{FakeCICommand.ReqLvl}</color> lvl</color>";
+                    else if (!FakeCICommand.IsReady)
+                        fakeCI = $"<color=red>Require <color=yellow>{Math.Round(new TimeSpan(FakeCICommand.TimeLeft).TotalSeconds)}</color>s</color>";
+                    else if (FakeCICommand.Cost > player.Energy)
+                        fakeCI = $"<color=red>Require <color=yellow>{FakeCICommand.Cost}</color> AP</color>";
 
                     if (ScanCommand.ReqLvl > player.Level + 1)
                         scan = $"<color=red>Require <color=yellow>{ScanCommand.ReqLvl}</color> lvl</color>";
@@ -211,7 +219,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                     else if (CassieCommand.Cost > player.Energy)
                         cassie = $"<color=red>Require <color=yellow>{CassieCommand.Cost}</color> AP</color>";
 
-                    string sumMessage = $"<size=50%><align=left>Fake <mspace=0.6em>SCP </mspace>: {fakeSCP}<br>Fake <mspace=0.6em>MTF </mspace>: {fakeMTF}<br>Scan <mspace=0.56em>    </mspace>: {scan}<br>FullScan <mspace=0.56em> </mspace>: {fullScan}<br>Blackout <mspace=0.35em> </mspace>: {blackout}<br>Warhead Stop <mspace=0.35em> </mspace>: {warheadStop}<br>Cassie <mspace=0.35em> </mspace>: {cassie}</align></size><br><br><br><br><br><br><br>{msg}";
+                    string sumMessage = $"<size=50%><align=left>Fake <mspace=0.6em>SCP </mspace>: {fakeSCP}<br>Fake <mspace=0.6em>MTF </mspace>: {fakeMTF}<br>Fake <mspace=0.6em>CI </mspace>: {fakeCI}<br>Scan <mspace=0.56em>    </mspace>: {scan}<br>FullScan <mspace=0.56em> </mspace>: {fullScan}<br>Blackout <mspace=0.35em> </mspace>: {blackout}<br>Warhead Stop <mspace=0.35em> </mspace>: {warheadStop}<br>Cassie <mspace=0.35em> </mspace>: {cassie}</align></size><br><br><br><br><br><br><br>{msg}";
                     player.ShowHint(sumMessage, false, 2, false);
                 }
                 yield return MEC.Timing.WaitForSeconds(1);
