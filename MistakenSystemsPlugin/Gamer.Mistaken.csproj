@@ -324,6 +324,8 @@
     <Compile Include="Code\Systems\Patches\GhostMode.cs" />
     <Compile Include="Code\Systems\Patches\SCP079RecontainPatch.cs" />
     <Compile Include="Code\Systems\Patches\SCPVoiceChatPatch.cs" />
+    <Compile Include="Code\Systems\Seasonal\EasterHandler.cs" />
+    <Compile Include="Code\Systems\Seasonal\PrimaAprilisHanlder.cs" />
     <Compile Include="Code\Systems\Shield\ShieldedManager.cs" />
     <Compile Include="Code\Systems\Staff\StaffHandler.cs" />
     <Compile Include="Code\Systems\ThreatLevel\ThreatLevelManager.cs" />
@@ -361,5 +363,6 @@
   <ItemGroup>
     <Content Include="Code\Systems\NicknameFixer\GitHubBlacklist.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

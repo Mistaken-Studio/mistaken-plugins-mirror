@@ -76,6 +76,9 @@ namespace Gamer.Mistaken.Systems
 
             new End.FireworkManager(plugin);
 
+            new Seasonal.EasterHandler(plugin);
+            new Seasonal.PrimaAprilisHanlder(plugin);
+
             /*MEC.Timing.CallDelayed(2, () =>
             {
                 var method = typeof(PlayerPositionManager).GetMethod(nameof(PlayerPositionManager.TransmitData), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static);
@@ -397,7 +400,7 @@ namespace Gamer.Mistaken.Systems
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
-            if (!ev.Player.IsVerified)
+            if (!ev.Player.IsReadyPlayer())
                 return;
             if (ev.Player.DisplayNickname != null)
                 DisplayNameChangend[ev.Player.UserId] = ev.Player.DisplayNickname;

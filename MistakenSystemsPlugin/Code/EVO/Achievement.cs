@@ -137,6 +137,17 @@ namespace Gamer.Mistaken.EVO
                     new KeyValuePair<int, string>(35, "Murder Monster"),
                     new KeyValuePair<int, string>(60, "Reality Bender")
                 }
+            },
+            new Achievement()
+            {
+                Id = 2000,
+                Name = "Easter",
+                Description = "Collect X eggs",
+                Levels = new KeyValuePair<int, string>[] {
+                    new KeyValuePair<int, string>(5, "Anomaly"),
+                    new KeyValuePair<int, string>(10, "Murder Monster"),
+                    new KeyValuePair<int, string>(20, "Reality Bender")
+                }
             }
         };
     }
