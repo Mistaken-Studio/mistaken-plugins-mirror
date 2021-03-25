@@ -53,32 +53,43 @@ namespace Gamer.Mistaken.Systems.Pets
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            bool hasLivePet = AlivePets.TryGetValue(ev.Player.UserId, out NPCS.Npc pet);
-            if (ev.NewRole == RoleType.Spectator && hasLivePet)
+            MEC.Timing.CallDelayed(0.5f, () =>
             {
-                pet.Kill(false);
-                AlivePets.Remove(ev.Player.UserId);
-            }
-            else if(ev.NewRole != RoleType.Spectator && !hasLivePet)
-            {
-                if(Pets.TryGetValue(ev.Player.UserId, out (RoleType role, string name) petInfo))
-                    CreateFolowingNPC(ev.Player, petInfo.role, petInfo.name);
-            }
-            else if (ev.NewRole == RoleType.Scp173)
-                Timing.RunCoroutine(SyncSCP173Speed(ev.Player, pet));
+                bool hasLivePet = AlivePets.TryGetValue(ev.Player.UserId, out NPCS.Npc pet);
+                if (ev.NewRole == RoleType.Spectator && hasLivePet)
+                {
+                    pet.Kill(false);
+                    AlivePets.Remove(ev.Player.UserId);
+                }
+                else if (ev.NewRole != RoleType.Spectator)
+                {
+                    if (Pets.TryGetValue(ev.Player.UserId, out (RoleType role, string name) petInfo))
+                        CreateFolowingNPC(ev.Player, petInfo.role, petInfo.name);
+                    else if (hasLivePet)
+                    {
+                        pet.Kill(false);
+                        AlivePets.Remove(ev.Player.UserId);
+                    }
+                }
+                //else if (ev.NewRole == RoleType.Scp173)
+                //    Timing.RunCoroutine(SyncSCP173Speed(ev.Player, pet));
+            });
         }
 
         public static void RefreshPets(Player player)
         {
-            if (!player.IsAlive)
-                return;
-            if (Pets.TryGetValue(player.UserId, out (RoleType role, string name) petInfo))
-                CreateFolowingNPC(player, petInfo.role, petInfo.name);
-            else if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
+            MEC.Timing.CallDelayed(0.5f, () =>
             {
-                value.Kill(false);
-                AlivePets.Remove(player.UserId);
-            }
+                if (!player.IsAlive)
+                    return;
+                if (Pets.TryGetValue(player.UserId, out (RoleType role, string name) petInfo))
+                    CreateFolowingNPC(player, petInfo.role, petInfo.name);
+                else if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
+                {
+                    value.Kill(false);
+                    AlivePets.Remove(player.UserId);
+                }
+            });   
         }
 
         private static IEnumerator<float> SyncSCP173Speed(Player player, NPCS.Npc pet)
@@ -101,6 +112,9 @@ namespace Gamer.Mistaken.Systems.Pets
         {
             role = player.Role;
             var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name ?? "(NULL)");
+            //npc.VisibleForPlayers = new HashSet<Player>();
+            npc.VisibleForRoles = new HashSet<RoleType>();
+            //npc.VisibleForPlayers.Add(player);
             npc.VisibleForRoles.Add(RoleType.Tutorial);
             npc.VisibleForRoles.Add(RoleType.Spectator);
             switch (role)
@@ -146,28 +160,39 @@ namespace Gamer.Mistaken.Systems.Pets
             }
             npc.AIEnabled = true;
             npc.Follow(player);
-            npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.Nickname}'s pet";
-            npc.NPCPlayer.RankName = "PET";
-            npc.DisableDialogSystem = true;
-            npc.NPCPlayer.IsGodModeEnabled = true;
-            npc.IsRunning = ShoudRun;
-            npc.MovementSpeed *= Speed;
-            npc.DisableRun = false;
-            npc.AffectRoundSummary = false;
-            npc.DontCleanup = true;
-            npc.ShouldTrigger096 = false;
-            if (role == RoleType.Scp106)
-                npc.ProcessSCPLogic = true;
-            else
-                npc.ProcessSCPLogic = false;
-            if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
+            MEC.Timing.CallDelayed(0.5f, () =>
             {
-                value.Kill(false);
-                AlivePets.Remove(player.UserId);
-            }
-            AlivePets.Add(player.UserId, npc);
-            if (player.Role == RoleType.Scp173)
-                Timing.RunCoroutine(SyncSCP173Speed(player, npc));
+                try
+                {
+                    npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.Nickname}'s pet";
+                    npc.NPCPlayer.RankName = "PET";
+                    npc.DisableDialogSystem = true;
+                    npc.NPCPlayer.IsGodModeEnabled = true;
+                    npc.IsRunning = ShoudRun;
+                    npc.MovementSpeed *= Speed;
+                    npc.DisableRun = false;
+                    npc.AffectRoundSummary = false;
+                    npc.DontCleanup = true;
+                    npc.ShouldTrigger096 = false;
+                    if (role == RoleType.Scp106)
+                        npc.ProcessSCPLogic = true;
+                    else
+                        npc.ProcessSCPLogic = false;
+                    if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
+                    {
+                        value.Kill(false);
+                        AlivePets.Remove(player.UserId);
+                    }
+                    AlivePets.Add(player.UserId, npc);
+                    if (player.Role == RoleType.Scp173)
+                        Timing.RunCoroutine(SyncSCP173Speed(player, npc));
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+            });    
             return npc;
         }
     }

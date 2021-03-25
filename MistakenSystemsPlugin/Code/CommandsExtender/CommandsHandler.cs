@@ -115,7 +115,7 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
-            if (!ev.Player.IsVerified)
+            if (!ev.Player.IsReadyPlayer())
                 return;
             if (MuteAllCommand.Muted.Contains(ev.Player.UserId))
             {

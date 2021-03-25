@@ -9,6 +9,7 @@ using UnityEngine;
 using MEC;
 using System.Security.Cryptography;
 using Exiled.API.Extensions;
+using NPCS;
 
 namespace Gamer.Utilities
 {
@@ -357,5 +358,7 @@ namespace Gamer.Utilities
                 me.ReferenceHub.scp106PlayerScript.NetworkportalPosition = new Vector3(0, 6000, 0);
             });
         }
+
+        public static bool IsReadyPlayer(this Player me) => me.IsConnected && me.IsVerified && !me.IsNPC();
     }
 }

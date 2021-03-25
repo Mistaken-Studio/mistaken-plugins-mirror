@@ -51,13 +51,15 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             var name = string.Join(" ", args/*.Skip(1)*/);
             var player = sender.GetPlayer();
 
-            if (Systems.Pets.PetsHandler.Pets.ContainsKey(player.UserId))
+            bool enable = !Systems.Pets.PetsHandler.Pets.ContainsKey(player.UserId);
+
+            if (!enable)
                 Systems.Pets.PetsHandler.Pets.Remove(player.UserId);
             else //if(role != RoleType.None && role != RoleType.Spectator && role != RoleType.Scp079) 
                 Systems.Pets.PetsHandler.Pets.Add(player.UserId, (role, name));
             Systems.Pets.PetsHandler.RefreshPets(player);
             _s = true;
-            return new string[] { Systems.Pets.PetsHandler.Pets.ContainsKey(player.UserId) ? "Enabled pet" : "Disabled pet" };
+            return new string[] { enable ? "Enabled pet" : "Disabled pet" };
         }
     }
 }
