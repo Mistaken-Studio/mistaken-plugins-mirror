@@ -29,7 +29,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 if (!Ranks.RanksHandler.VipList.TryGetValue(Sender.SenderId, out Ranks.RanksHandler.PlayerInfo info) || (info.VipLevel != Ranks.RanksHandler.VipLevel.APOLLYON && info.VipLevel != Ranks.RanksHandler.VipLevel.KETER))
                     return new string[] { "Ta komenda jest tylko dla osób z Apollyonem lub Keterem" };
             }
-            if (args.Length < /*2*/1) 
+
+            var player = sender.GetPlayer();
+            bool enable = !Systems.Pets.PetsHandler.Pets.ContainsKey(player.UserId);
+            if (args.Length < /*2*/1 && enable) 
                 return new string[] { GetUsage() };
             /*if(args[0] == "config-size")
             {
@@ -49,10 +52,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
             var role = RoleType.None;//(RoleType)int.Parse(args[0]);
             var name = string.Join(" ", args/*.Skip(1)*/);
-            var player = sender.GetPlayer();
-
-            bool enable = !Systems.Pets.PetsHandler.Pets.ContainsKey(player.UserId);
-
+            if (string.IsNullOrWhiteSpace(name))
+                name = $"Smol {player.DisplayNickname}";
             if (!enable)
                 Systems.Pets.PetsHandler.Pets.Remove(player.UserId);
             else //if(role != RoleType.None && role != RoleType.Spectator && role != RoleType.Scp079) 
