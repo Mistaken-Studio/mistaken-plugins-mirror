@@ -157,7 +157,7 @@ namespace Gamer.Mistaken.CommandsExtender
         public static readonly Dictionary<string, (Player, Player)> LastVictims = new Dictionary<string, (Player, Player)>();
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (!ev.Target.IsVerified)
+            if(!ev.Target.IsReadyPlayer())
                 return;
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
                 ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.DamageType.name} | {ev.Amount}");
