@@ -142,26 +142,26 @@ namespace Gamer.Mistaken.EVO
                 Log.Info("[EVO] No rank detected");
             }
         }
-        private static void SSL_OnAchievementInfoResponse(uint Id, string UserId, uint Progres, uint Level)
+        private static void SSL_OnAchievementInfoResponse(uint Id, string UserId, uint Progress, uint Level)
         {
             var achiev = Achievements.Find(a => a.Id == Id);
             if (achiev == null) return;
             if (Level >= 3) return;
             var nextLevel = achiev.Levels[Level];
-            if (nextLevel.Key <= Progres)
+            if (nextLevel.Progress <= Progress)
             {
                 SSL.Client.Send(MessageType.ACHIEVEMENT_ADD_LEVEL, new AchievementAddLevel(Id, UserId));
                 SSL.Client.Send(MessageType.EVO_UNLOCK_RANK, new EVOUnlockRank
                 {
                     Rank = new Rank
                     {
-                        Color = ((Colors)Level + 1).ToString(),
-                        Name = nextLevel.Value
+                        Color = nextLevel.Color ?? ((Colors)Level + 1).ToString(),
+                        Name = nextLevel.Name
                     },
                     UserId = UserId
                 });
 
-                RealPlayers.List.FirstOrDefault(p => p.UserId == UserId)?.Broadcast("EVO", 10, PluginHandler.Instance.ReadTranslation("evo_unlock").Replace("$achiev", $"<color={((Colors)Level + 1)}>{nextLevel.Value}</color>"));
+                RealPlayers.Get(UserId)?.Broadcast("EVO", 10, PluginHandler.Instance.ReadTranslation("evo_unlock").Replace("$achiev", $"<color={nextLevel.Color ?? ((Colors)Level + 1).ToString().Replace("BLUE_GREEN", "GREEN")}>{nextLevel.Name}</color>"));
             }
         }
 
@@ -209,10 +209,14 @@ namespace Gamer.Mistaken.EVO
                 return;
             if (ev.NewRole == RoleType.NtfCommander)
                 AddProgres(1005, ev.Player.UserId);
-            if (ev.NewRole == RoleType.ChaosInsurgency)
+            else if (ev.NewRole == RoleType.ChaosInsurgency)
                 AddProgres(1008, ev.Player.UserId);
-            if (ev.NewRole.GetTeam() == Team.SCP && ev.NewRole != RoleType.Scp0492)
+            else if (ev.NewRole.GetTeam() == Team.SCP && ev.NewRole != RoleType.Scp0492)
                 AddProgres(1011, ev.Player.UserId);
+            else  if (ev.NewRole == RoleType.ClassD)
+                AddProgres(1012, ev.Player.UserId);
+            else if (ev.NewRole == RoleType.Scientist)
+                AddProgres(1013, ev.Player.UserId);
         }
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
@@ -220,8 +224,10 @@ namespace Gamer.Mistaken.EVO
             if (ev.Killer.Role == RoleType.Scp049 && !ev.Killer.DoNotTrack)
                 AddProgres(1001, ev.Killer.UserId);
 
-            if (ev.Target.Team == Team.SCP && ev.Target.Role != RoleType.Scp0492 && ev.Killer != null && !ev.Target.DoNotTrack)
+            if (ev.Target.Team == Team.SCP && ev.Target.Role != RoleType.Scp0492 && ev.Killer != null && !ev.Killer.DoNotTrack && ev.Target.Id != ev.Killer.Id)
                 AddProgres(1003, ev.Killer.UserId);
+            if (!ev.Target.DoNotTrack && ev.HitInformation.GetDamageType() == DamageTypes.Decont)
+                AddProgres(1014, ev.Target.UserId);
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
@@ -234,6 +240,8 @@ namespace Gamer.Mistaken.EVO
         public static void AddProgres(uint Id, string UserId)
         {
             if (PluginHandler.Config.IsHardRP())
+                return;
+            if (UserId == null)
                 return;
             SSL.Client.Send(MessageType.ACHIEVEMENT_ADD_PROGGRES, new AchievementAddProggres(Id, UserId));
             SSL.Client.Send(MessageType.ACHIEVEMENT_REQUEST_INFO, new AchievementRequestProggres(Id, UserId)).GetResponseDataCallback((result) =>
