@@ -117,27 +117,21 @@ namespace Gamer.Mistaken.Systems.End
                 new Vector3(13, 20, 19),
                 (p) =>
                 {
-                    Log.Debug("1");
                     if (!p.IsCuffed)
                         return;
-                    Log.Debug("2");
                     switch (p.Team)
                     {
                         case Team.MTF:
-                            Log.Debug("3");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, p.GameObject, false, true);
                             break;
                         case Team.CHI:
-                            Log.Debug("4");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, p.GameObject, false, true);
                             break;
                         default:
-                            Log.Debug("5");
                             return;
                     }
-                    Log.Debug("6");
                     RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
             );
@@ -146,27 +140,21 @@ namespace Gamer.Mistaken.Systems.End
                 new Vector3(21, 20, 10),
                 (p) =>
                 {
-                    Log.Debug("1");
                     if (!p.IsCuffed)
                         return;
-                    Log.Debug("2");
                     switch (p.Team)
                     {
                         case Team.MTF:
-                            Log.Debug("3");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, p.GameObject, false, true);
                             break;
                         case Team.CHI:
-                            Log.Debug("4");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, p.GameObject, false, true);
                             break;
                         default:
-                            Log.Debug("5");
                             return;
                     }
-                    Log.Debug("6");
                     RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
             );

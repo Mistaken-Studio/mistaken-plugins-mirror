@@ -31,18 +31,13 @@ namespace Gamer.Mistaken.Systems.Components
 
         private void OnTriggerEnter(Collider other)
         {
-            Log.Debug("0.1");
             if (!other.GetComponent<CharacterClassManager>())
                 return;
-            Log.Debug("0.2");
             var player = Player.Get(other.gameObject);
-            Log.Debug("0.3");
             if (player.IsNPC())
                 return;
-            Log.Debug("0.4");
             if (player.IsDead)
                 return;
-            Log.Debug("0.5");
             this.OnTrigger(player);
         }
     }
