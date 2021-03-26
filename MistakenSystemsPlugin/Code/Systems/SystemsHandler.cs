@@ -305,7 +305,7 @@ namespace Gamer.Mistaken.Systems
                 if (ev.Attacker.Side == ev.Target.Side && !(ev.Target.Role == RoleType.ClassD && ev.Attacker.Role == RoleType.ClassD) && ev.Target.Id != ev.Attacker.Id)
                 {
                     ev.Amount = Math.Min(ev.Target.Health - 1, ev.Amount);
-                    MEC.Timing.CallDelayed(1, () => ev.Target.DisableEffect<Bleeding>());
+                    MEC.Timing.CallDelayed(0.2f, () => ev.Target.DisableEffect<Bleeding>());
                     return;
                 }
             }
@@ -314,7 +314,7 @@ namespace Gamer.Mistaken.Systems
                 if (ev.Attacker.Side == ev.Target.Side && !(ev.Target.Role == RoleType.ClassD && ev.Attacker.Role == RoleType.ClassD) && ev.Target.Id != ev.Attacker.Id)
                 {
                     ev.Amount = Math.Min(ev.Target.Health - 1, ev.Amount);
-                    MEC.Timing.CallDelayed(1, () => ev.Target.DisableEffect<Bleeding>());
+                    MEC.Timing.CallDelayed(0.2f, () => ev.Target.DisableEffect<Bleeding>());
                     return;
                 }
             }
