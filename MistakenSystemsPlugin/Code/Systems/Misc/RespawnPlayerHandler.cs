@@ -69,11 +69,15 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (currentSCP.Team == Team.SCP && currentSCP.Role != RoleType.Scp0492 && (Change106 || currentSCP.Role != RoleType.Scp106))
             {
-                var spectators = RealPlayers.List.Where(p => p.IsDead && !p.IsOverwatchEnabled).ToArray();
+                var spectators = RealPlayers.List.Where(p => p.IsDead && !p.IsOverwatchEnabled).OrderBy(p => p.referenceHub.characterClassManager.DeathTime).ToArray();
                 if (spectators.Length == 0)
+                {
+                    MapPlus.Broadcast("RESPAWN", 10, $"SCP player Change, ({currentSCP.Id}) {currentSCP.Nickname} {currentSCP.UserId} -> Nobody", Broadcast.BroadcastFlags.AdminChat);
                     currentSCP.Kill("Heart Attack");
+                }
                 else
                 {
+                    MapPlus.Broadcast("RESPAWN", 10, $"SCP player Change, ({currentSCP.Id}) {currentSCP.Nickname} {currentSCP.UserId} -> ({spectators[0].Id}) {spectators[0].Nickname} {spectators[0].UserId}", Broadcast.BroadcastFlags.AdminChat);
                     spectators[0].Role = currentSCP.Role;
                     if (currentSCP.Role == RoleType.Scp079)
                     {
