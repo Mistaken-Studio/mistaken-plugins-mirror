@@ -80,7 +80,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
             }
             Cassie.Message($"SCP 0 4 9 recontained successfully by {recontainerName}");
             if (RealPlayers.List.Any(p => p.Role != RoleType.Scp079 && p.Team == Team.SCP) && RealPlayers.Any(RoleType.Scp079))
-                Mistaken.Systems.Patches.SCP079RecontainPatch.Prefix(true);
+                NineTailedFoxAnnouncer.CheckForZombies(scp049.GameObject);
             else
                 Log.Debug("SCP 079 is not last or there is no SCP 079");
         }

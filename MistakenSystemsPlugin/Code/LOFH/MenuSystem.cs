@@ -501,7 +501,7 @@ namespace Gamer.Mistaken.LOFH
             });
         }
 
-        public static void ForceRefreshPlayerList(int menuId) => CurrentMenus.Where(i => i.Value == menuId).ToList().ForEach(p => ForceRefreshPlayerList(Player.Get(p.Key)));
+        public static void ForceRefreshPlayerList(int menuId) => CurrentMenus.Where(i => i.Value == menuId).ToList().ForEach(p => ForceRefreshPlayerList(RealPlayers.Get(p.Key)));
         private static void ForceRefreshPlayerList(Player p) => RemoteAdmin.LOFHPatch.Prefix("REQUEST_DATA PLAYER_LIST SILENT", p.Sender);
         
         private static string Generate(string name, int id) =>

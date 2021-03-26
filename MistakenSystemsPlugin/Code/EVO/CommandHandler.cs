@@ -47,9 +47,9 @@ namespace Gamer.Mistaken.EVO
                                     tor.Add($"Current progress - {info.Progress}");
                                 else
                                     tor.Add($"Current progress - 0");
-                                tor.Add($" - <color={Colors.BLUE_GREEN.ToString().Replace("BLUE_GREEN", "GREEN")}>{achievement.Levels[0].Value}</color> ({achievement.Levels[0].Key})");
-                                tor.Add($" - <color={Colors.CYAN}>{achievement.Levels[1].Value}</color> ({achievement.Levels[1].Key})");
-                                tor.Add($" - <color={Colors.AQUA}>{achievement.Levels[2].Value}</color> ({achievement.Levels[2].Key})");
+                                tor.Add($" - <color={achievement.Levels[0].Color ?? Colors.BLUE_GREEN.ToString().Replace("BLUE_GREEN", "GREEN")}>{achievement.Levels[0].Name}</color> ({achievement.Levels[0].Progress})");
+                                tor.Add($" - <color={achievement.Levels[1].Color ?? Colors.CYAN.ToString()}>{achievement.Levels[1].Name}</color> ({achievement.Levels[1].Progress})");
+                                tor.Add($" - <color={achievement.Levels[2].Color ?? Colors.AQUA.ToString()}>{achievement.Levels[2].Name}</color> ({achievement.Levels[2].Progress})");
                             }
                             player.SendConsoleMessage(string.Join("\n", tor), "green");
                             NorthwoodLib.Pools.ListPool<string>.Shared.Return(tor);

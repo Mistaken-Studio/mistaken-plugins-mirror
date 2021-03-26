@@ -115,7 +115,7 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
-            if (!ev.Player.IsVerified)
+            if (!ev.Player.IsReadyPlayer())
                 return;
             if (MuteAllCommand.Muted.Contains(ev.Player.UserId))
             {
@@ -129,7 +129,7 @@ namespace Gamer.Mistaken.CommandsExtender
                     if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
-                        Player p = Player.Get(playerId);
+                        Player p = RealPlayers.Get(playerId);
                         if (p == null)
                             continue;
                         p.Role = data.Role;
@@ -157,7 +157,7 @@ namespace Gamer.Mistaken.CommandsExtender
         public static readonly Dictionary<string, (Player, Player)> LastVictims = new Dictionary<string, (Player, Player)>();
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (!ev.Target.IsVerified)
+            if(!ev.Target.IsReadyPlayer())
                 return;
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
                 ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.DamageType.name} | {ev.Amount}");

@@ -58,13 +58,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             foreach (var item in pids)
             {
-                Timing.RunCoroutine(Execute(Player.Get(item).GrenadeManager, times));
+                Timing.RunCoroutine(Execute(RealPlayers.Get(item).GrenadeManager, times));
             }
         }
 
         public void Throw(int pid, int times)
         {
-            Timing.RunCoroutine(Execute(Player.Get(pid).GrenadeManager, times, true));
+            Timing.RunCoroutine(Execute(RealPlayers.Get(pid).GrenadeManager, times, true));
         }
 
         public IEnumerator<float> Execute(GrenadeManager grenadeManager, int amount = 5, bool throwIt = false)

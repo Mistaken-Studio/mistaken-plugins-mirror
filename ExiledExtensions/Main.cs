@@ -9,6 +9,7 @@ using UnityEngine;
 using MEC;
 using System.Security.Cryptography;
 using Exiled.API.Extensions;
+using NPCS;
 
 namespace Gamer.Utilities
 {
@@ -42,6 +43,13 @@ namespace Gamer.Utilities
 
     public static class Main
     {
+        public static Vector3 GetByRoomOffset(this Room me, Vector3 offset)
+        {
+            var basePos = me.Position;
+            offset = me.transform.forward * -offset.x + me.transform.right * -offset.z + Vector3.up * offset.y;
+            basePos += offset;
+            return basePos;
+        }
         public static void Broadcast(this Player me, string tag, ushort duration, string message, Broadcast.BroadcastFlags flags = global::Broadcast.BroadcastFlags.Normal)
         {
             me.Broadcast(duration, $"<color=orange>[<color=green>{tag}</color>]</color> {message}", flags);
@@ -232,7 +240,7 @@ namespace Gamer.Utilities
             {
                 if (int.TryParse(item, out int pid))
                 {
-                    var p = Player.Get(pid);
+                    var p = RealPlayers.Get(pid);
                     if (p != null)
                         tor.Add(p);
                 }
@@ -357,5 +365,7 @@ namespace Gamer.Utilities
                 me.ReferenceHub.scp106PlayerScript.NetworkportalPosition = new Vector3(0, 6000, 0);
             });
         }
+
+        public static bool IsReadyPlayer(this Player me) => me.IsConnected && me.IsVerified && !me.IsNPC();
     }
 }

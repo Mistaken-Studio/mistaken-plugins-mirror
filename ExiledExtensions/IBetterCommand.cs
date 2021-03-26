@@ -76,7 +76,7 @@ namespace Gamer.Utilities
                         {
                             if (teamId > -1 && teamId < 7)
                             {
-                                newQuery = argsString.Replace("@team:" + value, string.Join(".", Player.Get((Team)teamId).Select(p => p.Id)));
+                                newQuery = argsString.Replace("@team:" + value, string.Join(".", RealPlayers.Get((Team)teamId).Select(p => p.Id)));
                             }
                         }
                         else
@@ -84,7 +84,7 @@ namespace Gamer.Utilities
                             for (int i = 0; i < 7; i++)
                             {
                                 if (((Team)i).ToString().ToLower() == value.ToLower())
-                                    newQuery = argsString.Replace("@team:" + value, string.Join(".", Player.Get((Team)i).Select(p => p.Id)));
+                                    newQuery = argsString.Replace("@team:" + value, string.Join(".", RealPlayers.Get((Team)i).Select(p => p.Id)));
                             }
                         }
                     }
@@ -102,7 +102,7 @@ namespace Gamer.Utilities
                         {
                             if (teamId > -1 && teamId < 7)
                             {
-                                newQuery = argsString.Replace("@!team:" + value, string.Join(".", Player.Get((Team)teamId).Select(p => p.Id)));
+                                newQuery = argsString.Replace("@!team:" + value, string.Join(".", RealPlayers.Get((Team)teamId).Select(p => p.Id)));
                             }
                         }
                         else
@@ -110,7 +110,7 @@ namespace Gamer.Utilities
                             for (int i = 0; i < 7; i++)
                             {
                                 if (((Team)i).ToString().ToLower() == value.ToLower())
-                                    newQuery = argsString.Replace("@!team:" + value, string.Join(".",Player.Get((Team)i).Select(p => p.Id)));
+                                    newQuery = argsString.Replace("@!team:" + value, string.Join(".", RealPlayers.Get((Team)i).Select(p => p.Id)));
                             }
                         }
                     }
@@ -129,7 +129,7 @@ namespace Gamer.Utilities
                         {
                             if (roleId > -1 && roleId < 18)
                             {
-                                newQuery = argsString.Replace("@role:" + value, string.Join(".", Player.Get((RoleType)roleId).Select(p => p.Id)));
+                                newQuery = argsString.Replace("@role:" + value, string.Join(".", RealPlayers.Get((RoleType)roleId).Select(p => p.Id)));
                             }
                         }
                         else
@@ -137,7 +137,7 @@ namespace Gamer.Utilities
                             for (int i = 0; i < 18; i++)
                             {
                                 if (((RoleType)i).ToString().ToLower() == value.ToLower())
-                                    newQuery = argsString.Replace("@role:" + value, string.Join(".", Player.Get((RoleType)i).Select(p => p.Id)));
+                                    newQuery = argsString.Replace("@role:" + value, string.Join(".", RealPlayers.Get((RoleType)i).Select(p => p.Id)));
                             }
                         }
                     }

@@ -132,7 +132,7 @@ namespace Gamer.Mistaken.Ban2
                     var Sender = sender as CommandSender;
                     if (!int.TryParse(args[0], out int pid))
                         return new string[] { "Failed to parse playerId to int32" };
-                    var target = Player.Get(pid);
+                    var target = RealPlayers.Get(pid);
                     if (target == null)
                         return new string[] { "Player not found" };
 

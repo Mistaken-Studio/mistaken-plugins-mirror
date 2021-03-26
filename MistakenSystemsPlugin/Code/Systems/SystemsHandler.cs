@@ -76,6 +76,9 @@ namespace Gamer.Mistaken.Systems
 
             new End.FireworkManager(plugin);
 
+            new Seasonal.EasterHandler(plugin);
+            new Seasonal.PrimaAprilisHanlder(plugin);
+
             /*MEC.Timing.CallDelayed(2, () =>
             {
                 var method = typeof(PlayerPositionManager).GetMethod(nameof(PlayerPositionManager.TransmitData), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static);
@@ -302,7 +305,7 @@ namespace Gamer.Mistaken.Systems
                 if (ev.Attacker.Side == ev.Target.Side && !(ev.Target.Role == RoleType.ClassD && ev.Attacker.Role == RoleType.ClassD) && ev.Target.Id != ev.Attacker.Id)
                 {
                     ev.Amount = Math.Min(ev.Target.Health - 1, ev.Amount);
-                    MEC.Timing.CallDelayed(1, () => ev.Target.DisableEffect<Bleeding>());
+                    MEC.Timing.CallDelayed(0.2f, () => ev.Target.DisableEffect<Bleeding>());
                     return;
                 }
             }
@@ -311,11 +314,11 @@ namespace Gamer.Mistaken.Systems
                 if (ev.Attacker.Side == ev.Target.Side && !(ev.Target.Role == RoleType.ClassD && ev.Attacker.Role == RoleType.ClassD) && ev.Target.Id != ev.Attacker.Id)
                 {
                     ev.Amount = Math.Min(ev.Target.Health - 1, ev.Amount);
-                    MEC.Timing.CallDelayed(1, () => ev.Target.DisableEffect<Bleeding>());
+                    MEC.Timing.CallDelayed(0.2f, () => ev.Target.DisableEffect<Bleeding>());
                     return;
                 }
             }
-            if (ev.Attacker != null && Player.Get(ev.Attacker.Id) == null)
+            if (ev.Attacker != null && RealPlayers.Get(ev.Attacker.Id) == null)
                 ev.IsAllowed = false;
             if (!ev.IsAllowed) return;
             if (ev.DamageType == DamageTypes.Tesla && ev.Target.Team == Team.SCP && ev.Amount < ev.Target.Health)
@@ -355,7 +358,7 @@ namespace Gamer.Mistaken.Systems
             {
                 Timing.CallDelayed(5, () =>
                 {
-                    var scps = Player.Get(Team.SCP).ToArray();
+                    var scps = RealPlayers.Get(Team.SCP).ToArray();
                     if (scps.Length == 1 && scps[0].Role == RoleType.Scp079 && !Generator079.mainGenerator.forcedOvercharge)
                     {
                         Generator079.mainGenerator.forcedOvercharge = true;
@@ -397,7 +400,7 @@ namespace Gamer.Mistaken.Systems
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
-            if (!ev.Player.IsVerified)
+            if (!ev.Player.IsReadyPlayer())
                 return;
             if (ev.Player.DisplayNickname != null)
                 DisplayNameChangend[ev.Player.UserId] = ev.Player.DisplayNickname;

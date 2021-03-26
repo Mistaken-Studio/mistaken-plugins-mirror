@@ -146,9 +146,9 @@ namespace Gamer.Mistaken.Base
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (!ev.Attacker.IsVerified)
+            if (!ev.Attacker.IsReadyPlayer())
                 return;
-            if (!ev.Target.IsVerified)
+            if (!ev.Target.IsReadyPlayer())
                 return;
             if (IsTeamkill(ev.Attacker, ev.Target))
                 TeamAttack.Create(ev);
@@ -156,9 +156,9 @@ namespace Gamer.Mistaken.Base
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
-            if (!ev.Killer.IsVerified)
+            if (!ev.Killer.IsReadyPlayer())
                 return;
-            if (!ev.Target.IsVerified)
+            if (!ev.Target.IsReadyPlayer())
                 return;
             if (IsTeamkill(ev.Killer, ev.Target))
             {

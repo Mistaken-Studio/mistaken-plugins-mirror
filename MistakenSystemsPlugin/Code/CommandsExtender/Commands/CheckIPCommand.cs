@@ -61,7 +61,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (args.Length == 0) return new string[] { GetUsage() };
             if (int.TryParse(args[0], out int pid))
             {
-                var player = Player.Get(pid);
+                var player = RealPlayers.Get(pid);
 
                 if (player != null)
                 {

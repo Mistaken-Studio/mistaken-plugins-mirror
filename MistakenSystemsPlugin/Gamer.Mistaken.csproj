@@ -239,6 +239,8 @@
     <Compile Include="Code\Suicide\Command.cs" />
     <Compile Include="Code\Suicide\SuicideHandler.cs" />
     <Compile Include="Code\Systems\Bans\BansAnalizer.cs" />
+    <Compile Include="Code\Systems\Components\Escape.cs" />
+    <Compile Include="Code\Systems\Components\Killer.cs" />
     <Compile Include="Code\Systems\End\RoundLogHandler.cs" />
     <Compile Include="Code\Systems\End\OverwatchHandler.cs" />
     <Compile Include="Code\Systems\End\AutoUpdateHandler.cs" />
@@ -323,6 +325,8 @@
     <Compile Include="Code\Systems\Patches\GhostMode.cs" />
     <Compile Include="Code\Systems\Patches\SCP079RecontainPatch.cs" />
     <Compile Include="Code\Systems\Patches\SCPVoiceChatPatch.cs" />
+    <Compile Include="Code\Systems\Seasonal\EasterHandler.cs" />
+    <Compile Include="Code\Systems\Seasonal\PrimaAprilisHanlder.cs" />
     <Compile Include="Code\Systems\Shield\ShieldedManager.cs" />
     <Compile Include="Code\Systems\Staff\StaffHandler.cs" />
     <Compile Include="Code\Systems\ThreatLevel\ThreatLevelManager.cs" />
@@ -360,5 +364,6 @@
   <ItemGroup>
     <Content Include="Code\Systems\NicknameFixer\GitHubBlacklist.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

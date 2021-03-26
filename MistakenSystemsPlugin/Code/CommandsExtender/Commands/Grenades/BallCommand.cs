@@ -55,7 +55,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             foreach (var item in pids)
             {
-                Player.Get(item).DropGrenadeUnder(2, times);
+                RealPlayers.Get(item).DropGrenadeUnder(2, times);
             }
         }
     }

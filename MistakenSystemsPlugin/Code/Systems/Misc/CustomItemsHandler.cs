@@ -179,7 +179,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
                         continue;
                     MapPlus.Spawn(new Inventory.SyncItemInfo
                     {
-                        durability = 1 + (customItem.Durability / 1000),
+                        durability = 1 + (customItem.Durability / 1000f),
                         id = customItem.Item,
                         modBarrel = item.weaponMods.Barrel,
                         modSight = item.weaponMods.Sight,

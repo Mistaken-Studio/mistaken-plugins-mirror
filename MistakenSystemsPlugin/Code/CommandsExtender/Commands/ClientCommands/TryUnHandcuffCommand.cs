@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 player.EnableEffect<CustomPlayerEffects.Disabled>(15);
                 player.EnableEffect<CustomPlayerEffects.Concussed>(30);
                 player.EnableEffect<CustomPlayerEffects.Bleeding>();
-                Player cuffer = Player.Get(player.CufferId);
+                Player cuffer = RealPlayers.Get(player.CufferId);
                 cuffer?.ShowHintPulsating($"!! {player.Nickname} <color=yellow>próbował</color> się rozkuć !!", 10, true, true);
                 success = true;
                 return new string[] { "Nie udało ci się" };

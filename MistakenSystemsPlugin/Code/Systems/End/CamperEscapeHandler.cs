@@ -65,118 +65,111 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
+            Vector3 Center012 = default;
             foreach (var door in Map.Doors)
             {
                 if (door.Type() == DoorType.Scp012Bottom)
                     Center012 = door.transform.position + (door.transform.right * 1.5f) + (door.transform.forward * 8.5f);
             }
-            Timing.RunCoroutine(CheckCamper());
-            Timing.RunCoroutine(CheckEscape());  
-        }
 
-        private Vector3 Center012 = new Vector3();
-
-        private IEnumerator<float> CheckCamper()
-        {
-            yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
-            while (Round.IsStarted && rid == RoundPlus.RoundId)
-            {
-                foreach (Player player in RealPlayers.List.Where(p => p.IsAlive && p.Role != RoleType.Scp079))
+            //SCP012
+            Components.Killer.Spawn(
+                Center012 + new Vector3(0.25f, -0, 0),
+                new Vector3(1.4f, 4, 1),
+                default,
+                5,
+                "<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>",
+                false,
+                (p) => p.Team == Team.SCP
+            );
+            //SCP106
+            Components.Killer.Spawn(
+                Map.Rooms.First(r => r.Type == RoomType.Hcz106).GetByRoomOffset(new Vector3(15f, -10, -7.5f)),
+                new Vector3(33, 1, 33),
+                default,
+                0,
+                "<color=red><b>Warning!</b></color>\nYou <b>died</b>",
+                true,
+                (p) => p.Team == Team.SCP
+            );
+            //Escape
+            Components.Killer.Spawn(
+                new Vector3(179.5f, 990, 32.5f),
+                new Vector3(13, 20, 19),
+                default,
+                5,
+                "<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>",
+                false,
+                (p) => p.Team == Team.CDP || p.Team == Team.RSC || p.IsCuffed
+            );
+            Components.Killer.Spawn(
+                new Vector3(174.5f, 990, 37),
+                new Vector3(21, 20, 10),
+                default,
+                5,
+                "<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>",
+                false,
+                (p) => p.Team == Team.CDP || p.Team == Team.RSC || p.IsCuffed
+            );
+            //Escape
+            Components.Escape.Spawn(
+                new Vector3(179.5f, 990, 32.5f),
+                new Vector3(13, 20, 19),
+                (p) =>
                 {
-                    Vector3 pos = player.Position;
-                    
-                    if (((pos.x >= 172 && pos.x <= 185 && pos.z >= 23 && pos.z <= 42) || (pos.x >= 164 && pos.x <= 185 && pos.z >= 32 && pos.z <= 42)) && pos.y >= 980 && pos.y <= 1000)
+                    Log.Debug("1");
+                    if (!p.IsCuffed)
+                        return;
+                    Log.Debug("2");
+                    switch (p.Team)
                     {
-                        switch (player.Team)
-                        {
-                            case Team.RIP:
-                            case Team.CDP:
-                            case Team.RSC:
-                                {
-                                    break;
-                                }
-                            default:
-                                {
-                                    if (player.IsCuffed || player.UserId == "") 
-                                        break;
-                                    RoundLogger.Log("ANTY CAMPER", "DAMAGE", $"{player.PlayerToString()} was damaged for staing in escape");
-                                    player.ShowHint("<color=red><b>Warning!</b></color><br>If you stay here you will receive <b>damage</b>", 1);
-                                    if (player.Team == Team.SCP) 
-                                        player.Hurt(10, new DamageTypes.DamageType("*Anty Camper"));
-                                    else 
-                                        player.Hurt(2, new DamageTypes.DamageType("*Anty Camper"));
-                                    Log.Debug("Done damage to " + player.Nickname + " because of unauthorizated escape!");
-                                    break;
-                                }
-                        }
+                        case Team.MTF:
+                            Log.Debug("3");
+                            Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
+                            p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, p.GameObject, false, true);
+                            break;
+                        case Team.CHI:
+                            Log.Debug("4");
+                            Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
+                            p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, p.GameObject, false, true);
+                            break;
+                        default:
+                            Log.Debug("5");
+                            return;
                     }
-                    else if ((pos.x >= 12 && pos.x <= 15 && pos.z <= -18 && pos.z >= -22) && pos.y >= 1000 && pos.y <= 1005)
-                    {
-                        player.ShowHint("<color=red><b>Warning!</b></color><br>If you stay here you will receive <b>damage</b>", 1);
-                        RoundLogger.Log("ANTY CAMPER", "DAMAGE", $"{player.PlayerToString()} was damaged for staing above GATE A Stairs");
-                        if (player.Team == Team.SCP) 
-                            player.Hurt(10, new DamageTypes.DamageType("*Anty Camper"));
-                        else 
-                            player.Hurt(5, new DamageTypes.DamageType("*Anty Camper"));
-                        Log.Debug("Done damage to " + player.Nickname + " because of unauthorizated camping!");
-                    }
-                    else
-                    {
-                        if ((Center012.x - 0.5f <= pos.x && Center012.x + 1 >= pos.x && Center012.z - 0.5f <= pos.z && Center012.z + 0.5f >= pos.z) && pos.y >= -10 && pos.y <= -2)
-                        {
-                            switch (player.Team)
-                            {
-                                case Team.RIP:
-                                case Team.SCP:
-                                    break;
-                                default:
-                                    {
-                                        player.ShowHint("<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>", 1);
-                                        RoundLogger.Log("ANTY CAMPER", "DAMAGE", $"{player.PlayerToString()} was damaged for staing in SCP012");
-                                        player.Hurt(5, new DamageTypes.DamageType("*Anty Camper"));
-                                        Log.Debug("Done damage to " + player.Nickname + " because of unauthorizated 012!");
-                                        break;
-                                    }
-                            }
-                        }
-                    }
+                    Log.Debug("6");
+                    RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
-                yield return Timing.WaitForSeconds(1f);
-            }
-        }
-
-        private IEnumerator<float> CheckEscape()
-        {
-            yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
-            {
-                foreach (Player player in RealPlayers.List)
+            );
+            Components.Escape.Spawn(
+                new Vector3(174.5f, 990, 37),
+                new Vector3(21, 20, 10),
+                (p) =>
                 {
-                    Vector3 pos = player.Position;
-                    if (player.IsCuffed && pos.x >= 174 && pos.x <= 183 && pos.y >= 980 && pos.y <= 990 && pos.z >= 25 && pos.z <= 34)
+                    Log.Debug("1");
+                    if (!p.IsCuffed)
+                        return;
+                    Log.Debug("2");
+                    switch (p.Team)
                     {
-                        switch (player.Team)
-                        {
-                            case Team.CHI:
-                                {
-                                    //player.CufferId = -1;
-                                    Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
-                                    player.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, player.GameObject, false, true);
-                                    break;
-                                }
-                            case Team.MTF:
-                                {
-                                    //player.CufferId = -1;
-                                    Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
-                                    player.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, player.GameObject, false, true);
-                                    break;
-                                }
-                        }
+                        case Team.MTF:
+                            Log.Debug("3");
+                            Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
+                            p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, p.GameObject, false, true);
+                            break;
+                        case Team.CHI:
+                            Log.Debug("4");
+                            Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
+                            p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, p.GameObject, false, true);
+                            break;
+                        default:
+                            Log.Debug("5");
+                            return;
                     }
+                    Log.Debug("6");
+                    RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
-                yield return Timing.WaitForSeconds(1f);
-            }
+            );
         }
     }
 }

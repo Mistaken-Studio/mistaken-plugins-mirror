@@ -124,7 +124,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             Admin = sender.GetPlayer();
             if (int.TryParse(args[0], out int pid))
             {
-                player = Player.Get(pid);
+                player = RealPlayers.Get(pid);
 
                 if (player != null)
                 {

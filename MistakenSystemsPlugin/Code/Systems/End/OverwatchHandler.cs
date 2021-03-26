@@ -59,7 +59,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
-            if (!ev.Player.IsVerified)
+            if (!(ev.Player?.IsReadyPlayer() ?? false))
                 return;
             InOverwatch.Remove(ev.Player.UserId);
         }

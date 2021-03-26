@@ -62,12 +62,13 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
         private IEnumerator<float> UpdateInfo()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
+            int rid = RoundPlus.RoundId; 
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 try
                 {
                     List<Player> zombieInRange = NorthwoodLib.Pools.ListPool<Player>.Shared.Rent();
-                    foreach (var player in Player.Get(RoleType.Scp049))
+                    foreach (var player in RealPlayers.Get(RoleType.Scp049))
                     {
                         if (player == null)
                             continue;
@@ -130,7 +131,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                 try
                 {
                     int shield = 60;
-                    foreach (var zombie in Player.Get(RoleType.Scp0492))
+                    foreach (var zombie in RealPlayers.Get(RoleType.Scp0492))
                     {
                         if (Vector3.Distance(player.Position, zombie.Position) <= 10)
                         {
