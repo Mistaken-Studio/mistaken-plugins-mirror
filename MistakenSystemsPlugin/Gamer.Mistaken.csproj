@@ -58,8 +58,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="0NPCS_publicized">
-      <HintPath>..\References\0NPCS_publicized.dll</HintPath>
+    <Reference Include="0NPCS">
+      <HintPath>..\References\0NPCS.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -155,6 +155,7 @@
     <Compile Include="Code\AIRS\ReportStatusUpdateHandler.cs" />
     <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
     <Compile Include="Code\Ban2\BansHandler.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TeslaOnCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TestCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\FakeNickCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LastVictimCommand.cs" />
@@ -162,7 +163,7 @@
     <Compile Include="Code\CommandsExtender\Commands\SpawnSamsaraCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\RoundStatsCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ModRACommand.cs" />
-    <Compile Include="Code\CommandsExtender\Commands\PetCommand.cs" />
+    <Compile Include="Code\CommandsExtender\Commands\ClientCommands\PetCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\ChangelogCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LastAttackerCmd.cs" />
     <Compile Include="Code\CommandsExtender\Commands\TalkCommand.cs" />

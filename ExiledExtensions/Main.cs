@@ -150,6 +150,43 @@ namespace Gamer.Utilities
             }
             return false;
         }
+        public static bool CheckPermission(this string userId, string permission)
+        {
+            if (userId.IsDevUserId())
+                return true;
+            else
+            {
+                UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(userId);
+                Group group = null;
+                if (userGroup != null)
+                {
+                    string key = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault((KeyValuePair<string, UserGroup> g) => g.Value == userGroup).Key ?? "";
+                    Log.Debug("Group " + key, true);
+                    if (Exiled.Permissions.Extensions.Permissions.Groups == null)
+                    {
+                        Log.Error("Permissions config is null.");
+                        return false;
+                    }
+                    if (!Exiled.Permissions.Extensions.Permissions.Groups.Any())
+                    {
+                        Log.Error("No permission config groups.");
+                        return false;
+                    }
+                    if (!Exiled.Permissions.Extensions.Permissions.Groups.TryGetValue(key, out group))
+                    {
+                        Log.Error("Could not get \"" + key + "\" permission");
+                        return false;
+                    }
+                }
+                else
+                    group = Exiled.Permissions.Extensions.Permissions.DefaultGroup;
+                if (Main.HasGroupPermission(group, permission))
+                    return true;
+                if (Main.HasGroupInheritancePermission(group, permission))
+                    return true;
+            }
+            return false;
+        }
 
         public static string GetDisplayName(this Player player) => player == null ? "NULL" : player.DisplayNickname ?? player.Nickname;
 
@@ -302,8 +339,8 @@ namespace Gamer.Utilities
         public static string ToString(this Player me, bool userId, bool autoHideUserId = true)
         {
             if (autoHideUserId)
-                return $"({me.Id}) {me.Nickname}";
-            return $"({me.Id}) {me.Nickname}" + (userId ? $" | {me.UserId}" : "");
+                return $"({me.Id}) {me.GetDisplayName()}";
+            return $"({me.Id}) {me.GetDisplayName()}" + (userId ? $" | {me.UserId}" : "");
         }
 
         public static bool IsLCZDecontaminated(this LightContainmentZoneDecontamination.DecontaminationController _, float minTimeLeft = 0)

@@ -28,6 +28,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             return "Talk [players]";
         }
 
+        public static readonly Queue<string> Warps = new Queue<string>(new string[] 
+        {
+            "jail1",
+            //"jail2",
+            //"jail3",
+            "jail4",
+            "jail5",
+        });
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
         public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
@@ -73,6 +81,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             else
             {
                 int[] targets = (args[0] + $".{player.Id}").Split('.').Select(i => int.Parse(i)).ToHashSet().ToArray();
+                string pos = Warps.Dequeue();
+                Warps.Enqueue(pos);
                 foreach (var playerId in targets)
                 {
                     var p = Player.Get(playerId);
@@ -81,6 +91,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
                     p.DisableAllEffects();
+                    Timing.CallDelayed(0.5f, () => WarpCommand.ExecuteWarp(p, pos));
                     if(!p.IsStaff())
                         p.EnableEffect<CustomPlayerEffects.Ensnared>();
                 }

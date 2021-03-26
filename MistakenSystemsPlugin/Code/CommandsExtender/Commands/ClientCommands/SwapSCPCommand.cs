@@ -19,7 +19,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string Command => "swapscp";
 
-        public override string[] Aliases => new string[] { };
+        public override string[] Aliases => new string[] { "swap" };
 
         public string GetUsage()
         {
@@ -36,9 +36,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
             _s = false;
-            if (args.Length == 0) return new string[] { GetUsage() };
+            if (args.Length == 0) 
+                return new string[] { GetUsage() };
             var player = sender.GetPlayer();
-            if (player.Team != Team.SCP || player.Role == RoleType.Scp0492) return new string[] { "Nie możesz zmienić SCP jako SCP 049-2" };
+            if (player.Team != Team.SCP) 
+                return new string[] { "Nie możesz zmienić SCP nie będąc SCP" };
+            if (player.Role == RoleType.Scp0492) 
+                return new string[] { "Nie możesz zmienić SCP jako SCP 049-2" };
             if(RoleRequests.Any(i => i.Value.Key == player.Id))
             {
                 var data = RoleRequests.First(i => i.Value.Key == player.Id);

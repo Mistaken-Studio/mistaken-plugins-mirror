@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             return "WARP [Type] (Id)/All";
         }
 
-        private string[] ExecuteWarp(Player player, string warp)
+        internal static string[] ExecuteWarp(Player player, string warp)
         {
             switch (warp.ToLower())
             {

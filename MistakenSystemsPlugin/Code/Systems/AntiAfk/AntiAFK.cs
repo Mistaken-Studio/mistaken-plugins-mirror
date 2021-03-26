@@ -83,7 +83,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
                                 }
                             case 18:
                                 {
-                                    CustomAchievements.RoundEventHandler.AddProggress("AFK", player);
+                                    //CustomAchievements.RoundEventHandler.AddProggress("AFK", player);
                                     if (!player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
                                     {
                                         player.Disconnect("Anti AFK: You were AFK");

@@ -232,7 +232,7 @@ namespace Gamer.Mistaken.Systems.GUI
                             if (respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
                                 message += InformRespawnCI(ttr, respawningCI, notrespawningCI, spawnQueue.ContainsKey(player.Id));
                             else if (respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.NineTailedFox)
-                                message += InformRespawnMTF(ttr, respawningMTF, notrespawningMTF, spawnQueue.ContainsKey(player.Id) ? spawnQueue[player.Id].Role : RoleType.None, spawnQueue.FirstOrDefault(i => i.Value.Role == RoleType.NtfCommander).Value.Player?.Nickname ?? "UNKNOWN");
+                                message += InformRespawnMTF(ttr, respawningMTF, notrespawningMTF, spawnQueue.ContainsKey(player.Id) ? spawnQueue[player.Id].Role : RoleType.None, spawnQueue.FirstOrDefault(i => i.Value.Role == RoleType.NtfCommander).Value.Player?.GetDisplayName() ?? "UNKNOWN");
                             else
                                 message += InformRespawnNone(ttr);
                         }

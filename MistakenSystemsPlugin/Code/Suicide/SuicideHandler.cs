@@ -119,7 +119,7 @@ namespace Gamer.Mistaken.Suicide
                     reason = PluginHandler.Instance.ReadTranslation("suicide_dead_msg_E11");
                     break;
             }
-            CustomAchievements.RoundEventHandler.AddProggress("DeadEnd", player);
+            //CustomAchievements.RoundEventHandler.AddProggress("DeadEnd", player);
             player.Kill(reason);
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
@@ -204,11 +205,14 @@ namespace Gamer.Mistaken.EVO
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if (ev.Player.DoNotTrack) return;
+            if (ev.Player.DoNotTrack) 
+                return;
             if (ev.NewRole == RoleType.NtfCommander)
                 AddProgres(1005, ev.Player.UserId);
             if (ev.NewRole == RoleType.ChaosInsurgency)
                 AddProgres(1008, ev.Player.UserId);
+            if (ev.NewRole.GetTeam() == Team.SCP && ev.NewRole != RoleType.Scp0492)
+                AddProgres(1011, ev.Player.UserId);
         }
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)

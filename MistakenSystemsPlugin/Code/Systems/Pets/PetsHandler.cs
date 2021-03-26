@@ -91,7 +91,6 @@ namespace Gamer.Mistaken.Systems.Pets
             }
         }
 
-        public static bool SCP173TeleportSound = false;
         public static float Speed = 1.25f;
         public static bool ShoudRun = false;
 
@@ -100,7 +99,51 @@ namespace Gamer.Mistaken.Systems.Pets
         public static Vector3 PetSize = new Vector3(0.3f, 0.3f, 0.3f);
         public static NPCS.Npc CreateFolowingNPC(Player player, RoleType role, string name)
         {
-            var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name);
+            role = player.Role;
+            var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name ?? "(NULL)");
+            npc.VisibleForRoles.Add(RoleType.Tutorial);
+            npc.VisibleForRoles.Add(RoleType.Spectator);
+            switch (role)
+            {
+                case RoleType.ChaosInsurgency:
+                    npc.VisibleForRoles.Add(RoleType.ChaosInsurgency);
+                    npc.VisibleForRoles.Add(RoleType.ClassD);
+                    break;
+                case RoleType.ClassD:
+                    npc.VisibleForRoles.Add(RoleType.ChaosInsurgency);
+                    npc.VisibleForRoles.Add(RoleType.ClassD);
+                    npc.VisibleForRoles.Add(RoleType.Scientist);
+                    break;
+                case RoleType.Scientist:
+                    npc.VisibleForRoles.Add(RoleType.NtfCadet);
+                    npc.VisibleForRoles.Add(RoleType.NtfLieutenant);
+                    npc.VisibleForRoles.Add(RoleType.NtfScientist);
+                    npc.VisibleForRoles.Add(RoleType.NtfCommander);
+                    npc.VisibleForRoles.Add(RoleType.Scientist);
+
+                    npc.VisibleForRoles.Add(RoleType.ClassD);
+                    break;
+                case var r when r.GetTeam() == Team.MTF:
+                    npc.VisibleForRoles.Add(RoleType.NtfCadet);
+                    npc.VisibleForRoles.Add(RoleType.NtfLieutenant);
+                    npc.VisibleForRoles.Add(RoleType.NtfScientist);
+                    npc.VisibleForRoles.Add(RoleType.NtfCommander);
+                    npc.VisibleForRoles.Add(RoleType.Scientist);
+                    break;
+                case var r when r.GetTeam() == Team.SCP:
+                    npc.VisibleForRoles.Add(RoleType.Scp049);
+                    npc.VisibleForRoles.Add(RoleType.Scp0492);
+                    npc.VisibleForRoles.Add(RoleType.Scp079);
+                    npc.VisibleForRoles.Add(RoleType.Scp096);
+                    npc.VisibleForRoles.Add(RoleType.Scp106);
+                    npc.VisibleForRoles.Add(RoleType.Scp173);
+                    npc.VisibleForRoles.Add(RoleType.Scp93953);
+                    npc.VisibleForRoles.Add(RoleType.Scp93989);
+                    break;
+                default:
+                    npc.VisibleForRoles.Clear();
+                    break;
+            }
             npc.AIEnabled = true;
             npc.Follow(player);
             npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.Nickname}'s pet";
@@ -113,11 +156,11 @@ namespace Gamer.Mistaken.Systems.Pets
             npc.AffectRoundSummary = false;
             npc.DontCleanup = true;
             npc.ShouldTrigger096 = false;
-            if(role == RoleType.Scp106) 
+            if (role == RoleType.Scp106)
                 npc.ProcessSCPLogic = true;
-            else 
+            else
                 npc.ProcessSCPLogic = false;
-            if(AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
+            if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
             {
                 value.Kill(false);
                 AlivePets.Remove(player.UserId);
