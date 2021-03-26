@@ -76,7 +76,6 @@ namespace Gamer.Mistaken.Systems.End
             Components.Killer.Spawn(
                 Center012 + new Vector3(0.25f, -0, 0),
                 new Vector3(1.4f, 4, 1),
-                default,
                 5,
                 "<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>",
                 false,
@@ -86,7 +85,6 @@ namespace Gamer.Mistaken.Systems.End
             Components.Killer.Spawn(
                 Map.Rooms.First(r => r.Type == RoomType.Hcz106).GetByRoomOffset(new Vector3(15f, -10, -7.5f)),
                 new Vector3(33, 1, 33),
-                default,
                 0,
                 "<color=red><b>Warning!</b></color>\nYou <b>died</b>",
                 true,
@@ -96,7 +94,6 @@ namespace Gamer.Mistaken.Systems.End
             Components.Killer.Spawn(
                 new Vector3(179.5f, 990, 32.5f),
                 new Vector3(13, 20, 19),
-                default,
                 5,
                 "<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>",
                 false,
@@ -105,7 +102,6 @@ namespace Gamer.Mistaken.Systems.End
             Components.Killer.Spawn(
                 new Vector3(174.5f, 990, 37),
                 new Vector3(21, 20, 10),
-                default,
                 5,
                 "<color=red><b>Warning!</b></color><br>If you stay here you will recive <b>damage</b>",
                 false,
@@ -117,27 +113,21 @@ namespace Gamer.Mistaken.Systems.End
                 new Vector3(13, 20, 19),
                 (p) =>
                 {
-                    Log.Debug("1");
                     if (!p.IsCuffed)
                         return;
-                    Log.Debug("2");
                     switch (p.Team)
                     {
                         case Team.MTF:
-                            Log.Debug("3");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, p.GameObject, false, true);
                             break;
                         case Team.CHI:
-                            Log.Debug("4");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, p.GameObject, false, true);
                             break;
                         default:
-                            Log.Debug("5");
                             return;
                     }
-                    Log.Debug("6");
                     RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
             );
@@ -146,27 +136,21 @@ namespace Gamer.Mistaken.Systems.End
                 new Vector3(21, 20, 10),
                 (p) =>
                 {
-                    Log.Debug("1");
                     if (!p.IsCuffed)
                         return;
-                    Log.Debug("2");
                     switch (p.Team)
                     {
                         case Team.MTF:
-                            Log.Debug("3");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.ChaosInsurgency, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.ChaosInsurgency, p.GameObject, false, true);
                             break;
                         case Team.CHI:
-                            Log.Debug("4");
                             Respawning.RespawnTickets.Singleton.GrantTickets(Respawning.SpawnableTeamType.NineTailedFox, 2);
                             p.ReferenceHub.characterClassManager.SetPlayersClass(RoleType.NtfLieutenant, p.GameObject, false, true);
                             break;
                         default:
-                            Log.Debug("5");
                             return;
                     }
-                    Log.Debug("6");
                     RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
             );

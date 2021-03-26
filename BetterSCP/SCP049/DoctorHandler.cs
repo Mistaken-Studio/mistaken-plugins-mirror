@@ -127,7 +127,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
             }
             while (player?.Role == RoleType.Scp049)
             {
-                if (player == null) break;
+                if (player == null) 
+                    break;
                 try
                 {
                     int shield = 60;
