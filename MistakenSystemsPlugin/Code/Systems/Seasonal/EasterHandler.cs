@@ -32,7 +32,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
             new Egg(16, RoomType.EzShelter, new Vector3(-9, 1, -2.5f));
             new Egg(17, RoomType.EzDownstairsPcs, new Vector3(1, -1, -2));
             new Egg(18, RoomType.EzUpstairsPcs, new Vector3(-9.5f, 5, -10));
-            new Egg(19, RoomType.EzIntercom, new Vector3(-0.5f -7, 7.4f));
+            new Egg(19, RoomType.HczServers, new Vector3(-7.65f, -2, 1));
             new Egg(20, RoomType.Surface, new Vector3(48.5f, -10, 56.5f));
         }
 
