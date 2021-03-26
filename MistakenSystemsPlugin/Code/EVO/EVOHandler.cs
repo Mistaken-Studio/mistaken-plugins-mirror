@@ -243,14 +243,16 @@ namespace Gamer.Mistaken.EVO
                 return;
             if (UserId == null)
                 return;
-            SSL.Client.Send(MessageType.ACHIEVEMENT_ADD_PROGGRES, new AchievementAddProggres(Id, UserId));
-            SSL.Client.Send(MessageType.ACHIEVEMENT_REQUEST_INFO, new AchievementRequestProggres(Id, UserId)).GetResponseDataCallback((result) =>
+            SSL.Client.Send(MessageType.ACHIEVEMENT_ADD_PROGGRES, new AchievementAddProggres(Id, UserId)).GetResponseDataCallback((__) =>
             {
-                if (result.Type != ResponseType.OK)
-                    return;
-                var data = result.Payload.Deserialize<AchievementResponseProggres>(0, 0, out _, false);
-                SSL_OnAchievementInfoResponse(data.Id, data.UserId, data.Proggres, data.CurrentLevel);
-            });           
+                SSL.Client.Send(MessageType.ACHIEVEMENT_REQUEST_INFO, new AchievementRequestProggres(Id, UserId)).GetResponseDataCallback((result) =>
+                {
+                    if (result.Type != ResponseType.OK)
+                        return;
+                    var data = result.Payload.Deserialize<AchievementResponseProggres>(0, 0, out _, false);
+                    SSL_OnAchievementInfoResponse(data.Id, data.UserId, data.Proggres, data.CurrentLevel);
+                });
+            });       
         }
     }
 }
