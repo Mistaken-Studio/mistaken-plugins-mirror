@@ -18,38 +18,43 @@ namespace Gamer.Mistaken.Systems.Components
         public float Dmg;
         public Func<Player, bool> Selector;
         public string Message;
-        private static readonly GameObject Prefab = new GameObject("Killer", typeof(Killer), /*typeof(Rigidbody),*/ typeof(BoxCollider));
-        public static Killer Spawn(Vector3 pos, Vector3 size, Quaternion rotation = default, float dmg = 5, string message = "You can't stay here", bool instaKill = false, Func<Player, bool> selector = null)
+        private static readonly GameObject Prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
+        private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
+        public static Killer Spawn(Vector3 pos, Vector3 size, float dmg = 5, string message = "You can't stay here", bool instaKill = false, Func<Player, bool> selector = null)
         {
-            Log.Debug($"Spawning killer na ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
-            var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
-            obj.layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
-            var killer = obj.GetComponent<Killer>();
-            killer.Dmg = dmg;
-            killer.Message = message;
-            killer.Selector = selector ?? (p => true);
-            killer.InstaKill = instaKill;
-            var collider = obj.GetComponent<BoxCollider>();
-            collider.isTrigger = true;
-            collider.size = size;
+            try
+            {
+                Log.Debug($"Spawning killer na ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
+                var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
+                obj.layer = Layer;
+                var killer = obj.GetComponent<Killer>();
+                killer.Dmg = dmg;
+                killer.Message = message;
+                killer.Selector = selector ?? (p => true);
+                killer.InstaKill = instaKill;
+                var collider = obj.GetComponent<BoxCollider>();
+                collider.isTrigger = true;
+                collider.size = size;
 
-            return killer;
+                return killer;
+            }
+            catch(System.Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+                return null;
+            }
         }
-        private static readonly List<Killer> Killers = new List<Killer>();
 
         public void Start()
         {
-            Exiled.Events.Handlers.Player.Died +=  Player_Died;
+            Exiled.Events.Handlers.Player.Died += Player_Died;
 
-            Killers.Add(this);
-            Log.Debug("Start");
             Timing.RunCoroutine(DoDamage(), this.gameObject);
         }
         private void OnDestroy()
         {
             Exiled.Events.Handlers.Player.Died -= Player_Died;
-            Killers.Remove(this);
-            Log.Debug("Destroyed");
             destroyed = true;
         }
 
@@ -62,7 +67,6 @@ namespace Gamer.Mistaken.Systems.Components
         private bool destroyed = false;
         private IEnumerator<float> DoDamage()
         {
-            Log.Debug("Begin killers loop");
             while (!destroyed && !InstaKill)
             {
                 //Log.Debug("In killers loop");

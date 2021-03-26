@@ -16,17 +16,27 @@ namespace Gamer.Mistaken.Systems.Components
     {
         public Action<Player> OnTrigger;
         private static readonly GameObject Prefab = new GameObject("Escape", typeof(Escape), typeof(BoxCollider));
+        private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
         public static Escape Spawn(Vector3 pos, Vector3 size, Action<Player> onTrigger)
         {
-            var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
-            obj.layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
-            var Escape = obj.GetComponent<Escape>();
-            Escape.OnTrigger = onTrigger;
-            var collider = obj.GetComponent<BoxCollider>();
-            collider.isTrigger = true;
-            collider.size = size;
+            try
+            {
+                var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
+                obj.layer = Layer;
+                var Escape = obj.GetComponent<Escape>();
+                Escape.OnTrigger = onTrigger;
+                var collider = obj.GetComponent<BoxCollider>();
+                collider.isTrigger = true;
+                collider.size = size;
 
-            return Escape;
+                return Escape;
+            }
+            catch (System.Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+                return null;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
