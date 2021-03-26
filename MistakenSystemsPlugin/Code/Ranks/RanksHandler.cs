@@ -13,6 +13,7 @@ using Gamer.Diagnostics;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared;
 using Gamer.Mistaken.Systems.Staff;
+using Gamer.Mistaken.Systems.Misc;
 
 namespace Gamer.Mistaken.Ranks
 {
@@ -100,7 +101,7 @@ namespace Gamer.Mistaken.Ranks
                             if (ev.NewRole == global::RoleType.ClassD || ev.NewRole == global::RoleType.Scientist)
                             {
                                 if (15 >= num2)
-                                    ev.Items.Add(ItemType.Coin);
+                                    ArmorHandler.Armor.GiveDelayed(ev.Player, 20);
                             }
                             if (30 >= num3)
                                 ev.Items.Add(ItemType.Medkit);
@@ -125,7 +126,7 @@ namespace Gamer.Mistaken.Ranks
                             if (ev.NewRole == global::RoleType.ClassD || ev.NewRole == global::RoleType.Scientist)
                             {
                                 if (30 >= num2)
-                                    ev.Items.Add(ItemType.Coin);
+                                    ArmorHandler.Armor.GiveDelayed(ev.Player, 25);
                             }
                             if (ev.NewRole == global::RoleType.FacilityGuard)
                             {
@@ -172,7 +173,7 @@ namespace Gamer.Mistaken.Ranks
                             if (ev.NewRole == global::RoleType.ClassD || ev.NewRole == global::RoleType.Scientist)
                             {
                                 if (80 >= num2)
-                                    ev.Items.Add(ItemType.Coin);
+                                    ArmorHandler.Armor.GiveDelayed(ev.Player, 30);
                             }
                             if (ev.NewRole == global::RoleType.FacilityGuard)
                             {

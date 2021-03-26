@@ -39,6 +39,8 @@ namespace Gamer.Mistaken.Systems.CustomItems
             Exiled.Events.Handlers.Player.ItemDropped += this.Handle<Exiled.Events.EventArgs.ItemDroppedEventArgs>((ev) => Player_ItemDropped(ev));
             Exiled.Events.Handlers.CustomEvents.OnRequestPickItem += this.Handle<Exiled.Events.EventArgs.PickItemRequestEventArgs>((ev) => CustomEvents_OnRequestPickItem(ev));
             Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
+            Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
+            Exiled.Events.Handlers.Player.Handcuffing += this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
         }
         public override void OnDisable()
         {
@@ -53,6 +55,32 @@ namespace Gamer.Mistaken.Systems.CustomItems
             Exiled.Events.Handlers.Player.ItemDropped -= this.Handle<Exiled.Events.EventArgs.ItemDroppedEventArgs>((ev) => Player_ItemDropped(ev));
             Exiled.Events.Handlers.CustomEvents.OnRequestPickItem -= this.Handle<Exiled.Events.EventArgs.PickItemRequestEventArgs>((ev) => CustomEvents_OnRequestPickItem(ev));
             Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
+            Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
+            Exiled.Events.Handlers.Player.Handcuffing -= this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
+        }
+
+        private void Player_Handcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs ev)
+        {
+            foreach (var item in ev.Target.Inventory.items)
+            {
+                var customItem = GetCustomItem(item);
+                if (customItem == null)
+                    continue;
+                customItem.OnDrop(ev.Target, item);
+            } 
+        }
+
+        private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
+        {
+            foreach (var item in ev.Items)
+            {
+                var customItem = GetCustomItem(item);
+                if (customItem == null)
+                    continue;
+                var result = customItem.OnUpgrade(item, ev.KnobSetting);
+                result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
+                item.Delete();
+            }
         }
 
         private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
@@ -69,6 +97,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
             if (customItem == null)
                 return;
             ev.Player.ShowHintPulsating($"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3, false, false);
+            customItem.OnPrePickup(ev.Player, ev.Pickup);
         }
 
         private void Player_ItemDropped(Exiled.Events.EventArgs.ItemDroppedEventArgs ev)
@@ -168,7 +197,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
         private IEnumerator<float> DoRoundLoop()
         {
             yield return Timing.WaitForSeconds(1);
-            while(Round.IsStarted)
+            while (Round.IsStarted)
             {
                 foreach (var item in Pickup.Instances.ToArray())
                 {
@@ -179,7 +208,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
                         continue;
                     MapPlus.Spawn(new Inventory.SyncItemInfo
                     {
-                        durability = 1 + (customItem.Durability / 1000f),
+                        durability = item.durability,
                         id = customItem.Item,
                         modBarrel = item.weaponMods.Barrel,
                         modSight = item.weaponMods.Sight,
@@ -203,7 +232,6 @@ namespace Gamer.Mistaken.Systems.CustomItems
             }
             return null;
         }
-
         public static bool HasCustomItem(Player player)
         {
             if (!player.Inventory.items.Any(item => CustomItem.CustomItemsFastCheckCache.Contains(item.id)))
@@ -218,7 +246,6 @@ namespace Gamer.Mistaken.Systems.CustomItems
             }
             return false;
         }
-
         public static CustomItem GetCustomItem(Inventory.SyncItemInfo item)
         {
             if (!CustomItem.CustomItemsFastCheckCache.Contains(item.id))

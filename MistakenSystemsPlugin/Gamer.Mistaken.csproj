@@ -317,7 +317,7 @@
     <Compile Include="Code\Systems\Misc\SpawnProtectHandler.cs" />
     <Compile Include="Code\Systems\PseudoGUI\SpecInfoHandler.cs" />
     <Compile Include="Code\Systems\End\WaitingScreenHandler.cs" />
-    <Compile Include="Code\Systems\Misc\WearableItemsHandler.cs" />
+    <Compile Include="Code\Systems\Misc\ArmorHandler.cs" />
     <Compile Include="Code\Systems\Patches\BroadcastPatch.cs" />
     <Compile Include="Code\Systems\Patches\FixPatch.cs" />
     <Compile Include="Code\Systems\Patches\HintPatch.cs" />

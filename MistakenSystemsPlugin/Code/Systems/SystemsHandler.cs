@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.Systems
             new Misc.ReusableItemsHandler(plugin);
             new Misc.RespawnPlayerHandler(plugin);
             new Misc.SpawnProtectHandler(plugin);
-            new Misc.WearableItemsHandler(plugin);
+            new Misc.ArmorHandler(plugin);
             new Misc.BetterWarheadHandler(plugin);
             new Misc.ResurectionHandler(plugin);
             new Misc.PlayerRoundStatisticsHandler(plugin);

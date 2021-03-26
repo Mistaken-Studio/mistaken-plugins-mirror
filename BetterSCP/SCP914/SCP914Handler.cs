@@ -133,41 +133,6 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
 
             foreach (var player in RealPlayers.List.Where(p => Vector3.Distance(p.Position, ev.Scp914.output.position) < 2 && p.IsAlive))
                 Timing.RunCoroutine(PunishOutput(player));
-
-            foreach (var item in ev.Items.ToArray())
-            {
-                if (item.ItemId == ItemType.Coin)
-                {
-                    switch (ev.KnobSetting)
-                    {
-                        case Scp914.Scp914Knob.Rough:
-                            item.Networkdurability = 1;
-                            ItemType.Coin.Spawn(1, ev.Scp914.output.position);
-                            item.Delete();
-                            break;
-                        case Scp914.Scp914Knob.Coarse:
-                            item.Networkdurability = 10;
-                            ItemType.Coin.Spawn(10, ev.Scp914.output.position);
-                            item.Delete();
-                            break;
-                        case Scp914.Scp914Knob.OneToOne:
-                            item.Networkdurability = 25;
-                            ItemType.Coin.Spawn(25, ev.Scp914.output.position);
-                            item.Delete();
-                            break;
-                        case Scp914.Scp914Knob.Fine:
-                            item.Networkdurability = UnityEngine.Random.Range(25, 30);
-                            ItemType.Coin.Spawn(UnityEngine.Random.Range(25, 30), ev.Scp914.output.position);
-                            item.Delete();
-                            break;
-                        case Scp914.Scp914Knob.VeryFine:
-                            item.Networkdurability = UnityEngine.Random.Range(1, 40);
-                            ItemType.Coin.Spawn(UnityEngine.Random.Range(1, 40), ev.Scp914.output.position);
-                            item.Delete();
-                            break;
-                    }
-                } 
-            }
         }
 
         private IEnumerator<float> PunishOutput(Player player)

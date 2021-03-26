@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Scp914;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ namespace Gamer.API
             public abstract ItemType Item { get; }
             public abstract int Durability { get; }
             public virtual Vector3 Size { get; } = Vector3.one;
+            public virtual bool OnPrePickup(Player player, Pickup pickup) => true;
             public virtual bool OnPickup(Player player, Pickup pickup) => true;
             public virtual bool OnDrop(Player player, Inventory.SyncItemInfo item) => true;
             public virtual void OnStartHolding(Player player, Inventory.SyncItemInfo item) { }
@@ -31,6 +33,7 @@ namespace Gamer.API
             public virtual bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow) => true;
             public virtual void OnForceclass(Player player) { }
             public virtual void OnRestart() { }
+            public virtual Pickup OnUpgrade(Pickup pickup, Scp914Knob setting) => pickup;
 
             public float GetInternalDurability(Inventory.SyncItemInfo item) => GetInternalDurability(item.durability);
             public float GetInternalDurability(float durability)
