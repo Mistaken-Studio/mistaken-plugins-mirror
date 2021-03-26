@@ -129,6 +129,7 @@ namespace Gamer.Mistaken.Systems.Pets
                     npc.VisibleForRoles.Add(RoleType.Scientist);
                     break;
                 case RoleType.Scientist:
+                    npc.VisibleForRoles.Add(RoleType.FacilityGuard);
                     npc.VisibleForRoles.Add(RoleType.NtfCadet);
                     npc.VisibleForRoles.Add(RoleType.NtfLieutenant);
                     npc.VisibleForRoles.Add(RoleType.NtfScientist);
@@ -138,6 +139,7 @@ namespace Gamer.Mistaken.Systems.Pets
                     npc.VisibleForRoles.Add(RoleType.ClassD);
                     break;
                 case var r when r.GetTeam() == Team.MTF:
+                    npc.VisibleForRoles.Add(RoleType.FacilityGuard);
                     npc.VisibleForRoles.Add(RoleType.NtfCadet);
                     npc.VisibleForRoles.Add(RoleType.NtfLieutenant);
                     npc.VisibleForRoles.Add(RoleType.NtfScientist);
