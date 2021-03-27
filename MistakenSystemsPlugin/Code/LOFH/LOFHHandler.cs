@@ -80,7 +80,7 @@ namespace Gamer.Mistaken.LOFH
                         reason = flag.Reason;
                     }
 
-                    Systems.ThreatLevel.ThreatLevelManager.GetThreatLevel(ev.UserId, ev.Request?.RemoteEndPoint?.Address?.ToString(), (Systems.ThreatLevel.ThreadLevelData data) =>
+                    Systems.ThreatLevel.ThreatLevelManager.GetThreatLevel(ev.UserId, (Systems.ThreatLevel.ThreadLevelData data) =>
                     {
                         LOFH.ThreatLevelDatas.Add(ev.UserId, data);
                     }, wFlag, reason, ev.Country);

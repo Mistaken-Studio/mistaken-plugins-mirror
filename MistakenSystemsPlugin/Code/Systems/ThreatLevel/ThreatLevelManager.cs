@@ -23,9 +23,9 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
     {
         public static void GetThreatLevel(Player player, Action<ThreadLevelData> Callback)
         {
-            GetThreatLevel(player.UserId, player.IPAddress, Callback, false, "", "NULL");
+            GetThreatLevel(player.UserId, Callback, false, "", "NULL");
         }
-        public static void GetThreatLevel(string UserId, string IpAddress, Action<ThreadLevelData> Callback, bool warningFlag, string warningFlagReason, string CountryCode)
+        public static void GetThreatLevel(string UserId, Action<ThreadLevelData> Callback, bool warningFlag, string warningFlagReason, string CountryCode)
         {
             int num = 0;
             int level = 0;
@@ -126,7 +126,10 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
         private static void DonwloadPlayerInfo(string UserId, Action<PlayerInfo> CallBack)
         {
             if (!UserId.EndsWith("@steam"))
+            {
                 CallBack.Invoke(null);
+                return;
+            }
             if (!Gamer.Mistaken.Utilities.APILib.API.GetSteamAPIKey(out string steamKey)) 
                 return;
             using (var client = new WebClient())
@@ -243,6 +246,8 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                     case DataType.NORMAL:
                         {
                             var tmp = JsonConvert.DeserializeObject<NormalInfo>(data);
+                            if (tmp.response.players.Length == 0)
+                                break;
                             CountryCode = tmp.response.players[0].loccountrycode;
                             Created = tmp.response.players[0].timecreated;
                             CommunityProfile = tmp.response.players[0].profilestate == 1;
@@ -258,6 +263,8 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                     case DataType.BANS:
                         {
                             var tmp = JsonConvert.DeserializeObject<BansInfo>(data);
+                            if (tmp.players.Length == 0)
+                                break;
                             this.CommunityBanned = tmp.players[0].CommunityBanned;
                             this.VACBanned = tmp.players[0].VACBanned;
                             this.EconomyBan = tmp.players[0].EconomyBan;
