@@ -146,7 +146,17 @@ namespace Gamer.Taser
         {
             float dur = 1.501f + (Index++) / 1000000f;
             if (ev.NewRole == RoleType.FacilityGuard)
-                MEC.Timing.CallDelayed(1, () => ev.Player.Inventory.AddNewItem(ItemType.GunUSP, dur));
+                MEC.Timing.CallDelayed(1, () => 
+                {
+                    if (ev.Player.Inventory.availableItems.Length > 7)
+                        MapPlus.Spawn(new Inventory.SyncItemInfo
+                        {
+                            durability = dur,
+                            id = ItemType.GunUSP,
+                        }, ev.Player.Position, Quaternion.identity, new Vector3(1.0f, .25f, .25f));
+                    else
+                        ev.Player.Inventory.AddNewItem(ItemType.GunUSP, dur);
+                });
         }
     }
 }
