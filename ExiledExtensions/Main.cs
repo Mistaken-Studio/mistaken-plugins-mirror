@@ -366,6 +366,6 @@ namespace Gamer.Utilities
             });
         }
 
-        public static bool IsReadyPlayer(this Player me) => me.IsConnected && me.IsVerified && !me.IsNPC();
+        public static bool IsReadyPlayer(this Player me) => me.IsConnected && me.IsVerified && !me.IsNPC() && me.UserId != null;
     }
 }

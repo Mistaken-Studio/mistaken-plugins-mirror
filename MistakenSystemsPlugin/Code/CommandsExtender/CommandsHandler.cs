@@ -175,7 +175,7 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
-            if (!ev.Target.IsVerified)
+            if (!ev.Target.IsReadyPlayer())
                 return;
             if(ev.Target.Role == RoleType.NtfCommander)
                 TeslaOnCommand.AlreadyUsed.Remove(ev.Target.UserId);
