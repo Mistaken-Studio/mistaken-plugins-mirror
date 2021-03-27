@@ -44,6 +44,7 @@ namespace Gamer.Taser
                     var targetPlayer = Player.Get(target);
                     if(targetPlayer != null)
                     {
+                        player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.CurrentItem.uniq);
                         if (targetPlayer.IsHuman)
                         {
                             targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
