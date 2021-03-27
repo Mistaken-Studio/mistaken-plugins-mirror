@@ -24,7 +24,9 @@ namespace Gamer.Mistaken.Systems.Components
         {
             try
             {
-                Log.Debug($"Spawning killer na ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
+                Log.Debug($"Spawning killer on ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
+                if (Prefab == null)
+                    throw new NullReferenceException("Prefab is null :/");
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
                 obj.layer = Layer;
                 var killer = obj.GetComponent<Killer>();
