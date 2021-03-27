@@ -168,8 +168,6 @@
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\ChangelogCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\LastAttackerCmd.cs" />
     <Compile Include="Code\CommandsExtender\Commands\TalkCommand.cs" />
-    <Compile Include="Code\CustomAchievements\Achievement.cs" />
-    <Compile Include="Code\CustomAchievements\Achievements.cs" />
     <Compile Include="Code\LOFH\MenuSystem.cs" />
     <Compile Include="Code\Ranks\RanksCommandHandler.cs" />
     <Compile Include="Code\Ranks\RanksHandler.cs" />
@@ -274,8 +272,6 @@
     <Compile Include="Code\CommandsExtender\Commands\WeaponCustomAmmoCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\WorkstationCommand.cs" />
     <Compile Include="Code\CommandsExtender\CommandsHandler.cs" />
-    <Compile Include="Code\CustomAchievements\CustomAchievements.cs" />
-    <Compile Include="Code\CustomAchievements\RoundEventHandler.cs" />
     <Compile Include="Code\CustomWhitelist\CustomWhitelistHandler.cs" />
     <Compile Include="Code\CustomWhitelist\Patch.cs" />
     <Compile Include="Code\EVO\Achievement.cs" />

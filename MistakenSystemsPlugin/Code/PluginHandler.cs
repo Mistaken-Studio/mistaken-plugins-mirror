@@ -59,8 +59,6 @@ namespace Gamer.Mistaken
             new Ranks.RanksHandler(this);
             new Ban2.BansHandler(this);
 
-            CustomAchievements.CustomAchievements.OnEnabled(this);
-
             if (Config.WhitelistEnabled)
                 Log.SendRaw("! Whitelist is enabled !", ConsoleColor.Red);
             else

@@ -251,7 +251,6 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            Used1499.RemoveAll(p => p.UserId == ev.Player.UserId);
             if (ev.IsEscaped || ev.NewRole == RoleType.Spectator)
             {
                 if (ev.Player.Inventory.items.Any(i => i.id == ItemType.GrenadeFlash && i.durability == 1.149f))
@@ -311,7 +310,6 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         {
             FirstFlashRoom = null;
             SecondFlashRoom = null;
-            Used1499.Clear();
         }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
@@ -382,34 +380,6 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                     }
                 }
                 catch { }
-            }
-        }
-
-        private static readonly List<Player> Used1499 = new List<Player>();
-        [System.Obsolete("Achievements are disabled")]
-        private static void Achievement(Player player)
-        {
-            try
-            {
-                Used1499.Add(player);
-                CustomAchievements.RoundEventHandler.AddProggress("IsItSafe", player);
-                int amount = Used1499.Where(item => item.UserId == player.UserId).Count();
-                if (amount == 2)
-                    CustomAchievements.RoundEventHandler.ForceLevel("Use1499", player, CustomAchievements.CustomAchievements.Level.BRONZE);
-                else if (amount == 5)
-                    CustomAchievements.RoundEventHandler.ForceLevel("Use1499", player, CustomAchievements.CustomAchievements.Level.SILVER);
-                else if (amount == 8)
-                    CustomAchievements.RoundEventHandler.ForceLevel("Use1499", player, CustomAchievements.CustomAchievements.Level.GOLD);
-                else if (amount == 10)
-                    CustomAchievements.RoundEventHandler.ForceLevel("Use1499", player, CustomAchievements.CustomAchievements.Level.DIAMOND);
-                else if (amount == 12)
-                    CustomAchievements.RoundEventHandler.ForceLevel("Use1499", player, CustomAchievements.CustomAchievements.Level.EXPERT);
-            }
-            catch (System.NullReferenceException e)
-            {
-                Log.Error(e.Message);
-                Log.Error(e.Source);
-                Log.Error(e.StackTrace);
             }
         }
 
