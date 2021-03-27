@@ -94,6 +94,7 @@ namespace Gamer.Mistaken.Systems.End
         {
             Timing.RunCoroutine(Execute());
         }
+
         private static HashSet<Player> SamstraNewUnits = new HashSet<Player>();
         private static readonly HashSet<Player> SamstraUnits = new HashSet<Player>();
 
@@ -141,13 +142,34 @@ namespace Gamer.Mistaken.Systems.End
                 else if (toSpawn.Count < 8)
                     toSpawn.Add(player);
             }
+            Respawning.NamingRules.UnitNamingRules.TryGetNamingRule(Respawning.SpawnableTeamType.NineTailedFox, out Respawning.NamingRules.UnitNamingRule unitnamingrule);
+            unitnamingrule.GenerateNew(Respawning.SpawnableTeamType.NineTailedFox, out string unit);
             foreach (var player in toSpawn)
-                SpawnAsSamsara(player);
+                SpawnAsSamsara(player, unit);
+            string unitnumber;
+            if (unit.Contains('0')) unitnumber = unit.Last().ToString();
+            else unitnumber = unit.Remove(0, unit.IndexOf('-') + 1);
+            int scps = RealPlayers.List.Where(p => p.Team == Team.SCP && p.Role != RoleType.Scp0492).Count();
+            Cassie.GlitchyMessage($"MTFUNIT TAU 5 DESIGNATED NATO_{unit[0]} {unitnumber} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {scps} SCPSUBJECT{(scps == 1 ? "" : "S")}", 0.3f, 0.1f);
+            Systems.Utilities.API.Map.RespawnLock = true;
+            int startRoundId = RoundPlus.RoundId;
+            MEC.Timing.CallDelayed(300f, () =>
+            {
+                if (startRoundId == RoundPlus.RoundId)
+                {
+                    Cassie.GlitchyMessage("WARHEAD OVERRIDE . ALPHA WARHEAD SEQUENCE ENGAGED", 1, 1);
+                    Systems.Misc.BetterWarheadHandler.Warhead.StopLock = true;
+                    Warhead.Start();
+                    RoundLogger.Log("TAU-5", "WARHEAD", $"Warhead forced");
+                }
+            });
         }
 
-        public static void SpawnAsSamsara(Player player)
+        public static void SpawnAsSamsara(Player player, string unit)
         {
+            RoundLogger.Log("TAU-5", "SPAWN", $"{player.PlayerToString()} was spawned as TAU-5 Samsara");
             player.Role = RoleType.NtfCommander;
+            player.ReferenceHub.characterClassManager.NetworkCurUnitName = unit;
             MEC.Timing.CallDelayed(0.5f, () =>
             {
                 var items = player.Inventory.items;

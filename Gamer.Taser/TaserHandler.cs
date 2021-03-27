@@ -70,6 +70,8 @@ namespace Gamer.Taser
                                     break;
                             }
                         }
+                        targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
+                        targetPlayer.SendConsoleMessage("You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
                     }
                 }
                 return false;
