@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
@@ -29,7 +30,6 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.CustomEvents.OnRequestPickItem += this.Handle<Exiled.Events.EventArgs.PickItemRequestEventArgs>((ev) => CustomEvents_OnRequestPickItem(ev));
-            Exiled.Events.Handlers.Player.PickingUpItem += this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => Player_PickingUpItem(ev));
             Exiled.Events.Handlers.Player.MedicalItemDequipped += this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => Player_MedicalItemDequipped(ev));
         }
         public override void OnDisable()
@@ -40,20 +40,27 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.CustomEvents.OnRequestPickItem -= this.Handle<Exiled.Events.EventArgs.PickItemRequestEventArgs>((ev) => CustomEvents_OnRequestPickItem(ev));
-            Exiled.Events.Handlers.Player.PickingUpItem -= this.Handle<Exiled.Events.EventArgs.PickingUpItemEventArgs>((ev) => Player_PickingUpItem(ev));
             Exiled.Events.Handlers.Player.MedicalItemDequipped -= this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => Player_MedicalItemDequipped(ev));
         }
 
-        private void Player_PickingUpItem(Exiled.Events.EventArgs.PickingUpItemEventArgs ev)
+        private void CustomEvents_OnRequestPickItem(Exiled.Events.EventArgs.PickItemRequestEventArgs ev)
         {
             foreach (var item in ReusableItems)
             {
                 if (ev.Pickup.ItemId == item.Type)
                 {
-                    if (ev.Player.Inventory.items.Where(i => i.id == item.Type).Count() >= item.MaxItems)
+                    if (ev.Pickup.durability == 0)
                     {
-                        float tmp = ev.Pickup.durability;
-                        foreach (var invItem in ev.Player.Inventory.items.Where(i => i.id == item.Type))
+                        ev.Pickup.ItemId.Spawn(item.Uses, ev.Pickup.position, ev.Pickup.rotation);
+                        ev.Pickup.Delete();
+                        ev.IsAllowed = false;
+                        return;
+                    }
+                    var items = ev.Player.Inventory.items.Where(i => i.id == item.Type).ToArray();
+                    if (items.Length >= item.MaxItems)
+                    {
+                        float tmp = ev.Pickup.Networkdurability;
+                        foreach (var invItem in items)
                         {
                             int diff = item.Uses - (int)invItem.durability;
                             if (diff > 0 && tmp >= diff)
@@ -66,35 +73,24 @@ namespace Gamer.Mistaken.Systems.Misc
                             ev.Pickup.Delete();
                         else
                         {
-                            if (ev.Pickup.durability != tmp)
-                                ev.Pickup.Networkdurability = tmp;
-                            ev.Pickup.InUse = false;
+                            if (ev.Pickup.Networkdurability != tmp)
+                            {
+                                ev.Pickup.ItemId.Spawn(tmp, ev.Pickup.position, ev.Pickup.rotation);
+                                ev.Pickup.Delete();
+                                ev.Player.ShowHint($"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", false);
+                            }
+                            else
+                            {
+                                string name = item.Type.ToString();
+                                if (!name.EndsWith("s"))
+                                    name += "s";
+                                ev.Player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2f);
+                            }
                         }
                         ev.IsAllowed = false;
+                        return;
                     }
-                    break;
-                }
-            }
-        }
-
-        private void CustomEvents_OnRequestPickItem(Exiled.Events.EventArgs.PickItemRequestEventArgs ev)
-        {
-            foreach (var item in ReusableItems)
-            {
-                if (ev.Pickup.ItemId == item.Type)
-                {
-                    if (ev.Pickup.durability == 0)
-                        ev.Pickup.Networkdurability = item.Uses;
-                    if (ev.Player.Inventory.items.Where(i => i.id == item.Type).Count() >= item.MaxItems)
-                    {
-                        ev.IsAllowed = false;
-                        string name = item.Type.ToString();
-                        if (!name.EndsWith("s"))
-                            name += "s";
-                        ev.Player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2f);
-                    }
-                    else
-                        ev.Player.ShowHint($"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", false);
+                    ev.Player.ShowHint($"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", false);
                     break;
                 }
             }
@@ -102,7 +98,8 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            Timing.CallDelayed(1, () => {
+            Timing.CallDelayed(1, () =>
+            {
                 foreach (var element in ReusableItems)
                 {
                     foreach (var item in ev.Player.Inventory.availableItems)
@@ -130,7 +127,6 @@ namespace Gamer.Mistaken.Systems.Misc
                     Timing.RunCoroutine(InformUsesLeft(ev.Player));
                 }
             }
-
         }
 
         public class ReusableItem
@@ -164,13 +160,29 @@ namespace Gamer.Mistaken.Systems.Misc
 
         IEnumerator<float> InformUsesLeft(Player p)
         {
-            yield return Timing.WaitForSeconds(.25f);
-            while (ReusableItems.Any(i => i.Type == p.CurrentItem.id))
+            yield return Timing.WaitForSeconds(.1f);
+            ItemType itemType = p.CurrentItem.id;
+            var reusable = ReusableItems.First(i => i.Type == itemType);
+            p.ShowHint($"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left", false, 5, false);
+            yield return Timing.WaitForSeconds(1f);
+            int iterator = 999;
+            while (p.CurrentItem.id == itemType)
             {
-                if(!p.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Amnesia>().Enabled)
-                    p.ShowHint($"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{ReusableItems.First(i => i.Type == p.CurrentItem.id).Uses}</color> uses left", 1);
+                iterator++;
+                if(iterator >= 4)
+                {
+                    if (!p.GetEffectActive<CustomPlayerEffects.Amnesia>())
+                    {
+                        p.ShowHint($"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left", false, 5, false);
+                        iterator = 0;
+                    }
+                    else
+                        iterator = 999;
+                }
+
                 yield return Timing.WaitForSeconds(1);
             }
+            p.ShowHint("", false, .1f, false);
         }
 
         private void Player_UsingMedicalItem(Exiled.Events.EventArgs.UsingMedicalItemEventArgs ev)
@@ -178,32 +190,28 @@ namespace Gamer.Mistaken.Systems.Misc
             foreach (var item in ReusableItems)
             {
                 if (ev.Item == item.Type)
-                    UsingMedical.Add(new KeyValuePair<int, KeyValuePair<ItemType, float>>(ev.Player.Id, new KeyValuePair<ItemType, float>(ev.Item, ev.Player.CurrentItem.durability)));
+                    UsingMedical[ev.Player] = (ev.Item, ev.Player.CurrentItem.durability);
             }
         }
 
-        //PlayerId, (typ, durability)
-        private readonly List<KeyValuePair<int, KeyValuePair<ItemType, float>>> UsingMedical = new List<KeyValuePair<int, KeyValuePair<ItemType, float>>>();
-        private void Player_StoppingMedicalItem(Exiled.Events.EventArgs.StoppingMedicalItemEventArgs ev)
-        {
-            UsingMedical.RemoveAll(i => i.Key == ev.Player.Id);
-        }
+        private readonly Dictionary<Player, (ItemType Item, float Durability)> UsingMedical = new Dictionary<Player, (ItemType Item, float Durability)>();
+        private void Player_StoppingMedicalItem(Exiled.Events.EventArgs.StoppingMedicalItemEventArgs ev) => UsingMedical.Remove(ev.Player);
+        
         private void Player_MedicalItemDequipped(Exiled.Events.EventArgs.DequippedMedicalItemEventArgs ev)
         {
             if (ev.Player == null)
                 return;
-            if (UsingMedical.Any(i => i.Key == ev.Player.Id && i.Value.Key == ev.Item))
+            if (UsingMedical.TryGetValue(ev.Player, out (ItemType Item, float Durability) data))
             {
-                var data = UsingMedical.First(i => i.Key == ev.Player.Id && i.Value.Key == ev.Item);
-                if (data.Value.Value > 1)
+                if (data.Durability > 1)
                 {
                     ev.Player.AddItem(new Inventory.SyncItemInfo
                     {
-                        id = data.Value.Key,
-                        durability = data.Value.Value - 1,
+                        id = data.Item,
+                        durability = data.Durability - 1,
                     });
                 }
-                UsingMedical.Remove(data);
+                UsingMedical.Remove(ev.Player);
             }
         }
     }
