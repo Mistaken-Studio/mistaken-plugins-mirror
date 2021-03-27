@@ -102,7 +102,7 @@ namespace Gamer.Mistaken.Systems.Components
             if (!other.GetComponent<CharacterClassManager>())
                 return;
             var player = Player.Get(other.gameObject);
-            if (player.IsNPC())
+            if (player?.IsNPC() ?? true)
                 return;
             ColliderInArea.Add(other.gameObject);
             if (!InArea.Contains(player))

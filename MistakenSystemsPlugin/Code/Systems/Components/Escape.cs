@@ -56,9 +56,7 @@ namespace Gamer.Mistaken.Systems.Components
             if (!other.GetComponent<CharacterClassManager>())
                 return;
             var player = Player.Get(other.gameObject);
-            if (player.IsNPC())
-                return;
-            if (player.IsDead)
+            if (player?.IsNPC() ?? true || player.IsDead)
                 return;
             this.OnTrigger(player);
         }
