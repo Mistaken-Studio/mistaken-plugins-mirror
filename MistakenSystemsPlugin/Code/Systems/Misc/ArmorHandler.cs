@@ -154,19 +154,19 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1;
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (1 / 1000000f);
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 10;
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (10 / 1000000f);
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 25;
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (25 / 1000000f);
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = UnityEngine.Random.Range(25, 30);
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = UnityEngine.Random.Range(1, 40);
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
                         break;
                 }
                 return pickup;

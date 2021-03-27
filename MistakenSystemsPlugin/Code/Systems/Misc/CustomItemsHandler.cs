@@ -72,13 +72,14 @@ namespace Gamer.Mistaken.Systems.CustomItems
 
         private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
         {
-            foreach (var item in ev.Items)
+            foreach (var item in ev.Items.ToArray())
             {
                 var customItem = GetCustomItem(item);
                 if (customItem == null)
                     continue;
                 var result = customItem.OnUpgrade(item, ev.KnobSetting);
                 result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
+                ev.Items.Remove(item);
                 item.Delete();
             }
         }
