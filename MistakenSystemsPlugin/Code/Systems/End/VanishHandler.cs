@@ -50,7 +50,7 @@ namespace Gamer.Mistaken.Systems.End
                 {
                     bool cond = player.IsHuman && player.Position.y < -1900;
                     player.TargetGhostsHashSet.Clear();
-                    foreach (var seenPlayer in RealPlayers.List)
+                    foreach (var seenPlayer in Player.List)
                     {
                         if(cond)
                         {
