@@ -27,58 +27,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Scp096.AddingTarget += this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
-            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Scp096.AddingTarget -= this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
-            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
-        }
-
-        private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
-        {
-            if (DmgMultiplayer)
-            {
-                if (ev.Target.Role == RoleType.Scp096)
-                    ev.Amount *= 1.5f;
-            }
-        }
-
-        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
-        {
-            if (ev.NewRole == RoleType.Scp096)
-                Timing.RunCoroutine(AntyDuo(ev.Player));
-        }
-
-        private bool DmgMultiplayer = false;
-        private IEnumerator<float> AntyDuo(Player player)
-        {
-            yield return Timing.WaitForSeconds(1);
-            while (player?.Role == RoleType.Scp096)
-            {
-                DmgMultiplayer = false;
-                if (player.Position.y < 900)
-                {
-                    foreach (var item in RealPlayers.List.Where(p => p.Role == RoleType.Scp173).ToArray())
-                    {
-                        if (Vector3.Distance(player.Position, item.Position) < PluginHandler.Anty173_096DuoDistance)
-                        {
-                            DmgMultiplayer = true;
-                            player.EnableEffect<CustomPlayerEffects.Concussed>();
-                            player.ShowHint("Jesteś za blisko <color=yellow>SCP 173</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń", true, 3, false);
-                            break;
-                        }
-                    }
-                }
-                if (!DmgMultiplayer)
-                {
-                    player.DisableEffect<CustomPlayerEffects.Concussed>();
-                }
-                yield return Timing.WaitForSeconds(2);
-            }
         }
 
         private void Scp096_AddingTarget(Exiled.Events.EventArgs.AddingTargetEventArgs ev)
@@ -90,20 +43,16 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
             }
             else
             {
-                if (ev.Target.Position.y > 900)
-                    return;
-                foreach (var item in RealPlayers.List.Where(p => p.Role == RoleType.Scp173))
-                {
-                    if(Vector3.Distance(ev.Target.Position, item.Position) < PluginHandler.Anty173_096DuoDistance / 2)
-                    {
-                        ev.AhpToAdd = 0;
-                        ev.EnrageTimeToAdd = 0;
-                        break;
-                    }
-                }
-                var scp096 = (ev.Scp096.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096);
+                var scp096 = ev.Scp096.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096;
                 if (scp096.AddedTimeThisRage > scp096.MaximumAddedEnrageTime)
                     ev.EnrageTimeToAdd = 0;
+                if (ev.Target.Position.y > 900)
+                    return;
+                if (Global.GlobalHandler.DmgMultiplayer)
+                {
+                    ev.AhpToAdd = 0;
+                    ev.EnrageTimeToAdd = 0;
+                }
             }
         }
 
@@ -115,7 +64,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
         private IEnumerator<float> Inform096Target()
         {
             yield return Timing.WaitForSeconds(1f);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
+            int rid = RoundPlus.RoundId; 
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 foreach (var scp096 in RealPlayers.Get(RoleType.Scp096))
                 {
