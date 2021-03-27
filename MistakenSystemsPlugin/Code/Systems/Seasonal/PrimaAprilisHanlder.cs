@@ -37,8 +37,8 @@ namespace Gamer.Mistaken.Systems.Seasonal
         private void Server_WaitingForPlayers()
         {
             active = false;
-            if (Server.Port == 7791)
-                active = true;
+            //if (Server.Port == 7791)
+            //    active = true;
             if (EnableDate == DateTime.Now.ToString("dd.MM"))
                 active = true;
         }
