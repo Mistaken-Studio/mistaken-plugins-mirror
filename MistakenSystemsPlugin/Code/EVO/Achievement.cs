@@ -152,7 +152,7 @@ namespace Gamer.Mistaken.EVO
             new Achievement()
             {
                 Id = 1013,
-                Name = "SCP",
+                Name = "Scientist",
                 Description = "Play as a Scientist X times",
                 Levels = new (int Progress, string Name, string Color)[] {
                     (30, "Junior Researcher", null),
@@ -163,7 +163,7 @@ namespace Gamer.Mistaken.EVO
             new Achievement()
             {
                 Id = 1014,
-                Name = "SCP",
+                Name = "LCZ decontamination",
                 Description = "Die from LCZ decontamination X times",
                 Levels = new (int Progress, string Name, string Color)[] {
                     (3, "Poisoned", null),
@@ -177,9 +177,9 @@ namespace Gamer.Mistaken.EVO
                 Name = "Easter",
                 Description = "Collect X eggs",
                 Levels = new (int Progress, string Name, string Color)[] {
-                    (10, "Anomaly", ""),
-                    (15, "Murder Monster", ""),
-                    (20, "Reality Bender", "")
+                    (10, "PLACEHOLDER #1", "YELLOW"),
+                    (15, "PLACEHOLDER #2", "ORANGE"),
+                    (20, "PLACEHOLDER #3", "LIME")
                 }
             }
         };
