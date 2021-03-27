@@ -110,21 +110,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (!Active.TryGetValue(p.UserId, out int[] playerIds))
                 yield break;
             Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).ToArray();
-            int i = 0;
-            bool plus = true;
             while (Active.ContainsKey(p.UserId))
             {
                 foreach (var player in players)
-                    player.ShowHint($"<size=150%><color=#F{i}{i}><b>Trwa przesłuchanie</b></color></size><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", true, 1, true);
-                if (plus) 
-                    i++;
-                else 
-                    i--;
-                if (i >= 5)
-                    plus = false;
-                else if (i <= 0)
-                    plus = true;
-                yield return Timing.WaitForSeconds(0.5f);
+                    player.ShowHint($"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", true, 10.2f, true);
+                yield return Timing.WaitForSeconds(10f);
             }
             foreach (var player in players)
                 player.ShowHint("<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", true, 5, true);
