@@ -102,7 +102,7 @@ namespace Gamer.Mistaken.Systems.Pets
             }
         }
 
-        public static float Speed = 1.45f;
+        public static float Speed = 1.5f;
         public static bool ShoudRun = false;
 
         public static readonly Dictionary<string, (RoleType role, string name)> Pets = new Dictionary<string, (RoleType role, string name)>();
