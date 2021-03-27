@@ -166,7 +166,7 @@ namespace Gamer.Mistaken.Systems.Pets
             {
                 try
                 {
-                    npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.DisplayNickname}'s pet";
+                    npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.GetDisplayName()}'s pet";
                     npc.NPCPlayer.RankName = "PET";
                     npc.DisableDialogSystem = true;
                     npc.NPCPlayer.IsGodModeEnabled = true;
