@@ -35,7 +35,7 @@ namespace Gamer.Taser
                 int dur = (int)this.GetInternalDurability(item);
                 if(!Cooldowns.TryGetValue(dur, out DateTime time))
                     Cooldowns.Add(dur, DateTime.Now);
-                if (DateTime.Now > time)
+                if (DateTime.Now < time)
                     player.ShowHint("You have <color=yellow>no ammo</color>", true, 3, true);
                 else
                 {
@@ -43,13 +43,33 @@ namespace Gamer.Taser
                     var targetPlayer = Player.Get(target);
                     if(targetPlayer != null)
                     {
-                        targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
-                        targetPlayer.EnableEffect<CustomPlayerEffects.Flashed>(5);
-                        targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
-                        targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
-                        targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
-                        if (targetPlayer.CurrentItemIndex != -1)
-                            targetPlayer.DropItem(targetPlayer.CurrentItem);
+                        if (targetPlayer.IsHuman)
+                        {
+                            targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
+                            targetPlayer.EnableEffect<CustomPlayerEffects.Flashed>(5);
+                            targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
+                            targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
+                            targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
+                            if (targetPlayer.CurrentItemIndex != -1)
+                                targetPlayer.DropItem(targetPlayer.CurrentItem);
+                        }
+                        else
+                        {
+                            switch (targetPlayer.Role)
+                            {
+                                case RoleType.Scp049:
+                                case RoleType.Scp0492:
+                                case RoleType.Scp93953:
+                                case RoleType.Scp93989:
+                                    targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
+                                    targetPlayer.EnableEffect<CustomPlayerEffects.Flashed>(5);
+                                    targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
+                                    targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }
                 }
                 return false;
@@ -66,12 +86,15 @@ namespace Gamer.Taser
                         break;
                     int dur = (int)this.GetInternalDurability(player.CurrentItem);
                     if (!Cooldowns.TryGetValue(dur, out DateTime time))
+                    {
                         Cooldowns.Add(dur, DateTime.Now);
-                    var diff = ((Cooldown - (DateTime.Now - time).TotalSeconds) / Cooldown) * 100;
+                        time = DateTime.Now;
+                    }
+                    var diff = ((Cooldown - (time - DateTime.Now).TotalSeconds) / Cooldown) * 100;
                     string bar = "";
                     for (int i = 0; i < 10; i++)
                     {
-                        if (i * 10 > diff)
+                        if ((i * 10 + 9) > diff)
                             bar += "<color=red>|</color>";
                         else
                             bar += "|";
@@ -91,11 +114,13 @@ namespace Gamer.Taser
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
 
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
         private static int Index = 1;
         public static Pickup SpawnTaser(Vector3 pos)
@@ -113,6 +138,13 @@ namespace Gamer.Taser
             Index = 1;
             var initOne = SpawnTaser(Vector3.zero);
             MEC.Timing.CallDelayed(5, () => initOne.Delete());
+        }
+
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        {
+            float dur = 1.501f + (Index++) / 1000000f;
+            if (ev.NewRole == RoleType.FacilityGuard)
+                MEC.Timing.CallDelayed(1, () => ev.Player.Inventory.AddNewItem(ItemType.GunUSP, dur));
         }
     }
 }
