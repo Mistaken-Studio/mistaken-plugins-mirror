@@ -96,16 +96,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
     </Reference>
-    <Reference Include="MistakenSocket.Client">
-      <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Client.dll</HintPath>
+    <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\Lib\bin\Debug\MistakenSocket.Client.dll</HintPath>
     </Reference>
     <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Desktop\odwołania\MistakenSocket.Client.SL.Lib.dll</HintPath>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\SL\Lib\bin\Debug\MistakenSocket.Client.SL.Lib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MistakenSocket.Shared">
-      <HintPath>..\References\MistakenSocket.Shared.dll</HintPath>
+    <Reference Include="MistakenSocket.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MistakenSockets\MistakenSocket\Shared\bin\Debug\MistakenSocket.Shared.dll</HintPath>
     </Reference>
     <Reference Include="NetCoreServer, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
