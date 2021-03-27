@@ -57,7 +57,7 @@ namespace Gamer.Mistaken.Systems.Staff
                         tmp += "\n";
                     else
                         tmp = "";
-                    string text = $"{tmp}Player Id: <b>{player.Id}</b>" + (player.DisplayNickname == null ? "" : $"\nNickname: {player.Nickname}");
+                    string text = $"{tmp}Player Id: <b>{player.Id}</b>";
                     foreach (var staff in RealPlayers.List.Where(p => p.IsStaff()))
                         staff.SetPlayerInfoForTargetOnly(player, text);
                 }
