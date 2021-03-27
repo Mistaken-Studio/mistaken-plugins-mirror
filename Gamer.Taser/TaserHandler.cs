@@ -31,6 +31,11 @@ namespace Gamer.Taser
                 Timing.RunCoroutine(UpdateInterface(player));
             }
 
+            public override bool OnReload(Player player, Inventory.SyncItemInfo item)
+            {
+                return false;
+            }
+
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target)
             {
                 int dur = (int)this.GetInternalDurability(item);
