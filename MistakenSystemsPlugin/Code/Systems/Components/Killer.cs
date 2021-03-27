@@ -12,31 +12,40 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Components
 {
-    internal class Killer : MonoBehaviour
+    public class Killer : MonoBehaviour
     {
         public bool InstaKill;
         public float Dmg;
         public Func<Player, bool> Selector;
         public string Message;
-        private static GameObject Prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
+        private static GameObject prefab;
+        private static GameObject Prefab
+        {
+            get
+            {
+                if (prefab == null)
+                {
+                    prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
+                    prefab.layer = Layer;
+                    var collider = prefab.GetComponent<BoxCollider>();
+                    collider.isTrigger = true;
+                }
+                return prefab;
+            }
+        }
         private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
         public static Killer Spawn(Vector3 pos, Vector3 size, float dmg = 5, string message = "You can't stay here", bool instaKill = false, Func<Player, bool> selector = null)
         {
             try
             {
                 Log.Debug($"Spawning killer on ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
-                if (Prefab == null)
-                    Prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
-                obj.layer = Layer;
                 var killer = obj.GetComponent<Killer>();
                 killer.Dmg = dmg;
                 killer.Message = message;
                 killer.Selector = selector ?? (p => true);
                 killer.InstaKill = instaKill;
-                var collider = obj.GetComponent<BoxCollider>();
-                collider.isTrigger = true;
-                collider.size = size;
+                obj.GetComponent<BoxCollider>().size = size;
 
                 return killer;
             }
