@@ -24,7 +24,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
                 return new string[] { "Tesle są już wyłączone" };
             if (AlreadyUsed.Contains(player.UserId))
-                return new string[] { "Możesz użyć tylko komendy raz na życie" };
+                return new string[] { "Możesz użyć .taslaOff lub .teslaOn tylko raz na runde" };
             Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
             AlreadyUsed.Add(player.UserId);
             Cassie.Message("Tesla gates activated by order of NINETAILEDFOX COMMANDER");
