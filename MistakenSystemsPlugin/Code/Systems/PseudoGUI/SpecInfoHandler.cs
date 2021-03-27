@@ -299,7 +299,7 @@ namespace Gamer.Mistaken.Systems.GUI
             var classDString = "[<color=yellow>REDACTED</color>]";//Misc.ClassDCellsDecontaminationHandler.Decontaminated ? plugin.ReadTranslation("classd_decontaminated") : plugin.ReadTranslation("classd_decontamination", (classDTime - classDTime_s) / 60, (classDTime_s < 10 ? "0" : "") + classDTime_s);
             var miscString = Is106 ? recontainmentString : classDString;
             var adminWarheadString = plugin.ReadTranslation("admin_warhead_info", (Warhead.LeverStatus ? (Warhead.CanBeStarted ? "<color=green>Ready</color>" : "<color=blue>Cooldown</color>") : "<color=red>Disabled</color>"), Warhead.IsKeycardActivated, Misc.BetterWarheadHandler.Warhead.LastStartUser?.Id.ToString() ?? "?", Misc.BetterWarheadHandler.Warhead.LastStartUser?.Nickname ?? "UNKNOWN", Misc.BetterWarheadHandler.Warhead.LastStopUser?.Id.ToString() ?? "?", Misc.BetterWarheadHandler.Warhead.LastStopUser?.Nickname ?? "UNKNOWN", Misc.BetterWarheadHandler.Warhead.StartLock, Misc.BetterWarheadHandler.Warhead.StopLock);
-            var adminString = plugin.ReadTranslation("admin_info", /*(ticketsSum == 0 ? "<b><color=yellow>NO TICKETS LEFT</color></b>" : $"Chance for chaos: <color=yellow>{(ticketsCI * 100) / ticketsSum}%</color>")*/masterAdminMessage, cache_ticketsMTF, cache_ticketsCI, adminWarheadString);
+            var adminString = plugin.ReadTranslation("admin_info", masterAdminMessage, cache_ticketsMTF, cache_ticketsCI, adminWarheadString);
             return $"<br><br><br>{repsawnString}<br>{specatorString}<br><size=50%>{roundTimeString}   |   [<color=yellow>REDACTED</color>]   |   {playersString}<br>{lczString}   |   {systemTimeString}<br>{genString}   |   {miscString}</size>" + (admin ? $"<br>{adminString}" : "");
         }
 

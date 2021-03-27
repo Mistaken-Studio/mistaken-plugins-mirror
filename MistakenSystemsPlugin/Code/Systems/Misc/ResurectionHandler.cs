@@ -154,7 +154,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_UsingMedicalItem(Exiled.Events.EventArgs.UsingMedicalItemEventArgs ev)
         {
-            if (ev.Item == ItemType.SCP500 && ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Amnesia>().Enabled)
+            if (ev.Item == ItemType.SCP500 && ev.Player.GetEffectActive<CustomPlayerEffects.Amnesia>())
                 ev.IsAllowed = false;
         }
 
