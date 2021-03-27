@@ -44,7 +44,6 @@ namespace Gamer.Taser
                     var targetPlayer = Player.Get(target);
                     if(targetPlayer != null)
                     {
-                        player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.CurrentItem.uniq);
                         if (targetPlayer.IsHuman)
                         {
                             targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
@@ -74,7 +73,10 @@ namespace Gamer.Taser
                         }
                         targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
                         targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
+                        player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
                     }
+                    else
+                        player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
                 }
                 return false;
             }
@@ -152,7 +154,7 @@ namespace Gamer.Taser
                 ev.Items.Remove(ItemType.GunUSP);
                 MEC.Timing.CallDelayed(.25f, () =>
                 {
-                    if (ev.Player.Inventory.availableItems.Length >= 8)
+                    if (ev.Player.Inventory.items.Count >= 8)
                     {
                         MapPlus.Spawn(new Inventory.SyncItemInfo
                         {
