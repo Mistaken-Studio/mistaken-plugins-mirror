@@ -15,7 +15,7 @@ namespace Gamer.Mistaken.Systems.Components
     internal class Escape : MonoBehaviour
     {
         private Action<Player> OnTrigger;
-        private static readonly GameObject Prefab = new GameObject("Escape", typeof(Escape), typeof(BoxCollider));
+        private static GameObject Prefab = new GameObject("Escape", typeof(Escape), typeof(BoxCollider));
         private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
         public static Escape Spawn(Vector3 pos, Vector3 size, Action<Player> onTrigger)
         {
@@ -23,7 +23,7 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 Log.Debug($"Spawning Escape on ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
                 if (Prefab == null)
-                    throw new NullReferenceException("Prefab is null :/");
+                    Prefab = new GameObject("Killer", typeof(Escape), typeof(BoxCollider));
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
                 obj.layer = Layer;
                 var Escape = obj.GetComponent<Escape>();

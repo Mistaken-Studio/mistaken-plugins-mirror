@@ -18,7 +18,7 @@ namespace Gamer.Mistaken.Systems.Components
         public float Dmg;
         public Func<Player, bool> Selector;
         public string Message;
-        private static readonly GameObject Prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
+        private static GameObject Prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
         private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
         public static Killer Spawn(Vector3 pos, Vector3 size, float dmg = 5, string message = "You can't stay here", bool instaKill = false, Func<Player, bool> selector = null)
         {
@@ -26,7 +26,7 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 Log.Debug($"Spawning killer on ({pos.x}, {pos.y}, {pos.z}) with size ({size.x}, {size.y}, {size.z})");
                 if (Prefab == null)
-                    throw new NullReferenceException("Prefab is null :/");
+                    Prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
                 obj.layer = Layer;
                 var killer = obj.GetComponent<Killer>();
