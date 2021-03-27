@@ -29,10 +29,13 @@ namespace Gamer.SNAV
             public override Vector3 Size => new Vector3(2.0f, .50f, .50f);
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Timing.RunCoroutine(UpdateInterface(player));
+                Timing.RunCoroutine(IUpdateInterface(player));
+            }
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                player.ShowHint("", false, 1, true); //Clear Hints
             }
         }
-
         public class SNavUltimateItem : API.CustomItem.CustomItem
         {
             public SNavUltimateItem() => base.Register();
@@ -42,7 +45,12 @@ namespace Gamer.SNAV
             public override Vector3 Size => new Vector3(2.5f, .75f, .75f);
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Timing.RunCoroutine(UpdateInterface(player));
+                UpdateInterface(player);
+                Timing.RunCoroutine(IUpdateInterface(player));
+            }
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                player.ShowHint("", false, 1, true); //Clear Hints
             }
         }
 
@@ -601,6 +609,9 @@ namespace Gamer.SNAV
                     if (player.CurrentRoom != null)
                         LastScan.Add(player.CurrentRoom);
                 }
+                RequireUpdateUltimate = true;
+                yield return Timing.WaitForSeconds(1);
+                RequireUpdateUltimate = false;
             }
         }
 
@@ -820,105 +831,131 @@ namespace Gamer.SNAV
             }
         }
 
-        private static IEnumerator<float> UpdateInterface(Player player)
+        private static bool RequireUpdateUltimate = false;
+        private static readonly HashSet<Player> RequireUpdate = new HashSet<Player>();
+        private static readonly Dictionary<Player, Room> LastRooms = new Dictionary<Player, Room>();
+        private static IEnumerator<float> IUpdateInterface(Player player)
         {
             yield return Timing.WaitForSeconds(0.5f);
+            int i = 1;
             while (player.CurrentItem.id == ItemType.WeaponManagerTablet)
             {
-                if (!((player.CurrentItem.durability >= 1.301 && player.CurrentItem.durability <= 1.3011) || player.CurrentItem.durability == 1.401f))
-                    break;
-                bool Ultimate = player.CurrentItem.durability == 1.401f;
-                var rooms = GetRooms(player.Position.y);
-                string[] toWrite = new string[rooms.GetLength(0) * 3];
-                for (int z = 0; z < rooms.GetLength(0); z++)
+                if (!LastRooms.TryGetValue(player, out Room lastRoom) || lastRoom != player.CurrentRoom)
                 {
-                    for (int x = 0; x < rooms.GetLength(1); x++)
-                    {
-                        string color = "green";
-                        string Name = "  END  ";
-                        var room = rooms[z, x];
-                        var tmp = GetRoomString(GetRoomType(room));
-                        if (room == null)
-                        {
-                            toWrite[(z * 3) + 0] += tmp[0];
-                            toWrite[(z * 3) + 1] += tmp[1];
-                            toWrite[(z * 3) + 2] += tmp[2];
-                            continue;
-                        }
-                        if (player.CurrentRoom == room)
-                            color = "white";
-                        else if (Warhead.IsInProgress)
-                        {
-                            if (room.Type == RoomType.HczNuke || room.Type == RoomType.EzGateA || room.Type == RoomType.EzGateB || room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
-                                color = "red";
-                        }
-                        else if (MapPlus.IsLCZDecontaminated(35))
-                        {
-                            if (room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
-                                color = "red";
-                        }
-                        if (Generator079.Generators.Any(g => g.CurRoom == room.Name && g.NetworkremainingPowerup > 0f))
-                        {
-                            var gen = Generator079.Generators.Find(g => g.CurRoom == room.Name);
-                            if(gen.NetworkisTabletConnected)
-                                color = "yellow";
-                            else
-                                color = "blue";
-                        }
-                        if (Ultimate)
-                        {
-                            if (LastScan.Contains(room) && player.CurrentRoom.GetHashCode() != room.GetHashCode())
-                                color = "red";
-
-                            switch (room.Type)
-                            {
-                                case RoomType.EzGateA:
-                                    Name = "GATE  A";
-                                    break;
-                                case RoomType.EzGateB:
-                                    Name = "GATE  B";
-                                    break;
-                                case RoomType.Hcz106:
-                                    Name = "SCP 106";
-                                    break;
-                                case RoomType.Hcz079:
-                                    Name = "SCP 079";
-                                    break;
-                                case RoomType.Hcz096:
-                                    Name = "SCP 096";
-                                    break;
-                                case RoomType.Lcz012:
-                                    Name = "SCP 012";
-                                    break;
-                                case RoomType.Lcz914:
-                                    Name = "SCP 914";
-                                    break;
-                                case RoomType.Lcz173:
-                                    Name = "SCP 173";
-                                    break;
-                                case RoomType.LczGlassBox:
-                                    Name = "SCP 372";
-                                    break;
-                                case RoomType.LczCafe:
-                                    Name = "   PC  ";
-                                    break;
-                            }
-                        }
-
-                        
-                        toWrite[(z * 3) + 0] += $"<color={color}>" + tmp[0] + "</color>";
-                        toWrite[(z * 3) + 1] += $"<color={color}>" + tmp[1].Replace("  END  ", Name) + "</color>";
-                        toWrite[(z * 3) + 2] += $"<color={color}>" + tmp[2] + "</color>";
-                    }
+                    LastRooms[player] = player.CurrentRoom;
+                    RequireUpdate.Add(player);
+                    i = 20;
                 }
-                var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
-                list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
-                while (list.Count < 65)
-                    list.Insert(0, "");
-                player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", true, 2, true);
-                NorthwoodLib.Pools.ListPool<string>.Shared.Return(list);
+                if (i >= 19 || RequireUpdate.Contains(player) || (RequireUpdateUltimate && player.CurrentItem.durability == 1.401f))
+                {
+                    UpdateInterface(player);
+                    RequireUpdate.Remove(player);
+                    i = 0;
+                }
+                else
+                    i++;
+                
                 yield return Timing.WaitForSeconds(0.5f);
             }
+        }
+        private static void UpdateInterface(Player player)
+        {
+            bool Ultimate;
+            if (player.CurrentItem.durability == 1.401f)
+                Ultimate = true;
+            else if (player.CurrentItem.durability == 1.301f)
+                Ultimate = false;
+            else
+                return;
+            var rooms = GetRooms(player.Position.y);
+            string[] toWrite = new string[rooms.GetLength(0) * 3];
+            for (int z = 0; z < rooms.GetLength(0); z++)
+            {
+                for (int x = 0; x < rooms.GetLength(1); x++)
+                {
+                    string color = "green";
+                    string Name = "  END  ";
+                    var room = rooms[z, x];
+                    var tmp = GetRoomString(GetRoomType(room));
+                    if (room == null)
+                    {
+                        toWrite[(z * 3) + 0] += tmp[0];
+                        toWrite[(z * 3) + 1] += tmp[1];
+                        toWrite[(z * 3) + 2] += tmp[2];
+                        continue;
+                    }
+                    if (player.CurrentRoom == room)
+                        color = "white";
+                    else if (Warhead.IsInProgress)
+                    {
+                        if (room.Type == RoomType.HczNuke || room.Type == RoomType.EzGateA || room.Type == RoomType.EzGateB || room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
+                            color = "red";
+                    }
+                    else if (MapPlus.IsLCZDecontaminated(35))
+                    {
+                        if (room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
+                            color = "red";
+                    }
+                    if (Generator079.Generators.Any(g => g.CurRoom == room.Name && g.NetworkremainingPowerup > 0f))
+                    {
+                        var gen = Generator079.Generators.Find(g => g.CurRoom == room.Name);
+                        if (gen.NetworkisTabletConnected)
+                            color = "yellow";
+                        else
+                            color = "blue";
+                    }
+                    if (Ultimate)
+                    {
+                        if (LastScan.Contains(room) && player.CurrentRoom.GetHashCode() != room.GetHashCode())
+                            color = "red";
+
+                        switch (room.Type)
+                        {
+                            case RoomType.EzGateA:
+                                Name = "GATE  A";
+                                break;
+                            case RoomType.EzGateB:
+                                Name = "GATE  B";
+                                break;
+                            case RoomType.Hcz106:
+                                Name = "SCP 106";
+                                break;
+                            case RoomType.Hcz079:
+                                Name = "SCP 079";
+                                break;
+                            case RoomType.Hcz096:
+                                Name = "SCP 096";
+                                break;
+                            case RoomType.Lcz012:
+                                Name = "SCP 012";
+                                break;
+                            case RoomType.Lcz914:
+                                Name = "SCP 914";
+                                break;
+                            case RoomType.Lcz173:
+                                Name = "SCP 173";
+                                break;
+                            case RoomType.LczGlassBox:
+                                Name = "SCP 372";
+                                break;
+                            case RoomType.LczCafe:
+                                Name = "   PC  ";
+                                break;
+                        }
+                    }
+
+
+                    toWrite[(z * 3) + 0] += $"<color={color}>" + tmp[0] + "</color>";
+                    toWrite[(z * 3) + 1] += $"<color={color}>" + tmp[1].Replace("  END  ", Name) + "</color>";
+                    toWrite[(z * 3) + 2] += $"<color={color}>" + tmp[2] + "</color>";
+                }
+            }
+            var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+            list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+            while (list.Count < 65)
+                list.Insert(0, "");
+            player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", true, 11, true);
+            NorthwoodLib.Pools.ListPool<string>.Shared.Return(list);
         }
         public static Room[,] GetRooms(float pos)
         {
