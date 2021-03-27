@@ -182,22 +182,17 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             yield return Timing.WaitForSeconds(1f);
             while (Round.IsStarted && !Map.IsLCZDecontaminated)
             {
-                //bool added = false;
-                foreach (var player in RealPlayers.Get(Team.SCP))
+                foreach (var player in room.Players)
                 {
+                    if (!player.IsScp)
+                        continue;
                     if (player.Role == RoleType.Scp0492)
                         continue;
                     if (!(door.NetworkTargetState || player.Role == RoleType.Scp106))
                         continue;
-                    if (Vector3.Distance(room.Position, player.Position) < 25)
-                    {
+                    if (room.Players.Contains(player))
                         CamperPoints += 1;
-                        //added = true;
-                    }
                 }
-
-                //if (!added)
-                //    CamperPoints--;
 
                 if (CamperPoints > 180)
                     SpawnO5 = true;
