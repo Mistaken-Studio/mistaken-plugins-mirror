@@ -18,13 +18,14 @@ namespace Gamer.Taser
 {
     public class TaserHandler : Module
     {
+        internal static readonly Vector3 Size = new Vector3(.75f, .75f, .75f);
         public class TaserItem : CustomItem
         {
             public TaserItem() => base.Register();
             public override string ItemName => "Taser";
             public override ItemType Item => ItemType.GunUSP;
             public override int Durability => 501;
-            public override Vector3 Size => new Vector3(1.0f, .25f, .25f);
+            public override Vector3 Size => TaserHandler.Size;
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Timing.RunCoroutine(UpdateInterface(player));
@@ -71,13 +72,13 @@ namespace Gamer.Taser
                             }
                         }
                         targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
-                        targetPlayer.SendConsoleMessage("You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
+                        targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
                     }
                 }
                 return false;
             }
 
-            private const int Cooldown = 120;
+            private const int Cooldown = 90;
             private readonly Dictionary<int, DateTime> Cooldowns = new Dictionary<int, DateTime>();
             private IEnumerator<float> UpdateInterface(Player player)
             {
@@ -94,9 +95,9 @@ namespace Gamer.Taser
                     }
                     var diff = ((Cooldown - (time - DateTime.Now).TotalSeconds) / Cooldown) * 100;
                     string bar = "";
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 1; i <= 20; i++)
                     {
-                        if ((i * 10 + 9) > diff)
+                        if (i * (100/20) > diff)
                             bar += "<color=red>|</color>";
                         else
                             bar += "|";
@@ -132,7 +133,7 @@ namespace Gamer.Taser
             {
                 durability = dur,
                 id = ItemType.GunUSP,
-            }, pos, Quaternion.identity, new Vector3(1.0f, .25f, .25f));
+            }, pos, Quaternion.identity, Size);
         }
 
         private void Server_RoundStarted()
@@ -146,17 +147,22 @@ namespace Gamer.Taser
         {
             float dur = 1.501f + (Index++) / 1000000f;
             if (ev.NewRole == RoleType.FacilityGuard)
-                MEC.Timing.CallDelayed(1, () => 
+            {
+                ev.Items.Remove(ItemType.GunUSP);
+                MEC.Timing.CallDelayed(.25f, () =>
                 {
-                    if (ev.Player.Inventory.availableItems.Length > 7)
+                    if (ev.Player.Inventory.availableItems.Length >= 8)
+                    {
                         MapPlus.Spawn(new Inventory.SyncItemInfo
                         {
                             durability = dur,
                             id = ItemType.GunUSP,
-                        }, ev.Player.Position, Quaternion.identity, new Vector3(1.0f, .25f, .25f));
+                        }, ev.Player.Position, Quaternion.identity, Size);
+                    }
                     else
                         ev.Player.Inventory.AddNewItem(ItemType.GunUSP, dur);
                 });
+            }
         }
     }
 }
