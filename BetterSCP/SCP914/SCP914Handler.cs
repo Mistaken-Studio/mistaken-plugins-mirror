@@ -59,7 +59,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
 
         private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
         {
-            foreach (var player in ev.Players.Where(p => p.IsAlive))
+            foreach (var player in ev.Players.Where(p => p.IsReadyPlayer() && p.IsAlive))
             {
                 PlayerStats ps = player.ReferenceHub.playerStats;
 

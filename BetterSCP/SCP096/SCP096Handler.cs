@@ -119,7 +119,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
             {
                 foreach (var scp096 in RealPlayers.Get(RoleType.Scp096))
                 {
-                    if (scp096.ReferenceHub.scpsController.CurrentScp is PlayableScps.Scp096 scp096script && scp096.Role == RoleType.Scp096 && (scp096script.Enraged || scp096script.Enraging))
+                    if (scp096.ReferenceHub.scpsController.CurrentScp is PlayableScps.Scp096 scp096script && (scp096script.Enraged || scp096script.Enraging))
                     {
                         string targetMessage = plugin.ReadTranslation("Info_096Target", scp096script._targets.Count);
                         foreach (var item in scp096script._targets.ToArray())
