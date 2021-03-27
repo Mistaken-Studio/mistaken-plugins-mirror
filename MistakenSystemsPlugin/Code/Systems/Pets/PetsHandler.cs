@@ -97,12 +97,12 @@ namespace Gamer.Mistaken.Systems.Pets
             yield return Timing.WaitForSeconds(1);
             while(player.Role == RoleType.Scp173 && AlivePets.Any(i => i.Key == player.UserId && i.Value.NPCPlayer.Id == pet.NPCPlayer.Id))
             {
-                pet.MovementSpeed = player.ReferenceHub.characterClassManager.Scp173.boost_speed.Evaluate(player.ReferenceHub.playerStats.GetHealthPercent());
+                pet.MovementSpeed = player.ReferenceHub.characterClassManager.Scp173.boost_speed.Evaluate(player.ReferenceHub.playerStats.GetHealthPercent()) * 1.1f;
                 yield return Timing.WaitForSeconds(1);
             }
         }
 
-        public static float Speed = 1.25f;
+        public static float Speed = 1.45f;
         public static bool ShoudRun = false;
 
         public static readonly Dictionary<string, (RoleType role, string name)> Pets = new Dictionary<string, (RoleType role, string name)>();
