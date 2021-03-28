@@ -65,7 +65,7 @@ namespace Gamer.Mistaken.BetterSCP.Global
             //Panic
             Mistaken.Systems.Components.InRage.Spawn(ev.Player.CameraTransform, Vector3.forward * 10f, new Vector3(10, 5, 20), OnEnterVision(ev.Player));
             //AntyDuo
-            Mistaken.Systems.Components.InRage.Spawn(ev.Player.CameraTransform, Vector3.zero, new Vector3(PluginHandler.Anty173_096DuoDistance, 5, PluginHandler.Anty173_096DuoDistance), OnEnter(ev.Player));
+            Mistaken.Systems.Components.InRage.Spawn(ev.Player.CameraTransform, Vector3.zero, new Vector3(PluginHandler.Anty173_096DuoDistance, 5, PluginHandler.Anty173_096DuoDistance), OnEnter(ev.Player), OnExit(ev.Player));
         }
         #endregion
         #region AntyDuo
