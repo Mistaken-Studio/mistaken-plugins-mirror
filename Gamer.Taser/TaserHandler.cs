@@ -13,6 +13,7 @@ using Exiled.API.Extensions;
 using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
 using UnityEngine;
+using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Taser
 {
@@ -30,12 +31,10 @@ namespace Gamer.Taser
             {
                 Timing.RunCoroutine(UpdateInterface(player));
             }
-
             public override bool OnReload(Player player, Inventory.SyncItemInfo item)
             {
                 return false;
             }
-
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target)
             {
                 int dur = (int)this.GetInternalDurability(item);
@@ -68,7 +67,6 @@ namespace Gamer.Taser
                                 case RoleType.Scp93953:
                                 case RoleType.Scp93989:
                                     targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Flashed>(5);
                                     targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
                                     targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
                                     break;
@@ -76,6 +74,7 @@ namespace Gamer.Taser
                                     break;
                             }
                         }
+                        RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
                         targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
                         targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
                         player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
