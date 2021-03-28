@@ -3,6 +3,8 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
+using Interactables.Interobjects.DoorUtils;
+using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -46,30 +48,43 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     ItemType.SCP018.Spawn(0, basePos);
                     return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "" };
                 case "heh":
-                    var p = Player.Get(args[1]);
-                    //Explore(p.GameObject.transform);
-                    var size = new Vector3(float.Parse(args[2]), float.Parse(args[3]), float.Parse(args[4]));
-                    var tmp = Find(p.GameObject.transform, "Body");
-                    foreach (var item in tmp.Take(tmp.Count - 1))
                     {
-                        item.localScale = size;
-                    }
-                    Log.Debug(":|");
-                    foreach (Player _p in Player.List)
-                    {
-                        MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
-                        if (sendSpawnMessage != null)
+                        var p = Player.Get(args[1]);
+                        //Explore(p.GameObject.transform);
+                        var size = new Vector3(float.Parse(args[2]), float.Parse(args[3]), float.Parse(args[4]));
+                        var tmp = Find(p.GameObject.transform, "Body");
+                        foreach (var item in tmp.Take(tmp.Count - 1))
                         {
-                            sendSpawnMessage.Invoke(null, new object[]
+                            item.localScale = size;
+                        }
+                        Log.Debug(":|");
+                        foreach (Player _p in Player.List)
+                        {
+                            MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+                            if (sendSpawnMessage != null)
                             {
+                                sendSpawnMessage.Invoke(null, new object[]
+                                {
                                 p.ReferenceHub.characterClassManager.netIdentity,
                                 _p.Connection
-                            });
+                                });
+                            }
+                            else
+                                Log.Debug("FOCK OFF");
                         }
-                        else
-                            Log.Debug("FOCK OFF");
+                        break;
                     }
-                    break;
+                case "builder":
+                    {
+                        var pos = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        var rotation = new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6]));
+                        var size = new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9]));
+                        DoorVariant doorVariant = UnityEngine.Object.Instantiate(DoorUtils.GetPrefab(DoorUtils.DoorType.HCZ_BREAKABLE), pos, Quaternion.Euler(rotation));
+                        doorVariant.gameObject.transform.localScale = size;
+                        GameObject.Destroy(doorVariant);
+                        NetworkServer.Spawn(doorVariant.gameObject);
+                        break;
+                    }
             }
             success = true;
             return new string[] { "HMM" };
