@@ -5,6 +5,7 @@ using Exiled.API.Features;
 using Gamer.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using Gamer.Mistaken.Systems.CustomItems;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
@@ -19,6 +20,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             var player = sender.GetPlayer();
             if (!player.CurrentItem.id.IsWeapon(false))
                 return new string[] { "Nie masz broni w ręku" };
+            if (CustomItemsHandler.GetCustomItem(player.CurrentItem) != null)
+                return new string[] { "Nie możesz wyciągnać amunicji z tej broni" };
             uint ammo = (uint)player.CurrentItem.GetWeaponAmmo();
             if (ammo != 0)
             {
