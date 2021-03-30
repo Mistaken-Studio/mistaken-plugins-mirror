@@ -15,6 +15,7 @@ using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
 using Exiled.CustomItems.API.Features;
 using Exiled.CustomItems.API.Spawn;
+using Scp914;
 
 namespace Gamer.SNAV
 {
@@ -27,6 +28,15 @@ namespace Gamer.SNAV
             public override ItemType Item => ItemType.WeaponManagerTablet;
             public override int Durability => 301;
             public override Vector3 Size => new Vector3(2.0f, .50f, .50f);
+            public override Upgrade[] Upgrades => new Upgrade[]
+            {
+                new Upgrade
+                {
+                    Input = ItemType.WeaponManagerTablet,
+                    Durability = 0,
+                    Chance = 1
+                }
+            };
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Timing.RunCoroutine(IUpdateInterface(player));
@@ -34,6 +44,12 @@ namespace Gamer.SNAV
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
                 player.ShowHint("", false, 1, true); //Clear Hints
+            }
+            public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
+            {
+                if(setting == Scp914Knob.Fine || setting == Scp914Knob.VeryFine)
+                    pickup.durability = 1.401f;
+                return pickup;
             }
         }
         public class SNavUltimateItem : API.CustomItem.CustomItem
@@ -56,7 +72,6 @@ namespace Gamer.SNAV
 
         public static Room[,] LCZRooms { get; private set; } = new Room[0, 0];
         public static Room[,] EZ_HCZRooms { get; private set; } = new Room[0, 0];
-        private static int Index = 1;
 
         public static Rotation OffsetClassD = Rotation.UP;
         public static Rotation OffsetCheckpoint = Rotation.UP;
@@ -456,19 +471,17 @@ namespace Gamer.SNAV
         {
             if (ultimate)
             {
-                float dur = 1.401f;
                 return MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
-                    durability = dur,
+                    durability = 1.401f,
                     id = ItemType.WeaponManagerTablet,
                 }, pos, Quaternion.identity, new Vector3(2.5f, .75f, .75f));
             }
             else
             {
-                float dur = 1.301f + (Index++) / 1000000f;
                 return MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
-                    durability = dur,
+                    durability = 1.301f,
                     id = ItemType.WeaponManagerTablet,
                 }, pos, Quaternion.identity, new Vector3(2.0f, .50f, .50f));
             }
@@ -483,52 +496,11 @@ namespace Gamer.SNAV
                     switch (ev.KnobSetting)
                     {
                         case Scp914.Scp914Knob.Fine:
-                            if (item.durability == 1.401)
+                            if (UnityEngine.Random.Range(1, 101) <= 25)
                             {
+                                SpawnSNAV(false, ev.Scp914.output.position + Vector3.up);
                                 ev.Items.Remove(item);
                                 item.Delete();
-                            }
-                            else if (item.durability >= 1.301)
-                            {
-                                SpawnSNAV(true, ev.Scp914.output.position + Vector3.up);
-                                ev.Items.Remove(item);
-                                item.Delete();
-                            }
-                            else
-                            {
-                                if (UnityEngine.Random.Range(1, 101) <= 25)
-                                {
-                                    SpawnSNAV(false, ev.Scp914.output.position + Vector3.up);
-                                    ev.Items.Remove(item);
-                                    item.Delete();
-                                }
-                            }
-                            break;
-                        case Scp914.Scp914Knob.VeryFine:
-                            if (item.durability == 1.401)
-                            {
-                                ev.Items.Remove(item);
-                                item.Delete();
-                            }
-                            else if (item.durability >= 1.301)
-                            {
-                                int tmp = UnityEngine.Random.Range(1, 101);
-                                if (tmp <= 10)
-                                    SpawnSNAV(true, ev.Scp914.output.position + Vector3.up);
-                                else if (tmp <= 50)
-                                    ItemType.WeaponManagerTablet.Spawn(item.durability, ev.Scp914.output.position + Vector3.up);
-                                ev.Items.Remove(item);
-                                item.Delete();
-                            }
-                            else
-                            {
-                                int tmp = UnityEngine.Random.Range(1, 101);
-                                if (tmp <= 1)
-                                {
-                                    SpawnSNAV(false, ev.Scp914.output.position + Vector3.up);
-                                    ev.Items.Remove(item);
-                                    item.Delete();
-                                }
                             }
                             break;
                     }

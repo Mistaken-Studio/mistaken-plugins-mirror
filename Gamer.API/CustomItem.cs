@@ -23,6 +23,7 @@ namespace Gamer.API
             public abstract ItemType Item { get; }
             public abstract int Durability { get; }
             public virtual Vector3 Size { get; } = Vector3.one;
+            public virtual Upgrade[] Upgrades { get; } = new Upgrade[0];
             public virtual bool OnPrePickup(Player player, Pickup pickup) => true;
             public virtual bool OnPickup(Player player, Pickup pickup) => true;
             public virtual bool OnDrop(Player player, Inventory.SyncItemInfo item) => true;
@@ -49,6 +50,13 @@ namespace Gamer.API
                 var info = player.Inventory.items[index];
                 info.durability = fullValue;
                 player.Inventory.items[index] = info;
+            }
+
+            public struct Upgrade
+            {
+                public ItemType Input;
+                public float Durability;
+                public float Chance;
             }
         }
     }
