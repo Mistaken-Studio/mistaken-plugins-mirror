@@ -26,68 +26,10 @@ namespace Gamer.Mistaken.Systems.End
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
-            //Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            //Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
-            //Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
-            //Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            //Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
-            //Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-        }
-
-        private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
-        {
-            if (!SpawnSamsara)
-                return;
-            ev.IsAllowed = false;
-            if(ev.ScpsLeft == 0)
-                Cassie.GlitchyMessage($"MTFUNIT Tau 5 DESIGNATED {ev.UnitName} {ev.UnitNumber} HASENTERED ALLREMAINING NOSCPSLEFT", 0.3f, 0.1f);
-            else
-                Cassie.GlitchyMessage($"MTFUNIT Tau 5 DESIGNATED {ev.UnitName} {ev.UnitNumber} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {ev.ScpsLeft} SCPSUBJECT{(ev.ScpsLeft == 1 ? "" : "S")}", 0.3f, 0.1f);
-        }
-
-        private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
-        {
-            if (!SpawnSamsara)
-                return;
-            ev.NextKnownTeam = Respawning.SpawnableTeamType.NineTailedFox;
-            ev.MaximumRespawnAmount = 8;
-            SamstraNewUnits = ev.Players.ToHashSet();
-        }
-
-        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
-        {
-            if (ev.NewRole == RoleType.Spectator)
-                SamstraUnits.Remove(ev.Player);
-            if (!SpawnSamsara)
-                return;
-            if(SamstraNewUnits.Contains(ev.Player) && ev.NewRole.GetTeam() == Team.MTF)
-            {
-                ev.Items.RemoveAll(i => i.IsKeycard());
-                ev.Items.Add(ItemType.KeycardO5);
-                MEC.Timing.CallDelayed(0.5f, () =>
-                {
-                    RoundLogger.Log("TAU-5", "SPAWN", $"{ev.Player.PlayerToString()} was spawned as TAU-5 Samsara");
-                    Systems.Utilities.API.Map.RespawnLock = true;
-                    ev.Player.Health *= 5;
-                    ev.Player.ArtificialHealth = 50;
-                    ev.Player.CustomInfo = "Tau-5 Samsara";
-                    ev.Player.Ammo[(int)AmmoType.Nato556] = 500;
-                    ev.Player.Ammo[(int)AmmoType.Nato9] = 500;
-                    ev.Player.Ammo[(int)AmmoType.Nato762] = 500;
-                    ev.Player.Inventory.items.ModifyDuration(ev.Player.Inventory.items.FindIndex(i => i.id == ItemType.WeaponManagerTablet), 5000);
-                    Systems.Shield.ShieldedManager.Add(new Shield.Shielded(ev.Player, 50, 0.25f, 30, 0, -1));
-                    MEC.Timing.CallDelayed(8f, () =>
-                    {
-                        ev.Player.ShowHint("<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", true, 10, true);
-                    });
-                    SamstraUnits.Add(ev.Player);
-                    SamstraNewUnits.Remove(ev.Player);
-                });
-            }
         }
 
         private void Server_RoundStarted()
@@ -95,22 +37,24 @@ namespace Gamer.Mistaken.Systems.End
             Timing.RunCoroutine(Execute());
         }
 
-        private static HashSet<Player> SamstraNewUnits = new HashSet<Player>();
-        private static readonly HashSet<Player> SamstraUnits = new HashSet<Player>();
-
-        public static bool SpawnSamsara = false;
+        public static bool SpawnSamsara { get; private set; } = false;
         private IEnumerator<float> Execute()
         {
-            SamstraUnits.Clear();
             SpawnSamsara = false;
             int startRoundId = RoundPlus.RoundId;
-            if (UnityEngine.Random.Range(1, 101) < 25 && false)
+            if (UnityEngine.Random.Range(1, 101) < 25)
             {
                 yield return Timing.WaitForSeconds(UnityEngine.Random.Range(25, 31) * 60);
                 if (!Round.IsStarted || startRoundId != RoundPlus.RoundId)
                     yield break;
                 SpawnSamsara = true;
+                Systems.Utilities.API.Map.RespawnLock = true;
                 Respawning.RespawnManager.Singleton._timeForNextSequence = (float)Respawning.RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + 30;
+                MEC.Timing.CallDelayed(30 + 17, () =>
+                {
+                    if (startRoundId == RoundPlus.RoundId) 
+                        SpawnAsSamsara();
+                });
             }
             else
                 yield return Timing.WaitForSeconds(30 * 60);
@@ -129,7 +73,7 @@ namespace Gamer.Mistaken.Systems.End
         public static void SpawnAsSamsara(List<Player> toSpawn = null)
         {
             var players = RealPlayers.Get(RoleType.Spectator).ToArray().Shuffle();
-            if(toSpawn == null) 
+            if(toSpawn == null)
                 toSpawn = new List<Player>();
             foreach (var player in players)
             {
@@ -144,11 +88,10 @@ namespace Gamer.Mistaken.Systems.End
             }
             Respawning.NamingRules.UnitNamingRules.TryGetNamingRule(Respawning.SpawnableTeamType.NineTailedFox, out Respawning.NamingRules.UnitNamingRule unitnamingrule);
             unitnamingrule.GenerateNew(Respawning.SpawnableTeamType.NineTailedFox, out string unit);
+            Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#C00");
             foreach (var player in toSpawn)
                 SpawnAsSamsara(player, unit);
-            string unitnumber;
-            if (unit.Contains('0')) unitnumber = unit.Last().ToString();
-            else unitnumber = unit.Remove(0, unit.IndexOf('-') + 1);
+            string unitnumber = unit.Split('-')[1];
             int scps = RealPlayers.List.Where(p => p.Team == Team.SCP && p.Role != RoleType.Scp0492).Count();
             Cassie.GlitchyMessage($"MTFUNIT TAU 5 DESIGNATED NATO_{unit[0]} {unitnumber} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {scps} SCPSUBJECT{(scps == 1 ? "" : "S")}", 0.3f, 0.1f);
             Systems.Utilities.API.Map.RespawnLock = true;
@@ -193,7 +136,6 @@ namespace Gamer.Mistaken.Systems.End
                     {
                         player.ShowHint("<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", true, 10, true);
                     });
-                    SamstraUnits.Add(player);
                 });
             });
         }
