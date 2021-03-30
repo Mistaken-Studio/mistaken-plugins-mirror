@@ -74,10 +74,21 @@ namespace Gamer.Mistaken.Systems.CustomItems
         {
             foreach (var item in ev.Items.ToArray())
             {
-                var customItem = GetCustomItem(item);
-                if (customItem == null)
+                foreach (var customItem in CustomItem.CustomItemTypes)
+                {
+                    foreach (var upgrade in customItem.Upgrades)
+                    {
+                        if(item.ItemId == upgrade.Input && item.durability == upgrade.Durability)
+                        {
+                            if (upgrade.Chance <= UnityEngine.Random.Range(0, 100))
+                                customItem.Item.Spawn(customItem.Durability, ev.Scp914.output.position);
+                        }
+                    }
+                }
+                var thisCustomItem = GetCustomItem(item);
+                if (thisCustomItem == null)
                     continue;
-                var result = customItem.OnUpgrade(item, ev.KnobSetting);
+                var result = thisCustomItem.OnUpgrade(item, ev.KnobSetting);
                 result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
                 ev.Items.Remove(item);
                 item.Delete();

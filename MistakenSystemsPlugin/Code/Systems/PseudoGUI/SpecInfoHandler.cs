@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Systems.End;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -229,7 +230,9 @@ namespace Gamer.Mistaken.Systems.GUI
                             message = "";
                         if (respawnManager._curSequence == Respawning.RespawnManager.RespawnSequencePhase.PlayingEntryAnimations)
                         {
-                            if (respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
+                            if (NoEndlessRoundHandler.SpawnSamsara)
+                                InformRespawnSamsara(ttr, respawningMTF, notrespawningMTF, spawnQueue.ContainsKey(player.Id));
+                            else if (respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
                                 message += InformRespawnCI(ttr, respawningCI, notrespawningCI, spawnQueue.ContainsKey(player.Id));
                             else if (respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.NineTailedFox)
                                 message += InformRespawnMTF(ttr, respawningMTF, notrespawningMTF, spawnQueue.ContainsKey(player.Id) ? spawnQueue[player.Id].Role : RoleType.None, spawnQueue.FirstOrDefault(i => i.Value.Role == RoleType.NtfCommander).Value.Player?.GetDisplayName() ?? "UNKNOWN");
@@ -306,6 +309,11 @@ namespace Gamer.Mistaken.Systems.GUI
         private string InformRespawnNone(float ttr)
         {
             return plugin.ReadTranslation("respawn_none", (ttr % 60).ToString("00"));
+        }
+        private string InformRespawnSamsara(float ttr, int respawningSamsara, int notrespawningSamsara, bool willRespawn)
+        {
+            string roleString = willRespawn ? "<color=yellow>Przylecisz</color> jako <color=#1200ff>Jednostka Samsary</color>" : "<color=yellow><b>Nie</b> przylecisz</color>";
+            return $"<color=#0096ff><size=200%><b>Helikoper Samsary łąduje</b></color> <br>za <color=yellow>{(ttr % 60).ToString("00")}</color>s</size><br><color=yellow>{respawningSamsara}</color> jednostek Samsary przyleci<br><size=50%><color=yellow>{notrespawningSamsara}</color> graczy nie przyleci</size><br>{roleString}";
         }
         private string InformRespawnMTF(float ttr, int respawningMTF, int notrespawningMTF, RoleType expectedRole, string Commander)
         {
