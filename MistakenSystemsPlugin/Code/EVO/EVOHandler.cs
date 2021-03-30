@@ -145,8 +145,10 @@ namespace Gamer.Mistaken.EVO
         private static void SSL_OnAchievementInfoResponse(uint Id, string UserId, uint Progress, uint Level)
         {
             var achiev = Achievements.Find(a => a.Id == Id);
-            if (achiev == null) return;
-            if (Level >= 3) return;
+            if (achiev == null) 
+                return;
+            if (Level >= 3) 
+                return;
             var nextLevel = achiev.Levels[Level];
             if (nextLevel.Progress <= Progress)
             {

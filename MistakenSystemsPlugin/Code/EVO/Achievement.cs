@@ -178,8 +178,8 @@ namespace Gamer.Mistaken.EVO
                 Description = "Collect X eggs",
                 Levels = new (int Progress, string Name, string Color)[] {
                     (10, "PLACEHOLDER #1", "YELLOW"),
-                    (15, "PLACEHOLDER #2", "ORANGE"),
-                    (20, "PLACEHOLDER #3", "LIME")
+                    (15, "Chocolate Scout", "ORANGE"),
+                    (20, "Easter Bunny's Helper", "LIME")
                 }
             }
         };
