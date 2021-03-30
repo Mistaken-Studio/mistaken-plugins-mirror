@@ -34,18 +34,60 @@ namespace Gamer.Mistaken.Systems.Pets
         {
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Left += this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => Player_Left(ev));
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Player.TriggeringTesla += this.Handle<Exiled.Events.EventArgs.TriggeringTeslaEventArgs>((ev) => Player_TriggeringTesla(ev));
         }
 
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Left -= this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => Player_Left(ev));
+            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Player.TriggeringTesla -= this.Handle<Exiled.Events.EventArgs.TriggeringTeslaEventArgs>((ev) => Player_TriggeringTesla(ev));
+        }
+
+        private void Player_TriggeringTesla(Exiled.Events.EventArgs.TriggeringTeslaEventArgs ev)
+        {
+            if (ev.Player?.IsNPC() ?? false)
+                ev.IsTriggerable = false;
+        }
+
+        private void Server_RestartingRound()
+        {
+            PetsIds.Clear();
+        }
+
+        private static Func<Player, Action<Player>> OnEnter = (player1) => (player2) =>
+        {
+            if (!player1.IsAlive)
+                return;
+            if (!player2.IsNPC())
+                return;
+            if (AlivePets.TryGetValue(player1.UserId, out Npc npc) && npc.NPCPlayer == player2)
+                return;
+            player1.TargetGhostsHashSet.Add(player2.Id);
+            //player2.DisplayNickname = "Hidden";
+        };
+        private static Func<Player, Action<Player>> OnExit = (player1) => (player2) =>
+        {
+            if (!player2.IsNPC())
+                return;
+            player1.TargetGhostsHashSet.Remove(player2.Id);
+            //player2.DisplayNickname = "Normal";
+        };
+        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        {
+            if(ev.Player.IsReadyPlayer())
+                Components.InRageBall.Spawn(ev.Player.GameObject.transform, Vector3.zero, 2, 4, OnEnter(ev.Player), OnExit(ev.Player)).AllowNPCs = true;
         }
 
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
         {
             if (AlivePets.TryGetValue(ev.Player.UserId, out NPCS.Npc pet))
             {
+                PetsIds.Remove(pet.NPCPlayer.Id);
                 pet.Kill(false);
                 AlivePets.Remove(ev.Player.UserId);
             }
@@ -58,6 +100,7 @@ namespace Gamer.Mistaken.Systems.Pets
                 bool hasLivePet = AlivePets.TryGetValue(ev.Player.UserId, out NPCS.Npc pet);
                 if (ev.NewRole == RoleType.Spectator && hasLivePet)
                 {
+                    PetsIds.Remove(pet.NPCPlayer.Id);
                     pet.Kill(false);
                     AlivePets.Remove(ev.Player.UserId);
                 }
@@ -67,6 +110,7 @@ namespace Gamer.Mistaken.Systems.Pets
                         CreateFolowingNPC(ev.Player, petInfo.role, petInfo.name);
                     else if (hasLivePet)
                     {
+                        PetsIds.Remove(pet.NPCPlayer.Id);
                         pet.Kill(false);
                         AlivePets.Remove(ev.Player.UserId);
                     }
@@ -75,7 +119,7 @@ namespace Gamer.Mistaken.Systems.Pets
                 //    Timing.RunCoroutine(SyncSCP173Speed(ev.Player, pet));
             });
         }
-
+        public static readonly HashSet<int> PetsIds = new HashSet<int>();
         public static void RefreshPets(Player player)
         {
             MEC.Timing.CallDelayed(0.5f, () =>
@@ -86,6 +130,7 @@ namespace Gamer.Mistaken.Systems.Pets
                     CreateFolowingNPC(player, petInfo.role, petInfo.name);
                 else if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
                 {
+                    PetsIds.Remove(value.NPCPlayer.Id);
                     value.Kill(false);
                     AlivePets.Remove(player.UserId);
                 }
@@ -168,6 +213,7 @@ namespace Gamer.Mistaken.Systems.Pets
                 {
                     npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.GetDisplayName()}'s pet";
                     npc.NPCPlayer.RankName = "PET";
+                    PetsIds.Add(npc.NPCPlayer.Id);
                     npc.DisableDialogSystem = true;
                     npc.NPCPlayer.IsGodModeEnabled = true;
                     npc.IsRunning = ShoudRun;
@@ -182,6 +228,7 @@ namespace Gamer.Mistaken.Systems.Pets
                         npc.ProcessSCPLogic = false;
                     if (AlivePets.TryGetValue(player.UserId, out NPCS.Npc value))
                     {
+                        PetsIds.Remove(value.NPCPlayer.Id);
                         value.Kill(false);
                         AlivePets.Remove(player.UserId);
                     }

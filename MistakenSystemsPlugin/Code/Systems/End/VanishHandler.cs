@@ -49,7 +49,7 @@ namespace Gamer.Mistaken.Systems.End
                 foreach (var player in RealPlayers.List)
                 {
                     bool cond = player.IsHuman && player.Position.y < -1900;
-                    player.TargetGhostsHashSet.Clear();
+                    player.TargetGhostsHashSet.RemoveWhere(i => !Pets.PetsHandler.PetsIds.Contains(i));
                     foreach (var seenPlayer in Player.List)
                     {
                         if(cond)

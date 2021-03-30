@@ -239,6 +239,7 @@
     <Compile Include="Code\Suicide\SuicideHandler.cs" />
     <Compile Include="Code\Systems\Bans\BansAnalizer.cs" />
     <Compile Include="Code\Systems\Components\Escape.cs" />
+    <Compile Include="Code\Systems\Components\InRageBall.cs" />
     <Compile Include="Code\Systems\Components\InRage.cs" />
     <Compile Include="Code\Systems\Components\Killer.cs" />
     <Compile Include="Code\Systems\End\RoundLogHandler.cs" />

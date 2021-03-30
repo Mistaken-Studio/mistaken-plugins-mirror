@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Components
 {
-    public class InRage : MonoBehaviour
+    public class InRageBall : MonoBehaviour
     {
         public bool AllowNPCs = false;
         public Action<Player> OnEnter;
@@ -18,24 +18,26 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject(nameof(InRage), typeof(InRage), typeof(BoxCollider));
+                    prefab = new GameObject(nameof(InRageBall), typeof(InRageBall), typeof(CapsuleCollider));
                     prefab.layer = Layer;
-                    var collider = prefab.GetComponent<BoxCollider>();
+                    var collider = prefab.GetComponent<CapsuleCollider>();
                     collider.isTrigger = true;
                 }
                 return prefab;
             }
         }
         private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
-        public static InRage Spawn(Vector3 pos, Vector3 size, Action<Player> onEnter = null, Action<Player> onExit = null)
+        public static InRageBall Spawn(Vector3 pos, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
             {
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
-                var component = obj.GetComponent<InRage>();
+                var component = obj.GetComponent<InRageBall>();
                 component.OnEnter = onEnter;
                 component.OnExit = onExit;
-                obj.GetComponent<BoxCollider>().size = size;
+                var collider = obj.GetComponent<CapsuleCollider>();
+                collider.radius = radius;
+                collider.height = height;
 
                 return component;
             }
@@ -46,17 +48,19 @@ namespace Gamer.Mistaken.Systems.Components
                 return null;
             }
         }
-        public static InRage Spawn(Transform parrent, Vector3 offset, Vector3 size, Action<Player> onEnter = null, Action<Player> onExit = null)
+        public static InRageBall Spawn(Transform parrent, Vector3 offset, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
             {
                 var obj = GameObject.Instantiate(Prefab, parrent);
                 obj.transform.localPosition = offset;
                 obj.transform.rotation = Quaternion.identity;
-                var component = obj.GetComponent<InRage>();
+                var component = obj.GetComponent<InRageBall>();
                 component.OnEnter = onEnter;
                 component.OnExit = onExit;
-                obj.GetComponent<BoxCollider>().size = size;
+                var collider = obj.GetComponent<CapsuleCollider>();
+                collider.radius = radius;
+                collider.height = height;
 
                 return component;
             }
