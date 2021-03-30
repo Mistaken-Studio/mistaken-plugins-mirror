@@ -164,20 +164,22 @@ namespace Gamer.Mistaken.AIRS
                 Log.Debug($"Updated Report({Data.ReportId}) Status from {Status} to {status}");
                 try
                 {
-
-                    if (status > 0)
+                    if (Issuer?.IsConnected ?? false)
                     {
-                        Issuer.Broadcast("AIRS", 10, $"Report({Data.ReportId}) for {Data.ReportedName} status was changed from {Status} to {status}, check '~' for more info", Broadcast.BroadcastFlags.AdminChat);
-                        Issuer.ClearBroadcasts();
-                    }
-                    Issuer.SendConsoleMessage($"[AIRS] Report({Data.ReportId}) for {Data.ReportedName} status was changed from {Status} to {status}", "green");
+                        if (status > 0)
+                        {
+                            Issuer.Broadcast("AIRS", 10, $"Report({Data.ReportId}) for {Data.ReportedName} status was changed from {Status} to {status}, check '~' for more info", Broadcast.BroadcastFlags.AdminChat);
+                            Issuer.ClearBroadcasts();
+                        }
+                        Issuer.SendConsoleMessage($"[AIRS] Report({Data.ReportId}) for {Data.ReportedName} status was changed from {Status} to {status}", "green");
 
-                    if (status == ReportStatus.ERROR)
-                    {
-                        if (reason == "")
-                            Issuer.SendConsoleMessage($"[AIRS] Unexpected Error has ocured", "red");
-                        else
-                            Issuer.SendConsoleMessage($"[AIRS] Error has ocured\n{reason}", "red");
+                        if (status == ReportStatus.ERROR)
+                        {
+                            if (reason == "")
+                                Issuer.SendConsoleMessage($"[AIRS] Unexpected Error has ocured", "red");
+                            else
+                                Issuer.SendConsoleMessage($"[AIRS] Error has ocured\n{reason}", "red");
+                        }
                     }
                 }
                 catch(System.Exception e)
