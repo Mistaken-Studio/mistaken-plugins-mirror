@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            if(ev.Target.IsVerified)
+            if(ev.Target.IsReadyPlayer())
                 DisplayStats(ev.Target);
         }
 

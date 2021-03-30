@@ -54,6 +54,8 @@ namespace Gamer.Mistaken.Systems.Misc
 
         internal static void RespawnPlayer(Player currentPlayer)
         {
+            if (!currentPlayer.IsReadyPlayer())
+                return;
             if (RespawnSCP(currentPlayer))
             {
                 RoundLogger.Log("RESPAWN", "SCP", "Respawning SCP");
