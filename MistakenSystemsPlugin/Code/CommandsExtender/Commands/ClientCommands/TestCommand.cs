@@ -85,6 +85,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         NetworkServer.Spawn(doorVariant.gameObject);
                         break;
                     }
+                case "aaa":
+                    string _arg = args[1] == "null" ? null : args[1];
+                    player.referenceHub.characterClassManager.NetworkCurSpawnableTeamType = (byte)(_arg == null ? 0 : 1);
+                    player.referenceHub.characterClassManager.NetworkCurUnitName = _arg;
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
