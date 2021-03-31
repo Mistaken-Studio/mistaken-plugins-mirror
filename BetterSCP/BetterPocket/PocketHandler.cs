@@ -118,10 +118,19 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             pec.EnableEffect<CustomPlayerEffects.Deafened>(10);
             pec.EnableEffect<CustomPlayerEffects.Concussed>(10);
             InPocket.Remove(ev.Player.Id);
-            if (global::PocketDimensionTeleport.RefreshExit)
-                MapGeneration.ImageGenerator.pocketDimensionGenerator.GenerateRandom();
-            else
-                Log.Debug("Randomizing Pocket Exits disabled");
+            {
+                PocketDimensionTeleport[] array = PocketDimensionGenerator.PrepTeleports();
+                int exits = GameCore.ConfigFile.ServerConfig.GetInt("pd_exit_count", 2);
+                while (exits > 0 && PocketDimensionGenerator.ContainsKiller(array))
+                {
+                    int rand = UnityEngine.Random.Range(0, array.Length);
+                    if (array[rand].GetTeleportType() == global::PocketDimensionTeleport.PDTeleportType.Exit)
+                        continue;
+                    array[rand].SetType(PocketDimensionTeleport.PDTeleportType.Exit);
+                    exits--;
+                }
+            }
+            PocketDimensionTeleport.RefreshExit = false;
         }
 
         private bool IsRoomOK(Room room)
