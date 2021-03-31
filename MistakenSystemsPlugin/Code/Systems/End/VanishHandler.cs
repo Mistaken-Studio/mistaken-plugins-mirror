@@ -108,13 +108,15 @@ namespace Gamer.Mistaken.Systems.End
             }
             else
             {
-                if(Vanished.ContainsKey(player.Id))
+                if (Vanished.ContainsKey(player.Id))
+                {
                     RoundLogger.Log("VANISH", "DISABLED", $"Vanish disabled for {player.PlayerToString()}, type {level}");
+                    if (!silent)
+                        AnnonymousEvents.Call("VANISH", (player, (byte)0));
+                }
                 Vanished.Remove(player.Id);
                 LOFH.LOFH.RemoveVanish(player.UserId);
                 player.SessionVariables["VANISH"] = (byte)0;
-                if (!silent)
-                    AnnonymousEvents.Call("VANISH", (player, (byte)0));
             }
         }
 
