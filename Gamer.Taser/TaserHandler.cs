@@ -31,6 +31,15 @@ namespace Gamer.Taser
             {
                 Timing.RunCoroutine(UpdateInterface(player));
             }
+            public override void Spawn(Vector3 position)
+            {
+                float dur = 1.501f + (Index++) / 1000000f;
+                MapPlus.Spawn(new Inventory.SyncItemInfo
+                {
+                    durability = dur,
+                    id = ItemType.GunUSP,
+                }, position, Quaternion.identity, Size);
+            }
             public override Upgrade[] Upgrades => new Upgrade[] 
             {
                 new Upgrade
