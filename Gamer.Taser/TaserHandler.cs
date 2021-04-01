@@ -31,6 +31,16 @@ namespace Gamer.Taser
             {
                 Timing.RunCoroutine(UpdateInterface(player));
             }
+            public override Upgrade[] Upgrades => new Upgrade[] 
+            {
+                new Upgrade
+                {
+                    Chance = 100,
+                    Durability = null,
+                    Input = ItemType.GunUSP,
+                    KnobSetting = Scp914.Scp914Knob.OneToOne
+                }
+            };
             public override bool OnReload(Player player, Inventory.SyncItemInfo item)
             {
                 return false;

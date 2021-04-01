@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gamer.Diagnostics.Analizer"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagnostics", "Diagnostics", "{5A3F6F10-857C-4161-AF24-906979B26244}"
 	ProjectSection(SolutionItems) = preProject
-		C:\Users\Gamer\Desktop\Diag.txt = C:\Users\Gamer\Desktop\Diag.txt
+		..\..\..\..\Gamer\Desktop\Diag.txt = ..\..\..\..\Gamer\Desktop\Diag.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.API", "Gamer.API\Gamer.API.csproj", "{594FC7BB-8B93-4346-8C28-6AB0EA0A4430}"
@@ -35,6 +35,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.AudioLog", "Gamer.AudioLog\Gamer.AudioLog.csproj", "{CAB7DE98-58B9-4A94-A77A-2D87FBA13103}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.RoundLogger", "Gamer.RoundLogger\Gamer.RoundLogger.csproj", "{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xname.ImpactGrenade", "Xname.ImpactGrenade\Xname.ImpactGrenade.csproj", "{837825D7-5042-45EA-9AE1-CECA1A9B42C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -148,6 +150,14 @@ Global
 		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|x86.ActiveCfg = Release|Any CPU
 		{4BFFBB2D-A061-4E50-A8B0-99CBFBFB7184}.Release|x86.Build.0 = Release|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Debug|x86.Build.0 = Debug|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Release|x86.ActiveCfg = Release|Any CPU
+		{837825D7-5042-45EA-9AE1-CECA1A9B42C7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,7 +26,7 @@ namespace Gamer.Mistaken.Systems.Components
                 return prefab;
             }
         }
-        private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
+        private static readonly int Layer = LayerMask.GetMask("TransparentFX"/*, "Ignore Raycast"*/);
         public static InRageBall Spawn(Vector3 pos, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
