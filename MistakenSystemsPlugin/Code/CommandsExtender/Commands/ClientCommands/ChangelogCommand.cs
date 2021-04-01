@@ -26,8 +26,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         private async Task ExecuteAsync(Player player, bool all, int skip = 0, int take = 0)
         {
+            if (!Gamer.Mistaken.Utilities.APILib.API.GetGithubKey(out string key))
+                return;
             string currentVersion = File.ReadAllText(Paths.Configs + "/PluginsVersion.txt");
-            var tokenAuth = new Credentials("6a8c60f588ab30463f22a1f6d73a2e9f8718ba52");
+            var tokenAuth = new Credentials(key);
             var github = new GitHubClient(new ProductHeaderValue("Mistaken.Plugins"));
             github.Credentials = tokenAuth;
             var release = await github.Repository.Release.GetLatest("grzes0071", "Mistaken.Plugins");
