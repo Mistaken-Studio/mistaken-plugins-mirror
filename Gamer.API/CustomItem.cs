@@ -54,8 +54,9 @@ namespace Gamer.API
 
             public struct Upgrade
             {
+                public Scp914Knob KnobSetting;
                 public ItemType Input;
-                public float Durability;
+                public float? Durability;
                 public float Chance;
             }
         }

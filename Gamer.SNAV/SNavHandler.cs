@@ -34,7 +34,8 @@ namespace Gamer.SNAV
                 {
                     Input = ItemType.WeaponManagerTablet,
                     Durability = 0,
-                    Chance = 1
+                    Chance = 100,
+                    KnobSetting = Scp914Knob.Fine
                 }
             };
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)

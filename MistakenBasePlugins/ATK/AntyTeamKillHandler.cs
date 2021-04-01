@@ -12,6 +12,7 @@ using Gamer.Mistaken.Utilities.APILib;
 using Gamer.Diagnostics;
 using MEC;
 using Gamer.RoundLoggerSystem;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Base
 {
@@ -133,6 +134,9 @@ namespace Gamer.Mistaken.Base
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.Dying += this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => Player_Dying(ev));
             Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
+            //Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
+            //Exiled.Events.Handlers.Player.Left += this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => Player_Left(ev));
+            //Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
 
             Server_RestartingRound();
         }
@@ -142,12 +146,31 @@ namespace Gamer.Mistaken.Base
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.Dying -= this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => Player_Dying(ev));
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
+            //Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
+            //Exiled.Events.Handlers.Player.Left -= this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => Player_Left(ev));
+            //Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
         }
+
+        /*private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static readonly Dictionary<GameObject, string> Throwers = new Dictionary<GameObject, string>();
+        private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
+        {
+
+        }*/
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (!ev.Attacker.IsReadyPlayer())
-                return;
+            //if (!ev.Attacker.IsReadyPlayer())
+            //    return;
             if (!ev.Target.IsReadyPlayer())
                 return;
             if (IsTeamkill(ev.Attacker, ev.Target))
@@ -156,8 +179,8 @@ namespace Gamer.Mistaken.Base
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
-            if (!ev.Killer.IsReadyPlayer())
-                return;
+            //if (!ev.Killer.IsReadyPlayer())
+            //    return;
             if (!ev.Target.IsReadyPlayer())
                 return;
             if (IsTeamkill(ev.Killer, ev.Target))
@@ -170,7 +193,7 @@ namespace Gamer.Mistaken.Base
             if (!LastDead.ContainsKey(ev.Target.UserId))
             {
                 LastDead.Add(ev.Target.UserId, ev.Target.Team);
-                MEC.Timing.CallDelayed(8, () =>
+                MEC.Timing.CallDelayed(10, () =>
                 {
                     LastDead.Remove(ev.Target.UserId);
                 });
