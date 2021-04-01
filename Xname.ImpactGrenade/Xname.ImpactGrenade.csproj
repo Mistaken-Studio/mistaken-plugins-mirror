@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\Desktop\odwołania\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\References\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp_publicized">
       <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
@@ -44,7 +44,7 @@
       <HintPath>..\References\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Mirror">
-      <HintPath>..\..\..\..\Desktop\odwołania\Mirror.dll</HintPath>
+      <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,13 +55,13 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\Desktop\odwołania\UnityEngine.dll</HintPath>
+      <HintPath>..\References\BaseGame\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\Desktop\odwołania\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\..\Desktop\odwołania\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\References\BaseGame\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
