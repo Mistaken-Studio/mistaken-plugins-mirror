@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Scp914;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,11 @@ namespace Gamer.API
             public virtual void OnForceclass(Player player) { }
             public virtual void OnRestart() { }
             public virtual Pickup OnUpgrade(Pickup pickup, Scp914Knob setting) => pickup;
+
+            public virtual void Spawn(Vector3 position)
+            {
+                this.Item.Spawn(this.Durability, position);
+            }
 
             public float GetInternalDurability(Inventory.SyncItemInfo item) => GetInternalDurability(item.durability);
             public float GetInternalDurability(float durability)

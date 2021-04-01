@@ -82,8 +82,8 @@ namespace Gamer.Mistaken.Systems.CustomItems
                         {
                             if (item.ItemId == upgrade.Input && (upgrade.Durability == null || item.durability == upgrade.Durability))
                             {
-                                if (upgrade.Chance <= UnityEngine.Random.Range(0, 100))
-                                    customItem.Item.Spawn(customItem.Durability, ev.Scp914.output.position);
+                                if (upgrade.Chance >= UnityEngine.Random.Range(0, 100))
+                                    customItem.Spawn(ev.Scp914.output.position);
                             }
                         }
                     }
