@@ -12,18 +12,28 @@ using Grenades;
 
 namespace Xname.ImpactGrenade
 {
+    /// <inheritdoc/>
     public class ImpHandler : Module
     {
         internal static readonly Vector3 Size = new Vector3(1f, .40f, 1f);
         internal static readonly float Damage_multiplayer = 0.14f;
         internal static HashSet<GameObject> grenades = new HashSet<GameObject>();
+        /// <summary>
+        /// Grenade that explodes on impact.
+        /// </summary>
         public class ImpItem : CustomItem
         {
+            /// <inheritdoc/>
             public ImpItem() => base.Register();
+            /// <inheritdoc/>
             public override string ItemName => "Impact Grenade";
+            /// <inheritdoc/>
             public override ItemType Item => ItemType.GrenadeFrag;
+            /// <inheritdoc/>
             public override int Durability => 001;
+            /// <inheritdoc/>
             public override Vector3 Size => ImpHandler.Size;
+            /// <inheritdoc/>
             public override Upgrade[] Upgrades => new Upgrade[]
             {
                 new Upgrade
@@ -34,6 +44,7 @@ namespace Xname.ImpactGrenade
                     KnobSetting = Scp914.Scp914Knob.Fine
                 }
             };
+            /// <inheritdoc/>
             public override bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
             {
                 MEC.Timing.CallDelayed(1f, () =>
@@ -53,19 +64,19 @@ namespace Xname.ImpactGrenade
                 return false;
             }
         }
-
+        /// <inheritdoc/>
         public ImpHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
             new ImpItem();
         }
-
+        /// <inheritdoc/>
         public override string Name => "ImpHandler";
-
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
         }
-
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
@@ -82,7 +93,9 @@ namespace Xname.ImpactGrenade
             }
         }
     }
-
+    /// <summary>
+    /// Handles explosion on impact.
+    /// </summary>
     public class ImpComponent : MonoBehaviour
     {
         private bool used;
