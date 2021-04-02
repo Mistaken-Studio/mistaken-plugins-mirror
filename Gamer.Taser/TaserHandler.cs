@@ -167,12 +167,11 @@ namespace Gamer.Taser
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
         private static int Index = 1;
-        #warning Ten komentarz musi zostać poprawiony Xname :) 
         /// <summary>
-        /// Spawns taser in a specified position.
+        /// Spawns taser in the specified <paramref name="position"/> and returns spawned taser.
         /// </summary>
         /// <param name="position">Position where taser will be spawned</param>
-        /// <returns>Spawned taser</returns>
+        /// <returns>Spawned taser as <see cref="Pickup"/></returns>
         public static Pickup SpawnTaser(Vector3 position)
         {
             float dur = 1.501f + (Index++) / 1000000f;
