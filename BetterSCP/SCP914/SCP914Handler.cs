@@ -73,7 +73,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
                             {
                                 //CustomAchievements.RoundEventHandler.AddProggress("914Killer", player);
                                 if (Mistaken.Base.AntyTeamKillHandler.IsTeamkill(Last914User, player))
-                                    Mistaken.Base.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo));
+                                    Mistaken.Base.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo), null);
                                 if (player.UserId == Last914User.UserId && player.Role == RoleType.Scp0492)
                                     MapPlus.Broadcast("Better 914", 10, $"{Last914User.Nickname} has commited suicide in 914 as Zombie", Broadcast.BroadcastFlags.AdminChat);
                             }   
@@ -89,7 +89,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
                             {
                                 //CustomAchievements.RoundEventHandler.AddProggress("914Killer", player);
                                 if (Mistaken.Base.AntyTeamKillHandler.IsTeamkill(Last914User, player))
-                                    Mistaken.Base.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo));
+                                    Mistaken.Base.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo), null);
                                 if (player.UserId == Last914User.UserId && player.Role == RoleType.Scp0492)
                                     MapPlus.Broadcast("Better 914", 10, $"{Last914User.Nickname} has commited suicide in 914 as Zombie", Broadcast.BroadcastFlags.AdminChat);
                             }

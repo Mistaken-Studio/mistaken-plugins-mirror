@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.RoundLoggerSystem;
@@ -6,6 +7,7 @@ using Gamer.Utilities;
 using Grenades;
 using MEC;
 using Mirror;
+using NPCS;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,65 +35,95 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
         }
 
-        public readonly static Dictionary<Player, Player[]> GreneadedPlayers = new Dictionary<Player, Player[]>();
-        public readonly static Dictionary<Player, int> GreneadedDeadPlayers = new Dictionary<Player, int>();
+        public const bool Debug = false;
+
+        public readonly static Dictionary<string, Player[]> GreneadedPlayers = new Dictionary<string, Player[]>();
+        public readonly static Dictionary<string, int> GreneadedDeadPlayers = new Dictionary<string, int>();
         public readonly static Dictionary<Player, (RoleType, Vector3)> DeathInfo = new Dictionary<Player, (RoleType, Vector3)>();
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            if (Server.Host == ev.Thrower)
-                return;
-            if (ev.Thrower == null)
-            {
-                //Log.Debug("MTKD Skip Code: 1");
-                return;
-            }
             if (!ev.IsAllowed)
             {
-                //Log.Debug("MTKD Skip Code: 2");
+                Log.Debug("MTKD Skip Code: 2", Debug);
                 return;
             }
             if (!ev.IsFrag)
             {
-                //Log.Debug("MTKD Skip Code: 3");
+                Log.Debug("MTKD Skip Code: 3", Debug);
                 return;
             }
-            if (ev.TargetToDamages.Count == 0 || (ev.TargetToDamages.Count == 1 && ev.TargetToDamages.ContainsKey(ev.Thrower)))
+            var frag = ev.Grenade.GetComponent<FragGrenade>();
+            string userId = null;
+            string name = null;
+            string nick = null;
+            if(frag.thrower == null)
             {
-                //Log.Debug("MTKD Skip Code: 4");
-                return;
+                try
+                {
+                    userId = frag._throwerName.Split('(')[1].Split(')')[0];
+                    name = frag._throwerName;
+                    nick = frag._throwerName.Split('(')[0];
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                    Log.Error(frag._throwerName);
+                    return;
+                }
             }
-            if (ev.TargetToDamages.Any(i => i.Key.Side != ev.Thrower.Side || (i.Key.Role == RoleType.ClassD && ev.Thrower.Role == RoleType.ClassD)))
+            else
             {
-                //Log.Debug("MTKD Skip Code: 5");
-                return;
-            }
-            if (GreneadedPlayers.ContainsKey(ev.Thrower))
+                if (Server.Host == ev.Thrower)
+                    return;
+                if (ev.Thrower == null)
+                {
+                    Log.Debug("MTKD Skip Code: 1", Debug);
+                    return;
+                }
+                userId = ev.Thrower.UserId;
+                name = ev.Thrower.PlayerToString();
+                nick = ev.Thrower.GetDisplayName();
+            }          
+            foreach (var item in ev.TargetToDamages.Where(i => i.Key.IsNPC()).ToArray())
+                ev.TargetToDamages.Remove(item.Key);           
+            if (ev.TargetToDamages.Count == 0 || (ev.TargetToDamages.Count == 1 && ev.Thrower != null && ev.TargetToDamages.ContainsKey(ev.Thrower)))
             {
-                //Log.Debug("MTKD Skip Code: 6");
+                Log.Debug("MTKD Skip Code: 4", Debug);
                 return;
             }
-            //Log.Debug("MTKD Execute Code: 1");
-            GreneadedPlayers.Add(ev.Thrower, ev.TargetToDamages.Keys.ToArray());
-            GreneadedDeadPlayers.Add(ev.Thrower, 0);
+            if (ev.TargetToDamages.Any(i => i.Key.Side != frag.TeamWhenThrown.GetSide() || (i.Key.Role == RoleType.ClassD && frag.TeamWhenThrown == Team.CDP)))
+            {
+                Log.Debug("MTKD Skip Code: 5", Debug);
+                return;
+            }
+            if (GreneadedPlayers.ContainsKey(userId))
+            {
+                Log.Debug("MTKD Skip Code: 6", Debug);
+                return;
+            }
+            Log.Debug("MTKD Execute Code: 1", Debug);
+            GreneadedPlayers.Add(userId, ev.TargetToDamages.Keys.ToArray());
+            GreneadedDeadPlayers.Add(userId, 0);
             MEC.Timing.CallDelayed(5, () =>
             {
-                var value = GreneadedDeadPlayers[ev.Thrower];
+                var value = GreneadedDeadPlayers[userId];
                 Log.Info($"Detected Greneade TK, {value} killed");
-                RoundLogger.Log("MASS TK", "DETECTED", $"{ev.Thrower.PlayerToString()} team killed {value} players");
+                RoundLogger.Log("MASS TK", "DETECTED", $"{name} team killed {value} players");
                 if (value > 3)
                 {
-                    //Log.Debug("MTKD Execute Code: 3");
-                    MapPlus.Broadcast("MassTK Detection System", 10, $"Detected Grenade Mass TeamKill ({value}) by {ev.Thrower.Nickname}\nRespawning team killed players", Broadcast.BroadcastFlags.AdminChat);
+                    Log.Debug("MTKD Execute Code: 3", Debug);
+                    MapPlus.Broadcast("MassTK Detection System", 10, $"Detected Grenade Mass TeamKill ({value}) by {nick}\nRespawning team killed players", Broadcast.BroadcastFlags.AdminChat);
                     MapPlus.Broadcast("MassTK Detection System", 10, "Wykryto MassTK, respienie graczy ...", Broadcast.BroadcastFlags.Normal);
                     RoundLogger.Log("MASS TK", "RESPAWN", $"Respawning {value} players");
-                    foreach (var player in GreneadedPlayers[ev.Thrower])
+                    foreach (var player in GreneadedPlayers[userId])
                     {
                         if (player == null || player.IsAlive)
                         {
-                            //Log.Debug("MTKD Skip Code: 7");
+                            Log.Debug("MTKD Skip Code: 7", Debug);
                             return;
                         }
-                        Log.Debug($"MTKD Spawning {player.Nickname}");
+                        Log.Debug($"MTKD Spawning {player.Nickname}", Debug);
                         if (DeathInfo.TryGetValue(player, out (RoleType Role, Vector3 Position) deathInfo))
                         {
                             player.Role = deathInfo.Role;
@@ -101,10 +133,10 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 else
                 {
-                    //Log.Debug("MTKD Skip Code: 8");
+                    Log.Debug("MTKD Skip Code: 8", Debug);
                 }
-                GreneadedDeadPlayers.Remove(ev.Thrower);
-                GreneadedPlayers.Remove(ev.Thrower);
+                GreneadedDeadPlayers.Remove(userId);
+                GreneadedPlayers.Remove(userId);
             });
         }
 
@@ -112,7 +144,7 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (!ev.IsAllowed)
             {
-                //Log.Debug("MTKD Skip Code: 10");
+                Log.Debug("MTKD Skip Code: 10", Debug);
                 return;
             }
             if (DeathInfo.ContainsKey(ev.Target))
@@ -120,32 +152,42 @@ namespace Gamer.Mistaken.Systems.Misc
             DeathInfo.Add(ev.Target, (ev.Target.Role, ev.Target.Position));
             if (ev.HitInformation.GetDamageType() != DamageTypes.Grenade)
             {
-                //Log.Debug($"MTKD Skip Code: 11 | {ev.HitInformation.GetDamageName()}");
+                Log.Debug($"MTKD Skip Code: 11 | {ev.HitInformation.GetDamageName()}", Debug);
                 return;
             }
-            if (ev.Target.Id == ev.Killer.Id)
+            if (ev.Target.Id == ev.Killer.Id && !GreneadedPlayers.Any(i => i.Value.Contains(ev.Target)))
             {
-                //Log.Debug("MTKD Skip Code: 12");
+                Log.Debug("MTKD Skip Code: 12", Debug);
                 return;
             }
-            if (!GreneadedPlayers.TryGetValue(ev.Killer, out Player[] players))
+            Player[] players;
+            string userId;
+            if (GreneadedPlayers.Any(i => i.Value.Contains(ev.Target)))
             {
-                //Log.Debug("MTKD Skip Code: 13");
-                //Log.Debug($"Keys: {string.Join(", ", GreneadedPlayers.Keys)}");
-                //Log.Debug($"Values: {string.Join(", ", GreneadedPlayers.Values.Select(i => i.Length))}");
-                return;
+                var tmp = GreneadedPlayers.First(i => i.Value.Contains(ev.Target));
+                players = tmp.Value;
+                userId = tmp.Key;
+            }
+            else
+            {
+                if (!GreneadedPlayers.TryGetValue(ev.Killer.UserId, out players))
+                {
+                    Log.Debug("MTKD Skip Code: 13", Debug);
+                    Log.Debug($"Keys: {string.Join(", ", GreneadedPlayers.Keys)}", Debug);
+                    Log.Debug($"Values: {string.Join(", ", GreneadedPlayers.Values.Select(i => i.Length))}", Debug);
+                    return;
+                }
+                userId = ev.Killer.UserId;
             }
             if (!players.Contains(ev.Target))
             {
-                //Log.Debug("MTKD Skip Code: 14");
+                Log.Debug("MTKD Skip Code: 14", Debug);
                 foreach (var item in players)
-                {
-                    Log.Debug($"- {item.Nickname}");
-                }
+                    Log.Debug($"- {item.Nickname}", Debug);
                 return;
             }
-            //Log.Debug("MTKD Execute Code: 2");
-            GreneadedDeadPlayers[ev.Killer]++;
+            Log.Debug("MTKD Execute Code: 2", Debug);
+            GreneadedDeadPlayers[userId]++;
         }
     }
 }

@@ -427,6 +427,12 @@ namespace Gamer.Mistaken.Systems
 
         private void AutoRoundRestart()
         {
+
+            /*if (Server.Port == 7791)
+            {
+                IdleMode.PauseIdleMode = true;
+                return;
+            }*/
             int players = RealPlayers.List.Count() - 1;
             if (players == 0 && Round.IsStarted)
             {
