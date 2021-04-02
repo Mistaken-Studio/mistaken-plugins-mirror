@@ -51,8 +51,8 @@ namespace Xname.ImpactGrenade
                 MEC.Timing.CallDelayed(1f, () =>
                 {
                     Grenade grenade = UnityEngine.Object.Instantiate(player.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
+                    grenade.fuseDuration = 999;
                     grenade.InitData(player.GrenadeManager, Vector3.zero, player.CameraTransform.forward, slow ? 0.75f : 1.5f);
-                    grenade.NetworkfuseTime = 999;
                     grenades.Add(grenade.gameObject);
                     Mirror.NetworkServer.Spawn(grenade.gameObject);
                     player.RemoveItem(item);
@@ -110,7 +110,12 @@ namespace Xname.ImpactGrenade
         void OnCollisionEnter(Collision collision)
         {
             if (!used)
+            {
                 this.GetComponent<FragGrenade>().NetworkfuseTime = 0.01f;
+                Log.Debug(collision.gameObject.name);
+                Log.Debug(collision.gameObject.layer);
+                Log.Debug(this.gameObject.layer);
+            }
             used = true;
         }
     }
