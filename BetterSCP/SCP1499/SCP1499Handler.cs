@@ -327,8 +327,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             }
         }
 
-        private static Vector3 FirstFlashPosition => FirstFlashRoom.gameObject == null ? default : FirstFlashRoom?.Position ?? default;
-        private static Vector3 SecondFlashPosition => FirstFlashRoom.gameObject == null ? default : SecondFlashRoom?.Position ?? default;
+        private static Vector3 FirstFlashPosition => FirstFlashRoom?.gameObject == null ? default : FirstFlashRoom.Position;
+        private static Vector3 SecondFlashPosition => SecondFlashRoom?.gameObject == null ? default : SecondFlashRoom.Position;
         private static Room FirstFlashRoom;
         private static Room SecondFlashRoom;
 
