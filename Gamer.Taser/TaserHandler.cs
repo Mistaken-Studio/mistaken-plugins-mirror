@@ -171,8 +171,8 @@ namespace Gamer.Taser
         /// <summary>
         /// Spawns taser in a specified position.
         /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
+        /// <param name="position">Position where taser will be spawned</param>
+        /// <returns>Spawned taser</returns>
         public static Pickup SpawnTaser(Vector3 position)
         {
             float dur = 1.501f + (Index++) / 1000000f;
@@ -188,6 +188,14 @@ namespace Gamer.Taser
             Index = 1;
             var initOne = SpawnTaser(Vector3.zero);
             MEC.Timing.CallDelayed(5, () => initOne.Delete());
+            var lockers = LockerManager.singleton.lockers.Where(i => i.chambers.Length == 9).ToArray();
+            int toSpawn = 1;
+            while(toSpawn > 0)
+            {
+                var locker = lockers[UnityEngine.Random.Range(0, lockers.Length)];
+                locker.AssignPickup(SpawnTaser(locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
+                toSpawn--;
+            }       
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
