@@ -17,20 +17,31 @@ using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Taser
 {
+    /// <inheritdoc/>
     public class TaserHandler : Module
     {
         internal static readonly Vector3 Size = new Vector3(.75f, .75f, .75f);
+        /// <summary>
+        /// USP that applies some effects on target.
+        /// </summary>
         public class TaserItem : CustomItem
         {
+            /// <inheritdoc/>
             public TaserItem() => base.Register();
+            /// <inheritdoc/>
             public override string ItemName => "Taser";
+            /// <inheritdoc/>
             public override ItemType Item => ItemType.GunUSP;
+            /// <inheritdoc/>
             public override int Durability => 501;
+            /// <inheritdoc/>
             public override Vector3 Size => TaserHandler.Size;
+            /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Timing.RunCoroutine(UpdateInterface(player));
             }
+            /// <inheritdoc/>
             public override void Spawn(Vector3 position)
             {
                 float dur = 1.501f + (Index++) / 1000000f;
@@ -40,6 +51,7 @@ namespace Gamer.Taser
                     id = ItemType.GunUSP,
                 }, position, Quaternion.identity, Size);
             }
+            /// <inheritdoc/>
             public override Upgrade[] Upgrades => new Upgrade[] 
             {
                 new Upgrade
@@ -50,10 +62,12 @@ namespace Gamer.Taser
                     KnobSetting = Scp914.Scp914Knob.OneToOne
                 }
             };
+            /// <inheritdoc/>
             public override bool OnReload(Player player, Inventory.SyncItemInfo item)
             {
                 return false;
             }
+            /// <inheritdoc/>
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target)
             {
                 int dur = (int)this.GetInternalDurability(item);
@@ -133,33 +147,39 @@ namespace Gamer.Taser
                 }
             }
         }
-
+        /// <inheritdoc/>
         public override string Name => "TaserHandler";
+        /// <inheritdoc/>
         public TaserHandler(PluginHandler p) : base(p)
         {
             new TaserItem();
         }
-
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
-
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
         private static int Index = 1;
-        public static Pickup SpawnTaser(Vector3 pos)
+        /// <summary>
+        /// Spawns taser in a specified position.
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public static Pickup SpawnTaser(Vector3 position)
         {
             float dur = 1.501f + (Index++) / 1000000f;
             return MapPlus.Spawn(new Inventory.SyncItemInfo
             {
                 durability = dur,
                 id = ItemType.GunUSP,
-            }, pos, Quaternion.identity, Size);
+            }, position, Quaternion.identity, Size);
         }
 
         private void Server_RoundStarted()
