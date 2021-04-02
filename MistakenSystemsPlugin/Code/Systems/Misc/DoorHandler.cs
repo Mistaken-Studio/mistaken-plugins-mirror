@@ -27,15 +27,15 @@ namespace Gamer.Mistaken.Systems.Misc
         public override string Name => "Door";
         public override void OnEnable()
         {
-            //Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
+            Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
         public override void OnDisable()
         {
-            //Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
+            Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
-
+        private readonly static Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
         private void Server_WaitingForPlayers()
         {
             Log.Debug("[DOOR] Starting");
@@ -137,6 +137,7 @@ namespace Gamer.Mistaken.Systems.Misc
                             damageableDoor._maxHealth = 50;
                             break;
                         default:
+                            Log.Debug("[DOOR] Skipped " + door.name);
                             continue;
                     }
                     //Log.Debug("Updating " + door.name);
@@ -144,6 +145,15 @@ namespace Gamer.Mistaken.Systems.Misc
                     damageableDoor._ignoredDamageSources = DoorDamageType.None;
                 }
                 Log.Debug("[DOOR] Doors done");
+
+                Log.Debug("[DOOR] Registering Doors");
+                foreach (var item in Map.Doors.Where(d => d is BreakableDoor))
+                {
+                    var door = item as BreakableDoor;
+                    if((door._ignoredDamageSources & DoorDamageType.Weapon) == (DoorDamageType)0)
+                        RegisterDoors(door, item.transform);
+                }
+                Log.Debug("[DOOR] Registered Doors");
             }
             catch(System.Exception ex)
             {
@@ -151,6 +161,13 @@ namespace Gamer.Mistaken.Systems.Misc
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
             }
+        }
+
+        private void RegisterDoors(BreakableDoor door, Transform transform)
+        {
+            Doors[transform.gameObject] = door;
+            for (int i = 0; i < transform.childCount; i++)
+                RegisterDoors(door, transform.GetChild(i));
         }
 
         private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
@@ -162,25 +179,13 @@ namespace Gamer.Mistaken.Systems.Misc
                     return;
                 foreach (var item in colliders)
                 {
-                    var tmp = item.transform;
-                    while (tmp != null)
-                    {
-                        if (Map.Doors.Any(d => d is BreakableDoor && d.transform == tmp))
-                        {
-                            var door = (Map.Doors.First(d => d is BreakableDoor && d.transform == tmp) as BreakableDoor);
-                            var wm = ev.Shooter.ReferenceHub.weaponManager;
-                            float time = Vector3.Distance(ev.Shooter.CameraTransform.position, ev.Position);
-                            float damage = wm.weapons[(int)wm.curWeapon].damageOverDistance.Evaluate(time) * 0.1f;
-                            //Log.Debug($"{door.name} | Done {damage} dmg | Pre HP: {door._remainingHealth}");
-                            door.ServerDamage(damage, DoorDamageType.Weapon);
-                            //Log.Debug($"{door.name} | Post HP: {door._remainingHealth}");
-                            //ev.Shooter.Inventory.items.ModifyDuration(ev.Shooter.CurrentItemIndex, 999);
-                            wm.RpcConfirmShot(true, wm.curWeapon);
-                            //ev.IsAllowed = false;
-                            return;
-                        }
-                        tmp = tmp.parent;
-                    }
+                    if (!Doors.TryGetValue(item.gameObject, out var door))
+                        continue;
+                    var wm = ev.Shooter.ReferenceHub.weaponManager;
+                    float time = Vector3.Distance(ev.Shooter.CameraTransform.position, ev.Position);
+                    float damage = wm.weapons[(int)wm.curWeapon].damageOverDistance.Evaluate(time) * 0.1f;
+                    door.ServerDamage(damage, DoorDamageType.Weapon);
+                    wm.RpcConfirmShot(true, wm.curWeapon);
                 }
             }
         }
