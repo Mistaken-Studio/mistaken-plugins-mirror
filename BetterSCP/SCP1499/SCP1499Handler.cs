@@ -113,6 +113,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                     else
                         Target = (slow ? SecondFlashPosition : FirstFlashPosition) + new Vector3(0, 1, 0);
                     Cooldown = DateTime.Now.AddSeconds(CooldownLength);
+                    if (Target == default)
+                        Target = new Vector3(0, 1002, 0);
                     MEC.Timing.RunCoroutine(Use1499(player, Target, EnablePocket, Damage, ReturnFlash, SlowPocketTime));
                     return ThrowFlash;
                 }
@@ -325,8 +327,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             }
         }
 
-        private static Vector3 FirstFlashPosition => FirstFlashRoom?.Position ?? new Vector3();
-        private static Vector3 SecondFlashPosition => SecondFlashRoom?.Position ?? new Vector3();
+        private static Vector3 FirstFlashPosition => FirstFlashRoom.gameObject == null ? default : FirstFlashRoom?.Position ?? default;
+        private static Vector3 SecondFlashPosition => FirstFlashRoom.gameObject == null ? default : SecondFlashRoom?.Position ?? default;
         private static Room FirstFlashRoom;
         private static Room SecondFlashRoom;
 
