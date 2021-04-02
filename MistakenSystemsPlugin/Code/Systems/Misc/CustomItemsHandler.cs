@@ -82,11 +82,12 @@ namespace Gamer.Mistaken.Systems.CustomItems
                         {
                             if (item.ItemId == upgrade.Input && (upgrade.Durability == null || item.durability == upgrade.Durability))
                             {
-                                if (upgrade.Chance >= UnityEngine.Random.Range(0, 100))
+                                if (upgrade.Chance == 100 || upgrade.Chance >= UnityEngine.Random.Range(0, 100))
                                 {
                                     customItem.Spawn(ev.Scp914.output.position);
                                     ev.Items.Remove(item);
                                     item.Delete();
+                                    goto foreach_end;
                                 }
                             }
                         }
@@ -99,6 +100,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
                 result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
                 ev.Items.Remove(item);
                 item.Delete();
+                foreach_end:;
             }
         }
 
