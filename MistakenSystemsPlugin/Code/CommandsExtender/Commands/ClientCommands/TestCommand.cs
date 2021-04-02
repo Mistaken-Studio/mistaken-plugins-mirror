@@ -40,6 +40,60 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 case "badge":
                     player.TargetSetBadge(RealPlayers.Get(args[1]), args[2], args[3]);
                     break;
+                case "give":
+                    Inventory.SyncItemInfo info;
+                    switch (args[1].ToLower())
+                    {
+                        case "taser":
+                            info = new Inventory.SyncItemInfo
+                            {
+                                id = ItemType.GunUSP,
+                                durability = 1.501f + (int.Parse(args[2]) / 1000000)
+                            };
+                            break;
+                        case "impact":
+                            info = new Inventory.SyncItemInfo
+                            {
+                                id = ItemType.GrenadeFrag,
+                                durability = 1.001f
+                            };
+                            break;
+                        case "armor":
+                            info = new Inventory.SyncItemInfo
+                            {
+                                id = ItemType.Coin,
+                                durability = 1.001f + (int.Parse(args[2]) / 1000000)
+                            };
+                            break;
+                        case "snav-3000":
+                            info = new Inventory.SyncItemInfo
+                            {
+                                id = ItemType.WeaponManagerTablet,
+                                durability = 1.301f
+                            };
+                            break;
+                        case "snav-ultimate":
+                            info = new Inventory.SyncItemInfo
+                            {
+                                id = ItemType.GrenadeFrag,
+                                durability = 1.401f
+                            };
+                            break;
+                        case "scp-1499":
+                            info = new Inventory.SyncItemInfo
+                            {
+                                id = ItemType.GrenadeFlash,
+                                durability = 1.149f
+                            };
+                            break;
+                        default:
+                            return new string[] { "Avaiable items:", "Taser", "Impact", "Armor", "SNav-3000", "SNav-Ultimate", "SCP-1499" };
+                    }
+                    if(player.Inventory.items.Count > 7)
+                        info.Spawn(player.Position);
+                    else
+                        player.AddItem(info);
+                    break;
                 case "spawn":
                     var basePos = player.CurrentRoom.Position;
                     var offset = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
