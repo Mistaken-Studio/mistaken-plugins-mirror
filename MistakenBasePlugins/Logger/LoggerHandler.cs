@@ -48,7 +48,10 @@ namespace Gamer.Mistaken.Base
                     break;
                 case "server_event":
                     {
-                        SendCommand(ev.Name.ToLower(), ev.Arguments[0], ev, "0");
+                        if (ev.Arguments.Count == 0)
+                            SendCommand(ev.Name.ToLower(), "", ev, "0");
+                        else
+                            SendCommand(ev.Name.ToLower(), ev.Arguments[0], ev, "0");
                         break;
                     }
                 case "roundrestart":
@@ -61,8 +64,13 @@ namespace Gamer.Mistaken.Base
                     }
                 case "goto":
                     {
-                        Player player = Player.Get(ev.Arguments[0]);
-                        SendCommand(ev.Name.ToLower(), "None", ev, player?.UserId);
+                        if (ev.Arguments.Count == 0)
+                            SendCommand(ev.Name.ToLower(), "", ev, "0");
+                        else
+                        {
+                            Player player = Player.Get(ev.Arguments[0]);
+                            SendCommand(ev.Name.ToLower(), "None", ev, player?.UserId);
+                        }
                         break;
                     }
                 case "ball":
@@ -109,13 +117,21 @@ namespace Gamer.Mistaken.Base
                 case "close":
                 case "open":
                     {
-                        SendCommand(ev.Name.ToLower(), ev.Arguments[0], ev, "0");
+                        if (ev.Arguments.Count == 0)
+                            SendCommand(ev.Name.ToLower(), "", ev, "0");
+                        else
+                            SendCommand(ev.Name.ToLower(), ev.Arguments[0], ev, "0");
                         break;
                     }
                 case "doortp":
                     {
-                        Player player = RealPlayers.Get(ev.Arguments[0]?.Split('.')?[0]);
-                        SendCommand(ev.Name.ToLower(), ev.Arguments[0] + ev.Arguments[1], ev, player?.UserId);
+                        if (ev.Arguments.Count == 0)
+                            SendCommand(ev.Name.ToLower(), "", ev, "0");
+                        else
+                        {
+                            Player player = RealPlayers.Get(ev.Arguments[0]?.Split('.')?[0]);
+                            SendCommand(ev.Name.ToLower(), ev.Arguments[0] + ev.Arguments[1], ev, player?.UserId);
+                        }
                         break;
                     }
                 case "dropall":
@@ -129,8 +145,11 @@ namespace Gamer.Mistaken.Base
                             SendCommand(ev.Name.ToLower(), ev.Arguments[0] + " " + ev.Arguments[1], ev, "0");
                         break;
                     }
+                case "utag":
+                case "rtag":
                 case "updatetag":
                 case "requesttag":
+                case "refreshtag":
                     {
                         SendCommand(ev.Name.ToLower(), string.Join(" ", ev.Arguments), ev, "0");
                         break;
@@ -185,8 +204,13 @@ namespace Gamer.Mistaken.Base
                     }
                 case "pbc":
                     {
-                        Player player = RealPlayers.Get(ev.Arguments[0]?.Split('.')?[0]);
-                        SendCommand(ev.Name.ToLower(), string.Join(" ", ev.Arguments.Skip(1)), ev, player?.UserId ?? "0");
+                        if (ev.Arguments.Count == 0)
+                            SendCommand(ev.Name.ToLower(), "", ev, "0");
+                        else
+                        {
+                            Player player = RealPlayers.Get(ev.Arguments[0]?.Split('.')?[0]);
+                            SendCommand(ev.Name.ToLower(), string.Join(" ", ev.Arguments.Skip(1)), ev, player?.UserId ?? "0");
+                        }
                         break;
                     }
                 case "bc":
