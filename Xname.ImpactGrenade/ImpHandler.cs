@@ -9,6 +9,7 @@ using Gamer.API.CustomItem;
 using UnityEngine;
 using Exiled.API.Features;
 using Grenades;
+using Exiled.API.Extensions;
 
 namespace Xname.ImpactGrenade
 {
@@ -49,17 +50,13 @@ namespace Xname.ImpactGrenade
             {
                 MEC.Timing.CallDelayed(1f, () =>
                 {
-                    Grenade grenade = UnityEngine.Object.Instantiate<GameObject>(player.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
+                    Grenade grenade = UnityEngine.Object.Instantiate(player.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
                     grenade.InitData(player.GrenadeManager, Vector3.zero, player.CameraTransform.forward, slow ? 0.75f : 1.5f);
                     grenade.NetworkfuseTime = 999;
-                    ImpHandler.grenades.Add(grenade.gameObject);
+                    grenades.Add(grenade.gameObject);
                     Mirror.NetworkServer.Spawn(grenade.gameObject);
                     player.RemoveItem(item);
                     grenade.gameObject.AddComponent<ImpComponent>();
-                    /*MEC.Timing.CallDelayed(0.1f, () =>
-                    {
-                        grenade.gameObject.AddComponent<ImpComponent>();
-                    });*/
                 });
                 return false;
             }
@@ -75,21 +72,32 @@ namespace Xname.ImpactGrenade
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
 
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            if (grenades.Contains(ev.Grenade))
+            if (!grenades.Contains(ev.Grenade)) 
+                return;
+            foreach (Player player in ev.TargetToDamages.Keys.ToArray())
+                ev.TargetToDamages[player] *= Damage_multiplayer;
+        }
+
+        private void Server_RoundStarted()
+        {
+            var lockers = LockerManager.singleton.lockers.Where(i => i.chambers.Length == 9).ToArray();
+            int toSpawn = 5;
+            while (toSpawn > 0)
             {
-                foreach (Player player in ev.TargetToDamages.Keys.ToArray())
-                {
-                    ev.TargetToDamages[player] *= Damage_multiplayer;
-                }
+                var locker = lockers[UnityEngine.Random.Range(0, lockers.Length)];
+                locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1.001f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
+                toSpawn--;
             }
         }
     }
