@@ -96,6 +96,11 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (BlockInteractions.Contains(player))
                     return false;
+                if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
+                {
+                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    return false;
+                }
                 this.OnWear(player, pickup, false);
                 return true;
             }
