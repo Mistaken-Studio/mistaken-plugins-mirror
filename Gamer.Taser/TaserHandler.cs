@@ -167,6 +167,7 @@ namespace Gamer.Taser
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
         private static int Index = 1;
+        #warning Ten komentarz musi zostać poprawiony Xname :) 
         /// <summary>
         /// Spawns taser in a specified position.
         /// </summary>
