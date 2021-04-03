@@ -233,14 +233,14 @@ namespace Gamer.Utilities
                 return false;
         }
 
-        public static List<Player> GetPlayers(this IBetterCommand _, string arg)
+        public static List<Player> GetPlayers(this IBetterCommand _, string arg, bool allowPets = false)
         {
             List<Player> tor = new List<Player>();
             foreach (var item in arg.Split('.'))
             {
                 if (int.TryParse(item, out int pid))
                 {
-                    var p = RealPlayers.Get(pid);
+                    var p = allowPets ? Player.Get(pid) : RealPlayers.Get(pid);
                     if (p != null)
                         tor.Add(p);
                 }
@@ -248,9 +248,9 @@ namespace Gamer.Utilities
             return tor;
         }
 
-        public static bool ForeachPlayer(this IBetterCommand me, string arg, out Player[] players, Action<Player> toExecute)
+        public static bool ForeachPlayer(this IBetterCommand me, string arg, out Player[] players, Action<Player> toExecute, bool allowPets = false)
         {
-            players = GetPlayers(me, arg).ToArray();
+            players = GetPlayers(me, arg, allowPets).ToArray();
             if (players.Length == 0) return false;
             foreach (var item in players)
             {
@@ -259,15 +259,15 @@ namespace Gamer.Utilities
             return true;
         }
 
-        public static bool ForeachPlayer(this IBetterCommand me, string arg, Action<Player> toExecute)
+        public static bool ForeachPlayer(this IBetterCommand me, string arg, Action<Player> toExecute, bool allowPets = false)
         {
-            return ForeachPlayer(me, arg, out Player[] _, toExecute);
+            return ForeachPlayer(me, arg, out Player[] _, toExecute, allowPets);
         }
 
-        public static string[] ForeachPlayer(this IBetterCommand me, string arg, out Player[] players, out bool success, Func<Player, string[]> toExecute)
+        public static string[] ForeachPlayer(this IBetterCommand me, string arg, out Player[] players, out bool success, Func<Player, string[]> toExecute, bool allowPets = false)
         {
             List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
-            players = GetPlayers(me, arg).ToArray();
+            players = GetPlayers(me, arg, allowPets).ToArray();
             if (players.Length == 0) success = false;
             else success = true;
             foreach (var item in players)
@@ -279,9 +279,9 @@ namespace Gamer.Utilities
             return torArray;
         }
 
-        public static string[] ForeachPlayer(this IBetterCommand me, string arg, out bool success, Func<Player, string[]> toExecute)
+        public static string[] ForeachPlayer(this IBetterCommand me, string arg, out bool success, Func<Player, string[]> toExecute, bool allowPets = false)
         {
-            var tor = ForeachPlayer(me, arg, out Player[] _, out success, toExecute);
+            var tor = ForeachPlayer(me, arg, out Player[] _, out success, toExecute, allowPets);
             return tor;
         }
 

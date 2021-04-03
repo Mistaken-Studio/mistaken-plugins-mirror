@@ -38,7 +38,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             {
                                 player.Scale = new Vector3(x, y, z);
                                 return new string[] { "Done" };
-                            });
+                            }, true);
                             if (!success)
                                 return new string[] { "Player not found", GetUsage() };
                             _s = true;
