@@ -95,17 +95,6 @@ namespace Gamer.Mistaken.Systems.End
             int scps = RealPlayers.List.Where(p => p.Team == Team.SCP && p.Role != RoleType.Scp0492).Count();
             Cassie.GlitchyMessage($"MTFUNIT TAU 5 DESIGNATED NATO_{unit[0]} {unitnumber} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {scps} SCPSUBJECT{(scps == 1 ? "" : "S")}", 0.3f, 0.1f);
             Systems.Utilities.API.Map.RespawnLock = true;
-            int startRoundId = RoundPlus.RoundId;
-            MEC.Timing.CallDelayed(300f, () =>
-            {
-                if (startRoundId == RoundPlus.RoundId)
-                {
-                    Cassie.GlitchyMessage("WARHEAD OVERRIDE . ALPHA WARHEAD SEQUENCE ENGAGED", 1, 1);
-                    Systems.Misc.BetterWarheadHandler.Warhead.StopLock = true;
-                    Warhead.Start();
-                    RoundLogger.Log("TAU-5", "WARHEAD", $"Warhead forced");
-                }
-            });
         }
 
         public static void SpawnAsSamsara(Player player, string unit)
