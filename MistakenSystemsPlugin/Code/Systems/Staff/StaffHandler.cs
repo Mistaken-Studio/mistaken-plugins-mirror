@@ -28,7 +28,6 @@ namespace Gamer.Mistaken.Systems.Staff
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.ChangingGroup += this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => Player_ChangingGroup(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
 
             Server_RestartingRound();
         }
@@ -37,33 +36,6 @@ namespace Gamer.Mistaken.Systems.Staff
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.ChangingGroup -= this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => Player_ChangingGroup(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
-        }
-
-        private void Server_RoundStarted()
-        {
-            Timing.RunCoroutine(DoRoundLoop());
-        }
-
-        private IEnumerator<float> DoRoundLoop()
-        {
-            yield return Timing.WaitForSeconds(1);
-            while(Round.IsStarted)
-            {
-                foreach (var player in RealPlayers.List)
-                {
-                    string tmp = player.CustomInfo?.Split('\n')[0].Trim('\n') ?? "";
-                    if (!string.IsNullOrWhiteSpace(tmp))
-                        tmp += "\n";
-                    else
-                        tmp = "";
-                    string text = $"{tmp}Player Id: <b>{player.Id}</b>";
-                    CustomInfoHandler.Set(player, "STAFF", text, true);
-                    //foreach (var staff in RealPlayers.List.Where(p => p.IsStaff()))
-                    //    staff.SetPlayerInfoForTargetOnly(player, text);
-                }
-                yield return Timing.WaitForSeconds(10);
-            }
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
@@ -75,6 +47,7 @@ namespace Gamer.Mistaken.Systems.Staff
                 if (cgea.IsAllowed && ev.Player.Group != cgea.NewGroup)
                     ev.Player.Group = cgea.NewGroup;
             }
+            CustomInfoHandler.Set(ev.Player, "STAFF", $"Player Id: <b>{ev.Player.Id}</b>", true);
         }
 
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)

@@ -41,14 +41,22 @@ namespace Gamer.Mistaken.Systems
             yield return MEC.Timing.WaitForSeconds(1);
             while(Round.IsStarted)
             {
-                yield return MEC.Timing.WaitForSeconds(1);
+                yield return MEC.Timing.WaitForSeconds(2);
                 if (ToUpdate.Count == 0)
                     continue;
                 foreach (var item in ToUpdate.ToArray())
                 {
-                    if(item.IsConnected)
-                        Update(item);
-                    ToUpdate.Remove(item);
+                    try
+                    {
+                        if (item.IsConnected)
+                            Update(item);
+                        ToUpdate.Remove(item);
+                    }
+                    catch(System.Exception ex)
+                    {
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
+                    }
                 }
             }
         }
@@ -59,14 +67,20 @@ namespace Gamer.Mistaken.Systems
                 CustomInfo[player] = new Dictionary<string, string>();
             if (!CustomInfoStaffOnly.ContainsKey(player))
                 CustomInfoStaffOnly[player] = new Dictionary<string, string>();
-            string toSet = string.Join("<br>", CustomInfo[player].Values);
-            player.CustomInfo = string.IsNullOrWhiteSpace(toSet) ? null : toSet;
+
+            string for_players = string.Join("\n", CustomInfo[player].Values);
+            player.CustomInfo = string.IsNullOrWhiteSpace(for_players) ? null : for_players;
+
+            if (CustomInfoStaffOnly[player].Count > 0)
             {
                 var tmp = CustomInfoStaffOnly[player].Values.ToList();
                 tmp.AddRange(CustomInfo[player].Values);
-                toSet = string.Join("<br>", tmp);
-                foreach (var staff in RealPlayers.List.Where(p => p.IsStaff()))
-                    staff.SetPlayerInfoForTargetOnly(player, toSet);
+                string for_staff = string.Join("\n", tmp);
+                MEC.Timing.CallDelayed(1, () =>
+                {
+                    foreach (var p in RealPlayers.List.Where(p => p.IsStaff()))
+                        p.SetPlayerInfoForTargetOnly(player, for_staff);
+                });
             }
         }
 
