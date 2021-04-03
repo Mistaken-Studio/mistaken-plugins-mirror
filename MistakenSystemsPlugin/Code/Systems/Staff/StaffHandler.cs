@@ -58,8 +58,9 @@ namespace Gamer.Mistaken.Systems.Staff
                     else
                         tmp = "";
                     string text = $"{tmp}Player Id: <b>{player.Id}</b>";
-                    foreach (var staff in RealPlayers.List.Where(p => p.IsStaff()))
-                        staff.SetPlayerInfoForTargetOnly(player, text);
+                    CustomInfoHandler.Set(player, "STAFF", text, true);
+                    //foreach (var staff in RealPlayers.List.Where(p => p.IsStaff()))
+                    //    staff.SetPlayerInfoForTargetOnly(player, text);
                 }
                 yield return Timing.WaitForSeconds(10);
             }

@@ -79,6 +79,8 @@ namespace Gamer.Mistaken.Systems
             new Seasonal.EasterHandler(plugin);
             new Seasonal.PrimaAprilisHanlder(plugin);
 
+            new CustomInfoHandler(plugin);
+
             /*MEC.Timing.CallDelayed(2, () =>
             {
                 var method = typeof(PlayerPositionManager).GetMethod(nameof(PlayerPositionManager.TransmitData), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static);

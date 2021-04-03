@@ -143,12 +143,12 @@ namespace Gamer.Mistaken.Systems.GUI
             Timing.RunCoroutine(Update268());
         }
 
-        private readonly HashSet<string> ToUpdate = new HashSet<string>();
         public int NextUpdate = 5;
         IEnumerator<float> Update()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
+            int rid = RoundPlus.RoundId; 
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(5);
                 var start = DateTime.Now;
@@ -183,18 +183,8 @@ namespace Gamer.Mistaken.Systems.GUI
                     }
                     if (infoMessage != "")
                         player.ShowHint("<br><br><br><br><br><br><br><br><br><size=50%>" + infoMessage + "</size>", false, 6);
-                    if (customInfoMessage != "")
-                        ToUpdate.Add(player.UserId);
-                    customInfoMessage = "<color=red>" + customInfoMessage.Trim('|').Trim() + "</color>";
-                    var value = customInfoMessage == "" ? null : customInfoMessage;
-                    if (player.ReferenceHub.nicknameSync.Network_customPlayerInfoString != value && player.ReferenceHub.nicknameSync.Network_customPlayerInfoString != "Tau-5 Samsara")
-                    {
-                        if (!ToUpdate.Contains(player.UserId))
-                            continue;
-                        if(value == null)
-                            ToUpdate.Remove(player.UserId);
-                        player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
-                    }
+                    
+                    CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>", false);
                 }
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update", start, DateTime.Now);
             }

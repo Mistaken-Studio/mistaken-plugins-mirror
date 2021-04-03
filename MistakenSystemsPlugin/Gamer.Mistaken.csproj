@@ -242,6 +242,7 @@
     <Compile Include="Code\Systems\Components\InRageBall.cs" />
     <Compile Include="Code\Systems\Components\InRage.cs" />
     <Compile Include="Code\Systems\Components\Killer.cs" />
+    <Compile Include="Code\Systems\CustomInfoHandler.cs" />
     <Compile Include="Code\Systems\End\RoundLogHandler.cs" />
     <Compile Include="Code\Systems\End\OverwatchHandler.cs" />
     <Compile Include="Code\Systems\End\AutoUpdateHandler.cs" />
