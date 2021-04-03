@@ -110,12 +110,7 @@ namespace Xname.ImpactGrenade
         void OnCollisionEnter(Collision collision)
         {
             if (!used)
-            {
                 this.GetComponent<FragGrenade>().NetworkfuseTime = 0.01f;
-                Log.Debug(collision.gameObject.name);
-                Log.Debug(collision.gameObject.layer);
-                Log.Debug(this.gameObject.layer);
-            }
             used = true;
         }
     }
