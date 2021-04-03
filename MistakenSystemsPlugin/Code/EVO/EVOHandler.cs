@@ -56,7 +56,7 @@ namespace Gamer.Mistaken.EVO
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
         {
             if(GeneratorActivators.TryGetValue(ev.Generator, out string userId))
-                AddProgres(1009, userId);
+                AddProgress(1009, userId);
         }
 
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
@@ -173,15 +173,15 @@ namespace Gamer.Mistaken.EVO
             {
                 if (ev.ButtonPresser.DoNotTrack) 
                     return;
-                AddProgres(1007, ev.ButtonPresser.UserId);
+                AddProgress(1007, ev.ButtonPresser.UserId);
             }
         }
 
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
         {
             if (ev.Player?.DoNotTrack ?? true) return;
-            if (ev.IsAllowed && Intercom.host.remainingCooldown <= 0 && Intercom.host.speaking == false)
-                AddProgres(1006, ev.Player.UserId);
+            if (ev.IsAllowed && !ev.Player.IsIntercomMuted && Intercom.host.remainingCooldown <= 0 && Intercom.host.speaking == false)
+                AddProgress(1006, ev.Player.UserId);
         }
 
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
@@ -189,20 +189,20 @@ namespace Gamer.Mistaken.EVO
             if (ev.Player == null) return;
             if (ev.Player.DoNotTrack) return;
             if (!ev.IsAllowed) return;
-            AddProgres(1000, ev.Player.UserId);
+            AddProgress(1000, ev.Player.UserId);
         }
 
         private void Scp914_Activating(Exiled.Events.EventArgs.ActivatingEventArgs ev)
         {
             if (ev.Player?.DoNotTrack ?? true) return;
             if (ev.Player != null)
-                AddProgres(1004, ev.Player.UserId);
+                AddProgress(1004, ev.Player.UserId);
         }
 
         private void Player_Escaping(Exiled.Events.EventArgs.EscapingEventArgs ev)
         {
             if (ev.Player.DoNotTrack) return;
-            AddProgres(1002, ev.Player.UserId);
+            AddProgress(1002, ev.Player.UserId);
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
@@ -210,26 +210,26 @@ namespace Gamer.Mistaken.EVO
             if (ev.Player.DoNotTrack) 
                 return;
             if (ev.NewRole == RoleType.NtfCommander)
-                AddProgres(1005, ev.Player.UserId);
+                AddProgress(1005, ev.Player.UserId);
             else if (ev.NewRole == RoleType.ChaosInsurgency)
-                AddProgres(1008, ev.Player.UserId);
+                AddProgress(1008, ev.Player.UserId);
             else if (ev.NewRole.GetTeam() == Team.SCP && ev.NewRole != RoleType.Scp0492)
-                AddProgres(1011, ev.Player.UserId);
+                AddProgress(1011, ev.Player.UserId);
             else  if (ev.NewRole == RoleType.ClassD)
-                AddProgres(1012, ev.Player.UserId);
+                AddProgress(1012, ev.Player.UserId);
             else if (ev.NewRole == RoleType.Scientist)
-                AddProgres(1013, ev.Player.UserId);
+                AddProgress(1013, ev.Player.UserId);
         }
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
             if (ev.Killer.Role == RoleType.Scp049 && !ev.Killer.DoNotTrack)
-                AddProgres(1001, ev.Killer.UserId);
+                AddProgress(1001, ev.Killer.UserId);
 
             if (ev.Target.Team == Team.SCP && ev.Target.Role != RoleType.Scp0492 && ev.Killer != null && !ev.Killer.DoNotTrack && ev.Target.Id != ev.Killer.Id)
-                AddProgres(1003, ev.Killer.UserId);
+                AddProgress(1003, ev.Killer.UserId);
             if (!ev.Target.DoNotTrack && ev.HitInformation.GetDamageType() == DamageTypes.Decont)
-                AddProgres(1014, ev.Target.UserId);
+                AddProgress(1014, ev.Target.UserId);
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
@@ -239,7 +239,7 @@ namespace Gamer.Mistaken.EVO
                 ev.Player.Broadcast(5, "You have active DoNotTrack flag, will not be tracked by server\nYour statistics/achievements were removed");
         }
 
-        public static void AddProgres(uint Id, string UserId)
+        public static void AddProgress(uint Id, string UserId)
         {
             if (PluginHandler.Config.IsHardRP())
                 return;

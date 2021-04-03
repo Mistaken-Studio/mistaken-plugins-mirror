@@ -137,7 +137,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
                     else
                     {
                         player.ShowHintPulsating($"Brawo, znalazłeś <color=yellow>jajko({this.Id})</color>", 5, false, false);
-                        EVO.Handler.AddProgres(2000, player.UserId);
+                        EVO.Handler.AddProgress(2000, player.UserId);
                         File.AppendAllText(MyPath, $"{player.UserId}\n");
                     }
                 }

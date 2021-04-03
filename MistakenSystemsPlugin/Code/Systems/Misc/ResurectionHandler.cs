@@ -117,7 +117,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         Vector3 pos = nearest.ragdoll.transform.position;
                         NetworkServer.Destroy(nearest.ragdoll.gameObject);
                         Patches.RagdollManagerPatch.Ragdolls.Remove(nearest);
-                        EVO.Handler.AddProgres(1010, player.UserId);
+                        EVO.Handler.AddProgress(1010, player.UserId);
                         Resurected.Add(target.UserId);
                         Resurections.Add(player.UserId);
                         if (player.CurrentItem.durability == 1)
