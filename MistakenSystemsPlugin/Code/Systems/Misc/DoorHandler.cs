@@ -150,6 +150,8 @@ namespace Gamer.Mistaken.Systems.Misc
                 foreach (var item in Map.Doors.Where(d => d is BreakableDoor))
                 {
                     var door = item as BreakableDoor;
+                    if (door == null)
+                        continue;
                     if((door._ignoredDamageSources & DoorDamageType.Weapon) == (DoorDamageType)0)
                         RegisterDoors(door, item.transform);
                 }
@@ -179,7 +181,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return;
                 foreach (var item in colliders)
                 {
-                    if (!Doors.TryGetValue(item.gameObject, out var door))
+                    if (!Doors.TryGetValue(item.gameObject, out var door) || door == null)
                         continue;
                     var wm = ev.Shooter.ReferenceHub.weaponManager;
                     float time = Vector3.Distance(ev.Shooter.CameraTransform.position, ev.Position);
