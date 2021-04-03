@@ -28,7 +28,7 @@ namespace Gamer.Diagnostics
                     Log.Error($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {Name}] Caused Exception");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
-                    ErrorBacklog.Add($"[{module.Name}: {Name}] Caused Exception");
+                    ErrorBacklog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {Name}] Caused Exception");
                     ErrorBacklog.Add(ex.Message);
                     ErrorBacklog.Add(ex.StackTrace);
                     RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {Name}] Caused Exception | {ex.Message}");
