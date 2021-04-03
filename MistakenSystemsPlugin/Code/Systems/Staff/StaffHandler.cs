@@ -107,35 +107,41 @@ namespace Gamer.Mistaken.Systems.Staff
             if (ev.Player.IsStaff())
             {
                 var info = ev.Player.GetStaff();
-                if (info.slperms != 0)
+                if(info == null)
+                    Log.Error($"Is staff decided that player is staff but GetStaff had other idea");
+                else
                 {
-                    if (ev.NewGroup == null)
+                    if (info.slperms != 0)
                     {
-                        ev.Player.Group = new UserGroup
+                        if (ev.NewGroup == null)
                         {
-                            Permissions = info.slperms,
-                            HiddenByDefault = true,
-                            BadgeText = info.role,
-                            BadgeColor = info.role_color,
-                            KickPower = 2,
-                            RequiredKickPower = 3,
-                            Shared = true,
-                            Cover = false
-                        };
-                        ev.IsAllowed = false;
-                        return;
+                            ev.Player.Group = new UserGroup
+                            {
+                                Permissions = info.slperms,
+                                HiddenByDefault = true,
+                                BadgeText = info.role,
+                                BadgeColor = info.role_color,
+                                KickPower = 2,
+                                RequiredKickPower = 3,
+                                Shared = true,
+                                Cover = false
+                            };
+                            ev.IsAllowed = false;
+                            return;
+                        }
+                        else
+                            ev.NewGroup.Permissions |= info.slperms;
+                        //ev.Player.ReferenceHub.serverRoles.RemoteAdmin = true;
+                        //ev.Player.ReferenceHub.serverRoles.RemoteAdminMode = ServerRoles.AccessMode.LocalAccess;
+                        RoundLogger.Log("STAFF", "GRANT", $"Granted staff permissions for {ev.Player.PlayerToString()}");
+                        ev.Player.SendConsoleMessage("You have been granted additional permissions", "red");
+                        Log.Debug("Giving " + info.slperms);
                     }
                     else
-                        ev.NewGroup.Permissions |= info.slperms;
-                    //ev.Player.ReferenceHub.serverRoles.RemoteAdmin = true;
-                    //ev.Player.ReferenceHub.serverRoles.RemoteAdminMode = ServerRoles.AccessMode.LocalAccess;
-                    RoundLogger.Log("STAFF", "GRANT", $"Granted staff permissions for {ev.Player.PlayerToString()}");
-                    ev.Player.SendConsoleMessage("You have been granted additional permissions", "red");
-                    Log.Debug("Giving " + info.slperms);
+                        Log.Debug("No perms");
+                    return;
                 }
-                else
-                    Log.Debug("No perms");
-                return;
+               
             }
             else
                 Log.Debug("Not staff");
@@ -211,10 +217,8 @@ namespace Gamer.Mistaken.Systems.Staff
         public static StaffHandler.UserInfo GetStaff(this Player player) => player.UserId.GetStaff();
         public static StaffHandler.UserInfo GetStaff(this string UserId)
         {
-            if(StaffHandler.Staff.Any(i => i.steamid == UserId || i.discordid + "@discord" == UserId))
-            {
+            if(UserId.IsStaff())
                 return StaffHandler.Staff.First(i => i.steamid == UserId || i.discordid + "@discord" == UserId);
-            }
             return null;
         }
     }
