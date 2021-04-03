@@ -84,13 +84,20 @@ namespace Gamer.Mistaken.Systems.CustomItems
                             {
                                 if (upgrade.Chance == 100 || upgrade.Chance >= UnityEngine.Random.Range(0, 100))
                                 {
+                                    Log.Debug("Spawning");
                                     customItem.Spawn(ev.Scp914.output.position);
                                     ev.Items.Remove(item);
                                     item.Delete();
                                     goto foreach_end;
                                 }
+                                else
+                                    Log.Debug("Out of luck");
                             }
+                            else
+                                Log.Debug("Wrong item");
                         }
+                        else
+                            Log.Debug("Wrong setting");
                     }
                 }
                 var thisCustomItem = GetCustomItem(item);
