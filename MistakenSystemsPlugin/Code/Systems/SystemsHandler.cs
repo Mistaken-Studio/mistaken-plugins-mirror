@@ -169,6 +169,16 @@ namespace Gamer.Mistaken.Systems
                 door.NetworkActiveLocks = 0;
                 door.NetworkTargetState = true;
             });
+            MEC.Timing.CallDelayed(30, () =>
+            {
+                foreach (var item in RealPlayers.List.Where(p => p.Position.y > -100 && p.Position.y < 100))
+                    item.EnableEffect<CustomPlayerEffects.Decontaminating>();
+                MEC.Timing.CallDelayed(30, () =>
+                {
+                    foreach (var item in RealPlayers.List.Where(p => p.Position.y > -100 && p.Position.y < 100))
+                        item.EnableEffect<CustomPlayerEffects.Decontaminating>();
+                });
+            });
         }
 
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
