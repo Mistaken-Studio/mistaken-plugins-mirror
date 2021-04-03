@@ -39,7 +39,7 @@ namespace Gamer.API
 
             public virtual void Spawn(Vector3 position)
             {
-                this.Item.Spawn(1f + this.Durability / 1000f, position);
+                this.Item.Spawn(1f + (this.Durability / 1000f), position);
             }
 
             public float GetInternalDurability(Inventory.SyncItemInfo item) => GetInternalDurability(item.durability);
