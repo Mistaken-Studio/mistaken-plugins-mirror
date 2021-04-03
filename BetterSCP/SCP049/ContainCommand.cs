@@ -67,6 +67,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
             else 
             {
                 string unit = recontainer.ReferenceHub.characterClassManager.CurUnitName;
+                if (unit.StartsWith("<color="))
+                    unit = unit.Split('>')[1].Split('<')[0].Trim();
                 try
                 {
                     string[] array = unit.Split('-');
