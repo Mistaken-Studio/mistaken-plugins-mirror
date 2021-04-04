@@ -29,12 +29,30 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
         }
+
+        private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            var type = ev.Door.Type();
+            if (type == DoorType.EscapePrimary)
+            {
+                Map.Doors.First(d => d.Type() == DoorType.EscapeSecondary).NetworkTargetState = ev.Door.NetworkTargetState;
+            }
+            else if (type == DoorType.EscapeSecondary)
+            {
+                Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
+            }
+        }
+
         private readonly static Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
         private void Server_WaitingForPlayers()
         {
