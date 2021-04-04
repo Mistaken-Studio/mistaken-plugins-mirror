@@ -51,10 +51,11 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (ev.Pickup.durability == 0)
                     {
-                        ev.Pickup.ItemId.Spawn(item.Uses, ev.Pickup.position, ev.Pickup.rotation);
-                        ev.Pickup.Delete();
-                        ev.IsAllowed = false;
-                        return;
+                        //ev.Pickup.ItemId.Spawn(item.Uses, ev.Pickup.position, ev.Pickup.rotation);
+                        ev.Pickup.Networkdurability = item.Uses;
+                        //ev.Pickup.Delete();
+                        //ev.IsAllowed = false;
+                        //return;
                     }
                     var items = ev.Player.Inventory.items.Where(i => i.id == item.Type).ToArray();
                     if (items.Length >= item.MaxItems)
@@ -75,8 +76,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         {
                             if (ev.Pickup.Networkdurability != tmp)
                             {
-                                ev.Pickup.ItemId.Spawn(tmp, ev.Pickup.position, ev.Pickup.rotation);
-                                ev.Pickup.Delete();
+                                ev.Pickup.Networkdurability = tmp;
                                 ev.Player.ShowHint($"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", false);
                             }
                             else
@@ -114,6 +114,20 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Server_RoundStarted()
         {
             UsingMedical.Clear();
+
+            MEC.Timing.CallDelayed(5, () =>
+            {
+                foreach (var pickup in Pickup.Instances.ToArray())
+                {
+                    foreach (var item in ReusableItems)
+                    {
+                        if(item.Type == pickup.ItemId)
+                        {
+                            pickup.Networkdurability = item.Uses;
+                        }
+                    }
+                }
+            });
         }
 
         private void Player_ChangingItem(Exiled.Events.EventArgs.ChangingItemEventArgs ev)
@@ -158,7 +172,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
         };
 
-        IEnumerator<float> InformUsesLeft(Player p)
+        private IEnumerator<float> InformUsesLeft(Player p)
         {
             yield return Timing.WaitForSeconds(.1f);
             ItemType itemType = p.CurrentItem.id;
