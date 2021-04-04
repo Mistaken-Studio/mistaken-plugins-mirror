@@ -301,6 +301,7 @@
     <Compile Include="Code\Systems\Misc\CustomMaxHealthHandler.cs" />
     <Compile Include="Code\Systems\Misc\ResurectionHandler.cs" />
     <Compile Include="Code\Systems\Patches\ComparePatchFix.cs" />
+    <Compile Include="Code\Systems\Patches\RadioPatch.cs" />
     <Compile Include="Code\Systems\Patches\LCZPatch.cs" />
     <Compile Include="Code\Systems\Patches\RAPatch.cs" />
     <Compile Include="Code\Systems\Patches\RagdollManagerPatch.cs" />
