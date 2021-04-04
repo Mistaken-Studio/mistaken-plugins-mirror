@@ -153,7 +153,8 @@
   <ItemGroup>
     <Compile Include="Code\AIRS\AIRSHandler.cs" />
     <Compile Include="Code\AIRS\ReportHandler.cs" />
-    <Compile Include="Code\AIRS\ReportStatusUpdateHandler.cs" />
+    <Compile Include="Code\AIRS\ReportReciveEventHandler.cs" />
+    <Compile Include="Code\AIRS\ReportUpdateEventHandler.cs" />
     <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
     <Compile Include="Code\Ban2\BansHandler.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TeslaOnCommand.cs" />

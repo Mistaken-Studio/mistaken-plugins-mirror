@@ -272,13 +272,12 @@ namespace Gamer.Mistaken.LOFH
                     var report = Reports.First(r => r.Report.ReportId == ReportSelectedReport[player.Id]);
                     AutoRepeat[player.Id] = id;
                     var reported = report.Report.ReportedData == null ? report.Report.ReportedName : $"\n- Nickname: {report.Report.ReportedData.Nickname}\n- UserId: {report.Report.ReportedData.UserId}\n- Role: {report.Report.ReportedData.Role}";
-                    return $"<color=white>Server: {report.Report.Type}\nReportId: {report.Report.ReportId}\nStatus: <color={AIRS.ReportStatusUpdateHandler.GetColorByStatus(report.Status)}>{report.Status}</color>\nReport Time: {report.Timestamp}\nSuspect: {reported}\nReporter: {report.Report.ReporterName} | {report.Report.ReporterUserId}\nReason: <b>{report.Report.Reason}</b></color>";
+                    return $"<color=white>Server: {report.Report.Type}\nReportId: {report.Report.ReportId}\nStatus: <color={AIRS.ReportUpdateEventHandler.GetColorByStatus(report.Status)}>{report.Status}</color>\nReport Time: {report.Timestamp}\nSuspect: {reported}\nReporter: {report.Report.ReporterName} | {report.Report.ReporterUserId}\nReason: <b>{report.Report.Reason}</b></color>";
                 case 8352:
                     report = Reports.First(r => r.Report.ReportId == ReportSelectedReport[player.Id]);
                     SSL.Client.Send(MessageType.CMD_RESPOND_REPORT_STATUS, new ReportStatusUpdateData
                     {
                         Message = "",
-                        ReporterUserId = report.Report.ReporterUserId,
                         ReportId = report.Report.ReportId,
                         Status = ReportStatusType.DONE
                     });
@@ -288,7 +287,6 @@ namespace Gamer.Mistaken.LOFH
                     SSL.Client.Send(MessageType.CMD_RESPOND_REPORT_STATUS, new ReportStatusUpdateData
                     {
                         Message = "",
-                        ReporterUserId = report.Report.ReporterUserId,
                         ReportId = report.Report.ReportId,
                         Status = ReportStatusType.PROCCEDING
                     });
@@ -298,7 +296,6 @@ namespace Gamer.Mistaken.LOFH
                     SSL.Client.Send(MessageType.CMD_RESPOND_REPORT_STATUS, new ReportStatusUpdateData
                     {
                         Message = "",
-                        ReporterUserId = report.Report.ReporterUserId,
                         ReportId = report.Report.ReportId,
                         Status = ReportStatusType.FAILED
                     });
@@ -450,7 +447,7 @@ namespace Gamer.Mistaken.LOFH
                     {
                         tor = menu.Get(out GeneratePlayerList);
                         foreach (var report in Reports.Take(20))
-                            tor += $"<color={AIRS.ReportStatusUpdateHandler.GetColorByStatus(report.Status)}>[#{report.Report.Type}]<size=1><color=#00000000>(-{report.Report.ReportId})</color></size>{report.Report.ReportedName}</color>\n";
+                            tor += $"<color={AIRS.ReportUpdateEventHandler.GetColorByStatus(report.Status)}>[#{report.Report.Type}]<size=1><color=#00000000>(-{report.Report.ReportId})</color></size>{report.Report.ReportedName}</color>\n";
                     }       
                     return tor;
             }

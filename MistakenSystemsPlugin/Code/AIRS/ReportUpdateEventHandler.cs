@@ -8,20 +8,24 @@ using MistakenSocket.Client;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.AIRS;
 using MistakenSocket.Shared.API;
+using MistakenSocket.Shared.Events;
 
 namespace Gamer.Mistaken.AIRS
 {
-    public class ReportStatusUpdateHandler : MistakenSocket.Client.Handlers.Handler<ReportStatusUpdateData>
+    public class ReportUpdateEventHandler : MistakenSocket.Client.Handlers.Handler<ReportUpdateEvent>
     {
-        protected override MessageType Type => MessageType.CMD_RESPOND_REPORT_STATUS;
+        protected override MessageType Type => MessageType.REPORT_UPDATE_EVENT;
         public override ResponseData? Execute()
         {
             if (!ReportHandler.Reports.TryGetValue(Data.ReportId, out ReportHandler.ExtendedReportData reportInfo))
-                return new ResponseData(ResponseType.SERVER_ERROR, "Unknown report");
+            {
+                LOFH.MenuSystem.RefreshReports();
+                return null;
+            }
             reportInfo.SetStatus((ReportHandler.ReportStatus)Data.Status, Data.Message);
 
-            if (!Player.UserIdsCache.TryGetValue(Data.ReporterUserId, out Player target))
-                Exiled.API.Features.Log.Info($"Report({Data.ReportId} || {Data.ReporterUserId}) Status Updated | Status: {Data.Status} | Message: {Data.Message}");
+            if (!Player.UserIdsCache.TryGetValue(reportInfo.Issuer.UserId, out Player target))
+                Exiled.API.Features.Log.Info($"Report({Data.ReportId} || {reportInfo.Issuer.UserId}) Status Updated | Status: {Data.Status} | Message: {Data.Message}");
             else
             {
                 string tmpMsg = $"\nMessage: {Data.Message}";
@@ -30,7 +34,7 @@ namespace Gamer.Mistaken.AIRS
             }
             LOFH.MenuSystem.RefreshReports();
 
-            return new ResponseData(ResponseType.OK, "Understood");
+            return null;
         }
 
         public static string GetColorByStatus(ReportStatusType status)

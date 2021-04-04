@@ -73,7 +73,7 @@ namespace Gamer.Mistaken.AIRS
 
                 try
                 {
-                    MapPlus.Broadcast("AIRS", 10, $"({Target?.Id}) {Target?.Nickname} was reported by ({Issuer?.Id}) {Issuer?.Nickname} for {Reason}", Broadcast.BroadcastFlags.AdminChat);
+                    MapPlus.Broadcast("AIRS", 10, $"[LOCAL] ({Target?.Id}) {Target?.Nickname} was reported by ({Issuer?.Id}) {Issuer?.Nickname} for {Reason}", Broadcast.BroadcastFlags.AdminChat);
                 }
                 catch (System.Exception e)
                 {
