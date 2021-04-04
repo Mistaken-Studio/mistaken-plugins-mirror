@@ -18,6 +18,7 @@ namespace Gamer.Mistaken.AIRS
         protected override MessageType Type => MessageType.REPORT_RECIVE_EVENT;
         public override ResponseData? Execute()
         {
+            LOFH.MenuSystem.RefreshReports();
             if (Data.ServerId == (byte)SSL.Client.MyType)
                 return null;
             MapPlus.Broadcast("AIRS", 10, $"[{(ServerType)Data.ServerId}] ({Data.Suspect.Id}) {Data.Suspect.Nickname} was reported by {Data.ReporterName} for {Data.Reason}", Broadcast.BroadcastFlags.AdminChat);
