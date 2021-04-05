@@ -137,6 +137,8 @@ namespace Gamer.Mistaken.Systems.CustomItems
                 return;
             MEC.Timing.CallDelayed(0.1f, () =>
             {
+                if (ev.Pickup == null || ev.Pickup.gameObject == null)
+                    return;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = ev.Pickup.itemId,
