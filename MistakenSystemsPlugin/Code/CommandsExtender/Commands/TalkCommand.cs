@@ -93,9 +93,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
                     p.DisableAllEffects();
-                    Timing.CallDelayed(0.5f, () => WarpCommand.ExecuteWarp(p, pos));
-                    if(!p.IsStaff())
-                        p.EnableEffect<CustomPlayerEffects.Ensnared>();
+                    Timing.CallDelayed(0.5f, () =>
+                    {
+                        WarpCommand.ExecuteWarp(p, pos);
+                        if (!p.IsStaff())
+                            p.EnableEffect<CustomPlayerEffects.Ensnared>();
+                    });
+                    
                 }
                 Active.Add(player.UserId, targets);
                 Timing.RunCoroutine(ShowHint(player));
