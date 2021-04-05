@@ -54,7 +54,7 @@ namespace Gamer.Mistaken.LOFH
         public static string GetPrefixes(string userId)
         {
             string tor = "";
-            if (MenuSystem.Reports.Any(i => i.Report.ReportedData?.UserId == userId))
+            if (MenuSystem.Reported.Contains(userId))
                 tor = $"[<color=#FFFF00>R</color>] ";
             if (InVanish.TryGetValue(userId, out int vanishLevel))
                 tor = $"[<color=#808080>V <{vanishLevel}></color>] ";

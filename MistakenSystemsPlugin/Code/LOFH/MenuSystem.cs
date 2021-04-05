@@ -482,6 +482,7 @@ namespace Gamer.Mistaken.LOFH
             });
         }
 
+        public static readonly HashSet<string> Reported = new HashSet<string>();
         public static void RefreshReports()
         {
             SSL.Client.Send(MessageType.CMD_REQUEST_DATA, new RequestData
@@ -494,6 +495,12 @@ namespace Gamer.Mistaken.LOFH
                     return;
                 var tmp = data.Payload.Deserialize<(ReportData Report, ReportStatusType Status, DateTime Timestamp)[]>(0, 0, out _, false).ToList();
                 Reports = tmp.Where(i => (DateTime.Now - i.Timestamp).TotalMinutes < 30).OrderBy(i => -i.Timestamp.Ticks).ToArray();
+                Reported.Clear();
+                foreach (var item in Reports)
+                {
+                    if((item.Status == ReportStatusType.NONE || item.Status == ReportStatusType.PROCCEDING) && item.Report.ReportedData.UserId == null)
+                        Reported.Add(item.Report.ReportedData.UserId);
+                }
                 ForceRefreshPlayerList(13);
             });
         }

@@ -17,11 +17,9 @@ namespace Gamer.Mistaken.AIRS
         protected override MessageType Type => MessageType.REPORT_UPDATE_EVENT;
         public override ResponseData? Execute()
         {
+            LOFH.MenuSystem.RefreshReports();
             if (!ReportHandler.Reports.TryGetValue(Data.ReportId, out ReportHandler.ExtendedReportData reportInfo))
-            {
-                LOFH.MenuSystem.RefreshReports();
                 return null;
-            }
             reportInfo.SetStatus((ReportHandler.ReportStatus)Data.Status, Data.Message);
 
             if (!Player.UserIdsCache.TryGetValue(reportInfo.Issuer.UserId, out Player target))
@@ -32,7 +30,6 @@ namespace Gamer.Mistaken.AIRS
                 string message = $"Report Id: {Data.ReportId} | Reported: {reportInfo.Data.ReportedName}\nReport status was updated to {Data.Status}{(string.IsNullOrWhiteSpace(Data.Message) ? "" : tmpMsg)}";
                 target.SendConsoleMessage(message, GetColorByStatus(Data.Status));
             }
-            LOFH.MenuSystem.RefreshReports();
 
             return null;
         }
