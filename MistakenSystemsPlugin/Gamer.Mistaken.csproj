@@ -107,7 +107,7 @@
     </Reference>
     <Reference Include="MistakenSocket.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MistakenSockets\MistakenSocket\Shared\bin\Debug\MistakenSocket.Shared.dll</HintPath>
+      <HintPath>..\References\MistakenSocket.Shared.dll</HintPath>
     </Reference>
     <Reference Include="NetCoreServer, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

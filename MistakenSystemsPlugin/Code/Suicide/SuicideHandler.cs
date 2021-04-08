@@ -7,6 +7,7 @@ using Gamer.Utilities;
 using MEC;
 using UnityEngine;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Systems.CustomItems;
 
 namespace Gamer.Mistaken.Suicide
 {
@@ -59,6 +60,9 @@ namespace Gamer.Mistaken.Suicide
                     KillPlayer(ev.Shooter, DeathType.UNKNOWN);
                     return;
                 }
+                else if (CustomItemsHandler.GetCustomItem(ev.Shooter.CurrentItem) != null)
+                    return;
+
                 switch (ev.Shooter.CurrentItem.id)
                 {
                     case ItemType.GunCOM15:
