@@ -114,6 +114,49 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined += this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
+            Exiled.Events.Handlers.Server.WaitingForPlayers += Server_WaitingForPlayers;
+        }
+
+        private void Server_WaitingForPlayers()
+        {
+            return; 
+            if (Server.Port != 7791)
+                return;
+            MEC.Timing.CallDelayed(5, () =>
+            {
+                //.test wall 192 998 -73 0 0 0 2 8
+                SpawnWorkStations(new Vector3(192, 998, -73), new Vector3(0 - 180, 0 - 180, 0), new Vector3(2.1f, 8f, 0.1f));
+                SpawnWorkStations(new Vector3(182.2f, 998, -73), new Vector3(0 - 180, 0 - 180, 0), new Vector3(2.4f, 8f, 0.1f));
+            });
+        }
+        private void SpawnWorkStations(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            SpawnWorkStation(pos - Vector3.right * 0.05f, rot, size);
+            SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x, rot.y + 180, rot.z), size);
+
+            SpawnWorkStation(pos - Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y, rot.z), size);
+            SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y + 180, rot.z), size);
+        }
+
+        private WorkStation prefab;
+        private void SpawnWorkStation(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            if (prefab == null)
+            {
+                foreach (var item in NetworkManager.singleton.spawnPrefabs)
+                {
+                    var ws = item.GetComponent<WorkStation>();
+                    if (ws)
+                    {
+                        prefab = ws;
+                    }
+                }
+            }
+            var spawned = GameObject.Instantiate(prefab.gameObject, pos, Quaternion.Euler(rot));
+            spawned.transform.localScale = size;
+            Log.Debug("Spawning");
+            GameObject.Destroy(spawned.GetComponent<WorkStation>());
+            NetworkServer.Spawn(spawned);
         }
 
         public override void OnDisable()

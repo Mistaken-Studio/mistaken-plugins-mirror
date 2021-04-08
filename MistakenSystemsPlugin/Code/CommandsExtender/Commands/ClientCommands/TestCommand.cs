@@ -95,12 +95,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         player.AddItem(info);
                     break;
                 case "spawn":
-                    var basePos = player.CurrentRoom.Position;
-                    var offset = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
-                    offset = player.CurrentRoom.transform.forward * -offset.x + player.CurrentRoom.transform.right * -offset.z + Vector3.up * offset.y;
-                    basePos += offset;
-                    ItemType.SCP018.Spawn(0, basePos);
-                    return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "" };
+                    {
+                        var basePos = player.CurrentRoom.Position;
+                        var offset = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        offset = player.CurrentRoom.transform.forward * -offset.x + player.CurrentRoom.transform.right * -offset.z + Vector3.up * offset.y;
+                        basePos += offset;
+                        ItemType.SCP018.Spawn(0, basePos);
+                        return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "" };
+                    }
                 case "heh":
                     {
                         var p = Player.Get(args[1]);
@@ -144,9 +146,43 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     player.referenceHub.characterClassManager.NetworkCurSpawnableTeamType = (byte)(_arg == null ? 0 : 1);
                     player.referenceHub.characterClassManager.NetworkCurUnitName = _arg;
                     break;
+                case "wall":
+                    {
+                        var pos = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        var rot = new Vector3(float.Parse(args[4]) - 180, float.Parse(args[5]) - 180, float.Parse(args[6]));
+                        var width = float.Parse(args[7]);
+                        var height = float.Parse(args[8]);
+                        SpawnWorkStation(pos - Vector3.right * 0.05f, rot, new Vector3(width, height, 0.1f));
+                        SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x, rot.y + 180, rot.z), new Vector3(width, height, 0.1f));
+
+                        SpawnWorkStation(pos - Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y, rot.z), new Vector3(width, height, 0.1f));
+                        SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y + 180, rot.z), new Vector3(width, height, 0.1f));
+                        break;
+                    }
             }
             success = true;
             return new string[] { "HMM" };
+        }
+
+        private WorkStation prefab;
+        private void SpawnWorkStation(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            if (prefab == null)
+            {
+                foreach (var item in NetworkManager.singleton.spawnPrefabs)
+                {
+                    var ws = item.GetComponent<WorkStation>();
+                    if (ws)
+                    {
+                        Log.Debug(item.name);
+                        prefab = ws;
+                    }
+                }
+            }
+            var spawned = GameObject.Instantiate(prefab.gameObject, pos, Quaternion.Euler(rot));
+            spawned.transform.localScale = size;
+            Log.Debug("Spawning");
+            NetworkServer.Spawn(spawned);
         }
 
         public void Explore(Transform obj)
