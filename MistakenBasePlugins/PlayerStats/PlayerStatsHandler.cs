@@ -54,7 +54,7 @@ namespace Gamer.Mistaken.Base
         {
             if (ev.Target.Team != Team.SCP)
                 return;
-            if (ev.Attacker.IsHost)
+            if (ev.Attacker.IsHost || !ev.Attacker.IsReadyPlayer())
                 return;
             if (!Stats.ContainsKey(ev.Attacker.UserId))
                 return;
