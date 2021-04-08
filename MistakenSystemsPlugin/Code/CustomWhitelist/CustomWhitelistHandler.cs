@@ -97,7 +97,7 @@ namespace Gamer.Mistaken.CustomWhitelist
             ConnectedReservedSlots.Remove(ev.Player.UserId);
         }
 
-        public const int ReservedSlots = 5;
+        public const int ReservedSlots = 10;
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
             Log.Debug("Connecting player");
