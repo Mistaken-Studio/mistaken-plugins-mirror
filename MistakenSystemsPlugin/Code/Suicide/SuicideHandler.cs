@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.Suicide
                     KillPlayer(ev.Shooter, DeathType.UNKNOWN);
                     return;
                 }
-                else if (CustomItemsHandler.GetCustomItem(ev.Shooter.CurrentItem) != null)
+                if (CustomItemsHandler.GetCustomItem(ev.Shooter.CurrentItem) != null)
                     return;
 
                 switch (ev.Shooter.CurrentItem.id)
