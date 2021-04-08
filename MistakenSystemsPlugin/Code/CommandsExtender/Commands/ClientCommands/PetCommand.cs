@@ -49,7 +49,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Systems.Pets.PetsHandler.ShoudRun = bool.Parse(args[1]);
                 return new string[] { "Done" };
             }*/
-
             var role = RoleType.None;//(RoleType)int.Parse(args[0]);
             var name = string.Join(" ", args/*.Skip(1)*/);
             if (string.IsNullOrWhiteSpace(name))

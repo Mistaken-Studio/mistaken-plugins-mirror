@@ -155,7 +155,8 @@ namespace Gamer.Mistaken.Systems.Pets
         public static Vector3 PetSize = new Vector3(0.3f, 0.3f, 0.3f);
         public static NPCS.Npc CreateFolowingNPC(Player player, RoleType role, string name)
         {
-            role = player.Role;
+            //if(!player.IsDev())
+                role = player.Role;
             var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name ?? "(NULL)");
             //npc.VisibleForPlayers = new HashSet<Player>();
             npc.VisibleForRoles = new HashSet<RoleType>();
@@ -207,10 +208,13 @@ namespace Gamer.Mistaken.Systems.Pets
             }
             npc.AIEnabled = true;
             npc.Follow(player);
+            npc.DisableRun = true;
             MEC.Timing.CallDelayed(0.5f, () =>
             {
                 try
                 {
+                    //npc.NPCPlayer.ReferenceHub.animationController.Network_curMoveState = 1;
+                    //Timing.RunCoroutine(ForceAnim(npc));
                     npc.NPCPlayer.ReferenceHub.nicknameSync.CustomPlayerInfo = $"{player.GetDisplayName()}'s pet";
                     npc.NPCPlayer.RankName = "PET";
                     PetsIds.Add(npc.NPCPlayer.Id);
@@ -243,6 +247,15 @@ namespace Gamer.Mistaken.Systems.Pets
                 }
             });    
             return npc;
+        }
+
+        private static IEnumerator<float> ForceAnim(NPCS.Npc npc)
+        {
+            while(npc.NPCPlayer?.IsAlive ?? false)
+            {
+                yield return Timing.WaitForSeconds(0.5f);
+                npc.NPCPlayer.ReferenceHub.animationController.Network_curMoveState = 1;
+            }
         }
     }
 }
