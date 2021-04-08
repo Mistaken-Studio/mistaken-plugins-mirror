@@ -101,7 +101,17 @@ namespace Gamer.Utilities
         public static bool IsPlayer(this CommandSender me) => GetPlayer(me) != null;
         public static bool IsPlayer(this ICommandSender me) => GetPlayer(me) != null;
 
-        public static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)
+        public enum SessionVarType
+        {
+            TALK,
+            ITEM_LESS_CLSSS_CHANGE,
+            HIDDEN,
+            LONG_OVERWATCH,
+            NO_SPAWN_PROTECT,
+            VANISH,
+        }
+        public static T GetSessionVar<T>(this Player me, SessionVarType type, T defaultValue = default) => me.GetSessionVar<T>(type.ToString(), defaultValue);
+        private static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)
         {
             if (me.SessionVariables.TryGetValue(name, out object value))
             {
@@ -113,7 +123,11 @@ namespace Gamer.Utilities
             else
                 return defaultValue;
         }
-        
+        public static void SetSessionVar(this Player me, SessionVarType type, object value)
+        {
+            me.SessionVariables[type.ToString()] = value;
+        }
+
         public static bool CheckPermission(this ICommandSender me, string permission) => CheckPermission(me as CommandSender, permission);      
         public static bool CheckPermission(this CommandSender cs, string permission) => CheckPermission(cs.GetPlayer(), permission);
         public static bool CheckPermission(this Player player, string permission)

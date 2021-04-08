@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null) return;
-            if (ev.Player.SessionVariables.TryGetValue("NO_SPAWN_PROTECT", out object disallow) && (bool)disallow)
+            if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.NO_SPAWN_PROTECT))
                 return;
             if (ev.NewRole == RoleType.NtfCadet || ev.NewRole == RoleType.NtfLieutenant || ev.NewRole == RoleType.NtfCommander || ev.NewRole == RoleType.NtfScientist || ev.NewRole == RoleType.ChaosInsurgency)
             {

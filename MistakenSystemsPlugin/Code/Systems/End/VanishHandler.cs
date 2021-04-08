@@ -102,7 +102,7 @@ namespace Gamer.Mistaken.Systems.End
                 RoundLogger.Log("VANISH", "ENABLED", $"Vanish enabled for {player.PlayerToString()}, type {level}");
                 Vanished.Add(player.Id, level);
                 LOFH.LOFH.AddVanish(player.UserId, level);
-                player.SessionVariables["VANISH"] = level;
+                player.SetSessionVar(Main.SessionVarType.VANISH, level);
                 if (!silent)
                     AnnonymousEvents.Call("VANISH", (player, level));
             }
@@ -116,7 +116,7 @@ namespace Gamer.Mistaken.Systems.End
                 }
                 Vanished.Remove(player.Id);
                 LOFH.LOFH.RemoveVanish(player.UserId);
-                player.SessionVariables["VANISH"] = (byte)0;
+                player.SetSessionVar(Main.SessionVarType.VANISH, (byte)0);
             }
         }
 

@@ -206,6 +206,10 @@ namespace Gamer.Mistaken.Systems.Misc
         }
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
+            if (ev.IsEscaped)
+                return;
+            if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE))
+                return;
             switch (ev.NewRole)
             {
                 case RoleType.ChaosInsurgency:

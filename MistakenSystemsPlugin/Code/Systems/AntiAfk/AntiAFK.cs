@@ -70,7 +70,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
                     if (pos.x == ppos.x && pos.y == ppos.y && pos.z == ppos.z)
                     {
                         AfkPosition[player.Id] = new KeyValuePair<int, Vector3>(level + 1, ppos);
-                        if (player.GetSessionVar<bool>("OnTalk"))
+                        if (player.GetSessionVar<bool>(Main.SessionVarType.TALK))
                             return;
                         switch (level + 1)
                         {

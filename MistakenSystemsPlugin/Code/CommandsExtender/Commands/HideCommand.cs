@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 LOFH.LOFH.Hidden.Add(player.UserId);
             else
                 LOFH.LOFH.Hidden.Remove(player.UserId);
-            player.SessionVariables["HIDDEN"] = LOFH.LOFH.Hidden.Contains(player.UserId);
+            player.SetSessionVar(Main.SessionVarType.HIDDEN, LOFH.LOFH.Hidden.Contains(player.UserId));
             AnnonymousEvents.Call("HIDDEN", (player, LOFH.LOFH.Hidden.Contains(player.UserId)));
             _s = true;
             return new string[] { "Done" };

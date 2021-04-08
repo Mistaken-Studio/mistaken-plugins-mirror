@@ -52,9 +52,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (p == null)
                             continue;
                         p.DisableAllEffects();
-                        p.SessionVariables["NO_SPAWN_PROTECT"] = true;
+                        p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
                         p.Role = data.Role;
-                        p.SessionVariables["NO_SPAWN_PROTECT"] = false;
+                        p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
                         Timing.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
@@ -73,7 +73,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
-                            p.SessionVariables["OnTalk"] = false;
+                            p.SetSessionVar(Main.SessionVarType.TALK, false);
                         });
                     }
                 }
@@ -89,7 +89,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     var p = RealPlayers.Get(playerId);
                     if (p == null || !p.IsConnected)
                         continue;
-                    p.SessionVariables["OnTalk"] = true;
+                    p.SetSessionVar(Main.SessionVarType.TALK, true);
                     SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
                     p.DisableAllEffects();

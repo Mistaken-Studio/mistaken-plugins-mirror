@@ -199,6 +199,10 @@ namespace Gamer.Taser
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
+            if (ev.IsEscaped)
+                return;
+            if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE))
+                return;
             float dur = 1.501f + (Index++) / 1000000f;
             if (ev.NewRole == RoleType.FacilityGuard)
             {
