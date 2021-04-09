@@ -143,8 +143,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "aaa":
                     string _arg = args[1] == "null" ? null : args[1];
-                    player.referenceHub.characterClassManager.NetworkCurSpawnableTeamType = (byte)(_arg == null ? 0 : 1);
-                    player.referenceHub.characterClassManager.NetworkCurUnitName = _arg;
+                    player.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = (byte)(_arg == null ? 0 : 1);
+                    player.ReferenceHub.characterClassManager.NetworkCurUnitName = _arg;
                     break;
                 case "wall":
                     {

@@ -225,19 +225,19 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             Gamer.Mistaken.Systems.InfoMessage.InfoMessageManager.WelcomeMessages[RoleType.Scp106] = WelcomeMessage;
             foreach (var player in RealPlayers.Get(Team.SCP))
             {
-                while ((player.Position.y < -1900 || (player.Role != RoleType.Scp106 && Vector3.Distance(player.Position, Map.GetRandomSpawnPoint(RoleType.Scp106)) < 10)) && player.Team == Team.SCP)
+                while ((player.Position.y < -1900 || (player.Role != RoleType.Scp106 && Vector3.Distance(player.Position, Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106)) < 10)) && player.Team == Team.SCP)
                 {
                     if (player.Role == RoleType.Scp106)
                     {
                         player.IsGodModeEnabled = true;
-                        TeleportOldMan(player, Map.GetRandomSpawnPoint(RoleType.Scp106) + Vector3.down * 2);
+                        TeleportOldMan(player, Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106) + Vector3.down * 2);
                         yield return Timing.WaitForSeconds(10);
                         player.IsGodModeEnabled = false;
 
-                        if (player.Position.y < 1900) player.Position = Map.GetRandomSpawnPoint(RoleType.Scp106);
+                        if (player.Position.y < 1900) player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106);
                     }
                     else
-                        player.Position = Map.GetRandomSpawnPoint(player.Role);
+                        player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(player.Role);
                     yield return Timing.WaitForSeconds(1);
                 }
             }
@@ -251,7 +251,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             while(RealPlayers.Any(RoleType.Scp106) && rid == RoundPlus.RoundId)
             {
                 foreach (var player in RealPlayers.Get(RoleType.Scp106).Where(p => p.IsInPocketDimension))
-                    player.Position = Map.GetRandomSpawnPoint(RoleType.Scp106);
+                    player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106);
                 yield return Timing.WaitForSeconds(20);
             }
         }

@@ -28,6 +28,7 @@ namespace Gamer.Mistaken.Systems.End
 {
     internal class RoundLogHandler : Module
     {
+        public override bool IsBasic => true;
         public RoundLogHandler(PluginHandler p) : base(p)
         {
             RoundLogger.IniIfNotAlready();
@@ -155,7 +156,7 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Server_SendingConsoleCommand(Exiled.Events.EventArgs.SendingConsoleCommandEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "CONSOLE", $"{PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ",ev.Arguments)}) with result: {(ev.Allow ? "Allowed" : "Disallowed")}");
+            RoundLogger.Log("GAME EVENT", "CONSOLE", $"{PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ",ev.Arguments)}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {

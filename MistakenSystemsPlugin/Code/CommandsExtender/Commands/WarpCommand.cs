@@ -1,11 +1,8 @@
-﻿
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
 using Newtonsoft.Json.Linq;
-
-
 using System;
 using System.Linq;
 using System.Net;
@@ -94,7 +91,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "079":
                     {
-                        Vector3 pos = Map.GetRandomSpawnPoint(RoleType.Scp079);
+                        Vector3 pos = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp079);
                         player.Position = new Vector3(pos.x, pos.y + 2, pos.z);
                         return new string[] { "Done" };
                     }
