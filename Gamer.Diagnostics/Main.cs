@@ -158,6 +158,7 @@ namespace Gamer.Diagnostics
         public abstract string Name { get; }
         public virtual bool Enabled { get; protected set; } = true;
         public readonly IPlugin<IConfig> plugin;
+        public virtual bool IsBasic { get; } = false;
 
         public Module(IPlugin<IConfig> plugin)
         {
@@ -187,6 +188,34 @@ namespace Gamer.Diagnostics
                 item.OnDisable();
                 Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
+        }
+
+        public static void OnEnableAllExcept(IPlugin<IConfig> plugin)
+        {
+            foreach (var module in Modules.Where(p => p.Key != plugin))
+            {
+                foreach (var item in module.Value.Where(i => !i.Enabled))
+                {
+                    MasterHandler.Ini();
+                    Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                    item.OnEnable();
+                    Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                }
+            }
+        }
+
+        public static void OnDisableAllExcept(IPlugin<IConfig> plugin)
+        {
+            foreach (var module in Modules.Where(p => p.Key != plugin))
+            {
+                foreach (var item in module.Value.Where(i => i.Enabled && !i.IsBasic))
+                {
+                    MasterHandler.Ini();
+                    Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                    item.OnDisable();
+                    Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                }
+            }    
         }
 
         public abstract void OnEnable();

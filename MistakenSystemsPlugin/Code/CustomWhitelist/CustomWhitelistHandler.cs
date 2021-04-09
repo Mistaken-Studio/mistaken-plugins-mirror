@@ -21,6 +21,7 @@ namespace Gamer.Mistaken.CustomWhitelist
 {
     public class Handler : Module
     {
+        public override bool IsBasic => true;
         public static ReadOnlyCollection<string> PublicWhitelist => 
             new ReadOnlyCollection<string>(Whitelist.ToArray());
              

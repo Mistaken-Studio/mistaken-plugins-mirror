@@ -21,6 +21,7 @@ namespace Gamer.Mistaken.Base
 {
     public class AntyTeamKillHandler : Diagnostics.Module
     {
+        public override bool IsBasic => true;
         public static int CurrentRoundId = 0;
         public static readonly Dictionary<int, List<TeamKill>> TeamKills = new Dictionary<int, List<TeamKill>>();
         public static List<TeamKill> TeamKillsList

@@ -11,6 +11,7 @@ namespace Gamer.Mistaken.Systems.Utilities
 {
     internal class UtilitiesHandler : Module
     {
+        public override bool IsBasic => true;
         public UtilitiesHandler(PluginHandler p) : base(p)
         {
         }

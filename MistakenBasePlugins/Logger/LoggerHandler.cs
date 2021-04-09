@@ -13,6 +13,7 @@ namespace Gamer.Mistaken.Base
 {
     public class LoggerHandler : Diagnostics.Module
     {
+        public override bool IsBasic => true;
         public override string Name => nameof(LoggerHandler);
         public LoggerHandler(IPlugin<IConfig> plugin) : base(plugin)
         {

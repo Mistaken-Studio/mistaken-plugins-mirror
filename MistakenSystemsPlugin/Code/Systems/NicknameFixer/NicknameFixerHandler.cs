@@ -14,6 +14,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
 {
     public class Handler : Module
     {
+        public override bool IsBasic => true;
         public Handler(PluginHandler p) : base(p)
         {
             p.RegisterTranslation("nickfix_change_msg", "<color=red>You have unacceptable nickname.</color> You're nickanme have been changed. New nick is $newnick");

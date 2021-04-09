@@ -18,6 +18,7 @@ namespace Gamer.Mistaken.Base
 {
     public class PlayerStatsHandler : Diagnostics.Module
     {
+        public override bool IsBasic => true; 
         public static readonly Dictionary<string, PlayerStats> Stats = new Dictionary<string, PlayerStats>();
 
         public override string Name => nameof(PlayerStatsHandler);

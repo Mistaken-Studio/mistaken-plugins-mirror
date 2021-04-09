@@ -13,6 +13,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
 {
     public class Handler : Module
     {
+        public override bool IsBasic => true;
         public Handler(PluginHandler p) : base(p)
         {  
         }

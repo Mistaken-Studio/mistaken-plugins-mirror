@@ -18,6 +18,7 @@ namespace Gamer.Mistaken.Systems.Staff
 {
     public class StaffHandler : Module
     {
+        public override bool IsBasic => true;
         public StaffHandler(PluginHandler p) : base(p)
         {
         }

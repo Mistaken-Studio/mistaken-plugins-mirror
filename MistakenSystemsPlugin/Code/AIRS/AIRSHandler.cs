@@ -14,6 +14,7 @@ namespace Gamer.Mistaken.AIRS
 {
     public class Handler : Module
     {
+        public override bool IsBasic => true;
         public override string Name => "AIRS";
         public Handler(PluginHandler plugin) : base(plugin)
         {

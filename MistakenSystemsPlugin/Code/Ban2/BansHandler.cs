@@ -17,6 +17,7 @@ namespace Gamer.Mistaken.Ban2
 {
     public class BansHandler : Diagnostics.Module
     {
+        public override bool IsBasic => true;
         public override string Name => nameof(BansHandler);
 
         public BansHandler(IPlugin<IConfig> plugin) : base(plugin)

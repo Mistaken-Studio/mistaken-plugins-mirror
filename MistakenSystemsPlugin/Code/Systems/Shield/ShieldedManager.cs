@@ -13,6 +13,7 @@ namespace Gamer.Mistaken.Systems.Shield
 {
     public class ShieldedManager : Module
     {
+        public override bool IsBasic => true;
         public static readonly List<Shielded> Shieldeds = new List<Shielded>();
 
         public override string Name => "ShieldManager";

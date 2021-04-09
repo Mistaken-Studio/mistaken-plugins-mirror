@@ -16,6 +16,7 @@ namespace Gamer.Mistaken.Base
 {
     public class JoinsHandler : Diagnostics.Module
     {
+        public override bool IsBasic => true;
         public static WantedData[] Wanteds = new WantedData[0];
         public readonly static HashSet<string> WantedUserIds = new HashSet<string>();
 

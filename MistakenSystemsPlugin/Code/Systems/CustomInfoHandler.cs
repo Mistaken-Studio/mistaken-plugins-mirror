@@ -15,6 +15,7 @@ namespace Gamer.Mistaken.Systems
 {
     public class CustomInfoHandler : Module
     {
+        public override bool IsBasic => true;
         public CustomInfoHandler(PluginHandler p) : base(p)
         {
         }
