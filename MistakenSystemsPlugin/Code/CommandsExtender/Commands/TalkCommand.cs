@@ -83,6 +83,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 int[] targets = (args[0] + $".{player.Id}").Split('.').Select(i => int.Parse(i)).ToHashSet().ToArray();
                 string pos = Warps.Dequeue();
+                int counter = 0;
                 Warps.Enqueue(pos);
                 foreach (var playerId in targets)
                 {
@@ -97,7 +98,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         WarpCommand.ExecuteWarp(p, pos);
                         if (!p.IsStaff())
+                        {
                             p.EnableEffect<CustomPlayerEffects.Ensnared>();
+                            Timing.CallDelayed(0.5f, () =>
+                            {
+                                p.Position += GetPosByCounter(counter++);
+                            });
+                        }
                     });
                     
                 }
@@ -107,6 +114,31 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
             success = true;
             return new string[] { "Done" };
+        }
+
+        private Vector3 GetPosByCounter(int counter)
+        {
+            switch(counter)
+            {
+                case 0:
+                    return new Vector3(0.5f, -0.2f, 0);
+                case 1:
+                    return new Vector3(0, -0.2f, 0.5f);
+                case 2:
+                    return new Vector3(-0.5f, -0.2f, 0);
+                case 3:
+                    return new Vector3(0, -0.2f, -.5f);
+                case 4:
+                    return new Vector3(0.5f, -0.2f, 0.5f);
+                case 5:
+                    return new Vector3(0.5f, -0.2f, -0.5f);
+                case 6:
+                    return new Vector3(-0.5f, -0.2f, 0.5f);
+                case 7:
+                    return new Vector3(-0.5f, -0.2f, -0.5f);
+                default:
+                    return new Vector3(0, -0.2f, 0);
+            }
         }
 
         private IEnumerator<float> ShowHint(Player p)
