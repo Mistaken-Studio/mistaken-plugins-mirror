@@ -115,6 +115,21 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Scp049.FinishingRecall += Scp049_FinishingRecall;
+        }
+
+        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            MEC.Timing.CallDelayed(1, () =>
+            {
+                if (!ev.Target.IsConnected)
+                    return;
+                if (ev.Target.Role != RoleType.Scp0492)
+                    return;
+                Exiled.Events.Handlers.Player.OnChangingRole(new Exiled.Events.EventArgs.ChangingRoleEventArgs(ev.Target, ev.Target.Role, new List<ItemType>(), true, false));
+            });
         }
 
         private void Server_WaitingForPlayers()
