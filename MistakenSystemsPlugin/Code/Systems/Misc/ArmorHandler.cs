@@ -32,7 +32,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.DroppingItem -= this.Handle<Exiled.Events.EventArgs.DroppingItemEventArgs>((ev) => Player_DroppingItem(ev));
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
-
+        //25?
         public class Armor : CustomItem
         {
             public static Armor Instance = new Armor();
@@ -57,10 +57,10 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Putting on <color=yellow>Armor</color>", 2f, true, true);
+                    player.ShowHintPulsating($"Putting on <color=yellow>{this.ItemName}</color>", 5f, true, true);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
-                Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
+                Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
                     player.EnableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.85f));
@@ -78,10 +78,10 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Droping <color=yellow>Armor</color>", 2f, true, true);
+                    player.ShowHintPulsating($"Droping <color=yellow>{this.ItemName}</color>", 3f, true, true);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(3);
                 }
-                MEC.Timing.CallDelayed(1 * (fast ? 0 : 1), () => {
+                MEC.Timing.CallDelayed(3 * (fast ? 0 : 1), () => {
                     if (player.IsConnected)
                         player.DisableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Remove(player);
@@ -124,6 +124,29 @@ namespace Gamer.Mistaken.Systems.Misc
                 return true;
             }
             public override Vector3 Size => new Vector3(3, 3, 5);
+            public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
+            {
+                switch (setting)
+                {
+                    case Scp914Knob.Rough:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (1 / 1000000f);
+                        break;
+                    case Scp914Knob.Coarse:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (10 / 1000000f);
+                        break;
+                    case Scp914Knob.OneToOne:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (25 / 1000000f);
+                        break;
+                    case Scp914Knob.Fine:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        break;
+                    case Scp914Knob.VeryFine:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        break;
+                }
+                return pickup;
+            }
+            #region Spawn
             public static void GiveDelayed(Player player, int innerDurability = 25) => MEC.Timing.CallDelayed(0.2f, () => Give(player, innerDurability));
             public static bool Give(Player player, int innerDurability = 25) => Instance._give(player, innerDurability);
             private bool _give(Player player, int innerDurability = 25)
@@ -154,6 +177,90 @@ namespace Gamer.Mistaken.Systems.Misc
                     durability = dur
                 }, position, Quaternion.Euler(90, 0, 0), this.Size);
             }
+            #endregion
+        }
+        //15?
+        public class LiteArmor : CustomItem
+        {
+            public static LiteArmor Instance = new LiteArmor();
+            public LiteArmor() => this.Register();
+            public override string ItemName => "Lite Armor";
+            public override ItemType Item => ItemType.Coin;
+            public override int Durability => 002;
+
+            public void OnWear(Player player, Pickup pickup, bool fast) => this.OnWear(player, pickup.durability, fast);
+            public void OnWear(Player player, float pickupDurability, bool fast)
+            {
+                float durability = this.GetInternalDurability(pickupDurability);
+                if (!player.IsConnected)
+                    return;
+                if (!fast)
+                {
+                    if (Armor.BlockInteractions.Contains(player))
+                        return;
+                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    player.ShowHintPulsating($"Putting on <color=yellow>{this.ItemName}</color>", 2f, true, true);
+                    player.EnableEffect<CustomPlayerEffects.Ensnared>(2);
+                }
+                Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
+                {
+                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.5f));
+                    Armor.BlockInteractions.Remove(player);
+                });
+            }
+            public void OnUnWear(Player player, bool fast)
+            {
+                if (!player.IsConnected)
+                    return;
+                if (!fast)
+                {
+                    if (Armor.BlockInteractions.Contains(player))
+                        return;
+                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    player.ShowHintPulsating($"Droping <color=yellow>{this.ItemName}</color>", 2f, true, true);
+                    player.EnableEffect<CustomPlayerEffects.Ensnared>(1);
+                }
+                MEC.Timing.CallDelayed(1 * (fast ? 0 : 1), () => {
+                    Shield.ShieldedManager.Remove(player);
+                    Armor.BlockInteractions.Remove(player);
+                });
+            }
+            public override void OnForceclass(Player player)
+            {
+                OnUnWear(player, true);
+            }
+            public override bool OnPickup(Player player, Pickup pickup)
+            {
+                if (Armor.BlockInteractions.Contains(player))
+                    return false;
+                if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
+                {
+                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    return false;
+                }
+                this.OnWear(player, pickup, false);
+                return true;
+            }
+            public override bool OnPrePickup(Player player, Pickup pickup)
+            {
+                if (Armor.BlockInteractions.Contains(player))
+                    return false;
+                if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
+                {
+                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    return false;
+                }
+                return true;
+            }
+            public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
+            {
+                if (Armor.BlockInteractions.Contains(player))
+                    return false;
+
+                this.OnUnWear(player, false);
+                return true;
+            }
+            public override Vector3 Size => new Vector3(2, 2, 4);
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {
                 switch (setting)
@@ -176,6 +283,180 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 return pickup;
             }
+            #region Spawn
+            public static void GiveDelayed(Player player, int innerDurability = 25) => MEC.Timing.CallDelayed(0.2f, () => Give(player, innerDurability));
+            public static bool Give(Player player, int innerDurability = 25) => Instance._give(player, innerDurability);
+            private bool _give(Player player, int innerDurability = 25)
+            {
+                if (player.HasItem(ItemType.Coin))
+                    return false;
+                if (player.Inventory.items.Count >= 8)
+                {
+                    this._spawn(player.Position, innerDurability);
+                    return true;
+                }
+                float dur = 1 + (this.Durability / 1000f) + (innerDurability / 1000000f);
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    id = this.Item,
+                    durability = dur
+                });
+                OnWear(player, dur, true);
+                return true;
+            }
+            public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
+            private void _spawn(Vector3 position, int innerDurability = 25)
+            {
+                float dur = 1 + (this.Durability / 1000f) + (innerDurability / 1000000f);
+                MapPlus.Spawn(new Inventory.SyncItemInfo
+                {
+                    id = this.Item,
+                    durability = dur
+                }, position, Quaternion.Euler(90, 0, 0), this.Size);
+            }
+            #endregion
+        }
+        //100?
+        public class HeavyArmor : CustomItem
+        {
+            public static HeavyArmor Instance = new HeavyArmor();
+            public HeavyArmor() => this.Register();
+            public override string ItemName => "Heavy Armor";
+            public override ItemType Item => ItemType.Coin;
+            public override int Durability => 003;
+
+            public void OnWear(Player player, Pickup pickup, bool fast) => this.OnWear(player, pickup.durability, fast);
+            public void OnWear(Player player, float pickupDurability, bool fast)
+            {
+                float durability = this.GetInternalDurability(pickupDurability);
+                if (!player.IsConnected)
+                    return;
+                if (!fast)
+                {
+                    if (Armor.BlockInteractions.Contains(player))
+                        return;
+                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    player.ShowHintPulsating($"Putting on <color=yellow>{this.ItemName}</color>", 8f, true, true);
+                    player.EnableEffect<CustomPlayerEffects.Ensnared>(8);
+                }
+                Timing.CallDelayed(8 * (fast ? 0 : 1), () =>
+                {
+                    player.EnableEffect<CustomPlayerEffects.Disabled>();
+                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 1f));
+                    if (player.ArtificialHealth < 30 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
+                        player.ArtificialHealth = 30;
+                    Armor.BlockInteractions.Remove(player);
+                });
+            }
+            public void OnUnWear(Player player, bool fast)
+            {
+                if (!player.IsConnected)
+                    return;
+                if (!fast)
+                {
+                    if (Armor.BlockInteractions.Contains(player))
+                        return;
+                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    player.ShowHintPulsating($"Droping <color=yellow>{this.ItemName}</color>", 5f, true, true);
+                    player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
+                }
+                MEC.Timing.CallDelayed(5 * (fast ? 0 : 1), () => {
+                    if(player.IsConnected)
+                        player.DisableEffect<CustomPlayerEffects.Disabled>();
+                    Shield.ShieldedManager.Remove(player);
+                    Armor.BlockInteractions.Remove(player);
+                });
+            }
+            public override void OnForceclass(Player player)
+            {
+                OnUnWear(player, true);
+            }
+            public override bool OnPickup(Player player, Pickup pickup)
+            {
+                if (Armor.BlockInteractions.Contains(player))
+                    return false;
+                if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
+                {
+                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    return false;
+                }
+                this.OnWear(player, pickup, false);
+                return true;
+            }
+            public override bool OnPrePickup(Player player, Pickup pickup)
+            {
+                if (Armor.BlockInteractions.Contains(player))
+                    return false;
+                if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
+                {
+                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    return false;
+                }
+                return true;
+            }
+            public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
+            {
+                if (Armor.BlockInteractions.Contains(player))
+                    return false;
+
+                this.OnUnWear(player, false);
+                return true;
+            }
+            public override Vector3 Size => new Vector3(3.5f, 3.5f, 10);
+            public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
+            {
+                switch (setting)
+                {
+                    case Scp914Knob.Rough:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (1 / 1000000f);
+                        break;
+                    case Scp914Knob.Coarse:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (10 / 1000000f);
+                        break;
+                    case Scp914Knob.OneToOne:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (25 / 1000000f);
+                        break;
+                    case Scp914Knob.Fine:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        break;
+                    case Scp914Knob.VeryFine:
+                        pickup.Networkdurability = 1 + (this.Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        break;
+                }
+                return pickup;
+            }
+            #region Spawn
+            public static void GiveDelayed(Player player, int innerDurability = 25) => MEC.Timing.CallDelayed(0.2f, () => Give(player, innerDurability));
+            public static bool Give(Player player, int innerDurability = 25) => Instance._give(player, innerDurability);
+            private bool _give(Player player, int innerDurability = 25)
+            {
+                if (player.HasItem(ItemType.Coin))
+                    return false;
+                if (player.Inventory.items.Count >= 8)
+                {
+                    this._spawn(player.Position, innerDurability);
+                    return true;
+                }
+                float dur = 1 + (this.Durability / 1000f) + (innerDurability / 1000000f);
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    id = this.Item,
+                    durability = dur
+                });
+                OnWear(player, dur, true);
+                return true;
+            }
+            public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
+            private void _spawn(Vector3 position, int innerDurability = 25)
+            {
+                float dur = 1 + (this.Durability / 1000f) + (innerDurability / 1000000f);
+                MapPlus.Spawn(new Inventory.SyncItemInfo
+                {
+                    id = this.Item,
+                    durability = dur
+                }, position, Quaternion.Euler(90, 0, 0), this.Size);
+            }
+            #endregion
         }
         private void Server_RoundStarted()
         {
@@ -214,7 +495,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 case RoleType.ChaosInsurgency:
                 case RoleType.NtfCommander:
-                    Timing.CallDelayed(1, () => Armor.Give(ev.Player, 25));
+                    Armor.GiveDelayed(ev.Player, 25);
                     break;
             }
         }

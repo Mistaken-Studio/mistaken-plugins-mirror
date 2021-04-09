@@ -28,7 +28,7 @@ namespace Gamer.Mistaken.BetterRP
             Exiled.Events.Handlers.Warhead.Detonated += this.Handle(() => Warhead_Detonated(), "WarheadDetonated");
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
-            Exiled.Events.Handlers.Player.MedicalItemUsed += this.Handle<Exiled.Events.EventArgs.UsedMedicalItemEventArgs>((ev) => Player_MedicalItemUsed(ev));
+            Exiled.Events.Handlers.Player.MedicalItemDequipped += this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => Player_MedicalItemDequipped(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Escaping += this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
         }
@@ -40,7 +40,7 @@ namespace Gamer.Mistaken.BetterRP
             Exiled.Events.Handlers.Warhead.Detonated -= this.Handle(() => Warhead_Detonated(), "WarheadDetonated");
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
-            Exiled.Events.Handlers.Player.MedicalItemUsed -= this.Handle<Exiled.Events.EventArgs.UsedMedicalItemEventArgs>((ev) => Player_MedicalItemUsed(ev));
+            Exiled.Events.Handlers.Player.MedicalItemDequipped -= this.Handle<Exiled.Events.EventArgs.DequippedMedicalItemEventArgs>((ev) => Player_MedicalItemDequipped(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Player.Escaping -= this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
         }
@@ -107,14 +107,13 @@ namespace Gamer.Mistaken.BetterRP
 
 
         public readonly List<int> UsedPills = new List<int>();
-        private void Player_MedicalItemUsed(Exiled.Events.EventArgs.UsedMedicalItemEventArgs ev)
+        private void Player_MedicalItemDequipped(Exiled.Events.EventArgs.DequippedMedicalItemEventArgs ev)
         {
             if (ev.Player == null)
                 return;
             if (ev.Item == ItemType.Medkit || ev.Item == ItemType.SCP500)
             {
                 var pec = ev.Player.ReferenceHub.playerEffectsController;
-                pec.DisableEffect<CustomPlayerEffects.Disabled>();
                 pec.DisableEffect<CustomPlayerEffects.Poisoned>();
                 pec.DisableEffect<CustomPlayerEffects.Bleeding>();
                 if (AdrenalineNotReady.Contains(ev.Player.Id)) 
