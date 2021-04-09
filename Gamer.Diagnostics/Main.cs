@@ -190,7 +190,7 @@ namespace Gamer.Diagnostics
             }
         }
 
-        public static void OnEnableAllExcept(IPlugin<IConfig> plugin)
+        public static void EnableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
             {
@@ -204,7 +204,7 @@ namespace Gamer.Diagnostics
             }
         }
 
-        public static void OnDisableAllExcept(IPlugin<IConfig> plugin)
+        public static void DisableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
             {
