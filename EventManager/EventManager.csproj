@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9B7459C9-1095-4D42-8D4C-AC2EEFAB73F5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EventManager</RootNamespace>
+    <AssemblyName>EventManager</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="EventManager.cs" />
+    <Compile Include="CommandHandler.cs" />
+    <Compile Include="Events\Achtung.cs" />
+    <Compile Include="Events\Blackout.cs" />
+    <Compile Include="Events\BlackDeath.cs" />
+    <Compile Include="Events\CTF.cs" />
+    <Compile Include="Events\Titan.cs" />
+    <Compile Include="Events\TryNotToBlink.cs" />
+    <Compile Include="Events\Hide.cs" />
+    <Compile Include="Events\SCP575.cs" />
+    <Compile Include="Events\DeathmatchTag.cs" />
+    <Compile Include="Events\Fight173.cs" />
+    <Compile Include="Events\TSL.cs" />
+    <Compile Include="Events\Morbus.cs" />
+    <Compile Include="Events\OpositeDay.cs" />
+    <Compile Include="Events\DBoiBattleRoyalMicroHid.cs" />
+    <Compile Include="Events\Search.cs" />
+    <Compile Include="Events\Blank.cs" />
+    <Compile Include="Events\DBoiBattleRoyal.cs" />
+    <Compile Include="Events\WarheadRun.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Handlers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\References\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp_publicized">
+      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandSystem.Core">
+      <HintPath>..\References\BaseGame\CommandSystem.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.API">
+      <HintPath>..\References\Exiled.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Events">
+      <HintPath>..\References\Exiled.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="Exiled.Permissions">
+      <HintPath>..\References\Exiled.Permissions.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+      <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\References\BaseGame\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\References\BaseGame\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">
+      <Project>{bd286ef8-b757-4ab8-8f4f-af1871902fd5}</Project>
+      <Name>Gamer.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gamer.API\Gamer.API.csproj">
+      <Project>{594fc7bb-8b93-4346-8c28-6ab0ea0a4430}</Project>
+      <Name>Gamer.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gamer.Diagnostics\Gamer.Diagnostics.csproj">
+      <Project>{c50d9525-091d-4176-acae-890b5750d2b0}</Project>
+      <Name>Gamer.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MistakenSystemsPlugin\Gamer.Mistaken.csproj">
+      <Project>{55dc9d88-e32a-4176-ad17-9502a0440341}</Project>
+      <Name>Gamer.Mistaken</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
