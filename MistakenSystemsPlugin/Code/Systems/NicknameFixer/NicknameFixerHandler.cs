@@ -80,6 +80,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "polski-survival.pl",
             "trade.tf",
             "eskill.pl",
+            "hellcase.org",
 
             "~~",
             "```",
