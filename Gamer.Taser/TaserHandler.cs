@@ -81,7 +81,7 @@ namespace Gamer.Taser
                     var targetPlayer = Player.Get(target);
                     if(targetPlayer != null)
                     {
-                        if (targetPlayer.IsHuman)
+                        if ((targetPlayer.IsHuman || targetPlayer.Role == RoleType.Scp0492) && !Gamer.Mistaken.Systems.Shield.ShieldedManager.Has(targetPlayer))
                         {
                             targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
                             targetPlayer.EnableEffect<CustomPlayerEffects.Flashed>(5);
@@ -90,22 +90,6 @@ namespace Gamer.Taser
                             targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
                             if (targetPlayer.CurrentItemIndex != -1)
                                 targetPlayer.DropItem(targetPlayer.CurrentItem);
-                        }
-                        else
-                        {
-                            switch (targetPlayer.Role)
-                            {
-                                case RoleType.Scp049:
-                                case RoleType.Scp0492:
-                                case RoleType.Scp93953:
-                                case RoleType.Scp93989:
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
-                                    break;
-                                default:
-                                    break;
-                            }
                         }
                         RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
                         targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
