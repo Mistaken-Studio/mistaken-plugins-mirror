@@ -109,9 +109,15 @@ namespace Gamer.Utilities
             LONG_OVERWATCH,
             NO_SPAWN_PROTECT,
             VANISH,
+            CI_ARMOR,
+            CI_LIGHT_ARMOR,
+            CI_HEAVY_ARMOR,
+            CI_TASER,
+            CI_SNAV,
+            CI_IMPACT
         }
         public static T GetSessionVar<T>(this Player me, SessionVarType type, T defaultValue = default) => me.GetSessionVar<T>(type.ToString(), defaultValue);
-        private static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)
+        public static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)
         {
             if (me.SessionVariables.TryGetValue(name, out object value))
             {
@@ -123,10 +129,9 @@ namespace Gamer.Utilities
             else
                 return defaultValue;
         }
-        public static void SetSessionVar(this Player me, SessionVarType type, object value)
-        {
-            me.SessionVariables[type.ToString()] = value;
-        }
+        public static void SetSessionVar(this Player me, SessionVarType type, object value) => me.SetSessionVar(type.ToString(), value);
+        public static void SetSessionVar(this Player me, string name, object value) => me.SessionVariables[name] = value;
+        
 
         public static bool CheckPermission(this ICommandSender me, string permission) => CheckPermission(me as CommandSender, permission);      
         public static bool CheckPermission(this CommandSender cs, string permission) => CheckPermission(cs.GetPlayer(), permission);

@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.Utilities;
 using Scp914;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,14 +27,26 @@ namespace Gamer.API
             public virtual Vector3 Size { get; } = Vector3.one;
             public virtual Upgrade[] Upgrades { get; } = new Upgrade[0];
             public virtual bool OnPrePickup(Player player, Pickup pickup) => true;
-            public virtual bool OnPickup(Player player, Pickup pickup) => true;
-            public virtual bool OnDrop(Player player, Inventory.SyncItemInfo item) => true;
+            public virtual bool OnPickup(Player player, Pickup pickup)
+            {
+                player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", true);
+                return true;
+            }
+            public virtual bool OnDrop(Player player, Inventory.SyncItemInfo item)
+            {
+                player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", false);
+                return true;
+            }
             public virtual void OnStartHolding(Player player, Inventory.SyncItemInfo item) { }
             public virtual void OnStopHolding(Player player, Inventory.SyncItemInfo item) { }
             public virtual bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target) => true;
             public virtual bool OnReload(Player player, Inventory.SyncItemInfo item) => true;
-            public virtual bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow) => true;
-            public virtual void OnForceclass(Player player) { }
+            public virtual bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
+            {
+                player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", false);
+                return true;
+            }
+            public virtual void OnForceclass(Player player) => player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", false);
             public virtual void OnRestart() { }
             public virtual Pickup OnUpgrade(Pickup pickup, Scp914Knob setting) => pickup;
 

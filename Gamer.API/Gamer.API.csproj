@@ -63,5 +63,11 @@
     <Compile Include="CustomItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">
+      <Project>{bd286ef8-b757-4ab8-8f4f-af1871902fd5}</Project>
+      <Name>Gamer.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
