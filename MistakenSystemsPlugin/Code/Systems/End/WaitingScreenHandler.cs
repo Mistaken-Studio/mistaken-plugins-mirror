@@ -17,6 +17,7 @@ namespace Gamer.Mistaken.Systems.End
 {
     internal class WaitingScreenHandler : Module
     {
+        public override bool IsBasic => true;
         public WaitingScreenHandler(PluginHandler p) : base(p)
         {
         }
