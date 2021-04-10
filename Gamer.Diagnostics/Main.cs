@@ -11,12 +11,17 @@ namespace Gamer.Diagnostics
 {
     public static class MasterHandler
     {
+        public static readonly Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler>> Handlers = new Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler>>();
         public static Exiled.Events.Events.CustomEventHandler Handle(this Module module, Action action, string Name)
         {
+            if (!Handlers.ContainsKey(module))
+                Handlers[module] = new Dictionary<string, Exiled.Events.Events.CustomEventHandler>();
+            if (Handlers[module].ContainsKey(Name))
+                return Handlers[module][Name];
             DateTime start;
             DateTime end;
             TimeSpan diff;
-            return () =>
+            Exiled.Events.Events.CustomEventHandler tor = () =>
             {
                 start = DateTime.Now;
                 try
@@ -37,40 +42,55 @@ namespace Gamer.Diagnostics
                 diff = end - start;
                 Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {Name}] {diff.TotalMilliseconds}");
             };
+            Handlers[module][Name] = tor;
+            return tor;
         }
-
-        public static Exiled.Events.Events.CustomEventHandler<T> Handle<T>(this Module module, Action<T> action) where T : EventArgs
+        public static Exiled.Events.Events.CustomEventHandler<T> Handle<T>(this Module module, Action<T> action) where T : EventArgs => Generic<T>.Handle(module, action);
+        public static class Generic<T> where T : EventArgs
         {
-            DateTime start;
-            DateTime end;
-            TimeSpan diff;
-            return (ev) =>
+            public static readonly Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler<T>>> TypedHandlers = new Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler<T>>>();
+
+            public static Exiled.Events.Events.CustomEventHandler<T> Handle(Module module, Action<T> action)
             {
-                /*if(ev is Exiled.Events.EventArgs.InteractingDoorEventArgs)
+                if (!TypedHandlers.ContainsKey(module))
+                    TypedHandlers[module] = new Dictionary<string, Exiled.Events.Events.CustomEventHandler<T>>();
+                string name = typeof(T).Name;
+                if (TypedHandlers[module].ContainsKey(name))
+                    return TypedHandlers[module][name];
+                DateTime start;
+                DateTime end;
+                TimeSpan diff;
+                Exiled.Events.Events.CustomEventHandler<T> tor = (ev) =>
                 {
-                    Log.Warn($"[{module.Name}: {ev.GetType().Name}] Denied running {ev}");
-                    return;
-                }*/
-                start = DateTime.Now;
-                try
-                {
-                    action(ev);
-                }
-                catch(System.Exception ex)
-                {
-                    Log.Error($"[{module.Name}: {ev.GetType().Name}] Caused Exception");
-                    Log.Error(ex.Message);
-                    Log.Error(ex.StackTrace);
-                    ErrorBacklog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
-                    ErrorBacklog.Add(ex.Message);
-                    ErrorBacklog.Add(ex.StackTrace);
-                    RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {ev.GetType().Name}] Caused Exception | {ex.Message}");
-                }
-                end = DateTime.Now;
-                diff = end - start;
-                Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] {diff.TotalMilliseconds}");
-            };
+                    /*if(ev is Exiled.Events.EventArgs.InteractingDoorEventArgs)
+                    {
+                        Log.Warn($"[{module.Name}: {ev.GetType().Name}] Denied running {ev}");
+                        return;
+                    }*/
+                    start = DateTime.Now;
+                    try
+                    {
+                        action(ev);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Log.Error($"[{module.Name}: {ev.GetType().Name}] Caused Exception");
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
+                        ErrorBacklog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
+                        ErrorBacklog.Add(ex.Message);
+                        ErrorBacklog.Add(ex.StackTrace);
+                        RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {ev.GetType().Name}] Caused Exception | {ex.Message}");
+                    }
+                    end = DateTime.Now;
+                    diff = end - start;
+                    Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] {diff.TotalMilliseconds}");
+                };
+                TypedHandlers[module][name] = tor;
+                return tor;
+            }
         }
+        
 
         public static void LogTime(string moduleName, string name, DateTime start, DateTime end) => 
             Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{moduleName}: {name}] {(end - start).TotalMilliseconds}");
@@ -193,29 +213,13 @@ namespace Gamer.Diagnostics
         public static void EnableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
-            {
-                foreach (var item in module.Value.Where(i => !i.Enabled))
-                {
-                    MasterHandler.Ini();
-                    Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                    item.OnEnable();
-                    Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
-                }
-            }
+                OnEnable(module.Key);
         }
 
         public static void DisableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
-            {
-                foreach (var item in module.Value.Where(i => i.Enabled && !i.IsBasic))
-                {
-                    MasterHandler.Ini();
-                    Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                    item.OnDisable();
-                    Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
-                }
-            }    
+                OnDisable(module.Key);  
         }
 
         public abstract void OnEnable();
