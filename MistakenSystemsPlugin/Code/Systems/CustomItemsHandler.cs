@@ -13,7 +13,6 @@ using UnityEngine;
 using Exiled.API.Extensions;
 using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
-using System.Runtime.CompilerServices;
 
 namespace Gamer.Mistaken.Systems.CustomItems
 {
