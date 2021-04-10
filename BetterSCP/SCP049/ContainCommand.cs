@@ -19,7 +19,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
         public override string[] Aliases => new string[] { "contain" };
 
         public override string Description => "Recontain SCP 049";
-
+        public static bool AlreadyRunning = false;
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
@@ -33,6 +33,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
             var scps = RealPlayers.List.Where(p => p.Role == RoleType.Scp049 && (player.Position.y < -700 && player.Position.y > -800));
             if (scps.Count() == 0)
                 return new string[] { "There is no SCP-049 in SCP-049 containment chamber" };
+            if(AlreadyRunning)
+                return new string[] { "SCP-049 is already in recontainment process" };
+            AlreadyRunning = true;
             foreach (var scp049 in scps)
                 Timing.RunCoroutine(ExecuteRecontainment(scp049, player));
             return new string[] { "In progress" };
@@ -45,19 +48,21 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
             Vector3 pos = scp049.Position;
             for (int i = 4; i >= 0; i--)
             {
+                if (!scp049.IsConnected)
+                    continue;
                 if(pos != scp049.Position)
                 {
                     scp049.ShowHintPulsating($"<color=red><size=150%>Recontainment canceled</size></color>", 5, true, true);
                     recontainer.ShowHintPulsating($"<color=red><size=150%>Recontainment canceled</size></color><br>SCP-049 <color=yellow>moved</color>", 5, true, true);
+                    AlreadyRunning = false;
                     yield break;
                 }
                 scp049.ShowHint($"<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>{i}</color>s", true, 2, true);
                 yield return Timing.WaitForSeconds(1);
             }
-
+            AlreadyRunning = false;
             Vector3 oldPos = scp049.Position;
-            scp049.Role = recontainer.Role == RoleType.ChaosInsurgency ? RoleType.ChaosInsurgency : RoleType.NtfScientist;
-            MEC.Timing.CallDelayed(0.5f, () => scp049.Position = oldPos);
+            scp049.SetRole(recontainer.Role == RoleType.ChaosInsurgency ? RoleType.ChaosInsurgency : RoleType.NtfScientist, true);
             scp049.ShowHintPulsating($"<color=red><size=150%>Recontainment successfull</size></color>", 5, true, true);
             string recontainerName;
             if (recontainer.Role == RoleType.ChaosInsurgency)
