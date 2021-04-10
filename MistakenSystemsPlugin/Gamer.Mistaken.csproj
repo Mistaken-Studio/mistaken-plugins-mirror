@@ -170,6 +170,7 @@
     <Compile Include="Code\CommandsExtender\Commands\LastAttackerCmd.cs" />
     <Compile Include="Code\CommandsExtender\Commands\TalkCommand.cs" />
     <Compile Include="Code\LOFH\MenuSystem.cs" />
+    <Compile Include="Code\Ranks\RankPerksHandler.cs" />
     <Compile Include="Code\Ranks\RanksCommandHandler.cs" />
     <Compile Include="Code\Ranks\RanksHandler.cs" />
     <Compile Include="Code\Systems\AntiAfk\AntiAFK.cs" />

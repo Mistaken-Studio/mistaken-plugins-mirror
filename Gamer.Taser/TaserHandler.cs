@@ -78,9 +78,15 @@ namespace Gamer.Taser
                 else
                 {
                     Cooldowns[dur] = DateTime.Now.AddSeconds(Cooldown);
+                    player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
                     var targetPlayer = Player.Get(target);
                     if(targetPlayer != null)
                     {
+                        if (targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_LIGHT_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_HEAVY_ARMOR))
+                        {
+                            RoundLogger.Log("TASER", "BLOCKED", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()} but the shot was blocked by an armor");
+                            return false;
+                        }
                         if (targetPlayer.IsHuman)
                         {
                             targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
@@ -90,31 +96,14 @@ namespace Gamer.Taser
                             targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
                             if (targetPlayer.CurrentItemIndex != -1)
                                 targetPlayer.DropItem(targetPlayer.CurrentItem);
+                            RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
+                            targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
+                            targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
+                            return false;
                         }
-                        else
-                        {
-                            switch (targetPlayer.Role)
-                            {
-                                case RoleType.Scp049:
-                                case RoleType.Scp0492:
-                                case RoleType.Scp93953:
-                                case RoleType.Scp93989:
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
-                                    targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
-                        targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
-                        targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
-                        player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
                     }
-                    else
-                        player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
                 }
+                RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} shot but didn't hit anyone");
                 return false;
             }
 
