@@ -193,7 +193,7 @@ namespace Gamer.Mistaken.Systems.Staff
         public static StaffHandler.UserInfo GetStaff(this string UserId)
         {
             if(UserId.IsStaff())
-                return StaffHandler.Staff.First(i => i.steamid == UserId || i.discordid + "@discord" == UserId);
+                return StaffHandler.Staff.FirstOrDefault(i => i.steamid == UserId || i.discordid + "@discord" == UserId);
             return null;
         }
     }

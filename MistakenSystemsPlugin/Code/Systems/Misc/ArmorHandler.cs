@@ -94,6 +94,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override bool OnPickup(Player player, Pickup pickup)
             {
+                base.OnPickup(player, pickup);
                 if (BlockInteractions.Contains(player))
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
@@ -117,6 +118,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
+                base.OnDrop(player, item);
                 if (BlockInteractions.Contains(player))
                     return false;
 
@@ -164,6 +166,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     id = this.Item,
                     durability = dur
                 });
+                base.OnPickup(player, null);
                 OnWear(player, dur, true);
                 return true;
             }
@@ -231,6 +234,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override bool OnPickup(Player player, Pickup pickup)
             {
+                base.OnPickup(player, pickup);
                 if (Armor.BlockInteractions.Contains(player))
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
@@ -254,6 +258,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
+                base.OnDrop(player, item);
                 if (Armor.BlockInteractions.Contains(player))
                     return false;
 
@@ -301,6 +306,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     id = this.Item,
                     durability = dur
                 });
+                base.OnPickup(player, null);
                 OnWear(player, dur, true);
                 return true;
             }
@@ -373,6 +379,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override bool OnPickup(Player player, Pickup pickup)
             {
+                base.OnPickup(player, pickup);
                 if (Armor.BlockInteractions.Contains(player))
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
@@ -396,6 +403,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
+                base.OnDrop(player, item);
                 if (Armor.BlockInteractions.Contains(player))
                     return false;
 
@@ -443,6 +451,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     id = this.Item,
                     durability = dur
                 });
+                base.OnPickup(player, null);
                 OnWear(player, dur, true);
                 return true;
             }

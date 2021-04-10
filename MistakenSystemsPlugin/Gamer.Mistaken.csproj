@@ -284,7 +284,7 @@
     <Compile Include="Code\LOFH\LOFH.cs" />
     <Compile Include="Code\LOFH\LOFHHandler.cs" />
     <Compile Include="Code\LOFH\LOFHPatch.cs" />
-    <Compile Include="Code\Systems\Misc\CustomItemsHandler.cs" />
+    <Compile Include="Code\Systems\CustomItemsHandler.cs" />
     <Compile Include="Code\Systems\Misc\DoorHandler.cs" />
     <Compile Include="Code\Systems\Misc\MassTKDetectionHandler.cs" />
     <Compile Include="Code\Systems\NicknameFixer\NicknameFixerHandler.cs" />
