@@ -5,6 +5,7 @@ using System.Text;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Systems.Staff;
 using Gamer.Utilities;
 using MEC;
 using PlayableScps;
@@ -114,7 +115,7 @@ namespace Gamer.Mistaken.BetterSCP.Global
         {
             if (ev.Player == null)
                 return;
-            if (!ev.Player.UserId.IsDevUserId())
+            if (!ev.Player.IsActiveDev())
                 return;
             if (ev.Name == "npc__test")
             {

@@ -59,7 +59,12 @@ namespace Gamer.Mistaken.LOFH
             if (InVanish.TryGetValue(userId, out int vanishLevel))
                 tor = $"[<color=#808080>V <{vanishLevel}></color>] ";
             if (userId.IsDevUserId())
-                return $"{tor}[<color=#FF0000>|</color><b><color=#FFD700><b>DEV</b></color></b><color=#FF0000>|</color>] ";    
+            {
+                if(userId.IsStaff())
+                    return $"{tor}[<color=#FF0000>|</color><b><color=#FFD700><b>DEV</b></color></b><color=#FF0000>|</color>] ";
+                else
+                    return $"{tor}[<color=#FFFF00>|</color><b><color=#FF0000><b>R-DEV</b></color></b><color=#FFFF00>|</color>] ";
+            }
             if (userId.IsStaff())
                 return $"{tor}[<color=blue>M</color> <color=white>STAFF</color>] ";
             return tor;

@@ -58,7 +58,7 @@ namespace Gamer.Mistaken
             new BetterRP.Handler(this);
             new Ranks.RanksHandler(this);
             new Ban2.BansHandler(this);
-
+            new Ranks.RankPerksHandler(this);
             if (Config.WhitelistEnabled)
                 Log.SendRaw("! Whitelist is enabled !", ConsoleColor.Red);
             else

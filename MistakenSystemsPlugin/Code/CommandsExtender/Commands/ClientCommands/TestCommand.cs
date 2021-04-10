@@ -2,6 +2,7 @@
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.Mistaken.Systems.Staff;
 using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
@@ -21,7 +22,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             success = false;
             var player = sender.GetPlayer();
-            if (!player.IsDev())
+            if (!player.IsActiveDev())
                 return new string[] { "This command is used for testing, allowed only for Mistaken Devs" };
             switch (args[0])
             {

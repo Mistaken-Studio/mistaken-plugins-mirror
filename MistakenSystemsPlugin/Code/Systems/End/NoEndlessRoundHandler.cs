@@ -13,6 +13,7 @@ using System.Net;
 using UnityEngine;
 using Gamer.Diagnostics;
 using Gamer.RoundLoggerSystem;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -81,7 +82,7 @@ namespace Gamer.Mistaken.Systems.End
                     continue;
                 if (toSpawn.Contains(player))
                     continue;
-                if (player.IsDev())
+                if (player.IsActiveDev())
                     toSpawn.Add(player);
                 else if (toSpawn.Count < 8)
                     toSpawn.Add(player);

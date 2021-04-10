@@ -16,6 +16,7 @@ using Interactables.Interobjects.DoorUtils;
 using System.IO;
 using Gamer.Mistaken.Systems.Logs;
 using CustomPlayerEffects;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.Mistaken.Systems
 {
@@ -251,7 +252,7 @@ namespace Gamer.Mistaken.Systems
             string nameLower = ev.Name.ToLower();
             if(nameLower == "imute" || nameLower == "mute" || nameLower == "enrage")
             {
-                if (ev.Sender.UserId.IsDevUserId())
+                if (ev.Sender.IsActiveDev())
                     return;
                 ev.IsAllowed = false;
                 ev.ReplyMessage = "Command Removed";
@@ -263,7 +264,7 @@ namespace Gamer.Mistaken.Systems
                 Log.Debug($"[CASSIE] Long: {dur}s | Message: {cassie}");
                 if (dur < 15)
                     return;
-                if (ev.Sender.UserId.IsDevUserId())
+                if (ev.Sender.IsActiveDev())
                     return;
                 if (ev.Sender.CheckPermission($"{PluginHandler.PluginName}.long_cassie"))
                     return;
@@ -384,7 +385,7 @@ namespace Gamer.Mistaken.Systems
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (ev.Attacker?.IsDev() ?? false)
+            if (ev.Attacker?.IsActiveDev() ?? false)
             {
                 if (ev.Attacker.Side == ev.Target.Side && !(ev.Target.Role == RoleType.ClassD && ev.Attacker.Role == RoleType.ClassD) && ev.Target.Id != ev.Attacker.Id)
                 {
@@ -393,7 +394,7 @@ namespace Gamer.Mistaken.Systems
                     return;
                 }
             }
-            if (ev.Target?.IsDev() ?? false)
+            if (ev.Target?.IsActiveDev() ?? false)
             {
                 if (ev.Attacker.Side == ev.Target.Side && !(ev.Target.Role == RoleType.ClassD && ev.Attacker.Role == RoleType.ClassD) && ev.Target.Id != ev.Attacker.Id)
                 {

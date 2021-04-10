@@ -12,6 +12,7 @@ using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.Mistaken.Ban2
 {
@@ -81,7 +82,7 @@ namespace Gamer.Mistaken.Ban2
                 textDuration = $"{displayDuration} {displayDurationType}" + (displayDuration == 1 ? "" : "s");
             }
 
-            if (ev.Target.IsDev())
+            if (ev.Target.IsActiveDev())
                 ev.IsAllowed = false;
 
             if (reason.ToUpper().StartsWith("W:") || reason.ToUpper().StartsWith("R:"))

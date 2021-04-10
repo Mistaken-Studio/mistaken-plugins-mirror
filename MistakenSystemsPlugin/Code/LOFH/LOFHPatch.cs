@@ -178,7 +178,7 @@ namespace RemoteAdmin
                                             else
                                             {
                                                 bool gameplayData = global::PermissionsHandler.IsPermitted(sender.Permissions, global::PlayerPermissions.GameplayData);
-                                                bool flag6 = global::PermissionsHandler.IsPermitted(sender.Permissions, 18007046UL) || (sender.IsPlayer() && sender.GetPlayer().UserId.IsDevUserId());
+                                                bool flag6 = global::PermissionsHandler.IsPermitted(sender.Permissions, 18007046UL);// || (sender.IsPlayer() && sender.GetPlayer().UserId.IsDevUserId());
 
                                                 senderPlayer.ReferenceHub.queryProcessor.GameplayData = gameplayData;
                                                 if ((senderPlayer.ReferenceHub.serverRoles.Staff || senderPlayer.ReferenceHub.serverRoles.RaEverywhere))

@@ -59,7 +59,6 @@ namespace Gamer.Utilities
         {
             return PermissionsHandler.IsPermitted(me.ReferenceHub.serverRoles.Permissions, perms);
         }
-
         public static bool IsDev(this Player me)
         {
             if (me == null)

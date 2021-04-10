@@ -49,7 +49,7 @@ namespace Gamer.Mistaken.Ranks
 
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)
         {
-            if (ev.Player?.IsDev() ?? false)
+            if (ev.Player?.IsActiveDev() ?? false)
             {
                 ev.NewGroup = new UserGroup
                 {
@@ -488,7 +488,7 @@ namespace Gamer.Mistaken.Ranks
         }
         internal static void ApplyDA(Player player)
         {
-            if (player.IsDev())
+            if (player.IsActiveDev())
             {
                 var roles = player.ReferenceHub.serverRoles;
 

@@ -176,11 +176,13 @@ namespace Gamer.Mistaken.Systems.Staff
 
     public static class StaffExtensions
     {
+        public static bool IsActiveDev(this Player player) => player.UserId.IsDevUserId() && player.UserId.IsStaff();
+
         public static bool IsStaff(this Player player) => player.UserId.IsStaff();
 
         public static bool IsStaff(this string UserId)
         {
-            if (UserId.IsDevUserId())
+            if (UserId.IsDevUserId() && StaffHandler.Staff.Length == 0)
                 return true;
             if (StaffHandler.Staff.Any(i => i.steamid == UserId))
                 return true;
