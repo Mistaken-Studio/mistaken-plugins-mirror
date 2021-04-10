@@ -40,6 +40,7 @@ namespace Gamer.EventManager
         internal static bool ForceEnd = false;
 
         public static readonly string EMLB = $"[<color=#6B9ADF><b>Event Manager</b></color> {(DNPN ? "<color=#6B9ADF>Test Build</color>" : "")}] ";
+        public Queue<EventCreator.IEMEventClass> EventQueue = new Queue<EventCreator.IEMEventClass>();
         #endregion
 
         public override void OnEnabled()

@@ -98,11 +98,11 @@
     </Reference>
     <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\Lib\bin\Debug\MistakenSocket.Client.dll</HintPath>
+      <HintPath>..\References\MistakenSocket.Client.dll</HintPath>
     </Reference>
     <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MistakenSockets\MistakenSocket\Client\SL\Lib\bin\Debug\MistakenSocket.Client.SL.Lib.dll</HintPath>
+      <HintPath>..\References\MistakenSocket.Client.SL.Lib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MistakenSocket.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
