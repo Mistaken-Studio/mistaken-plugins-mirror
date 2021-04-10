@@ -56,7 +56,7 @@ namespace Gamer.EventManager
             else if (cmd == "force" || cmd == "f")
             {
                 if (!admin.CheckPermission(EventManager.singleton.Name + ".force")) return new string[] { "You can't use this command. No permission!" };
-                else if (Gamer.Utilities.RealPlayers.List.Count() < 4) return new string[] { "You can't use this command. Not enough players!" };
+                else if (Gamer.Utilities.RealPlayers.List.Count() < 4 && !EventManager.DNPN) return new string[] { "You can't use this command. Not enough players!" };
                 //if (!(admin.UserId == "76561198123437513@steam" || admin.UserId == "76561198134629649@steam")) return new string[] { "Work In Progress" };
                 else if (EventManager.ActiveEvent != null) return new string[] { "You can't forcestack events" };
                 var name = string.Join(" ", args.Skip(1)).ToLower();
@@ -68,6 +68,23 @@ namespace Gamer.EventManager
                         item.Value.Initiate();
                         success = true;
                         return new string[] { $"<color=green>Activated</color> {item.Value.Name}", item.Value.Description };
+                    }
+                }
+
+                return new string[] { "Event not found" };
+            }
+            else if(cmd == "queue" || cmd == "q")
+            {
+                if (!admin.CheckPermission(EventManager.singleton.Name + ".force")) return new string[] { "You can't use this command. No permission!" };
+                var name = string.Join(" ", args.Skip(1)).ToLower();
+
+                foreach (var item in EventManager.Events.ToArray())
+                {
+                    if (item.Value.Name.ToLower() == name || item.Value.Id.ToLower() == name)
+                    {
+                        EventManager.singleton.EventQueue.Enqueue(item.Value);
+                        success = true;
+                        return new string[] { $"<color=green>Enqueued</color> {item.Value.Name}", item.Value.Description };
                     }
                 }
 
