@@ -19,6 +19,7 @@ namespace Gamer.Mistaken.LOFH
 {
     public class Handler : Module
     {
+        public override bool IsBasic => true;
         public Handler(PluginHandler plugin) : base(plugin)
         {
         }

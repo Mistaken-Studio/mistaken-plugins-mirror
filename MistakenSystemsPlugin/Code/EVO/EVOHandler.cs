@@ -19,6 +19,7 @@ namespace Gamer.Mistaken.EVO
 {
     public partial class Handler : Module
     {
+        public override bool IsBasic => true;
         public Handler(PluginHandler p) : base(p)
         {
             plugin.RegisterTranslation("evo_unlock", "You have unlocked $achiev");

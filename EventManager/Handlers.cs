@@ -18,6 +18,36 @@ namespace Gamer.EventManager
             Exiled.Events.Handlers.Server.EndingRound += Server_EndingRound;
             Exiled.Events.Handlers.Player.Died += Player_Died;
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += Server_WaitingForPlayers;
+            Exiled.Events.Handlers.Player.Verified += Player_Verified;
+        }
+
+        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        {
+            if (EventManager.EventActive())
+                ev.Player.Broadcast(10, $"{EventManager.EMLB} Na serwerze obecnie trwa: <color=#6B9ADF>{EventManager.ActiveEvent.Name}</color>");
+        }
+
+        private void Server_WaitingForPlayers()
+        {
+            if (!EventManager.EventActive() && plugin.EventQueue.TryDequeue(out var eventClass))
+            {
+                Log.Debug(eventClass.Id);
+                try
+                {
+                    eventClass.Initiate();
+                }
+                catch(Exception eeee)
+                {
+                    Log.Debug(eeee);
+                }
+            }
+            else
+            {
+                Log.Debug(plugin.EventQueue.Count);
+                Log.Debug(EventManager.EventActive().ToString());
+                Log.Debug("zesrało się nitka");
+            }
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
