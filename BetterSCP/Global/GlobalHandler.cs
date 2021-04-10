@@ -77,6 +77,8 @@ namespace Gamer.Mistaken.BetterSCP.Global
                 return;
             if (!(player2.Role == RoleType.Scp096 || player2.Role == RoleType.Scp173))
                 return;
+            if (player1.Role == player2.Role)
+                return;
             DmgMultiplayer = true;
             player1.EnableEffect<CustomPlayerEffects.Concussed>();
             player1.ShowHint($"Jesteś za blisko <color=yellow>{(player2.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń", false, 10, false);
@@ -89,6 +91,8 @@ namespace Gamer.Mistaken.BetterSCP.Global
             if (!(player1.Role == RoleType.Scp096 || player1.Role == RoleType.Scp173))
                 return;
             if (!(player2.Role == RoleType.Scp096 || player2.Role == RoleType.Scp173))
+                return;
+            if (player1.Role == player2.Role)
                 return;
             DmgMultiplayer = false;
             player1.DisableEffect<CustomPlayerEffects.Concussed>();
