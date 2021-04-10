@@ -78,10 +78,16 @@ namespace Gamer.Taser
                 else
                 {
                     Cooldowns[dur] = DateTime.Now.AddSeconds(Cooldown);
+                    player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
                     var targetPlayer = Player.Get(target);
                     if(targetPlayer != null)
                     {
-                        if ((targetPlayer.IsHuman || targetPlayer.Role == RoleType.Scp0492) && !Gamer.Mistaken.Systems.Shield.ShieldedManager.Has(targetPlayer))
+                        if (targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_LIGHT_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_HEAVY_ARMOR))
+                        {
+                            RoundLogger.Log("TASER", "BLOCKED", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()} but the shot was blocked by an armor");
+                            return false;
+                        }
+                        if (targetPlayer.IsHuman)
                         {
                             targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
                             targetPlayer.EnableEffect<CustomPlayerEffects.Flashed>(5);
@@ -90,15 +96,14 @@ namespace Gamer.Taser
                             targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
                             if (targetPlayer.CurrentItemIndex != -1)
                                 targetPlayer.DropItem(targetPlayer.CurrentItem);
+                            RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
+                            targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
+                            targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
+                            return false;
                         }
-                        RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
-                        targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
-                        targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
-                        player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
                     }
-                    else
-                        player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
                 }
+                RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} shot but didn't hit anyone");
                 return false;
             }
 
