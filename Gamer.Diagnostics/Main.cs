@@ -213,13 +213,29 @@ namespace Gamer.Diagnostics
         public static void EnableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
-                OnEnable(module.Key);
+            {
+                foreach (var item in module.Value.Where(i => i.Enabled && !i.IsBasic))
+                {
+                    MasterHandler.Ini();
+                    Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                    item.OnEnable();
+                    Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                }
+            }
         }
 
         public static void DisableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
-                OnDisable(module.Key);  
+            {
+                foreach (var item in module.Value.Where(i => i.Enabled && !i.IsBasic))
+                {
+                    MasterHandler.Ini();
+                    Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                    item.OnDisable();
+                    Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                }
+            }
         }
 
         public abstract void OnEnable();
