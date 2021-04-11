@@ -37,7 +37,9 @@ namespace Gamer.Mistaken.Systems.Patches
 					Targets.Remove(content);
 				});
 			}
-			Targets[content].Add(ReferenceHub.GetHub(conn.identity.gameObject).characterClassManager.UserId);
+			var userId = ReferenceHub.GetHub(conn?.identity?.gameObject)?.characterClassManager?.UserId;
+			if(!string.IsNullOrWhiteSpace(userId))
+				Targets[content].Add(userId);
 			return true;
 		}
 	}
