@@ -60,7 +60,10 @@ namespace Gamer.EventManager
             else if (players.Count == 0 && EventManager.ActiveEvent is EventCreator.IEndOnNoAlive)
                 EventManager.ActiveEvent.OnEnd();
             if (EventManager.ActiveEvent is EventCreator.IAnnouncPlayersAlive && players.Count > 1)
+            {
+                Map.ClearBroadcasts();
                 Map.Broadcast(10, EventManager.EMLB + EventManager.T_Event_NUM_ALIVE.Replace("$players", players.Count.ToString()));
+            }
         }
 
         private void Server_EndingRound(Exiled.Events.EventArgs.EndingRoundEventArgs ev)
