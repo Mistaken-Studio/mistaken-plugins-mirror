@@ -24,11 +24,21 @@ namespace Gamer.Mistaken.Systems
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
+
+        private void Server_RestartingRound()
+        {
+            CustomInfo.Clear();
+            CustomInfoStaffOnly.Clear();
+            ToUpdate.Clear();
+        }
+
         private static readonly Dictionary<Player, Dictionary<string, string>> CustomInfo = new Dictionary<Player, Dictionary<string, string>>();
         private static readonly Dictionary<Player, Dictionary<string, string>> CustomInfoStaffOnly = new Dictionary<Player, Dictionary<string, string>>();
         private static readonly List<Player> ToUpdate = new List<Player>();
