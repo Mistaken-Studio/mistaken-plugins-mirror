@@ -146,14 +146,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (!Active.TryGetValue(p.UserId, out int[] playerIds))
                 yield break;
             Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).ToArray();
-            while (Active.ContainsKey(p.UserId))
-            {
-                foreach (var player in players)
-                    player.ShowHint($"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", true, 10.2f, true);
-                yield return Timing.WaitForSeconds(10f);
-            }
             foreach (var player in players)
-                player.ShowHint("<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", true, 5, true);
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size>");
+            while (Active.ContainsKey(p.UserId))
+                yield return Timing.WaitForSeconds(1f);
+            foreach (var player in players)
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size>", 5);
         }
     }
 }

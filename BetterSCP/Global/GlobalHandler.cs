@@ -56,7 +56,7 @@ namespace Gamer.Mistaken.BetterSCP.Global
                     player.EnableEffect<CustomPlayerEffects.Invigorated>(5, true);
                     if (!player.GetEffectActive<CustomPlayerEffects.Panic>())
                         player.EnableEffect<CustomPlayerEffects.Panic>(15, true);
-                    player.ShowHint("You start <color=yellow>panicking</color>", true, 3, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "panic", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Zaczynasz <color=yellow>panikować</color>", 3);
                     LastSeeTime[player.UserId] = DateTime.Now;
                 }
             }
@@ -81,10 +81,9 @@ namespace Gamer.Mistaken.BetterSCP.Global
                 return;
             DmgMultiplayer = true;
             player1.EnableEffect<CustomPlayerEffects.Concussed>();
-            player1.ShowHint($"Jesteś za blisko <color=yellow>{(player2.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń", false, 10, false);
+            Systems.GUI.PseudoGUIHandler.Set(player1, "antyDuo", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś za blisko <color=yellow>{(player2.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń");
             player2.EnableEffect<CustomPlayerEffects.Concussed>();
-            player2.ShowHint($"Jesteś za blisko <color=yellow>{(player1.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń", false, 10, false);
-
+            Systems.GUI.PseudoGUIHandler.Set(player2, "antyDuo", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś za blisko <color=yellow>{(player1.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń"); 
         };
         private static Func<Player, Action<Player>> OnExit = (player1) => (player2) =>
         {
@@ -96,9 +95,9 @@ namespace Gamer.Mistaken.BetterSCP.Global
                 return;
             DmgMultiplayer = false;
             player1.DisableEffect<CustomPlayerEffects.Concussed>();
-            player1.ShowHint("", false, .1f, false);
             player2.DisableEffect<CustomPlayerEffects.Concussed>();
-            player2.ShowHint("", false, .1f, false);
+            Systems.GUI.PseudoGUIHandler.Set(player1, "antyDuo", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+            Systems.GUI.PseudoGUIHandler.Set(player2, "antyDuo", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
 
         };
 

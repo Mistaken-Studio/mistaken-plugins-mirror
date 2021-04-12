@@ -5,6 +5,7 @@ using Gamer.Mistaken.BetterSCP.SCP079.Commands;
 using Gamer.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079
@@ -112,7 +113,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
         private IEnumerator<float> UpdateGeneratorsTimer()
         {
             yield return MEC.Timing.WaitForSeconds(30);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
+            int rid = RoundPlus.RoundId; 
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 string msg = "";
                 if (Respawning.RespawnManager.Singleton.NextKnownTeam != Respawning.SpawnableTeamType.None)
@@ -150,6 +152,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                             msg = $"You have <color=yellow>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>s untill recontainment";
                     }
                 }
+                foreach (var player in RealPlayers.List.Where(p => p.Role != RoleType.Scp079))
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 foreach (var player in RealPlayers.Get(RoleType.Scp079))
                 {
                     string fakeSCP = $"<color=yellow>READY</color>";
@@ -220,7 +224,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                         cassie = $"<color=red>Require <color=yellow>{CassieCommand.Cost}</color> AP</color>";
 
                     string sumMessage = $"<size=50%><align=left>Fake <mspace=0.6em>SCP </mspace>: {fakeSCP}<br>Fake <mspace=0.6em>MTF </mspace>: {fakeMTF}<br>Fake <mspace=0.6em>CI </mspace>: {fakeCI}<br>Scan <mspace=0.56em>    </mspace>: {scan}<br>FullScan <mspace=0.56em> </mspace>: {fullScan}<br>Blackout <mspace=0.35em> </mspace>: {blackout}<br>Warhead Stop <mspace=0.35em> </mspace>: {warheadStop}<br>Cassie <mspace=0.35em> </mspace>: {cassie}</align></size><br><br><br><br><br><br><br>{msg}";
-                    player.ShowHint(sumMessage, false, 2, false);
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
                 }
                 yield return MEC.Timing.WaitForSeconds(1);
             }
