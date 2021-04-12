@@ -101,7 +101,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
                 if (!newNick.Contains(item))
                     continue;
                 var tmp = newNick.Split(' ');
-                newNick = string.Join(" ", tmp.Select(i => !i.Contains(item)));
+                newNick = string.Join(" ", tmp.Where(i => !i.Contains(item)));
             }
 
             foreach (var item in ToRemove)

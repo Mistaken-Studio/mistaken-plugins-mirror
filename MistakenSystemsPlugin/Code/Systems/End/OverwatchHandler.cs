@@ -94,16 +94,17 @@ namespace Gamer.Mistaken.Systems.End
             {
                 foreach (var player in Player.List.Where(p => p.CheckPermissions(PlayerPermissions.Overwatch)))
                 {
-                    if(InOverwatch.TryGetValue(player.UserId, out DateTime updateTime))
+                    if (InLongOverwatch.Contains(player.UserId) && !player.IsOverwatchEnabled)
                     {
-                        if (!player.IsOverwatchEnabled)
-                        {
-                            InOverwatch.Remove(player.UserId);
-                            InLongOverwatch.Remove(player.UserId);
-                            player.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, false);
-                            AnnonymousEvents.Call("LONG_OVERWATCH", (player, false));
-                        }
-                        else if ((DateTime.Now - updateTime).TotalMinutes >= 5)
+                        InOverwatch.Remove(player.UserId);
+                        InLongOverwatch.Remove(player.UserId);
+                        player.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, false);
+                        AnnonymousEvents.Call("LONG_OVERWATCH", (player, false));
+                        continue;
+                    }
+                    if (InOverwatch.TryGetValue(player.UserId, out DateTime updateTime))
+                    {
+                        if ((DateTime.Now - updateTime).TotalMinutes >= 5)
                         {
                             InOverwatch.Remove(player.UserId);
                             InLongOverwatch.Add(player.UserId);
