@@ -42,7 +42,7 @@ namespace Gamer.Taser
                 Timing.RunCoroutine(UpdateInterface(player));
             }
             /// <inheritdoc/>
-            public override void Spawn(Vector3 position)
+            public override void Spawn(Vector3 position, float innerDurability = 0f)
             {
                 float dur = 1.501f + (Index++) / 1000000f;
                 MapPlus.Spawn(new Inventory.SyncItemInfo

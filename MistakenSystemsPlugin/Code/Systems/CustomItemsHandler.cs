@@ -103,7 +103,11 @@ namespace Gamer.Mistaken.Systems.CustomItems
                 if (thisCustomItem == null)
                     continue;
                 var result = thisCustomItem.OnUpgrade(item, ev.KnobSetting);
-                result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
+                var custimItem = GetCustomItem(result);
+                if(custimItem != null)
+                    custimItem.Spawn(ev.Scp914.output.position, custimItem.GetInternalDurability(result.durability));
+                else
+                    result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
                 ev.Items.Remove(item);
                 item.Delete();
                 foreach_end:;

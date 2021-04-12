@@ -50,9 +50,13 @@ namespace Gamer.API
             public virtual void OnRestart() { }
             public virtual Pickup OnUpgrade(Pickup pickup, Scp914Knob setting) => pickup;
 
-            public virtual void Spawn(Vector3 position)
+            public virtual void Spawn(Vector3 position, float innerDurability = 0f)
             {
-                this.Item.Spawn(1f + (this.Durability / 1000f), position);
+                MapPlus.Spawn(new Inventory.SyncItemInfo
+                {
+                    id = this.Item,
+                    durability = 1f + (this.Durability / 1000f) + (innerDurability / 1000000),
+                }, position, Quaternion.identity, this.Size);
             }
 
             public float GetInternalDurability(Inventory.SyncItemInfo item) => GetInternalDurability(item.durability);
