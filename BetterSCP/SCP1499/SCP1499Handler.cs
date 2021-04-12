@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             plugin.RegisterTranslation("scp1499_info_ready", "<color=red>SCP 1499</color> is <color=yellow>ready</color>");
             plugin.RegisterTranslation("scp1499_info_first", "<br>[<color=yellow>LMB</color>] <color=yellow>{0} <color=#FF{1}>|</color> {2}</color>");
             plugin.RegisterTranslation("scp1499_info_seconds", "<br>[<color=yellow>RMB</color>] <color=yellow>{0} <color=#FF{1}>|</color> {2}</color>");
-            plugin.RegisterTranslation("scp1499_info_decont", "<br><color=#FFFF00{0}>LCZ Decontamination in {1}m {2}s");
+            plugin.RegisterTranslation("scp1499_info_decont", "<br><color=#FFFF00{0}>LCZ Decontamination in {1}m {2}s</color>");
             plugin.RegisterTranslation("scp1499_info_rework", "<br><color=#FF000055><b>!</b> SCP 1499 WAS RECENTLY REWORKED <b>!</b></color>");
             plugin.RegisterTranslation("scp1499_info_scp268", "You can't have both <color=yellow>SCP 268</color> and <color=yellow>SCP 1499</color> at the same time");
             plugin.RegisterTranslation("Info_012_Denied", "<b><color=red>Access Denied</color></b><br>This door <color=yellow>require</color> <b>Containment Level 3</b> access");
