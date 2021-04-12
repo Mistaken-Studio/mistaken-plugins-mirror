@@ -125,10 +125,18 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                     return false;
                 }
             }
-
+            
+            /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 MEC.Timing.RunCoroutine(UpdateFlashCooldown(player));
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp1499", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>SCP 1499</color>");
+            }
+
+            /// <inheritdoc/>
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp1499", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
 
@@ -140,7 +148,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                 )
             {
                 ev.IsAllowed = false;
-                ev.Player.ShowHintPulsating(plugin.ReadTranslation("scp1499_info_scp268"), 5);
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "scp1499&scp268", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("scp1499_info_scp268"), 5);
             }
         }
 
@@ -170,7 +178,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                         message += StaticPlugin.ReadTranslation("scp1499_info_decont", GetTimeColor(lczTime), ((lczTime - (lczTime % 60)) / 60).ToString("00"), Mathf.RoundToInt(lczTime % 60).ToString("00"));
                     int pulse = ((int)Round.ElapsedTime.TotalSeconds % 8) + 4;
                     //message += plugin?.ReadTranslation("scp1499_info_rework", GetHexChar(pulse) + GetHexChar(pulse));
-                    if (RealPlayers.List.Contains(player)) player.ShowHint(message, 2);
+                    if (player.IsConnected)
+                        Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp1499", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"{message}<br>Trzymasz <color=yellow>SCP 1499</color>");
+                    //player.ShowHint(message, 2);
                 }
                 catch (System.Exception ex)
                 {
@@ -322,7 +332,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                 if (!currentItemType.IsKeycard() || !(currentItemType == ItemType.KeycardO5 || currentItemType == ItemType.KeycardFacilityManager || currentItemType == ItemType.KeycardContainmentEngineer))
                 {
                     ev.IsAllowed = false;
-                    ev.Player.ShowHintPulsating(plugin.ReadTranslation("Info_012_Denied"), 2f, true, true);
+                    Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "scp012Door", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_012_Denied"), 5);
+                    //ev.Player.ShowHintPulsating(plugin.ReadTranslation("Info_012_Denied"), 2f, true, true);
                 }
             }
         }

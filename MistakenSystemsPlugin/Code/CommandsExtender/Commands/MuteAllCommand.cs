@@ -45,9 +45,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             while(GlobalMuteActive)
             {
-                player.ShowHint("<br><br><br><color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted", 1);
+                Systems.GUI.PseudoGUIHandler.Set(player, "globalMute", Systems.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
                 yield return MEC.Timing.WaitForSeconds(1);
             }
+            Systems.GUI.PseudoGUIHandler.Set(player, "globalMute", Systems.GUI.PseudoGUIHandler.Position.TOP, null);
         }
     }
 }

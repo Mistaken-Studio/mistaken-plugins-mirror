@@ -67,20 +67,22 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
             int rid = RoundPlus.RoundId; 
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
+                foreach (var player in RealPlayers.List)
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
                 foreach (var scp096 in RealPlayers.Get(RoleType.Scp096))
                 {
                     if (scp096.ReferenceHub.scpsController.CurrentScp is PlayableScps.Scp096 scp096script && (scp096script.Enraged || scp096script.Enraging))
                     {
                         string targetMessage = plugin.ReadTranslation("Info_096Target", scp096script._targets.Count);
                         foreach (var item in scp096script._targets.ToArray())
-                            Player.Get(item).ShowHint(targetMessage, true, 1, true);
+                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(Player.Get(item), "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, targetMessage);
                         var time = Mathf.RoundToInt(scp096script.EnrageTimeLeft).ToString();
                         if (time == "0")
                             time = "[REDACTED]";
-                        scp096.ShowHint(plugin.ReadTranslation("Info_096", scp096script._targets.Count, scp096script._targets.Count == 1 ? "" : "s", time), true, 2, true);
+                        Mistaken.Systems.GUI.PseudoGUIHandler.Set(scp096, "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, plugin.ReadTranslation("Info_096", scp096script._targets.Count, scp096script._targets.Count == 1 ? "" : "s", time));
                     }
                 }
-                
+
                 yield return Timing.WaitForSeconds(1f);
             }
         }

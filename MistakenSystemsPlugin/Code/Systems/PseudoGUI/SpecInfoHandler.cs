@@ -60,12 +60,20 @@ namespace Gamer.Mistaken.Systems.GUI
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+        }
+
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        {
+            if(ev.NewRole != RoleType.Spectator)
+                GUI.PseudoGUIHandler.Set(ev.Player, "specInfo", GUI.PseudoGUIHandler.Position.MIDDLE, null);
         }
 
         //private List<Player> SpawnQueue = new List<Player>();
@@ -253,7 +261,8 @@ namespace Gamer.Mistaken.Systems.GUI
                         }
                         else
                             message += ttrPlayer;
-                        player.ShowHint(message, 2);
+                        //player.ShowHint(message, 2);
+                        GUI.PseudoGUIHandler.Set(player, "specInfo", GUI.PseudoGUIHandler.Position.MIDDLE, message);
                     }
                     Diagnostics.MasterHandler.LogTime("SpecInfoHandler", "TTRUpdate", start, DateTime.Now);
                 }
