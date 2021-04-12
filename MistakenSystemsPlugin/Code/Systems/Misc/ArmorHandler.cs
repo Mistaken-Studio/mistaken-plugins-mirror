@@ -62,6 +62,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                     player.EnableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.85f));
                     if (player.ArtificialHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
@@ -86,6 +87,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.DisableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Remove(player);
                     BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
@@ -209,6 +211,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.5f));
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                 });
             }
             public void OnUnWear(Player player, bool fast)
@@ -226,6 +229,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 MEC.Timing.CallDelayed(1 * (fast ? 0 : 1), () => {
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
@@ -352,6 +356,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (player.ArtificialHealth < 30 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
                         player.ArtificialHealth = 30;
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                 });
             }
             public void OnUnWear(Player player, bool fast)
@@ -371,6 +376,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.DisableEffect<CustomPlayerEffects.Disabled>();
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
