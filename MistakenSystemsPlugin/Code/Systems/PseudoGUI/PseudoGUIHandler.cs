@@ -88,7 +88,7 @@ namespace Gamer.Mistaken.Systems.GUI
         {
             while (true)
             {
-                yield return Timing.WaitForSeconds(.5f);
+                yield return Timing.WaitForSeconds(.25f);
                 if (!Run)
                     continue;
                 if (ToUpdate.Count == 0)
