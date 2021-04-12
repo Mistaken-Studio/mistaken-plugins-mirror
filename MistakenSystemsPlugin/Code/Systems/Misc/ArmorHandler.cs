@@ -92,6 +92,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override void OnForceclass(Player player)
             {
+                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -234,6 +235,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override void OnForceclass(Player player)
             {
+                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -381,6 +383,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override void OnForceclass(Player player)
             {
+                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)

@@ -144,6 +144,11 @@ namespace Gamer.Taser
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
+            /// <inheritdoc/>
+            public override void OnForceclass(Player player)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            }
         }
         /// <inheritdoc/>
         public override string Name => "TaserHandler";

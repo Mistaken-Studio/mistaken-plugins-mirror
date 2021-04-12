@@ -73,6 +73,11 @@ namespace Xname.ImpactGrenade
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
+            /// <inheritdoc/>
+            public override void OnForceclass(Player player)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            }
         }
         /// <inheritdoc/>
         public ImpHandler(IPlugin<IConfig> plugin) : base(plugin)

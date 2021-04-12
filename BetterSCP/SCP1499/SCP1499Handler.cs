@@ -138,6 +138,12 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp1499", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
+
+            /// <inheritdoc/>
+            public override void OnForceclass(Player player)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp1499", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            }
         }
 
         private void CustomEvents_OnRequestPickItem(Exiled.Events.EventArgs.PickItemRequestEventArgs ev)
