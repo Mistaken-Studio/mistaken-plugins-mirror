@@ -320,6 +320,7 @@
     <Compile Include="Code\Systems\Misc\ReusableItemsHandler.cs" />
     <Compile Include="Code\Systems\End\RoundEndHandler.cs" />
     <Compile Include="Code\Systems\Misc\SpawnProtectHandler.cs" />
+    <Compile Include="Code\Systems\PseudoGUI\PseudoGUIHandler.cs" />
     <Compile Include="Code\Systems\PseudoGUI\SpecInfoHandler.cs" />
     <Compile Include="Code\Systems\End\WaitingScreenHandler.cs" />
     <Compile Include="Code\Systems\Misc\ArmorHandler.cs" />

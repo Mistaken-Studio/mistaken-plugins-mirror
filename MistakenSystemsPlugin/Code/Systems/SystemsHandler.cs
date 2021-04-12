@@ -46,6 +46,7 @@ namespace Gamer.Mistaken.Systems
 
             new GUI.SpecInfoHandler(plugin);
             new GUI.InformerHandler(plugin);
+            new GUI.PseudoGUIHandler(plugin);
 
             new CustomItems.CustomItemsHandler(plugin);
 
