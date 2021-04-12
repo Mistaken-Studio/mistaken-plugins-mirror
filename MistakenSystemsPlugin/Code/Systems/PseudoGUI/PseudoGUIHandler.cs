@@ -176,7 +176,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 toWrite += "<br>";
             toWrite += bottomContent;
 
-            player.ShowHint($"<size=75%>{toWrite}<br><br><br><br><br><br><br><br><br><br></size>", 7200);
+            player.ShowHint($"<size=75%><color=#FFFFFFFF>{toWrite}</color><br><br><br><br><br><br><br><br><br><br></size>", 7200);
             //Log.Debug($"Updating {player.Id} with {toWrite}");
         }
     }
