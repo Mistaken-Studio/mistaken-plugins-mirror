@@ -175,7 +175,7 @@ namespace Gamer.Mistaken.Systems.GUI
                         customInfoMessage += $" Vanish ({vanishLevel})";
                         infoMessage += $"<br>Vanish: <color=yellow>Active ({vanishLevel})</color>";
                     }
-                    GUI.PseudoGUIHandler.Set(player, "admin", PseudoGUIHandler.Position.BOTTOM, infoMessage);
+                    GUI.PseudoGUIHandler.Set(player, "admin", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>{infoMessage}</size>");
                     
                     CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>", false);
                 }
