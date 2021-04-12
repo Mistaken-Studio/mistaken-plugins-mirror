@@ -9,6 +9,7 @@ using Gamer.Diagnostics;
 using Gamer.Utilities;
 using MEC;
 using Mirror;
+using NPCS;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.Pocket
@@ -29,6 +30,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             Exiled.Events.Handlers.Player.EscapingPocketDimension += this.Handle<Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs>((ev) => Player_EscapingPocketDimension(ev));
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             //Exiled.Events.Handlers.CustomEvents.OnTransmitPositionData += this.Handle<Exiled.Events.EventArgs.TransmitPositionEventArgs>((ev) => CustomEvents_OnTransmitPositionData(ev));
+            Exiled.Events.Handlers.Player.FailingEscapePocketDimension += this.Handle<Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs>((ev) => Player_FailingEscapePocketDimension(ev));
         }
         public override void OnDisable()
         {
@@ -39,6 +41,16 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             Exiled.Events.Handlers.Player.EscapingPocketDimension -= this.Handle<Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs>((ev) => Player_EscapingPocketDimension(ev));
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             //Exiled.Events.Handlers.CustomEvents.OnTransmitPositionData -= this.Handle<Exiled.Events.EventArgs.TransmitPositionEventArgs>((ev) => CustomEvents_OnTransmitPositionData(ev));
+            Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= this.Handle<Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs>((ev) => Player_FailingEscapePocketDimension(ev));
+        }
+
+        private void Player_FailingEscapePocketDimension(Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs ev)
+        {
+            if (ev.Player.IsNPC())
+            {
+                ev.IsAllowed = false;
+                return;
+            }
         }
 
         public static List<int> InPocket { get; } = new List<int>();
@@ -87,6 +99,11 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
 
         private void Player_EscapingPocketDimension(Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs ev)
         {
+            if(ev.Player.IsNPC())
+            {
+                ev.IsAllowed = false;
+                return;
+            }
             if (Rooms == null)
                 return;
             int trie = 0;
@@ -154,6 +171,11 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
         {
             if (ev.Target.Position.y < -1900 && ev.HitInformations.GetDamageType() != DamageTypes.RagdollLess)
             {
+                if (ev.Target.IsNPC())
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
                 if (ev.Target.Health <= ev.Amount)
                 {
                     OnKilledINPocket(ev.Target);
