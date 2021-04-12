@@ -61,16 +61,28 @@ namespace Gamer.Mistaken.BetterRP
             {
                 List<Inventory.SyncItemInfo> Items = NorthwoodLib.Pools.ListPool<Inventory.SyncItemInfo>.Shared.Rent(ev.Player.Inventory.items);
                 ev.Player.ClearInventory();
-                MEC.Timing.CallDelayed(1, () => {
+                MEC.Timing.CallDelayed(1, () =>
+                {
                     foreach (var item in Items)
                     {
-                        if (ev.Player.Inventory.items.Count >= 8 || 
-                        (item.id.IsWeapon() && ev.Player.Inventory.items.Where(i => i.id.IsWeapon()).Count() >= 2) ||
-                        (item.id.IsMedical() && ev.Player.Inventory.items.Where(i => i.id.IsMedical()).Count() >= 3)
-                        )
-                            item.id.Spawn(item.durability, ev.Player.Position, default, item.modSight, item.modBarrel, item.modOther);
+                        if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
+                        {
+                            if (item.id == ItemType.KeycardFacilityManager || item.id == ItemType.KeycardContainmentEngineer)
+                            {
+                                ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
+                                ev.Player.AddItem(ItemType.KeycardO5);
+                            }
+                        }
                         else
-                            ev.Player.AddItem(item);
+                        {
+                            if (ev.Player.Inventory.items.Count >= 8 ||
+                            (item.id.IsWeapon(false) && ev.Player.Inventory.items.Where(i => i.id.IsWeapon(false)).Count() >= 2) ||
+                            (item.id.IsMedical() && ev.Player.Inventory.items.Where(i => i.id.IsMedical()).Count() >= 3)
+                            )
+                                item.id.Spawn(item.durability, ev.Player.Position, default, item.modSight, item.modBarrel, item.modOther);
+                            else
+                                ev.Player.AddItem(item);
+                        }
                     }
                     NorthwoodLib.Pools.ListPool<Inventory.SyncItemInfo>.Shared.Return(Items);
                 });
