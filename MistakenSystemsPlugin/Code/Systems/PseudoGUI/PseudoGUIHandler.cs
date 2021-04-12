@@ -20,7 +20,7 @@ namespace Gamer.Mistaken.Systems.GUI
         public override bool IsBasic => true;
         //public override bool Enabled => false;
         public PseudoGUIHandler(PluginHandler p) : base(p)
-        {            
+        {
             Timing.RunCoroutine(DoRoundLoop());
         }
 
