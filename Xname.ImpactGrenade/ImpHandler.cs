@@ -10,6 +10,7 @@ using UnityEngine;
 using Exiled.API.Features;
 using Grenades;
 using Exiled.API.Extensions;
+using Gamer.RoundLoggerSystem;
 
 namespace Xname.ImpactGrenade
 {
@@ -50,6 +51,7 @@ namespace Xname.ImpactGrenade
             {
                 MEC.Timing.CallDelayed(1f, () =>
                 {
+                    RoundLogger.Log("IMPACTGRENADE", "THROW", $"{player.PlayerToString()} threw an impact grenade");
                     Grenade grenade = UnityEngine.Object.Instantiate(player.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
                     grenade.fuseDuration = 999;
                     grenade.InitData(player.GrenadeManager, Vector3.zero, player.CameraTransform.forward, slow ? 0.75f : 1.5f);
@@ -86,17 +88,21 @@ namespace Xname.ImpactGrenade
             if (!grenades.Contains(ev.Grenade)) 
                 return;
             foreach (Player player in ev.TargetToDamages.Keys.ToArray())
+            {
                 ev.TargetToDamages[player] *= Damage_multiplayer;
+                RoundLogger.Log("IMPACTGRENADE", "HURT", $"{player.PlayerToString()} was hurt by an impact grenade");
+            }
         }
 
         private void Server_RoundStarted()
         {
             var lockers = LockerManager.singleton.lockers.Where(i => i.chambers.Length == 9).ToArray();
-            int toSpawn = 5;
+            int toSpawn = 8;
             while (toSpawn > 0)
             {
                 var locker = lockers[UnityEngine.Random.Range(0, lockers.Length)];
                 locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1.001f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
+                RoundLogger.Log("IMPACTGRENADE", "SPAWN", $"Impact grenade spawned");
                 toSpawn--;
             }
         }
