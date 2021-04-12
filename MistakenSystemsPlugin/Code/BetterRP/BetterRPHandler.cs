@@ -176,7 +176,7 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     Timing.CallDelayed(0.1f, () =>
                     {
-                        ev.Target.ShowHint("You feel <color=yellow>adrenaline</color> hitting", 5);
+                        Systems.GUI.PseudoGUIHandler.Set(ev.Target, "adrenalin", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "You feel <color=yellow>adrenaline</color> hitting", 5);
                         var pec = ev.Target.ReferenceHub.playerEffectsController;
                         var invigorated = pec.GetEffect<CustomPlayerEffects.Invigorated>();
                         var oldInvigoratedIntensityValue = invigorated.Intensity;
@@ -233,7 +233,7 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     ev.Target.EnableEffect<CustomPlayerEffects.Bleeding>();
                     ev.Target.EnableEffect<CustomPlayerEffects.Ensnared>();
-                    ev.Target.ShowHintPulsating("Złamałeś obie nogi i <color=yellow>nie</color> możesz chodzić");
+                    Systems.GUI.PseudoGUIHandler.Set(ev.Target, "broken_legs", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Złamałeś obie nogi i <color=yellow>nie</color> możesz chodzić", 5);
                 }
                 else if (rand < ev.Amount / 5)
                 {

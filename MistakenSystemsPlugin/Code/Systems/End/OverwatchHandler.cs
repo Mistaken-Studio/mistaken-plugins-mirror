@@ -99,6 +99,7 @@ namespace Gamer.Mistaken.Systems.End
                         InOverwatch.Remove(player.UserId);
                         InLongOverwatch.Remove(player.UserId);
                         player.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, false);
+                        GUI.PseudoGUIHandler.Set(player, "long_overwatch", GUI.PseudoGUIHandler.Position.TOP, null);
                         AnnonymousEvents.Call("LONG_OVERWATCH", (player, false));
                         continue;
                     }
@@ -114,6 +115,7 @@ namespace Gamer.Mistaken.Systems.End
                             InOverwatch.Remove(player.UserId);
                             InLongOverwatch.Add(player.UserId);
                             player.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, true);
+                            GUI.PseudoGUIHandler.Set(player, "long_overwatch", GUI.PseudoGUIHandler.Position.TOP, "Active: <color=red>Long Overwatch</color>");
                             AnnonymousEvents.Call("LONG_OVERWATCH", (player, true));
                         }
                     }

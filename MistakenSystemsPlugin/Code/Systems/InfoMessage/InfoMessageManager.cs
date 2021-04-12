@@ -49,12 +49,13 @@ namespace Gamer.Mistaken.Systems.InfoMessage
         private static IEnumerator<float> UpdateSCPs(Player p)
         {
             yield return Timing.WaitForSeconds(1);
-
+            Mistaken.Systems.GUI.PseudoGUIHandler.Ignore(p);
             for (int i = 0; i < 30; i++)
             {
                 GetSCPS(p);
                 yield return Timing.WaitForSeconds(1);
             }
+            Mistaken.Systems.GUI.PseudoGUIHandler.StopIgnore(p);
         }
 
         private static void GetSCPS(Player p)

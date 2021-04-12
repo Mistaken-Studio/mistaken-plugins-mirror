@@ -52,19 +52,19 @@ namespace Gamer.Mistaken.Systems.End
                 var dur = this.GetInternalDurability(item);
                 if (dur != 0)
                 {
-                    player.ShowHintPulsating("Nie możesz przeładować nie mając pustego magazynka");
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz przeładować nie mając pustego magazynka", 3);
                     return false;
                 }
 
                 if(!player.Inventory.items.Any(i => i.id == ItemType.GrenadeFrag))
                 {
-                    player.ShowHintPulsating("Nie masz amunicji(Granat Odłamkowy)");
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie masz amunicji(Granat Odłamkowy)", 3);
                     return false;
                 }
 
                 this.SetInternalDurability(player, item, MagSize + 1);
                 player.RemoveItem(player.Inventory.items.First(i => i.id == ItemType.GrenadeFrag));
-                player.ShowHintPulsating("Przeładowano", 3, true);
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Przeładowano", 3);
                 return false;
             }
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject _)
@@ -73,7 +73,7 @@ namespace Gamer.Mistaken.Systems.End
                 Log.Debug($"Ammo: {dur} | {item.durability}");
                 if (dur == 0)
                 {
-                    player.ShowHintPulsating("Nie możesz strzelać z pustym magazynkiem");
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz strzelać z pustym magazynkiem", 3);
                     player.ReferenceHub.weaponManager.RpcEmptyClip();
                     return false;
                 }
@@ -91,13 +91,14 @@ namespace Gamer.Mistaken.Systems.End
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
                 base.OnStartHolding(player, item);
 
-                player.ShowHint($"<br><br><br><br><br><br><br><br><br><br>Trzymasz <color=yellow>{this.ItemName}</color>", false, 3f, false);
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncher", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>{this.ItemName}</color>");
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
                 player.Ammo[(int)AmmoType.Nato9]--;
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncher", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 base.OnStopHolding(player, item);
             }
         }

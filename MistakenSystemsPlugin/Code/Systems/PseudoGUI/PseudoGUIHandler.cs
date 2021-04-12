@@ -15,24 +15,25 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.GUI
 {
-    internal class PseudoGUIHandler : Module
+    public class PseudoGUIHandler : Module
     {
         public override bool IsBasic => true;
         //public override bool Enabled => false;
         public PseudoGUIHandler(PluginHandler p) : base(p)
-        {            
+        {
+            Timing.RunCoroutine(DoRoundLoop());
         }
 
         public override string Name => "PseudoGUI";
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Run = true;
         }
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Run = false;
         }
 
         public enum Position
@@ -41,32 +42,62 @@ namespace Gamer.Mistaken.Systems.GUI
             MIDDLE,
             BOTTOM
         }
+        public static void Ignore(Player p) => ToIgnore.Add(p);
+        public static void StopIgnore(Player p)
+        {
+            ToIgnore.Remove(p);
+            ToUpdate.Add(p);
+        }
+        public static void Set(Player player, string key, Position type, string content, float duration)
+        {
+            Set(player, key, type, content);
+            Timing.CallDelayed(duration, () => Set(player, key, type, null));
+        }
+        public static void Set(Player player, string key, Position type, string content)
+        {
+            bool remove = string.IsNullOrWhiteSpace(content);
+            if(remove)
+            {
+                if (!CustomInfo.TryGetValue(player, out Dictionary<string, (string, Position)> value) || !value.ContainsKey(key))
+                    return;
+                value.Remove(key);
+            }
+            else
+            {
+                if (!CustomInfo.ContainsKey(player))
+                    CustomInfo[player] = new Dictionary<string, (string Content, Position Type)>();
+                else if (CustomInfo[player].TryGetValue(key, out (string Conetent, Position Type) value) && value.Conetent == content)
+                    return;
+                CustomInfo[player][key] = (content, type);
+            }
+            ToUpdate.Add(player);
+        }
         private static readonly Dictionary<Player, Dictionary<string, (string Content, Position Type)>> CustomInfo = new Dictionary<Player, Dictionary<string, (string Content, Position Type)>>();
         private static readonly List<Player> ToUpdate = new List<Player>();
         private void Server_RestartingRound()
         {
             CustomInfo.Clear();
             ToUpdate.Clear();
+            ToIgnore.Clear();
         }
 
-        private void Server_RoundStarted()
-        {
-            Timing.RunCoroutine(DoRoundLoop());
-        }
+        private static readonly HashSet<Player> ToIgnore = new HashSet<Player>();
 
+        private bool Run = false;
         private IEnumerator<float> DoRoundLoop()
         {
-            yield return Timing.WaitForSeconds(1);
-            while (Round.IsStarted)
+            while (true)
             {
-                yield return Timing.WaitForSeconds(1);
+                yield return Timing.WaitForSeconds(.5f);
+                if (!Run)
+                    continue;
                 if (ToUpdate.Count == 0)
                     continue;
                 foreach (var item in ToUpdate.ToArray())
                 {
                     try
                     {
-                        if (item.IsConnected)
+                        if (item.IsConnected && !ToIgnore.Contains(item))
                             Update(item);
                         ToUpdate.Remove(item);
                     }
@@ -142,7 +173,8 @@ namespace Gamer.Mistaken.Systems.GUI
                 toWrite += "<br>";
             toWrite += bottomContent;
 
-            player.ShowHint(toWrite, 3600);
+            player.ShowHint($"<size=75%>{toWrite}<br><br><br><br><br><br><br><br><br><br></size>", 7200);
+            //Log.Debug($"Updating {player.Id} with {toWrite}");
         }
     }
 }

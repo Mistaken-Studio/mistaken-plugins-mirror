@@ -40,6 +40,7 @@ namespace Gamer.Taser
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Timing.RunCoroutine(UpdateInterface(player));
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Trzymasz <color=yellow>Taser</color>");
             }
             /// <inheritdoc/>
             public override void Spawn(Vector3 position, float innerDurability = 0f)
@@ -74,12 +75,14 @@ namespace Gamer.Taser
                 if(!Cooldowns.TryGetValue(dur, out DateTime time))
                     Cooldowns.Add(dur, DateTime.Now);
                 if (DateTime.Now < time)
-                    player.ShowHint("You have <color=yellow>no ammo</color>", true, 3, true);
+                {
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taserAmmo", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "You have <color=yellow>no ammo</color>", 3);
+                }
                 else
                 {
                     Cooldowns[dur] = DateTime.Now.AddSeconds(Cooldown);
                     var targetPlayer = Player.Get(target);
-                    if(targetPlayer != null)
+                    if (targetPlayer != null)
                     {
                         player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
                         if (targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_LIGHT_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_HEAVY_ARMOR))
@@ -133,9 +136,14 @@ namespace Gamer.Taser
                         else
                             bar += "|";
                     }
-                    player.ShowHint($"<voffset=-20em><mspace=0.5em><color=yellow>[<color=green>{bar}</color>]</color></mspace></voffset>", false, 2, false);
-                    yield return Timing.WaitForSeconds(0.5f);
+                    Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>Taser</color><br><mspace=0.5em><color=yellow>[<color=green>{bar}</color>]</color></mspace>");
+                    yield return Timing.WaitForSeconds(1f);
                 }
+            }
+            /// <inheritdoc/>
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
         /// <inheritdoc/>
