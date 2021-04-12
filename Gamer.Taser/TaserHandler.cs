@@ -84,7 +84,7 @@ namespace Gamer.Taser
                         player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
                         if (targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_LIGHT_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_ARMOR) || targetPlayer.GetSessionVar<bool>(Main.SessionVarType.CI_HEAVY_ARMOR))
                         {
-                            RoundLogger.Log("TASER", "BLOCKED", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()} but the shot was blocked by an armor");
+                            RoundLogger.Log("TASER", "BLOCKED", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()} but effects were blocked by an armor");
                             return false;
                         }
                         if (targetPlayer.IsHuman)
@@ -105,7 +105,7 @@ namespace Gamer.Taser
                     else
                         player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
                 }
-                RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} shot but didn't hit anyone");
+                RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} didn't hit anyone");
                 return false;
             }
 
