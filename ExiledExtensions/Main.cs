@@ -319,11 +319,10 @@ namespace Gamer.Utilities
         {
             me.ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(float.MaxValue, $"*{reason}", DamageTypes.None, -1), me.GameObject);
         }
-
-        [System.Obsolete]
+        [System.Obsolete("Use PseudoGUI", true)]
         public static bool IsHintFree(this Player me) => !LockedHints.Contains(me.Id);
         private readonly static HashSet<int> LockedHints = new HashSet<int>();
-        [System.Obsolete]
+        [System.Obsolete("Use PseudoGUI", true)]
         public static void ShowHintPulsating(this Player me, string message, float duraiton = 3f, bool lockHints = false, bool overrideLock = false)
         {
             if (LockedHints.Contains(me.Id) && !overrideLock)
@@ -344,7 +343,7 @@ namespace Gamer.Utilities
                 });
             }
         }
-        [System.Obsolete]
+        [System.Obsolete("Use PseudoGUI")]
         public static void ShowHint(this Player me, string message, bool lockHints, float duraiton = 3f, bool overrideLock = false)
         {
             if (LockedHints.Contains(me.Id) && !overrideLock)
