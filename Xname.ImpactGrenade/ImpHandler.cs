@@ -87,6 +87,7 @@ namespace Xname.ImpactGrenade
         {
             if (!grenades.Contains(ev.Grenade)) 
                 return;
+            RoundLogger.Log("IMPACTGRENADE", "EXPLODED", $"Impact grenade exploded");
             foreach (Player player in ev.TargetToDamages.Keys.ToArray())
             {
                 ev.TargetToDamages[player] *= Damage_multiplayer;
