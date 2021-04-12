@@ -40,6 +40,7 @@ namespace Gamer.Taser
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Timing.RunCoroutine(UpdateInterface(player));
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Trzymasz <color=yellow>Taser</color>");
             }
             /// <inheritdoc/>
             public override void Spawn(Vector3 position, float innerDurability = 0f)
