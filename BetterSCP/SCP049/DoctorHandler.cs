@@ -99,7 +99,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                             }
                         }
                         if (message.Count != 0)
-                            player.ShowHint($"Potential zombies:<br><br>{string.Join("<br>", message)}", 2);
+                            Systems.GUI.PseudoGUIHandler.Set(player, "scp049", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Potential zombies:<br><br>{string.Join("<br>", message)}");
+                        else
+                            Systems.GUI.PseudoGUIHandler.Set(player, "scp049", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                         NorthwoodLib.Pools.ListPool<string>.Shared.Return(message);
                     }
                     NorthwoodLib.Pools.ListPool<Player>.Shared.Return(zombieInRange);

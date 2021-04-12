@@ -120,6 +120,8 @@ namespace Gamer.Mistaken.Systems.CustomItems
             if (customItem == null)
                 return;
             ev.IsAllowed = customItem.OnThrow(ev.Player, ev.Player.CurrentItem, ev.IsSlow);
+            if (ev.IsAllowed)
+                customItem.OnStopHolding(ev.Player, ev.Player.CurrentItem);
         }
 
         private void CustomEvents_OnRequestPickItem(Exiled.Events.EventArgs.PickItemRequestEventArgs ev)
@@ -127,7 +129,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
             var customItem = GetCustomItem(ev.Pickup);
             if (customItem == null)
                 return;
-            ev.Player.ShowHintPulsating($"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3, false, false);
+            GUI.PseudoGUIHandler.Set(ev.Player, "citem_pickup", GUI.PseudoGUIHandler.Position.BOTTOM, $"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3);
             customItem.OnPrePickup(ev.Player, ev.Pickup);
         }
 

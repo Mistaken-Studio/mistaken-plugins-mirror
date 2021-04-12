@@ -127,16 +127,16 @@ namespace Gamer.Mistaken.Systems.Seasonal
             public void OnPickup(Player player)
             {
                 if (AlreadyFound[this.Id].Contains(player.UserId))
-                    player.ShowHintPulsating($"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5, false, false);
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "egg", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
                 else
                 {
                     foreach (var line in File.ReadAllLines(MyPath))
                         AlreadyFound[this.Id].Add(line);
                     if (AlreadyFound[this.Id].Contains(player.UserId))
-                        player.ShowHintPulsating($"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5, false, false);
+                        Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "egg", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
                     else
                     {
-                        player.ShowHintPulsating($"Brawo, znalazłeś <color=yellow>jajko({this.Id})</color>", 5, false, false);
+                        Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "egg", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Brawo, znalazłeś <color=yellow>jajko({this.Id})</color>", 5);
                         EVO.Handler.AddProgress(2000, player.UserId);
                         File.AppendAllText(MyPath, $"{player.UserId}\n");
                     }

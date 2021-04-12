@@ -77,20 +77,20 @@ namespace Gamer.Mistaken.Systems.Misc
                             if (ev.Pickup.Networkdurability != tmp)
                             {
                                 ev.Pickup.Networkdurability = tmp;
-                                ev.Player.ShowHint($"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", false);
+                                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
                             }
                             else
                             {
                                 string name = item.Type.ToString();
                                 if (!name.EndsWith("s"))
                                     name += "s";
-                                ev.Player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2f);
+                                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2);
                             }
                         }
                         ev.IsAllowed = false;
                         return;
                     }
-                    ev.Player.ShowHint($"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", false);
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
                     break;
                 }
             }
@@ -177,26 +177,11 @@ namespace Gamer.Mistaken.Systems.Misc
             yield return Timing.WaitForSeconds(.1f);
             ItemType itemType = p.CurrentItem.id;
             var reusable = ReusableItems.First(i => i.Type == itemType);
-            p.ShowHint($"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left", false, 5, false);
+            Mistaken.Systems.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left");
             yield return Timing.WaitForSeconds(1f);
-            int iterator = 999;
             while (p.CurrentItem.id == itemType)
-            {
-                iterator++;
-                if(iterator >= 4)
-                {
-                    if (!p.GetEffectActive<CustomPlayerEffects.Amnesia>())
-                    {
-                        p.ShowHint($"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left", false, 5, false);
-                        iterator = 0;
-                    }
-                    else
-                        iterator = 999;
-                }
-
                 yield return Timing.WaitForSeconds(1);
-            }
-            p.ShowHint("", false, .1f, false);
+            Mistaken.Systems.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
         }
 
         private void Player_UsingMedicalItem(Exiled.Events.EventArgs.UsingMedicalItemEventArgs ev)

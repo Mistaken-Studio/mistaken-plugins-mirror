@@ -59,8 +59,19 @@ namespace Xname.ImpactGrenade
                     Mirror.NetworkServer.Spawn(grenade.gameObject);
                     player.RemoveItem(item);
                     grenade.gameObject.AddComponent<ImpComponent>();
+                    OnStopHolding(player, item);
                 });
                 return false;
+            }
+            /// <inheritdoc/>
+            public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>Granat Uderzeniowy</color>");
+            }
+            /// <inheritdoc/>
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
         /// <inheritdoc/>
