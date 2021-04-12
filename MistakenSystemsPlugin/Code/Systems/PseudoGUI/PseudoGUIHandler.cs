@@ -84,6 +84,7 @@ namespace Gamer.Mistaken.Systems.GUI
         private static readonly HashSet<Player> ToIgnore = new HashSet<Player>();
 
         private bool Run = false;
+        private DateTime start;
         private IEnumerator<float> DoRoundLoop()
         {
             while (true)
@@ -93,6 +94,7 @@ namespace Gamer.Mistaken.Systems.GUI
                     continue;
                 if (ToUpdate.Count == 0)
                     continue;
+                start = DateTime.Now;
                 foreach (var item in ToUpdate.ToArray())
                 {
                     try
@@ -107,6 +109,7 @@ namespace Gamer.Mistaken.Systems.GUI
                         Log.Error(ex.StackTrace);
                     }
                 }
+                Diagnostics.MasterHandler.LogTime("PseudoGUI", "RoundLoop", start, DateTime.Now);
             }
         }
 
@@ -152,11 +155,11 @@ namespace Gamer.Mistaken.Systems.GUI
                     case Position.BOTTOM: //15
                         if (bottomContent.Length > 0)
                         {
-                            bottomContent += "<br>";
+                            bottomContent = "<br>" + bottomContent;
                             bottomLines++;
                         }
 
-                        bottomContent += item.Content;
+                        bottomContent = item.Content + bottomContent;
                         bottomLines += lines;
                         break;
                 }
