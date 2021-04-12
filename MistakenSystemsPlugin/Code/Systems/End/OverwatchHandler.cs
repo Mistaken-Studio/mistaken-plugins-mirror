@@ -116,6 +116,8 @@ namespace Gamer.Mistaken.Systems.End
                     {
                         if (player.IsOverwatchEnabled)
                             InOverwatch.Add(player.UserId, DateTime.Now);
+                        else
+                            InOverwatch.Remove(player.UserId);
                     }
                 }
                 yield return Timing.WaitForSeconds(1);
