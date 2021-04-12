@@ -104,6 +104,11 @@ namespace Gamer.Mistaken.Systems.End
                     }
                     if (InOverwatch.TryGetValue(player.UserId, out DateTime updateTime))
                     {
+                        if (player.IsOverwatchEnabled)
+                        {
+                            InOverwatch.Remove(player.UserId);
+                            continue;
+                        }
                         if ((DateTime.Now - updateTime).TotalMinutes >= 5)
                         {
                             InOverwatch.Remove(player.UserId);
@@ -116,8 +121,6 @@ namespace Gamer.Mistaken.Systems.End
                     {
                         if (player.IsOverwatchEnabled)
                             InOverwatch.Add(player.UserId, DateTime.Now);
-                        else
-                            InOverwatch.Remove(player.UserId);
                     }
                 }
                 yield return Timing.WaitForSeconds(1);
