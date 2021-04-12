@@ -262,7 +262,7 @@ namespace Gamer.Mistaken.Systems.GUI
                         else
                             message += ttrPlayer;
                         //player.ShowHint(message, 2);
-                        GUI.PseudoGUIHandler.Set(player, "specInfo", GUI.PseudoGUIHandler.Position.MIDDLE, message);
+                        GUI.PseudoGUIHandler.Set(player, "specInfo", GUI.PseudoGUIHandler.Position.MIDDLE, "<br><br><br><br><br>" + message);
                     }
                     Diagnostics.MasterHandler.LogTime("SpecInfoHandler", "TTRUpdate", start, DateTime.Now);
                 }
