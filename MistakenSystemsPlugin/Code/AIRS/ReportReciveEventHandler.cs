@@ -21,7 +21,7 @@ namespace Gamer.Mistaken.AIRS
             LOFH.MenuSystem.RefreshReports();
             if (Data.ServerId == (byte)SSL.Client.MyType)
                 return null;
-            MapPlus.Broadcast("AIRS", 10, $"[{(ServerType)Data.ServerId}] ({Data.Suspect.Id}) {Data.Suspect.Nickname} was reported by {Data.ReporterName} for {Data.Reason}", Broadcast.BroadcastFlags.AdminChat);
+            MapPlus.Broadcast("AIRS", 10, $"[{Data.Server}] ({Data.Suspect.Id}) {Data.Suspect.Nickname} was reported by {Data.ReporterName} for {Data.Reason}", Broadcast.BroadcastFlags.AdminChat);
             return null;
         }
 
