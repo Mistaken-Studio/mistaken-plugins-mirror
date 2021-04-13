@@ -407,13 +407,19 @@ namespace Gamer.Mistaken.Systems
             }
             if (ev.Attacker != null && RealPlayers.Get(ev.Attacker.Id) == null)
                 ev.IsAllowed = false;
-            if (!ev.IsAllowed) return;
-            if (ev.DamageType == DamageTypes.Tesla && ev.Target.Team == Team.SCP && ev.Amount < ev.Target.Health)
+            if (!ev.IsAllowed)
+                return;
+            if(ev.DamageType == DamageTypes.Tesla)
             {
-                ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Burned>(30);
-                ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Concussed>(30);
-                ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Deafened>(30);
-                ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Disabled>(30);
+                if (ev.Target.Team == Team.SCP && ev.Amount < ev.Target.Health)
+                {
+                    ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Burned>(30);
+                    ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Concussed>(30);
+                    ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Deafened>(30);
+                    ev.Target.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Disabled>(30);
+                }
+                else if (ev.Target.ReferenceHub.characterClassManager.AliveTime < 5)
+                    ev.IsAllowed = false;
             }
         }
 
