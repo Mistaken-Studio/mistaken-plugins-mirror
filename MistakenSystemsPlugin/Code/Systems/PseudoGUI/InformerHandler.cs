@@ -111,7 +111,7 @@ namespace Gamer.Mistaken.Systems.GUI
             string message = plugin.ReadTranslation("Info_Intercom");
             GUI.PseudoGUIHandler.Set(player, "intercom", PseudoGUIHandler.Position.BOTTOM, message);
             yield return Timing.WaitForSeconds(1);
-            while(Intercom.host.speaker != null)
+            while(Intercom.host?.speaker != null)
                 yield return Timing.WaitForSeconds(1);
             GUI.PseudoGUIHandler.Set(player, "intercom", PseudoGUIHandler.Position.BOTTOM, null);
         }
