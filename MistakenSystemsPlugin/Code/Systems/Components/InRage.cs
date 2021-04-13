@@ -68,6 +68,21 @@ namespace Gamer.Mistaken.Systems.Components
             }
         }
 
+        public void Start()
+        {
+            Exiled.Events.Handlers.Player.Died += Player_Died;
+        }
+        private void OnDestroy()
+        {
+            Exiled.Events.Handlers.Player.Died -= Player_Died;
+        }
+
+        private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
+        {
+            this.OnExit?.Invoke(ev.Target);
+            ColliderInArea.Remove(ev.Target.GameObject);
+        }
+
         private readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
         private void OnTriggerEnter(Collider other)
         {
