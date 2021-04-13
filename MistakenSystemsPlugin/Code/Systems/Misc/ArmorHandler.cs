@@ -57,7 +57,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 5);
+                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
                 Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
@@ -205,7 +205,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 2);
+                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(2);
                 }
                 Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
@@ -348,7 +348,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 8);
+                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 8);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(8);
                 }
                 Timing.CallDelayed(8 * (fast ? 0 : 1), () =>
