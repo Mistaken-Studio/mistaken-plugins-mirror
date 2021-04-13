@@ -105,7 +105,7 @@ namespace Gamer.Mistaken.Systems.End
                     }
                     if (InOverwatch.TryGetValue(player.UserId, out DateTime updateTime))
                     {
-                        if (player.IsOverwatchEnabled)
+                        if (!player.IsOverwatchEnabled)
                         {
                             InOverwatch.Remove(player.UserId);
                             continue;
