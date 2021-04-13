@@ -112,11 +112,27 @@ namespace Gamer.Mistaken.Systems.Misc
             int id = player?.Id ?? -1;
             for (int i = time; i > 0; i--)
             {
-                Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=green>[<color=orange>Spawn Protect</color>]</color> You are spawn protected for next <color=yellow>{i}</color> second{(i == 1 ? "" : "s")}");
+                try
+                {
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=green>[<color=orange>Spawn Protect</color>]</color> You are spawn protected for next <color=yellow>{i}</color> second{(i == 1 ? "" : "s")}");
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
                 yield return Timing.WaitForSeconds(1);
             }
-            Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
-            SpawnKillProtected.RemoveAll(i => i.Key == id);
+            try
+            {
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                SpawnKillProtected.RemoveAll(i => i.Key == id);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+            }
         }
     }
 }
