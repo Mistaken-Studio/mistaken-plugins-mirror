@@ -166,6 +166,7 @@ namespace Gamer.Mistaken.Systems.Shield
             {
                 if (ShieldDecay != -1)
                     player.ReferenceHub.playerStats.artificialHpDecay = originalShieldDecay;
+                Log.Debug($"Shield overflow for {player.Nickname} max is {MaxShield} but reached {player.ArtificialHealth}");
                 return;
             }
             else
