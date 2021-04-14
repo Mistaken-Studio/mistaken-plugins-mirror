@@ -17,6 +17,7 @@ using System.IO;
 using Gamer.Mistaken.Systems.Logs;
 using CustomPlayerEffects;
 using Gamer.Mistaken.Systems.Staff;
+using Grenades;
 
 namespace Gamer.Mistaken.Systems
 {
@@ -317,6 +318,8 @@ namespace Gamer.Mistaken.Systems
 
         private void Server_RoundStarted()
         {
+            Server.Host.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<FragGrenade>()
+                .hurtLayerMask.value = LayerMask.GetMask("Ignore Raycast", "Player", "Pickup", "Hitbox", "DestroyedDoor", "Door");
             LeftOnStart.Clear();
             LastIntercomUser = null;
             Generators.Clear();
