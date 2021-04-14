@@ -103,7 +103,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 return;
             if (!ev.IsAllowed)
                 return;
-            Timing.RunCoroutine(InformSpeaker(ev.Player)); 
+            Timing.RunCoroutine(InformSpeaker(ev.Player));
         }
 
         IEnumerator<float> InformSpeaker(Player player)
