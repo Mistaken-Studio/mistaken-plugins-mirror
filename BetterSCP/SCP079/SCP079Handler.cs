@@ -153,7 +153,10 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                     }
                 }
                 foreach (var player in RealPlayers.List.Where(p => p.Role != RoleType.Scp079))
+                {
                     Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                }
                 foreach (var player in RealPlayers.Get(RoleType.Scp079))
                 {
                     string fakeSCP = $"<color=yellow>READY</color>";
@@ -231,8 +234,20 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                     else if (CassieCommand.Cost > player.Energy)
                         cassie = $"<color=red>Require <color=yellow>{CassieCommand.Cost}</color> AP</color>";
 
-                    string sumMessage = $"<size=50%><align=left>Fake <mspace=0.6em>SCP </mspace>: {fakeSCP}<br>Fake <mspace=0.6em>MTF </mspace>: {fakeMTF}<br>Fake <mspace=0.6em>CI </mspace>: {fakeCI}<br>Fake <mspace=0.4em>Tesla</mspace>: {fakeTesla}<br>Scan <mspace=0.56em>    </mspace>: {scan}<br>FullScan <mspace=0.56em> </mspace>: {fullScan}<br>Blackout <mspace=0.35em> </mspace>: {blackout}<br>Warhead Stop <mspace=0.35em> </mspace>: {warheadStop}<br>Cassie <mspace=0.35em> </mspace>: {cassie}</align></size><br><br><br><br><br><br><br>{msg}";
+                    string sumMessage = $@"
+<size=50%>
+<align=left>Fake SCP</align><line-height=1px><br></line-height><align=right>{fakeSCP}</align>
+<align=left>Fake MTF</align><line-height=1px><br></line-height><align=right>{fakeMTF}</align>
+<align=left>Fake CI</align><line-height=1px><br></line-height><align=right>{fakeCI}</align>
+<align=left>Fake Tesla</align><line-height=1px><br></line-height><align=right>{fakeTesla}</align>
+<align=left>Scan</align><line-height=1px><br></line-height><align=right>{scan}</align>
+<align=left>FullScan</align><line-height=1px><br></line-height><align=right>{fullScan}</align>
+<align=left>Blackout</align><line-height=1px><br></line-height><align=right>{blackout}</align>
+<align=left>Warhead Stop</align><line-height=1px><br></line-height><align=right>{warheadStop}</align>
+<align=left>Cassie</align><line-height=1px><br></line-height><align=right>{cassie}</align>
+</size>";
                     Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, msg);
                 }
                 yield return MEC.Timing.WaitForSeconds(1);
             }
