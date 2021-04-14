@@ -82,6 +82,8 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "trade.tf",
             "eskill.pl",
             "hellcase.org",
+            "CASEDROP.GG",
+            "CASEDROP",
 
             "~~",
             "```",
