@@ -147,11 +147,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 yield break;
             Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).ToArray();
             foreach (var player in players)
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size>");
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, $"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size>");
             while (Active.ContainsKey(p.UserId))
                 yield return Timing.WaitForSeconds(1f);
             foreach (var player in players)
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size>", 5);
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size>", 5);
         }
     }
 }
