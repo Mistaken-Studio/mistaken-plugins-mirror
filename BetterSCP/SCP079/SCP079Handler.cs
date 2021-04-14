@@ -159,6 +159,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                     string fakeSCP = $"<color=yellow>READY</color>";
                     string fakeMTF = $"<color=yellow>READY</color>";
                     string fakeCI = $"<color=yellow>READY</color>";
+                    string fakeTesla = $"<color=yellow>READY</color>";
                     string scan = $"<color=yellow>READY</color>";
                     string fullScan = $"<color=yellow>READY</color>";
                     string blackout = $"<color=yellow>READY</color>";
@@ -185,6 +186,13 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                         fakeCI = $"<color=red>Require <color=yellow>{Math.Round(new TimeSpan(FakeCICommand.TimeLeft).TotalSeconds)}</color>s</color>";
                     else if (FakeCICommand.Cost > player.Energy)
                         fakeCI = $"<color=red>Require <color=yellow>{FakeCICommand.Cost}</color> AP</color>";
+
+                    if (FakeTeslaCommand.ReqLvl > player.Level + 1)
+                        fakeTesla = $"<color=red>Require <color=yellow>{FakeTeslaCommand.ReqLvl}</color> lvl</color>";
+                    else if (!FakeTeslaCommand.IsReady)
+                        fakeTesla = $"<color=red>Require <color=yellow>{Math.Round(new TimeSpan(FakeTeslaCommand.TimeLeft).TotalSeconds)}</color>s</color>";
+                    else if (FakeTeslaCommand.Cost > player.Energy)
+                        fakeTesla = $"<color=red>Require <color=yellow>{FakeTeslaCommand.Cost}</color> AP</color>";
 
                     if (ScanCommand.ReqLvl > player.Level + 1)
                         scan = $"<color=red>Require <color=yellow>{ScanCommand.ReqLvl}</color> lvl</color>";
@@ -223,7 +231,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                     else if (CassieCommand.Cost > player.Energy)
                         cassie = $"<color=red>Require <color=yellow>{CassieCommand.Cost}</color> AP</color>";
 
-                    string sumMessage = $"<size=50%><align=left>Fake <mspace=0.6em>SCP </mspace>: {fakeSCP}<br>Fake <mspace=0.6em>MTF </mspace>: {fakeMTF}<br>Fake <mspace=0.6em>CI </mspace>: {fakeCI}<br>Scan <mspace=0.56em>    </mspace>: {scan}<br>FullScan <mspace=0.56em> </mspace>: {fullScan}<br>Blackout <mspace=0.35em> </mspace>: {blackout}<br>Warhead Stop <mspace=0.35em> </mspace>: {warheadStop}<br>Cassie <mspace=0.35em> </mspace>: {cassie}</align></size><br><br><br><br><br><br><br>{msg}";
+                    string sumMessage = $"<size=50%><align=left>Fake <mspace=0.6em>SCP </mspace>: {fakeSCP}<br>Fake <mspace=0.6em>MTF </mspace>: {fakeMTF}<br>Fake <mspace=0.6em>CI </mspace>: {fakeCI}<br>Fake <mspace=0.4em>Tesla</mspace>: {fakeTesla}<br>Scan <mspace=0.56em>    </mspace>: {scan}<br>FullScan <mspace=0.56em> </mspace>: {fullScan}<br>Blackout <mspace=0.35em> </mspace>: {blackout}<br>Warhead Stop <mspace=0.35em> </mspace>: {warheadStop}<br>Cassie <mspace=0.35em> </mspace>: {cassie}</align></size><br><br><br><br><br><br><br>{msg}";
                     Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
                 }
                 yield return MEC.Timing.WaitForSeconds(1);
