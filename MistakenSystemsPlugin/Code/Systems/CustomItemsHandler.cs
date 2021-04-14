@@ -40,6 +40,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
             Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
             Exiled.Events.Handlers.Player.Handcuffing += this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
+            Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
         public override void OnDisable()
         {
@@ -56,6 +57,15 @@ namespace Gamer.Mistaken.Systems.CustomItems
             Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
             Exiled.Events.Handlers.Player.Handcuffing -= this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
+            Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
+        }
+
+        private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
+        {
+            if (!ev.Target.IsHuman)
+                return;
+            foreach (var customItem in CustomItem.CustomItemTypes)
+                customItem.OnForceclass(ev.Target);
         }
 
         private void Player_Handcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs ev)
@@ -83,20 +93,13 @@ namespace Gamer.Mistaken.Systems.CustomItems
                             {
                                 if (upgrade.Chance == 100 || upgrade.Chance >= UnityEngine.Random.Range(0, 100))
                                 {
-                                    Log.Debug("Spawning");
                                     customItem.Spawn(ev.Scp914.output.position);
                                     ev.Items.Remove(item);
                                     item.Delete();
                                     goto foreach_end;
                                 }
-                                else
-                                    Log.Debug("Out of luck");
                             }
-                            else
-                                Log.Debug("Wrong item");
                         }
-                        else
-                            Log.Debug("Wrong setting");
                     }
                 }
                 var thisCustomItem = GetCustomItem(item);
@@ -120,6 +123,8 @@ namespace Gamer.Mistaken.Systems.CustomItems
             if (customItem == null)
                 return;
             ev.IsAllowed = customItem.OnThrow(ev.Player, ev.Player.CurrentItem, ev.IsSlow);
+            if (ev.IsAllowed)
+                customItem.OnStopHolding(ev.Player, ev.Player.CurrentItem);
         }
 
         private void CustomEvents_OnRequestPickItem(Exiled.Events.EventArgs.PickItemRequestEventArgs ev)
@@ -127,7 +132,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
             var customItem = GetCustomItem(ev.Pickup);
             if (customItem == null)
                 return;
-            ev.Player.ShowHintPulsating($"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3, false, false);
+            GUI.PseudoGUIHandler.Set(ev.Player, "citem_pickup", GUI.PseudoGUIHandler.Position.BOTTOM, $"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3);
             customItem.OnPrePickup(ev.Player, ev.Pickup);
         }
 
@@ -197,15 +202,10 @@ namespace Gamer.Mistaken.Systems.CustomItems
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if (!HasCustomItem(ev.Player))
+            if (!ev.Player.IsHuman)
                 return;
-            foreach (var item in ev.Player.Inventory.items)
-            {
-                var customItem = GetCustomItem(item);
-                if (customItem == null)
-                    continue;
+            foreach (var customItem in CustomItem.CustomItemTypes)
                 customItem.OnForceclass(ev.Player);
-            }
         }
 
         private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
@@ -267,11 +267,11 @@ namespace Gamer.Mistaken.Systems.CustomItems
         }
         public static bool HasCustomItem(Player player)
         {
-            if (!player.Inventory.items.Any(item => CustomItem.CustomItemsFastCheckCache.Contains(item.id)))
-                return false;
-            foreach (var customItem in CustomItem.CustomItemTypes)
+            foreach (var item in player.Inventory.items)
             {
-                foreach (var item in player.Inventory.items)
+                if (!CustomItem.CustomItemsFastCheckCache.Contains(item.id))
+                    continue;
+                foreach (var customItem in CustomItem.CustomItemTypes)
                 {
                     if (customItem.Item == item.id && customItem.Durability == Math.Floor((item.durability - 1) * 1000))
                         return true;

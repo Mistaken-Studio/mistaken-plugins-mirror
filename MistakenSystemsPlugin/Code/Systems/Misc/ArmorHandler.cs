@@ -57,11 +57,12 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Putting on <color=yellow>{this.ItemName}</color>", 5f, true, true);
+                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
                 Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                     player.EnableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.85f));
                     if (player.ArtificialHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
@@ -78,7 +79,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Droping <color=yellow>{this.ItemName}</color>", 3f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Droping <color=yellow>{this.ItemName}</color>", 3);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(3);
                 }
                 MEC.Timing.CallDelayed(3 * (fast ? 0 : 1), () => {
@@ -86,10 +87,12 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.DisableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Remove(player);
                     BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
             {
+                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -99,7 +102,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 this.OnWear(player, pickup, false);
@@ -111,7 +114,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 return true;
@@ -202,13 +205,14 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Putting on <color=yellow>{this.ItemName}</color>", 2f, true, true);
+                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(2);
                 }
                 Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
                 {
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.5f));
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                 });
             }
             public void OnUnWear(Player player, bool fast)
@@ -220,16 +224,18 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Droping <color=yellow>{this.ItemName}</color>", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Droping <color=yellow>{this.ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(1);
                 }
                 MEC.Timing.CallDelayed(1 * (fast ? 0 : 1), () => {
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
             {
+                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -239,7 +245,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 this.OnWear(player, pickup, false);
@@ -251,7 +257,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 return true;
@@ -342,7 +348,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Putting on <color=yellow>{this.ItemName}</color>", 8f, true, true);
+                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 8);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(8);
                 }
                 Timing.CallDelayed(8 * (fast ? 0 : 1), () =>
@@ -352,6 +358,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (player.ArtificialHealth < 30 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
                         player.ArtificialHealth = 30;
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                 });
             }
             public void OnUnWear(Player player, bool fast)
@@ -363,7 +370,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    player.ShowHintPulsating($"Droping <color=yellow>{this.ItemName}</color>", 5f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Droping <color=yellow>{this.ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
                 MEC.Timing.CallDelayed(5 * (fast ? 0 : 1), () => {
@@ -371,10 +378,12 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.DisableEffect<CustomPlayerEffects.Disabled>();
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
             {
+                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -384,7 +393,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 this.OnWear(player, pickup, false);
@@ -396,7 +405,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    player.ShowHintPulsating($"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2f, true, true);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2); 
                     return false;
                 }
                 return true;

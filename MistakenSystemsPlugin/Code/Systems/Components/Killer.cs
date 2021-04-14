@@ -78,10 +78,15 @@ namespace Gamer.Mistaken.Systems.Components
         private bool destroyed = false;
         private IEnumerator<float> DoDamage()
         {
+            HashSet<Player> hinted = new HashSet<Player>();
             while (!destroyed && !InstaKill)
             {
                 //Log.Debug("In killers loop");
                 yield return Timing.WaitForSeconds(1);
+                foreach (var item in hinted.Where(p => !InArea.Contains(p)))
+                {
+                    Systems.GUI.PseudoGUIHandler.Set(item, "killer", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                }
                 foreach (var player in InArea.ToArray())
                 {
                     if (this.Selector(player) || player.Role == RoleType.Scp079)
@@ -89,7 +94,8 @@ namespace Gamer.Mistaken.Systems.Components
                     if (player.IsGodModeEnabled || player.IsDead)
                         continue;
                     player.Hurt(this.Dmg, new DamageTypes.DamageType("*Anty Camper"), this.Message);
-                    player.ShowHint(this.Message, 1.1f);
+                    Systems.GUI.PseudoGUIHandler.Set(player, "killer", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
+                    hinted.Add(player);
                     RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({this.Dmg}) with message \"{this.Message}\"");
                 }
             }

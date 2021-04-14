@@ -71,18 +71,16 @@ namespace Gamer.Mistaken.BetterRP
                             {
                                 ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
                                 ev.Player.AddItem(ItemType.KeycardO5);
+                                continue;
                             }
                         }
+                        if (ev.Player.Inventory.items.Count >= 8 ||
+                        (item.id.IsWeapon(false) && ev.Player.Inventory.items.Where(i => i.id.IsWeapon(false)).Count() >= 2) ||
+                        (item.id.IsMedical() && ev.Player.Inventory.items.Where(i => i.id.IsMedical()).Count() >= 3)
+                        )
+                            item.id.Spawn(item.durability, ev.Player.Position, default, item.modSight, item.modBarrel, item.modOther);
                         else
-                        {
-                            if (ev.Player.Inventory.items.Count >= 8 ||
-                            (item.id.IsWeapon(false) && ev.Player.Inventory.items.Where(i => i.id.IsWeapon(false)).Count() >= 2) ||
-                            (item.id.IsMedical() && ev.Player.Inventory.items.Where(i => i.id.IsMedical()).Count() >= 3)
-                            )
-                                item.id.Spawn(item.durability, ev.Player.Position, default, item.modSight, item.modBarrel, item.modOther);
-                            else
-                                ev.Player.AddItem(item);
-                        }
+                            ev.Player.AddItem(item);
                     }
                     NorthwoodLib.Pools.ListPool<Inventory.SyncItemInfo>.Shared.Return(Items);
                 });
@@ -176,7 +174,7 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     Timing.CallDelayed(0.1f, () =>
                     {
-                        ev.Target.ShowHint("You feel <color=yellow>adrenaline</color> hitting", 5);
+                        Systems.GUI.PseudoGUIHandler.Set(ev.Target, "adrenalin", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "You feel <color=yellow>adrenaline</color> hitting", 5);
                         var pec = ev.Target.ReferenceHub.playerEffectsController;
                         var invigorated = pec.GetEffect<CustomPlayerEffects.Invigorated>();
                         var oldInvigoratedIntensityValue = invigorated.Intensity;
@@ -233,7 +231,7 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     ev.Target.EnableEffect<CustomPlayerEffects.Bleeding>();
                     ev.Target.EnableEffect<CustomPlayerEffects.Ensnared>();
-                    ev.Target.ShowHintPulsating("Złamałeś obie nogi i <color=yellow>nie</color> możesz chodzić");
+                    Systems.GUI.PseudoGUIHandler.Set(ev.Target, "broken_legs", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Złamałeś obie nogi i <color=yellow>nie</color> możesz chodzić", 5);
                 }
                 else if (rand < ev.Amount / 5)
                 {

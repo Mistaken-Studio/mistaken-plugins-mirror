@@ -94,6 +94,9 @@ namespace Gamer.Mistaken.LOFH
                     var menu = GetMenu(CurrentMenus[player.Id]);
                     CurrentMenus[player.Id] = menu.Id == 0 ? 1 : menu.Parent;
                     break;
+                case 8053:
+                    CurrentMenus[player.Id] = 15; //Test
+                    break;
                 case 8100:
                     CurrentMenus[player.Id] = 2; //Commands
                     break;
@@ -450,6 +453,38 @@ namespace Gamer.Mistaken.LOFH
                             tor += $"<color={AIRS.ReportUpdateEventHandler.GetColorByStatus(report.Status)}>[#{report.Report.Type}]<size=1><color=#00000000>(-{report.Report.ReportId})</color></size>{report.Report.ReportedName}</color>\n";
                     }       
                     return tor;
+                case 15:
+                    {
+                        tor = "<color=green>[<color=orange>MENU</color>]<size=1><color=#00000000>(8000)</color></size>                      MENU</color>\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (1) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (2) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (3) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (4) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (5) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (6) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (7) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (8) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (9) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (10) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (11) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (12) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (13) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (14) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (15) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (16) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (17) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (18) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (19) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (20) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (21) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (22) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (23) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (24) Wydział Wewnętrzny\n";
+                        tor += "[<color=#FF0000>|<color=#FFD700>DEV</color>|</color>] <color=red>|<color=#FFF>256</color>|</color> (25) Wydział Wewnętrzny\n";
+
+                        GeneratePlayerList = false;
+                        return tor;
+                    }
             }
             return menu.Get(out GeneratePlayerList);
         }
@@ -564,7 +599,8 @@ namespace Gamer.Mistaken.LOFH
                 (8200, "                      NPCs"),
                 (8250, "               Warhead"),
                 (8052, "                    Server"),
-                (8051, "  Request Restart")
+                (8051, "  Request Restart"),
+                (8053, "  Test")
             ), 
             new Menu(2, "           COMMANDS                 ", false, 1,
                 (8951, "        Get Attacker"), 
@@ -631,6 +667,8 @@ namespace Gamer.Mistaken.LOFH
                 (8958, "                  REFRESH")
             ),
             new Menu(14, "               TALK                    ", true, 2
+            ),
+            new Menu(15, "             EXAMPLE                 ", false, 1
             ),
         };
         public class Menu

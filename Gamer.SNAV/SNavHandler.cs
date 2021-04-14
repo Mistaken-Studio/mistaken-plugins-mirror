@@ -40,11 +40,13 @@ namespace Gamer.SNAV
             };
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Ignore(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
                 player.ShowHint("", false, 1, true); //Clear Hints
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.StopIgnore(player);
             }
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {
@@ -513,7 +515,7 @@ namespace Gamer.SNAV
         {
             if (ev.Player.Inventory.items.First(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301)
             {
-                ev.Player.ShowHintPulsating("Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 3, true, true);
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "snavWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
                 ev.IsAllowed = false;
             }
         }
@@ -522,7 +524,7 @@ namespace Gamer.SNAV
         {
             if(ev.Player.Inventory.items.First(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301)
             {
-                ev.Player.ShowHintPulsating("Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 3, true, true);
+                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "snavWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
                 ev.IsAllowed = false;
             }
         }
