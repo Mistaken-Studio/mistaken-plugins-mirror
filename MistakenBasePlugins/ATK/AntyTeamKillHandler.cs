@@ -341,8 +341,8 @@ namespace Gamer.Mistaken.Base
 
                 victim.SendConsoleMessage(
                     $"You have been TeamKilled:" +
-                    $"\n- TeamKiller: {killer.ToString(true)}" +
-                    $"\n- You: {victim.ToString(true)}" +
+                    $"\n- TeamKiller: {killer.ToString(false)}" +
+                    $"\n- You: {victim.ToString(false)}" +
                     $"\n- Tool: {type.name}" +
                     $"\n- Server: {Server.Port}",
                     "red");
@@ -356,7 +356,7 @@ namespace Gamer.Mistaken.Base
                 victim.SendConsoleMessage(
                     $"You have been TeamKilled:" +
                     $"\n- TeamKiller: [PLAYER LEFT (Ask admin to check round logs)]" +
-                    $"\n- You: {victim.ToString(true)}" +
+                    $"\n- You: {victim.ToString(false)}" +
                     $"\n- Tool: {type.name}" +
                     $"\n- Server: {Server.Port}",
                     "red");
