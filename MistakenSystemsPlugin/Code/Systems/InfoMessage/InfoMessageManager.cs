@@ -73,7 +73,9 @@ namespace Gamer.Mistaken.Systems.InfoMessage
             string fullmsg = string.Join("<br>", message);
             if (TimeSinceChangedRole(p).TotalSeconds < 30 && WelcomeMessages.TryGetValue(p.Role, out string roleMessage))
                 fullmsg = $"<size=40><voffset=20em>{roleMessage}<br><br><br><size=90%>{fullmsg}</size><br><br><br><br><br><br><br><br><br><br></voffset></size>";
+#pragma warning disable CS0618
             p.ShowHint(fullmsg, true, 2, true);
+#pragma warning restore CS0618
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(message);
             Diagnostics.MasterHandler.LogTime("InfoMessageManager", "GetSCPS", start, DateTime.Now);
         }
