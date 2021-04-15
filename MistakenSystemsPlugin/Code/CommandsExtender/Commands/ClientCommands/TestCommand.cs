@@ -76,7 +76,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         case "snav-ultimate":
                             info = new Inventory.SyncItemInfo
                             {
-                                id = ItemType.GrenadeFrag,
+                                id = ItemType.WeaponManagerTablet,
                                 durability = 1.401f
                             };
                             break;
