@@ -142,7 +142,10 @@ namespace Gamer.Diagnostics
                         Log.Debug($"Created {Paths.Configs}/{Server.Port}/{day}/");
                     }
                     //Log.Debug($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.ToString("yyyy-MM-dd_HH")}.log");
-                    File.AppendAllLines($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.ToString("yyyy-MM-dd_HH")}.log", Backlog);
+                    string path = $"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.ToString("yyyy-MM-dd_HH")}.log";
+                    if (!File.Exists(path))
+                        AnalizeContent($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.AddHours(-1).ToString("yyyy-MM-dd_HH")}.log");
+                    File.AppendAllLines(path, Backlog);
                     Backlog.Clear();
                     File.AppendAllLines($"{Paths.Configs}/{Server.Port}/{day}/error.log", ErrorBacklog);
                     ErrorBacklog.Clear();
@@ -168,6 +171,80 @@ namespace Gamer.Diagnostics
                 Log.Error("Failed to compress");
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
+            }
+        }
+
+        internal static void AnalizeContent(string file)
+        {
+            var result = AnalizeContent(File.ReadAllLines(file), DateTime.Now.AddHours(-1));
+            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file), ".analized.log"), Newtonsoft.Json.JsonConvert.SerializeObject(result));
+            File.Delete(file);
+        }
+            
+        private static Dictionary<string, Data> AnalizeContent(string[] lines, DateTime dateTime)
+        {
+            Dictionary<string, List<(float Took, DateTime Time)>> times = new Dictionary<string, List<(float Took, DateTime Time)>>();
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+                string[] data = line.Replace("[", "").Split(']');
+                string[] date = data[0].Split(':');
+                var time = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, int.Parse(date[0]), int.Parse(date[1]), int.Parse(date[2].Split('.')[0]), int.Parse(date[2].Split('.')[1]));
+                string executor = string.Join(".", data[1].Trim().Replace(" ", "").Split(new string[] { ":" }, StringSplitOptions.None));
+                data[2] = data[2].Replace(".", ",");
+                float TimeTook = float.Parse(data[2]);
+                if (!times.ContainsKey(executor))
+                    times.Add(executor, new List<(float Took, DateTime Time)>());
+                times[executor].Add((TimeTook, time));
+            }
+            Dictionary<string, Data> ProccesedData = new Dictionary<string, Data>();
+            foreach (var time in times)
+            {
+                float min = float.MaxValue;
+                float max = 0;
+                float avg = 0;
+                Dictionary<string, int> calls = new Dictionary<string, int>();
+                foreach (var item in time.Value)
+                {
+                    avg += item.Took;
+                    if (max < item.Took)
+                        max = item.Took;
+                    if (min > item.Took)
+                        min = item.Took;
+                    string stringTime = item.Time.ToString("yyyy-MM-dd HH-mm");
+                    if (!calls.ContainsKey(stringTime))
+                        calls.Add(stringTime, 0);
+                    calls[stringTime]++;
+                }
+                float avgCalls = 0;
+                foreach (var item in calls)
+                    avgCalls += item.Value;
+                avgCalls /= calls.Values.Count;
+                avg /= time.Value.Count;
+                var info = (avg, time.Value.Count, min, max, avgCalls);
+                ProccesedData.Add(time.Key, new Data(info));
+            }
+
+            return ProccesedData;
+        }
+
+        public class Data
+        {
+            public float Avg;
+            public int Calls;
+            public float Min;
+            public float Max;
+            public float AvgCallsPerMinute;
+
+            public Data() { }
+            public Data((float Avg, int Calls, float Min, float Max, float AvgCallsPerMinute) info)
+            {
+                Avg = info.Avg;
+                Calls = info.Calls;
+                Min = info.Min;
+                Max = info.Max;
+                AvgCallsPerMinute = info.AvgCallsPerMinute;
             }
         }
     }
