@@ -41,11 +41,14 @@ namespace Gamer.SNAV
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Ignore(player);
+                UpdateInterface(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
+#pragma warning disable CS0618
                 player.ShowHint("", false, 1, true); //Clear Hints
+#pragma warning restore CS0618
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.StopIgnore(player);
             }
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
@@ -64,12 +67,16 @@ namespace Gamer.SNAV
             public override Vector3 Size => new Vector3(2.5f, .75f, .75f);
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Ignore(player);
                 UpdateInterface(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
+#pragma warning disable CS0618
                 player.ShowHint("", false, 1, true); //Clear Hints
+#pragma warning restore CS0618
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.StopIgnore(player);
             }
         }
 
@@ -929,7 +936,9 @@ namespace Gamer.SNAV
             list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
             while (list.Count < 65)
                 list.Insert(0, "");
+#pragma warning disable CS0618
             player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", true, 11, true);
+#pragma warning restore CS0618
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(list);
         }
         public static Room[,] GetRooms(float pos)
