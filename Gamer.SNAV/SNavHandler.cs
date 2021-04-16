@@ -10,6 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Exiled.API.Extensions;
+using Gamer.Diagnostics;
+using Gamer.API.CustomItem;
+using Exiled.CustomItems.API.Features;
+using Exiled.CustomItems.API.Spawn;
+using Scp914;
+using Interactables.Interobjects;
 
 namespace Gamer.SNAV
 {
@@ -144,9 +151,9 @@ namespace Gamer.SNAV
                 SNavRoomType.HS_TB,
                 new string[]
                 {
+                    "   |+|   ",
                     "   | |   ",
-                    "   | |   ",
-                    "   | |   "
+                    "   |~|   "
                 }
             },
             {
@@ -154,7 +161,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "         ",
+                    "!       !",
                     "‾‾‾‾‾‾‾‾‾"
                 }
             },
@@ -162,8 +169,8 @@ namespace Gamer.SNAV
                 SNavRoomType.HC_LT,
                 new string[]
                 {
-                    "___| |   ",
-                    "     |   ",
+                    "___|+|   ",
+                    "!    |   ",
                     "‾‾‾‾‾`   ",
                 }
             },
@@ -171,8 +178,8 @@ namespace Gamer.SNAV
                 SNavRoomType.HC_RT,
                 new string[]
                 {
-                    "   | |___",
-                    "   |     ",
+                    "   |+|___",
+                    "   |    !",
                     "   `‾‾‾‾‾"
                 }
             },
@@ -181,8 +188,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_____.   ",
-                    "     |   ",
-                    "‾‾‾| |   ",
+                    "!    |   ",
+                    "‾‾‾|~|   ",
                 }
             },
             {
@@ -190,16 +197,16 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "   ._____",
-                    "   |     ",
-                    "   | |‾‾‾",
+                    "   |    !",
+                    "   |~|‾‾‾",
                 }
             },
             {
                 SNavRoomType.IT_RL_T,
                 new string[]
                 {
-                    "___| |___",
-                    "         ",
+                    "___|+|___",
+                    "!       !",
                     "‾‾‾‾‾‾‾‾‾"
                 }
             },
@@ -208,42 +215,42 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "         ",
-                    "‾‾‾| |‾‾‾"
+                    "!       !",
+                    "‾‾‾|~|‾‾‾"
                 }
             },
             {
                 SNavRoomType.IT_TB_L,
                 new string[]
                 {
-                    "___| |   ",
-                    "     |   ",
-                    "‾‾‾| |   "
+                    "___|+|   ",
+                    "!    |   ",
+                    "‾‾‾|~|   "
                 }
             },
             {
                 SNavRoomType.IT_TB_R,
                 new string[]
                 {
-                    "   | |___",
-                    "   |     ",
-                    "   | |‾‾‾"
+                    "   |+|___",
+                    "   |    !",
+                    "   |~|‾‾‾"
                 }
             },
             {
                 SNavRoomType.IX,
                 new string[]
                 {
-                    "___| |___",
-                    "         ",
-                    "‾‾‾| |‾‾‾"
+                    "___|+|___",
+                    "!       !",
+                    "‾‾‾|~|‾‾‾"
                 }
             },
             {
                 SNavRoomType.END_T,
                 new string[]
                 {
-                    "|‾‾' '‾‾|",
+                    "|‾‾'+'‾‾|",
                     "|  END  |",
                     "|_______|"
                 }
@@ -254,7 +261,7 @@ namespace Gamer.SNAV
                 {
                     "|‾‾‾‾‾‾‾|",
                     "|  END  |",
-                    "|__. .__|"
+                    "|__.~.__|"
                 }
             },
             {
@@ -262,7 +269,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "|‾‾‾‾‾‾‾|",
-                    "|  END   ",
+                    "|  END  !",
                     "|_______|"
                 }
             },
@@ -271,7 +278,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "|‾‾‾‾‾‾‾|",
-                    "   END  |",
+                    "!  END  |",
                     "|_______|"
                 }
             },
@@ -280,7 +287,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     ".________",
-                    "|        ",
+                    "|       !",
                     "'‾‾‾‾‾‾‾‾"
                 }
             },
@@ -288,9 +295,9 @@ namespace Gamer.SNAV
                 SNavRoomType.SCP_939_TB,
                 new string[]
                 {
-                    "|‾‾' '‾‾|",
+                    "|‾‾'+'‾‾|",
                     "|  939  |",
-                    "|__. .__|"
+                    "|__.~.__|"
                 }
             },
             {
@@ -298,7 +305,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "|‾‾‾‾‾‾‾|",
-                    "   939   ",
+                    "!  939  !",
                     "|_______|"
                 }
             },
@@ -306,9 +313,9 @@ namespace Gamer.SNAV
                 SNavRoomType.EZ_HCZ_CHECKPOINT_TB,
                 new string[]
                 {
-                    ".__| |__.",
+                    ".__|+|__.",
                     "|   C   |",
-                    " ‾‾| |‾‾ "
+                    " ‾‾|~|‾‾ "
                 }
             },
             {
@@ -316,7 +323,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___|‾|___",
-                    "    C    ",
+                    "!   C   !",
                     "‾‾‾|_|‾‾‾"
                 }
             },
@@ -326,7 +333,7 @@ namespace Gamer.SNAV
                 {
                     "._______.",
                     "|   A   |",
-                    " ‾‾| |‾‾ "
+                    " ‾‾|~|‾‾ "
                 }
             },
             {
@@ -334,7 +341,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "   |‾|___",
-                    "   |A    ",
+                    "   |A   !",
                     "   |_|‾‾‾"
                 }
             },
@@ -342,7 +349,7 @@ namespace Gamer.SNAV
                 SNavRoomType.LCZ_A_T,
                 new string[]
                 {
-                    ".__| |__.",
+                    ".__|+|__.",
                     "|   A   |",
                     " ‾‾‾‾‾‾‾ "
                 }
@@ -352,7 +359,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___|‾|   ",
-                    "    A|   ",
+                    "!   A|   ",
                     "‾‾‾|_|   "
                 }
             },
@@ -362,7 +369,7 @@ namespace Gamer.SNAV
                 {
                     "._______.",
                     "|   B   |",
-                    " ‾‾| |‾‾ "
+                    " ‾‾|~|‾‾ "
                 }
             },
             {
@@ -370,7 +377,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "   |‾|___",
-                    "   |B    ",
+                    "   |B   !",
                     "   |_|‾‾‾"
                 }
             },
@@ -378,7 +385,7 @@ namespace Gamer.SNAV
                 SNavRoomType.LCZ_B_T,
                 new string[]
                 {
-                    ".__| |__.",
+                    ".__|+|__.",
                     "|   B   |",
                     " ‾‾‾‾‾‾‾ "
                 }
@@ -388,7 +395,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___|‾|   ",
-                    "    B|   ",
+                    "!   B|   ",
                     "‾‾‾|_|   "
                 }
             },
@@ -396,9 +403,9 @@ namespace Gamer.SNAV
                 SNavRoomType.NUKE_TB,
                 new string[]
                 {
-                    ".__| |   ",
+                    ".__|+|   ",
                     "|    |   ",
-                    " ‾‾| |   "
+                    " ‾‾|~|   "
                 }
             },
             {
@@ -406,7 +413,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "         ",
+                    "!       !",
                     "‾‾‾|_|‾‾‾"
                 }
             },
@@ -414,9 +421,9 @@ namespace Gamer.SNAV
                 SNavRoomType.SCP049_TB,
                 new string[]
                 {
-                    "   | ‾‾| ",
+                    "   |+‾‾| ",
                     "   | |‾  ",
-                    "   | |   "
+                    "   |~|   "
                 }
             },
             {
@@ -424,7 +431,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_|‾|_____",
-                    "         ",
+                    "!       !",
                     "‾‾‾‾‾‾‾‾‾"
                 }
             },
@@ -432,9 +439,9 @@ namespace Gamer.SNAV
                 SNavRoomType.HID_TB,
                 new string[]
                 {
-                    "|‾‾| |   ",
+                    "|‾‾|+|   ",
                     "|    |   ",
-                    "|__| |   "
+                    "|__|~|   "
                 }
             },
             {
@@ -442,7 +449,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "  ._ _.  ",
+                    "! ._ _. !",
                     "‾‾|___|‾‾"
                 }
             },
@@ -450,9 +457,9 @@ namespace Gamer.SNAV
                 SNavRoomType.COMPUTERS_UPSTAIRS_TB,
                 new string[]
                 {
-                    "|‾‾‾ ‾‾‾|",
+                    "|‾‾‾+‾‾‾|",
                     "|       |",
-                    "|___ ___|"
+                    "|___~___|"
                 }
             },
             {
@@ -460,7 +467,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "  _____  ",
+                    "! _____ !",
                     "|_______|"
                 }
             },
@@ -468,9 +475,9 @@ namespace Gamer.SNAV
                 SNavRoomType.TESLA_TB,
                 new string[]
                 {
-                    "   | |   ",
+                    "   |+|   ",
                     "   [ ]   ",
-                    "   | |   "
+                    "   |~|   "
                 }
             },
             {
@@ -478,7 +485,7 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___._.___",
-                    "         ",
+                    "!       !",
                     "‾‾‾`‾`‾‾‾"
                 }
             },
@@ -1416,28 +1423,69 @@ __|  /‾‾‾‾|   '  |
         public static string[] GetRoomString(SNavRoomType type) => Presets[type];
         public static string[] GetDoorRoomString(string[] data, Room room)
         {
-            //!=+
-            //! - Pionowe
-            //= - góra
-            //+ - dolne
-            int j = 0;
-            for (int i = 0; i < data.Length; i++)
+            if (room == null)
+                return data;
+            try
             {
+                //!=+
+                //! - Pionowe
+                //= - góra
+                //+ - dolne
                 var doors = room.Doors.ToList();
-                data[i] = data[i].Replace("!", $"<color={(doors.First().NetworkTargetState ? "green" : "blue")}>|</color>");
-                doors.RemoveAt(0);
-                if (doors.Count == 0)
-                    break;
-                data[i] = data[i].Replace("=", $"<color={(doors.First().NetworkTargetState ? "green" : "blue")}>_</color>");
-                doors.RemoveAt(0);
-                if (doors.Count == 0)
-                    break;
-                data[i] = data[i].Replace("+", $"<color={(doors.First().NetworkTargetState ? "green" : "blue")}>‾</color>");
-                doors.RemoveAt(0);
-                if (doors.Count == 0)
-                    break;
+                int j = 0;
+                int l = doors.Count;
+                for (int i = 0; i < data.Length; i++)
+                {
+                    if (doors.Count == 0)
+                        break;
+                    while (data[i].Contains("!"))
+                    {
+                        var door = doors.First();
+                        Log.Debug(door.name);
+                        Log.Debug(door.GetNametag());
+                        int index = data[i].IndexOf('!');
+                        data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
+                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//|
+                        doors.RemoveAt(0);
+                        j++;
+                        if (doors.Count == 0)
+                            break;
+                    }
+                    while (data[i].Contains("~"))
+                    {
+                        var door = doors.First();
+                        Log.Debug(door.name);
+                        Log.Debug(door.GetNametag());
+                        int index = data[i].IndexOf('~');
+                        data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
+                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//_
+                        doors.RemoveAt(0);
+                        j++;
+                        if (doors.Count == 0)
+                            break;
+                    }
+                    while (data[i].Contains("+"))
+                    {
+                        var door = doors.First();
+                        Log.Debug(door.name);
+                        Log.Debug(door.GetNametag());
+                        int index = data[i].IndexOf('+');
+                        data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
+                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//‾
+                        doors.RemoveAt(0);
+                        j++;
+                        if (doors.Count == 0)
+                            break;
+                    }
+                }
+                return data;
             }
-            return data;
+            catch(System.Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+                return data;
+            }
         }
 
         /// <summary>
