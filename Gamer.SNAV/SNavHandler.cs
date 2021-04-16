@@ -41,6 +41,7 @@ namespace Gamer.SNAV
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Ignore(player);
+                RequireUpdate.Add(player);
                 UpdateInterface(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
@@ -68,6 +69,7 @@ namespace Gamer.SNAV
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Ignore(player);
+                RequireUpdate.Add(player);
                 UpdateInterface(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
@@ -922,6 +924,9 @@ namespace Gamer.SNAV
                                 break;
                             case RoomType.LczCafe:
                                 Name = "   PC  ";
+                                break;
+                            case RoomType.LczArmory:
+                                Name = "ARMORY ";
                                 break;
                         }
                     }
