@@ -454,9 +454,9 @@ namespace Gamer.Mistaken.ColorfullEZ
                     (new Vector3(3.49f, 2.91f, -2.02f), new Vector3(6.25f, 20f, 0.05f), Vector3.up * 45f),
                     (new Vector3(3.49f, 3.26f, -2.02f), new Vector3(6.25f, 20f, 0.05f), Vector3.up * 45f),
 
-                    (new Vector3(-2f, 0.6f, -2.09f), new Vector3(5f, 87f, 0.05f), Vector3.up * 0f),
-                    (new Vector3(-2f, 2.91f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 0f),
-                    (new Vector3(-2f, 3.26f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2.014f, 0.6f, -2.09f), new Vector3(5f, 87f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2.014f, 2.91f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2.014f, 3.26f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 0f),
                     (new Vector3(1.99f, 0.6f, -2.09f), new Vector3(5f, 87f, 0.05f), Vector3.up * 180f),
                     (new Vector3(1.99f, 2.91f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 180f),
                     (new Vector3(1.99f, 3.26f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 180f),
@@ -470,7 +470,14 @@ namespace Gamer.Mistaken.ColorfullEZ
                     (new Vector3(-1.012f, 3.26f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 0f),
                     (new Vector3(0.988f, 0.6f, -2.805f), new Vector3(2.5f, 87f, 0.05f), Vector3.up * 180f),
                     (new Vector3(0.988f, 2.91f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 180f),
-                    (new Vector3(0.988f, 3.26f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 180f)
+                    (new Vector3(0.988f, 3.26f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 180f),
+
+                    (new Vector3(-1.515f, 0.6f, -2.518f), new Vector3(4.4f, 87f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-1.515f, 2.91f, -2.518f), new Vector3(4.4f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-1.515f, 3.26f, -2.518f), new Vector3(4.4f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(1.485f, 0.6f, -2.518f), new Vector3(4.4f, 87f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(1.485f, 2.91f, -2.518f), new Vector3(4.4f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(1.485f, 3.26f, -2.518f), new Vector3(4.4f, 20f, 0.05f), Vector3.up * 90f)
                 }
             }
         };
