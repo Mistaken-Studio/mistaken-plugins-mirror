@@ -522,7 +522,7 @@ namespace Gamer.SNAV
 
         private void Player_ActivatingWorkstation(Exiled.Events.EventArgs.ActivatingWorkstationEventArgs ev)
         {
-            if (ev.Player.Inventory.items.First(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301)
+            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
             {
                 Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "snavWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
                 ev.IsAllowed = false;
@@ -531,7 +531,7 @@ namespace Gamer.SNAV
 
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
-            if(ev.Player.Inventory.items.First(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301)
+            if(ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
             {
                 Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "snavWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
                 ev.IsAllowed = false;
