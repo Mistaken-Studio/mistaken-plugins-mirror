@@ -157,6 +157,8 @@
     <Compile Include="Code\AIRS\ReportUpdateEventHandler.cs" />
     <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
     <Compile Include="Code\Ban2\BansHandler.cs" />
+    <Compile Include="Code\ColorfullEZ\ColorfullEZHandler.cs" />
+    <Compile Include="Code\ColorfullEZ\ColorfullEZManager.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TeslaOnCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TestCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\FakeNickCommand.cs" />

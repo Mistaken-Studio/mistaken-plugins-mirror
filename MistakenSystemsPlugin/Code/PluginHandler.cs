@@ -56,6 +56,7 @@ namespace Gamer.Mistaken
             new Suicide.Handler(this);
             new CommandsExtender.CommandsHandler(this);
             new BetterRP.Handler(this);
+            new ColorfullEZ.ColorfullEZHandler(this);
             new Ranks.RanksHandler(this);
             new Ban2.BansHandler(this);
             new Ranks.RankPerksHandler(this);
