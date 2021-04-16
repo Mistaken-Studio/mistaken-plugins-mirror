@@ -334,8 +334,8 @@ namespace Gamer.Mistaken.ColorfullEZ
                     (new Vector3(10.154f, 3.02f, -1.09f), new Vector3(1f, 20f, 0.05f), Vector3.up * 180f)
                 }
             },
-            /*{
-                RoomType.EzUpstairsPcs, new List<(Vector3, Vector3, Vector3)>()
+            {
+                RoomType.EzConference, new List<(Vector3, Vector3, Vector3)>()
                 {
                     (new Vector3(10.142f, 0.55f, 1.64f), new Vector3(5.8f, 80f, 0.05f), Vector3.up * 180f),
                     (new Vector3(10.142f, 0.55f, -1.64f), new Vector3(5.8f, 80f, 0.05f), Vector3.up * 180f),
@@ -359,14 +359,120 @@ namespace Gamer.Mistaken.ColorfullEZ
                     (new Vector3(5.42f, 3.02f, -2.285f), new Vector3(43f, 20f, 0.05f), Vector3.up * 90f),
                     (new Vector3(6.41f, 3.02f, 2.291f), new Vector3(33f, 20f, 0.05f), Vector3.up * -90f),
 
-                    (new Vector3(-5.95f, 0.55f, -2.285f), new Vector3(43f, 80f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-5.95f, 0.55f, -2.285f), new Vector3(39f, 80f, 0.05f), Vector3.up * 90f),
                     (new Vector3(-6.41f, 0.55f, 2.291f), new Vector3(33f, 80f, 0.05f), Vector3.up * -90f),
-                    (new Vector3(-5.95f, 2.696f, -2.285f), new Vector3(43f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-5.95f, 2.696f, -2.285f), new Vector3(39f, 20f, 0.05f), Vector3.up * 90f),
                     (new Vector3(-6.41f, 2.696f, 2.291f), new Vector3(33f, 20f, 0.05f), Vector3.up * -90f),
-                    (new Vector3(-5.95f, 3.02f, -2.285f), new Vector3(43f, 20f, 0.05f), Vector3.up * 90f),
-                    (new Vector3(-6.41f, 3.02f, 2.291f), new Vector3(33f, 20f, 0.05f), Vector3.up * -90f)
+                    (new Vector3(-5.95f, 3.02f, -2.285f), new Vector3(39f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-6.41f, 3.02f, 2.291f), new Vector3(33f, 20f, 0.05f), Vector3.up * -90f),
+
+                    (new Vector3(-2.62f, 0.55f, 3.325f), new Vector3(9f, 80f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(2.614f, 0.55f, 3.325f), new Vector3(9f, 80f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(-2.62f, 2.696f, 3.325f), new Vector3(9f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(2.614f, 2.696f, 3.325f), new Vector3(9f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(-2.62f, 3.02f, 3.325f), new Vector3(9f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(2.614f, 3.02f, 3.325f), new Vector3(9f, 20f, 0.05f), Vector3.up * 180f),
+
+                    (new Vector3(1.893f, 0.55f, 4.26f), new Vector3(8f, 80f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-1.903f, 0.55f, 4.26f), new Vector3(8f, 80f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(1.893f, 2.696f, 4.26f), new Vector3(8f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-1.903f, 2.696f, 4.26f), new Vector3(8f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(1.893f, 3.02f, 4.26f), new Vector3(8f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-1.903f, 3.02f, 4.26f), new Vector3(8f, 20f, 0.05f), Vector3.up * -90f),
+
+                    (new Vector3(2.73f, 0.55f, 2.292f), new Vector3(1f, 80f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-2.73f, 0.55f, 2.292f), new Vector3(1f, 80f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(2.73f, 2.696f, 2.292f), new Vector3(1f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-2.73f, 2.696f, 2.292f), new Vector3(1f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(2.73f, 3.02f, 2.292f), new Vector3(1f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-2.73f, 3.02f, 2.292f), new Vector3(1f, 20f, 0.05f), Vector3.up * -90f),
+
+                    (new Vector3(0.6f, 0.55f, -2.286f), new Vector3(1f, 80f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-1.59f, 0.55f, -2.286f), new Vector3(1f, 80f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(0.6f, 2.696f, -2.286f), new Vector3(1f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-1.59f, 2.696f, -2.286f), new Vector3(1f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(0.6f, 3.02f, -2.286f), new Vector3(1f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-1.59f, 3.02f, -2.286f), new Vector3(1f, 20f, 0.05f), Vector3.up * 90f)
                 }
-            }*/
+            },
+            {
+                RoomType.EzIntercom, new List<(Vector3, Vector3, Vector3)>()
+                {
+                    (new Vector3(3.4855f, 0.6f, 3.2f), new Vector3(12.05f, 87f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(3.4855f, 2.91f, 3.2f), new Vector3(12.05f, 20f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(3.4855f, 3.26f, 3.2f), new Vector3(12.05f, 20f, 0.05f), Vector3.up * 226.2f),
+
+                    (new Vector3(2.574f, 0.6f, 4.0742f), new Vector3(1f, 87f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(4.41f, 0.6f, 2.314f), new Vector3(1f, 87f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(2.574f, 2.91f, 4.0742f), new Vector3(1f, 20f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(4.41f, 2.91f, 2.314f), new Vector3(1f, 20f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(2.574f, 3.26f, 4.0742f), new Vector3(1f, 20f, 0.05f), Vector3.up * 226.2f),
+                    (new Vector3(4.41f, 3.26f, 2.314f), new Vector3(1f, 20f, 0.05f), Vector3.up * 226.2f),
+
+                    (new Vector3(7.356f, 0.6f, 2.363f), new Vector3(25f, 87f, 0.05f), Vector3.up * -87.5f),
+                    (new Vector3(4.6f, 0.6f, 2.247f), new Vector3(1f, 87f, 0.05f), Vector3.up * -87.5f),
+                    (new Vector3(7.356f, 2.91f, 2.363f), new Vector3(25f, 20f, 0.05f), Vector3.up * -87.5f),
+                    (new Vector3(4.6f, 2.91f, 2.247f), new Vector3(1f, 20f, 0.05f), Vector3.up * -87.5f),
+                    (new Vector3(7.356f, 3.26f, 2.363f), new Vector3(25f, 20f, 0.05f), Vector3.up * -87.5f),
+                    (new Vector3(4.6f, 3.26f, 2.247f), new Vector3(1f, 20f, 0.05f), Vector3.up * -87.5f),
+
+                    (new Vector3(2.488f, 0.6f, 7.255f), new Vector3(27f, 87f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(2.488f, 0.6f, 4.27f), new Vector3(1f, 87f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(2.488f, 2.91f, 7.255f), new Vector3(27f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(2.488f, 2.91f, 4.27f), new Vector3(1f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(2.488f, 3.26f, 7.255f), new Vector3(27f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(2.488f, 3.26f, 4.27f), new Vector3(1f, 20f, 0.05f), Vector3.up * 180f),
+
+                    (new Vector3(10.158f, 0.6f, 1.74f), new Vector3(6.65f, 87f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(10.158f, 0.6f, -1.775f), new Vector3(6.65f, 87f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(10.158f, 2.91f, 1.74f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(10.158f, 2.91f, -1.775f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(10.158f, 3.26f, 1.74f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(10.158f, 3.26f, -1.775f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * 180f),
+
+                    (new Vector3(1.74f, 0.6f, 10.154f), new Vector3(6.65f, 87f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-1.775f, 0.6f, 10.154f), new Vector3(6.65f, 87f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(1.74f, 2.91f, 10.154f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-1.775f, 2.91f, 10.154f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(1.74f, 3.26f, 10.154f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-1.775f, 3.26f, 10.154f), new Vector3(6.65f, 20f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(-0.01f, 3.29f, 10.156f), new Vector3(8.75f, 12f, 0.05f), Vector3.up * -90f),
+                    (new Vector3(10.158f, 3.29f, -0.01f), new Vector3(8.75f, 12f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(-0.01f, 3.29f, -2.52f), new Vector3(8.8f, 10f, 0.05f), Vector3.up * 90f),
+
+                    (new Vector3(6.9f, 0.6f, -2.518f), new Vector3(30f, 87f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(6.9f, 2.91f, -2.518f), new Vector3(30f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(6.9f, 3.26f, -2.518f), new Vector3(30f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(-2.514f, 0.6f, 4.5f), new Vector3(51f, 87f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2.514f, 2.91f, 4.5f), new Vector3(51f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2.514f, 3.26f, 4.5f), new Vector3(51f, 20f, 0.05f), Vector3.up * 0f),
+
+                    (new Vector3(-2.274f, 0.6f, -1.258f), new Vector3(3.2f, 87f, 0.05f), Vector3.up * 45f),
+                    (new Vector3(-2.274f, 2.91f, -1.258f), new Vector3(3.2f, 20f, 0.05f), Vector3.up * 45f),
+                    (new Vector3(-2.274f, 3.26f, -1.258f), new Vector3(3.2f, 20f, 0.05f), Vector3.up * 45f),
+                    (new Vector3(3.49f, 0.6f, -2.02f), new Vector3(6.25f, 87f, 0.05f), Vector3.up * 45f),
+                    (new Vector3(3.49f, 2.91f, -2.02f), new Vector3(6.25f, 20f, 0.05f), Vector3.up * 45f),
+                    (new Vector3(3.49f, 3.26f, -2.02f), new Vector3(6.25f, 20f, 0.05f), Vector3.up * 45f),
+
+                    (new Vector3(-2f, 0.6f, -2.09f), new Vector3(5f, 87f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2f, 2.91f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-2f, 3.26f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(1.99f, 0.6f, -2.09f), new Vector3(5f, 87f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(1.99f, 2.91f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(1.99f, 3.26f, -2.09f), new Vector3(5f, 20f, 0.05f), Vector3.up * 180f),
+
+                    (new Vector3(2.49f, 0.6f, -1.52f), new Vector3(4.4f, 87f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(2.49f, 2.91f, -1.52f), new Vector3(4.4f, 20f, 0.05f), Vector3.up * 90f),
+                    (new Vector3(2.49f, 3.26f, -1.52f), new Vector3(4.4f, 20f, 0.05f), Vector3.up * 90f),
+
+                    (new Vector3(-1.012f, 0.6f, -2.805f), new Vector3(2.5f, 87f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-1.012f, 2.91f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(-1.012f, 3.26f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 0f),
+                    (new Vector3(0.988f, 0.6f, -2.805f), new Vector3(2.5f, 87f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(0.988f, 2.91f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 180f),
+                    (new Vector3(0.988f, 3.26f, -2.805f), new Vector3(2.5f, 20f, 0.05f), Vector3.up * 180f)
+                }
+            }
         };
     }
 }

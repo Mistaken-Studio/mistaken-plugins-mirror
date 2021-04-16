@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.ColorfullEZ
                         Mirror.NetworkServer.Spawn(gameObject);
                         var keycard = gameObject.GetComponent<Pickup>();
                         keycard.Locked = true;
-                        keycard.SetupPickup(ItemType.KeycardFacilityManager, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        keycard.SetupPickup(ItemType.KeycardO5, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                     }
                 }
             }
