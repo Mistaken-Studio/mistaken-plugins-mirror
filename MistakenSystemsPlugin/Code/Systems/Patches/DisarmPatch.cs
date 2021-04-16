@@ -8,7 +8,6 @@ using UnityEngine;
 using Exiled.API.Features;
 using Gamer.Mistaken.Utilities.APILib;
 using Mirror;
-using Exiled.Events.Handlers;
 using Exiled.Events.EventArgs;
 
 namespace Gamer.Mistaken.Systems.Patches
@@ -34,6 +33,15 @@ namespace Gamer.Mistaken.Systems.Patches
 					return false;
 				}
 			}
+			if(Server.Port == 7791)
+            {
+				if(handcuffs.MyReferenceHub.characterClassManager.CurRole.roleId == RoleType.Scp049)
+                {
+					__instance.ClearTarget();
+					handcuffs.NetworkCufferId = __instance.MyReferenceHub.queryProcessor.PlayerId;
+					return false;
+				}
+            }
 			return true;
 		}
 	}

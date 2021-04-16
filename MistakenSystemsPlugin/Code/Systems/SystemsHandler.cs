@@ -326,9 +326,33 @@ namespace Gamer.Mistaken.Systems
             Generators.Clear();
             Timing.RunCoroutine(InformCommanderDeath());
             Timing.RunCoroutine(NoVoidFailling());
+            if(Server.Port == 7791)
+                Timing.RunCoroutine(DoRoundLoop());
             //System.IO.File.WriteAllLines(Paths.Configs + "/cassie_words.txt", NineTailedFoxAnnouncer.singleton.voiceLines.Select(i => $"\"{i.apiName}\","));
 
             Map.ChangeUnitColor(0, "#888");
+        }
+        private IEnumerator<float> DoRoundLoop()
+        {
+            yield return Timing.WaitForSeconds(1);
+            bool wasCuffed = false;
+            while (Round.IsStarted)
+            {
+                foreach (var item in RealPlayers.List)
+                {
+                    if(item.Role != RoleType.Scp049)
+                    {
+                        Systems.CustomInfoHandler.Set(item, "cuff", null, false);
+                        break;
+                    }
+                    if (wasCuffed != item.IsCuffed)
+                        break;
+                    Systems.CustomInfoHandler.Set(item, "cuff", item.IsCuffed ? "<color=red><b>CUFFED</b></color>" : null, false);
+                    //Dodać aby Spekci widzieli że jest skuty, np ranga z new linem i w new linie wiadomość, ale jeszcze gdy gracz wejdzie, umrze, zrespi
+                    wasCuffed = item.IsCuffed;
+                }
+                yield return Timing.WaitForSeconds(1);
+            }
         }
         private IEnumerator<float> InformCommanderDeath()
         {
@@ -357,7 +381,8 @@ namespace Gamer.Mistaken.Systems
         private IEnumerator<float> NoVoidFailling()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
+            int rid = RoundPlus.RoundId; 
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 var start = DateTime.Now;
                 foreach (var player in RealPlayers.List.Where(p => p.Role != RoleType.Tutorial))
