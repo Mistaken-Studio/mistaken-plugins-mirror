@@ -65,7 +65,13 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     foreach (var item in Items)
                     {
-                        if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
+                        if (item.id == ItemType.KeycardO5)
+                        {
+                            ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
+                            ev.Player.AddItem(ItemType.KeycardO5);
+                            continue;
+                        }
+                        else if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
                         {
                             if (item.id == ItemType.KeycardFacilityManager || item.id == ItemType.KeycardContainmentEngineer)
                             {
