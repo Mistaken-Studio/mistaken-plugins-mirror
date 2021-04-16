@@ -17,7 +17,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
     {
         public override string Command => "stop";
 
-        public override string[] Aliases => new string[] { };
+        public override string[] Aliases => new string[] { "warheadstop", "stopwarhead", "stopwh", "swarhead" };
 
         public override string Description => "Stop Warhead";
 
