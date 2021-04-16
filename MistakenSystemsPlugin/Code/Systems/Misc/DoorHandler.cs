@@ -194,6 +194,9 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (ev.Target == null)
             {
+                var citem = CustomItems.CustomItemsHandler.GetCustomItem(ev.Shooter.CurrentItem);
+                if(citem != null)
+                    return;
                 var colliders = UnityEngine.Physics.OverlapSphere(ev.Position, 0.1f);
                 if (colliders == null)
                     return;

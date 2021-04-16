@@ -130,7 +130,7 @@ namespace Gamer.Taser
                     string bar = "";
                     for (int i = 1; i <= 20; i++)
                     {
-                        if (i * (100/20) > diff)
+                        if (i * (100 / 20) > diff)
                             bar += "<color=red>|</color>";
                         else
                             bar += "|";
