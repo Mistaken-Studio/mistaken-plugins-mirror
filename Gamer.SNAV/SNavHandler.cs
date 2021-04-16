@@ -1045,7 +1045,7 @@ __|  /‾‾‾‾|   '  |
                         string color = "green";
                         string Name = "  END  ";
                         var room = rooms[z, x];
-                        var tmp = GetRoomString(GetRoomType(room));
+                        var tmp = GetDoorRoomString(GetRoomString(GetRoomType(room)), room);
                         if (room == null)
                         {
                             toWrite[(z * 3) + 0] += tmp[0];
