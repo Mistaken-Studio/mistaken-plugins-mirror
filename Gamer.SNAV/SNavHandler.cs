@@ -154,8 +154,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "_________",
-                    "         "
+                    "         ",
+                    "‾‾‾‾‾‾‾‾‾"
                 }
             },
             {
@@ -163,8 +163,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___| |   ",
-                    "_____|   ",
-                    "         ",
+                    "     |   ",
+                    "‾‾‾‾‾`   ",
                 }
             },
             {
@@ -172,8 +172,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "   | |___",
-                    "   |_____",
-                    "         "
+                    "   |     ",
+                    "   `‾‾‾‾‾"
                 }
             },
             {
@@ -181,8 +181,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_____.   ",
-                    "___. |   ",
-                    "   | |   ",
+                    "     |   ",
+                    "‾‾‾| |   ",
                 }
             },
             {
@@ -190,8 +190,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "   ._____",
-                    "   | .___",
-                    "   | |   ",
+                    "   |     ",
+                    "   | |‾‾‾",
                 }
             },
             {
@@ -199,8 +199,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___| |___",
-                    "_________",
-                    "         "
+                    "         ",
+                    "‾‾‾‾‾‾‾‾‾"
                 }
             },
             {
@@ -208,8 +208,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "_________",
-                    "___. .___",
-                    "   | |   "
+                    "         ",
+                    "‾‾‾| |‾‾‾"
                 }
             },
             {
@@ -217,8 +217,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___| |   ",
-                    "___. |   ",
-                    "   | |   "
+                    "     |   ",
+                    "‾‾‾| |   "
                 }
             },
             {
@@ -226,8 +226,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "   | |___",
-                    "   | .___",
-                    "   | |   "
+                    "   |     ",
+                    "   | |‾‾‾"
                 }
             },
             {
@@ -235,15 +235,15 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___| |___",
-                    "___. .___",
-                    "   | |   "
+                    "         ",
+                    "‾‾‾| |‾‾‾"
                 }
             },
             {
                 SNavRoomType.END_T,
                 new string[]
                 {
-                    ".__| |__.",
+                    "|‾‾' '‾‾|",
                     "|  END  |",
                     "|_______|"
                 }
@@ -252,7 +252,7 @@ namespace Gamer.SNAV
                 SNavRoomType.END_B,
                 new string[]
                 {
-                    "._______.",
+                    "|‾‾‾‾‾‾‾|",
                     "|  END  |",
                     "|__. .__|"
                 }
@@ -261,8 +261,8 @@ namespace Gamer.SNAV
                 SNavRoomType.END_R,
                 new string[]
                 {
-                    "._______.",
-                    "|  END  .",
+                    "|‾‾‾‾‾‾‾|",
+                    "|  END   ",
                     "|_______|"
                 }
             },
@@ -270,8 +270,8 @@ namespace Gamer.SNAV
                 SNavRoomType.END_L,
                 new string[]
                 {
-                    "._______.",
-                    ".  END  |",
+                    "|‾‾‾‾‾‾‾|",
+                    "   END  |",
                     "|_______|"
                 }
             },
@@ -279,16 +279,16 @@ namespace Gamer.SNAV
                 SNavRoomType.CLASSD,
                 new string[]
                 {
-                    "._______.",
-                    "|_______.",
-                    "         "
+                    ".________",
+                    "|        ",
+                    "'‾‾‾‾‾‾‾‾"
                 }
             },
             {
                 SNavRoomType.SCP_939_TB,
                 new string[]
                 {
-                    ".__| |__.",
+                    "|‾‾' '‾‾|",
                     "|  939  |",
                     "|__. .__|"
                 }
@@ -297,8 +297,8 @@ namespace Gamer.SNAV
                 SNavRoomType.SCP_939_RL,
                 new string[]
                 {
-                    "._______.",
-                    ". _939_ .",
+                    "|‾‾‾‾‾‾‾|",
+                    "   939   ",
                     "|_______|"
                 }
             },
@@ -307,17 +307,17 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     ".__| |__.",
-                    "|__.C.__|",
-                    "   | |   "
+                    "|   C   |",
+                    " ‾‾| |‾‾ "
                 }
             },
             {
                 SNavRoomType.EZ_HCZ_CHECKPOINT_RL,
                 new string[]
                 {
-                    ".__|<mark>_</mark>|__.",
-                    ".__ C __.",
-                    "   |<mark>_</mark>|   "
+                    "___|‾|___",
+                    "    C    ",
+                    "‾‾‾|_|‾‾‾"
                 }
             },
             {
@@ -325,17 +325,17 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "._______.",
-                    "|__.A.__|",
-                    "   | |   "
+                    "|   A   |",
+                    " ‾‾| |‾‾ "
                 }
             },
             {
                 SNavRoomType.LCZ_A_L,
                 new string[]
                 {
-                    "   |<mark>_</mark>|__.",
-                    "   |A __.",
-                    "   |<mark>_</mark>|   "
+                    "   |‾|___",
+                    "   |A    ",
+                    "   |_|‾‾‾"
                 }
             },
             {
@@ -343,17 +343,17 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     ".__| |__.",
-                    "|___A___|",
-                    "         "
+                    "|   A   |",
+                    " ‾‾‾‾‾‾‾ "
                 }
             },
             {
                 SNavRoomType.LCZ_A_R,
                 new string[]
                 {
-                    ".__|<mark>_</mark>|   ",
-                    ".__ A|   ",
-                    "   |<mark>_</mark>|   "
+                    "___|‾|   ",
+                    "    A|   ",
+                    "‾‾‾|_|   "
                 }
             },
             {
@@ -361,17 +361,17 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "._______.",
-                    "|__.B.__|",
-                    "   | |   "
+                    "|   B   |",
+                    " ‾‾| |‾‾ "
                 }
             },
             {
                 SNavRoomType.LCZ_B_L,
                 new string[]
                 {
-                    "   |<mark>_</mark>|__.",
-                    "   |B __.",
-                    "   |<mark>_</mark>|   "
+                    "   |‾|___",
+                    "   |B    ",
+                    "   |_|‾‾‾"
                 }
             },
             {
@@ -379,17 +379,17 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     ".__| |__.",
-                    "|___B___|",
-                    "         "
+                    "|   B   |",
+                    " ‾‾‾‾‾‾‾ "
                 }
             },
             {
                 SNavRoomType.LCZ_B_R,
                 new string[]
                 {
-                    ".__|<mark>_</mark>|   ",
-                    ".__ B|   ",
-                    "   |<mark>_</mark>|   "
+                    "___|‾|   ",
+                    "    B|   ",
+                    "‾‾‾|_|   "
                 }
             },
             {
@@ -397,25 +397,25 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     ".__| |   ",
-                    "|<mark>__</mark>. |   ",
-                    "   | |   "
+                    "|    |   ",
+                    " ‾‾| |   "
                 }
             },
             {
                 SNavRoomType.NUKE_RL,
                 new string[]
                 {
-                    "._______.",
-                    ".__. .__.",
-                    "   |<mark>_</mark>|   "
+                    "_________",
+                    "         ",
+                    "‾‾‾|_|‾‾‾"
                 }
             },
             {
                 SNavRoomType.SCP049_TB,
                 new string[]
                 {
-                    "   | '<mark>_</mark>| ",
-                    "   | |   ",
+                    "   | ‾‾| ",
+                    "   | |‾  ",
                     "   | |   "
                 }
             },
@@ -423,45 +423,45 @@ namespace Gamer.SNAV
                 SNavRoomType.SCP049_RL,
                 new string[]
                 {
-                    ".|<mark>_</mark>|____.",
-                    "._______.",
-                    "         "
+                    "_|‾|_____",
+                    "         ",
+                    "‾‾‾‾‾‾‾‾‾"
                 }
             },
             {
                 SNavRoomType.HID_TB,
                 new string[]
                 {
-                    ".__| |   ",
+                    "|‾‾| |   ",
                     "|    |   ",
-                    "|__. |   "
+                    "|__| |   "
                 }
             },
             {
                 SNavRoomType.HID_RL,
                 new string[]
                 {
-                    "._______.",
-                    ". _____ .",
-                    "|__._.__|"
+                    "_________",
+                    "  ._ _.  ",
+                    "‾‾|___|‾‾"
                 }
             },
             {
                 SNavRoomType.COMPUTERS_UPSTAIRS_TB,
                 new string[]
                 {
-                    ".__| |__.",
+                    "|‾‾‾ ‾‾‾|",
                     "|       |",
-                    "|<mark>__</mark>. .__|"
+                    "|___ ___|"
                 }
             },
             {
                 SNavRoomType.COMPUTERS_UPSTAIRS_RL,
                 new string[]
                 {
-                    "._______.",
-                    ". ______.",
-                    "|______<mark>_</mark>|"
+                    "_________",
+                    "  _____  ",
+                    "|_______|"
                 }
             },
             {
@@ -478,8 +478,8 @@ namespace Gamer.SNAV
                 new string[]
                 {
                     "___._.___",
-                    "___._.___",
-                    "         "
+                    "         ",
+                    "‾‾‾`‾`‾‾‾"
                 }
             },
         };
@@ -1414,6 +1414,31 @@ __|  /‾‾‾‾|   '  |
         /// <param name="type">Room Type</param>
         /// <returns>Preset</returns>
         public static string[] GetRoomString(SNavRoomType type) => Presets[type];
+        public static string[] GetDoorRoomString(string[] data, Room room)
+        {
+            //!=+
+            //! - Pionowe
+            //= - góra
+            //+ - dolne
+            int j = 0;
+            for (int i = 0; i < data.Length; i++)
+            {
+                var doors = room.Doors.ToList();
+                data[i] = data[i].Replace("!", $"<color={(doors.First().NetworkTargetState ? "green" : "blue")}>|</color>");
+                doors.RemoveAt(0);
+                if (doors.Count == 0)
+                    break;
+                data[i] = data[i].Replace("=", $"<color={(doors.First().NetworkTargetState ? "green" : "blue")}>_</color>");
+                doors.RemoveAt(0);
+                if (doors.Count == 0)
+                    break;
+                data[i] = data[i].Replace("+", $"<color={(doors.First().NetworkTargetState ? "green" : "blue")}>‾</color>");
+                doors.RemoveAt(0);
+                if (doors.Count == 0)
+                    break;
+            }
+            return data;
+        }
 
         /// <summary>
         /// Room types
