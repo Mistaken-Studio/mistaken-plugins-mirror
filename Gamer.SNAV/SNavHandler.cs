@@ -1280,44 +1280,4 @@ namespace Gamer.SNAV
             LEFT
         }
     }
-
-    /*public class SNavClasic : Exiled.CustomItems.API.Features.CustomItem
-    {
-        public override uint Id { get; set; } = 1401;
-        public override string Name { get; set; } = "SNav-3000";
-        public override string Description { get; set; } = "Basic SNav";
-        public override SpawnProperties SpawnProperties { get; set; } = new SpawnProperties
-        {
-        };
-
-        public override float Durability => 1.401f;
-
-        protected override void SubscribeEvents()
-        {
-            base.SubscribeEvents();
-        }
-
-        protected override void UnsubscribeEvents()
-        {
-            base.UnsubscribeEvents();
-        }
-
-        public override ItemType Type => ItemType.WeaponManagerTablet;
-        public Vector3 Size = new Vector3();
-        public override void Spawn(Vector3 position)
-        {
-            var prefab = MapPlus.Spawn(new Inventory.SyncItemInfo
-            {
-                durability = Durability,
-                id = Type
-            }, position, Quaternion.identity, Size);
-            this.Spawned.Add(prefab);
-        }
-
-        public override void Spawn(Vector3 position, Inventory.SyncItemInfo item)
-        {
-            var prefab = MapPlus.Spawn(item, position, Quaternion.identity, Size);
-            this.Spawned.Add(prefab);
-        }
-    }*/
 }
