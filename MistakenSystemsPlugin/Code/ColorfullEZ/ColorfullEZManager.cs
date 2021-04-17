@@ -893,6 +893,109 @@ namespace Gamer.Mistaken.ColorfullEZ
                     (new Vector3(-10.13f, 2.71f, -1.09f), new Vector3(0.95f, 18f, 0.05f), Vector3.zero),//OutsideMiddleWall-Right-Middle-LeftEnding
                     #endregion
                 }
+            },
+            {
+                RoomType.HczEzCheckpoint, new List<(Vector3, Vector3, Vector3)>
+                {
+                    #region Column-Right
+                    #region Bottom
+                    (new Vector3(2.72f, 0.56f + 0.195f, -8.48f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Right-Bottom-Left-Bottom
+                    (new Vector3(2.72f, 3.03f + 0.195f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Bottom-Left-Top
+                    (new Vector3(2.72f, 2.71f + 0.195f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Bottom-Left-Middle
+                     
+                    (new Vector3(2.72f, 0.56f + 0.195f, -7.175f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Right-Bottom-Right-Bottom
+                    (new Vector3(2.72f, 3.03f + 0.195f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Bottom-Right-Top
+                    (new Vector3(2.72f, 2.71f + 0.195f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Bottom-Right-Middle
+                    
+                    (new Vector3(2.47f, 0.755f, -7.9f), new Vector3(10f, 81f, 0.05f), Vector3.zero),//Column-Right-Bottom-Bottom-Bottom
+                    (new Vector3(3.055f, 2.31f, -7.9f), new Vector3(10f, 81f, 0.05f), Vector3.zero),//Column-Right-Bottom-Top-Bottom
+                    #endregion
+                    #region Top
+                    (new Vector3(2.72f, 4.04f, -8.48f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Right-Top-Left-Bottom
+                    (new Vector3(2.72f, 6.5f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Top-Left-Top
+                    (new Vector3(2.72f, 6.18f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Top-Left-Middle
+                     
+                    (new Vector3(2.72f, 4.04f, -7.175f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Right-Top-Right-Bottom
+                    (new Vector3(2.72f, 6.5f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Top-Right-Top
+                    (new Vector3(2.72f, 6.18f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Right-Top-Right-Middle
+                    
+                    (new Vector3(3.055f, 4.45f, -7.9f), new Vector3(10f, 18f, 0.05f), Vector3.zero),//Column-Right-Top-Bottom-Bottom
+                    (new Vector3(3.055f, 4.77f, -7.9f), new Vector3(10f, 18f, 0.05f), Vector3.zero),//Column-Right-Top-Top-Bottom
+                    (new Vector3(3.055f, 6.01f, -7.9f), new Vector3(10f, 81f, 0.05f), Vector3.zero),//Column-Right-Top-Middle-Bottom
+                    #endregion
+                    #endregion
+                    #region Column-Left
+                    #region Bottom
+                    (new Vector3(-2.72f+0.0365f, 0.56f + 0.195f, -8.48f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Left-Bottom-Left-Bottom
+                    (new Vector3(-2.72f+0.0365f, 3.03f + 0.195f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Bottom-Left-Top
+                    (new Vector3(-2.72f+0.0365f, 2.71f + 0.195f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Bottom-Left-Middle
+                     
+                    (new Vector3(-2.72f+0.0365f, 0.56f + 0.195f, -7.175f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Left-Bottom-Right-Bottom
+                    (new Vector3(-2.72f+0.0365f, 3.03f + 0.195f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Bottom-Right-Top
+                    (new Vector3(-2.72f+0.0365f, 2.71f + 0.195f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Bottom-Right-Middle
+                    
+                    (new Vector3(-2.47f+0.0365f, 0.755f, -7.9f), new Vector3(10f, 81f, 0.05f), Vector3.zero),//Column-Left-Bottom-Bottom-Bottom
+                    (new Vector3(-3.055f+0.0365f, 2.31f, -7.9f), new Vector3(10f, 81f, 0.05f), Vector3.zero),//Column-Left-Bottom-Top-Bottom
+                    #endregion
+                    #region Top
+                    (new Vector3(-2.72f+0.0365f, 4.04f, -8.48f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Left-Top-Left-Bottom
+                    (new Vector3(-2.72f+0.0365f, 6.5f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Top-Left-Top
+                    (new Vector3(-2.72f+0.0365f, 6.18f, -8.48f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Top-Left-Middle
+                     
+                    (new Vector3(-2.72f+0.0365f, 4.04f, -7.175f), new Vector3(3.6f, 81f, 0.05f), Vector3.up * 90f),//Column-Left-Top-Right-Bottom
+                    (new Vector3(-2.72f+0.0365f, 6.5f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Top-Right-Top
+                    (new Vector3(-2.72f+0.0365f, 6.18f, -7.175f), new Vector3(3.6f, 18f, 0.05f), Vector3.up * 90f),//Column-Left-Top-Right-Middle
+                    
+                    (new Vector3(-3.055f+0.0365f, 4.45f, -7.9f), new Vector3(10f, 18f, 0.05f), Vector3.zero),//Column-Left-Top-Bottom-Bottom
+                    (new Vector3(-3.055f+0.0365f, 4.77f, -7.9f), new Vector3(10f, 18f, 0.05f), Vector3.zero),//Column-Left-Top-Top-Bottom
+                    (new Vector3(-3.055f+0.0365f, 6.01f, -7.9f), new Vector3(10f, 81f, 0.05f), Vector3.zero),//Column-Left-Top-Middle-Bottom
+                    #endregion
+                    #endregion
+                    #region Wall-Right
+                    #region Bottom
+                    (new Vector3(6.9f, 0.75f, -6.521f), new Vector3(40f, 81f, 0.05f), Vector3.up * -90f),//Wall-Right-Bottom-Bottom
+                    (new Vector3(2.379f+0.0365f, 0.75f, -6.521f), new Vector3(0.95f, 81f, 0.05f), Vector3.up * -90f),//Wall-Right-Bottom-Bottom-EndRight
+
+                    (new Vector3(6.9f, 2.9f, -6.521f), new Vector3(40f, 18f, 0.05f), Vector3.up * -90f),//Wall-Right-Bottom-Middle
+                    (new Vector3(2.379f+0.0365f, 2.9f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * -90f),//Wall-Right-Bottom-Middle-EndRight
+
+                    (new Vector3(6.9f, 3.225f, -6.521f), new Vector3(40f, 18f, 0.05f), Vector3.up * -90f),//Wall-Right-Bottom-Top
+                    (new Vector3(2.379f+0.0365f, 3.225f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * -90f),//Wall-Right-Bottom-Top-EndRight
+                    #endregion
+                    #region Top
+                    (new Vector3(6.3f+0.0365f, 4.03f, -6.521f), new Vector3(35f, 81f, 0.05f), Vector3.up * 90f),//Wall-Right-Top-Bottom
+                    (new Vector3(2.379f+0.0365f, 4.03f, -6.521f), new Vector3(0.95f, 81f, 0.05f), Vector3.up * 90f),//Wall-Right-Top-Bottom-EndRight
+
+                    (new Vector3(6.3f+0.0365f, 2.9f + 3.28f, -6.521f), new Vector3(35f, 18f, 0.05f), Vector3.up * 90f),//Wall-Right-Top-Middle
+                    (new Vector3(2.379f+0.0365f, 2.9f + 3.28f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * 90f),//Wall-Right-Top-Middle-EndRight
+
+                    (new Vector3(6.3f+0.0365f, 3.225f + 3.28f, -6.521f), new Vector3(35f, 18f, 0.05f), Vector3.up * 90f),//Wall-Right-Top-Top
+                    (new Vector3(2.379f+0.0365f, 3.225f + 3.28f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * 90f),//Wall-Right-Top-Top-EndRight
+                    #endregion
+                    #endregion
+                    #region Wall-Left
+                    #region Bottom
+                    (new Vector3(-6.3f, 0.75f, -6.521f), new Vector3(35f, 81f, 0.05f), Vector3.up * -90f),//Wall-Left-Bottom-Bottom
+                    (new Vector3(-2.379f, 0.75f, -6.521f), new Vector3(0.95f, 81f, 0.05f), Vector3.up * -90f),//Wall-Left-Bottom-Bottom-EndRight
+
+                    (new Vector3(-6.3f, 2.9f, -6.521f), new Vector3(35f, 18f, 0.05f), Vector3.up * -90f),//Wall-Left-Bottom-Middle
+                    (new Vector3(-2.379f, 2.9f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * -90f),//Wall-Left-Bottom-Middle-EndRight
+
+                    (new Vector3(-6.3f, 3.225f, -6.521f), new Vector3(35f, 18f, 0.05f), Vector3.up * -90f),//Wall-Left-Bottom-Top
+                    (new Vector3(-2.379f, 3.225f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * -90f),//Wall-Left-Bottom-Top-EndRight
+                    #endregion
+                    #region Top
+                    (new Vector3(-6.3f, 4.03f, -6.521f), new Vector3(35f, 81f, 0.05f), Vector3.up * 90f),//Wall-Left-Top-Bottom
+                    (new Vector3(-2.379f, 4.03f, -6.521f), new Vector3(0.95f, 81f, 0.05f), Vector3.up * 90f),//Wall-Left-Top-Bottom-EndRight
+
+                    (new Vector3(-6.3f, 2.9f + 3.28f, -6.521f), new Vector3(35f, 18f, 0.05f), Vector3.up * 90f),//Wall-Left-Top-Middle
+                    (new Vector3(-2.379f, 2.9f + 3.28f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * 90f),//Wall-Left-Top-Middle-EndRight
+
+                    (new Vector3(-6.3f, 3.225f + 3.28f, -6.521f), new Vector3(35f, 18f, 0.05f), Vector3.up * 90f),//Wall-Left-Top-Top
+                    (new Vector3(-2.379f, 3.225f + 3.28f, -6.521f), new Vector3(0.95f, 18f, 0.05f), Vector3.up * 90f),//Wall-Left-Top-Top-EndRight
+                    #endregion
+                    #endregion
+                }
             }
         };
     }
