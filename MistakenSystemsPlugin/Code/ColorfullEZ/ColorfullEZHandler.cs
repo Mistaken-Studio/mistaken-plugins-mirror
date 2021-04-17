@@ -27,7 +27,21 @@ namespace Gamer.Mistaken.ColorfullEZ
 
         private void Server_WaitingForPlayers()
         {
-
+            var tmp = new ItemType[]
+            {
+                ItemType.KeycardO5,
+                ItemType.KeycardScientist,
+                ItemType.KeycardScientistMajor,
+                ItemType.KeycardSeniorGuard,
+                ItemType.KeycardZoneManager,
+                ItemType.KeycardNTFLieutenant,
+                ItemType.KeycardNTFCommander,
+                ItemType.KeycardJanitor,
+                ItemType.KeycardGuard,
+                ItemType.KeycardFacilityManager,
+                ItemType.KeycardContainmentEngineer
+            };
+            var card = tmp[UnityEngine.Random.Range(0, tmp.Length)];
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
                 foreach (var item in roomObject.Value)
@@ -46,7 +60,7 @@ namespace Gamer.Mistaken.ColorfullEZ
                         Mirror.NetworkServer.Spawn(gameObject);
                         var keycard = gameObject.GetComponent<Pickup>();
                         keycard.Locked = true;
-                        keycard.SetupPickup(ItemType.KeycardO5, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        keycard.SetupPickup(card, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                     }
                 }
             }
