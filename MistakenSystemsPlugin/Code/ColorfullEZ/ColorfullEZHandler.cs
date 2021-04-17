@@ -17,15 +17,15 @@ namespace Gamer.Mistaken.ColorfullEZ
 
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
 
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
 
-        private void Server_RoundStarted()
+        private void Server_WaitingForPlayers()
         {
 
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
