@@ -23,7 +23,7 @@ namespace Gamer.Mistaken.Suicide
             var player = sender.GetPlayer();
             if (player.IsHuman)
             {
-                if (args.Contains("-force"))
+                if (args.Contains("-force") && false)
                 {
                     if (
                         player.Inventory.availableItems.Any(i => i.id == ItemType.GunMP7) ||
