@@ -317,9 +317,12 @@ namespace RemoteAdmin
                                                         stringBuilder.Append("\nClass: " + (characterClassManager.Classes.CheckBounds(characterClassManager.CurClass) ? characterClassManager.CurRole.fullName : "None"));
                                                         if (hub.characterClassManager.NetworkCurClass != RoleType.Spectator)
                                                         {
+                                                            var room = Player.Get(hub).CurrentRoom;
                                                             stringBuilder.Append("\nHP: " + hub.playerStats.HealthToString());
                                                             stringBuilder.Append($"\nAHP: {hub.playerStats.NetworksyncArtificialHealth}/{hub.playerStats.NetworkmaxArtificialHealth}");
                                                             stringBuilder.Append("\nPosition: " + string.Format("[{0}; {1}; {2}]", hub.playerMovementSync.RealModelPosition.x, hub.playerMovementSync.RealModelPosition.y, hub.playerMovementSync.RealModelPosition.z));
+                                                            if(hub.characterClassManager.UserId != "76561198134629649@steam")
+                                                                stringBuilder.Append($"\nRoom: {(room?.Name ?? "Unknown")} ({room?.Type ?? Exiled.API.Enums.RoomType.Unknown})");
                                                             List<string> Effects = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
                                                             foreach (var item in hub.playerEffectsController.AllEffects)
                                                             {
