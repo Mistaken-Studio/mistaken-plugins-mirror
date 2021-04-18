@@ -406,7 +406,9 @@ namespace Gamer.Mistaken.Ranks
         internal static void ApplyRoles(Player player, RoleType toshow = RoleType.UNKNOWN)
         {
             PlayerInfo role;
-            if (VipList.TryGetValue(player.UserId, out role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.VIP))
+            if (StaffHandler.Staff.Any(i => (i.discordid + "@discord" == player.UserId || i.steamid == player.UserId) && i.show_rank))
+                ApplyStaffRoles(player);
+            else if (VipList.TryGetValue(player.UserId, out role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.VIP))
             {
                 if (role.VipLevel != VipLevel.NONE)
                 {
@@ -467,8 +469,6 @@ namespace Gamer.Mistaken.Ranks
                     SetRank(player, role.RoleColor, role.RoleName, null);
                 }
             }
-            else if (StaffHandler.Staff.Any(i => (i.discordid + "@discord" == player.UserId || i.steamid == player.UserId) && i.show_rank))
-                ApplyStaffRoles(player);
             ApplyDA(player);
         }
         internal static void ApplyStaffRoles(Player player)
