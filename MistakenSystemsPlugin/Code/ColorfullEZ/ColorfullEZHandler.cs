@@ -42,12 +42,15 @@ namespace Gamer.Mistaken.ColorfullEZ
                 ItemType.KeycardContainmentEngineer
             };
             var card = tmp[UnityEngine.Random.Range(0, tmp.Length)];
+            int a = 0;
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
-                foreach (var item in roomObject.Value)
+                foreach (var room in MapPlus.Rooms.Where(x => x.Type == roomObject.Key))
                 {
-                    foreach (var room in MapPlus.Rooms.Where(x => x.Type == roomObject.Key))
+                    Log.Debug($"[ColorfullEZ] Spawning {roomObject.Key}, {roomObject.Value.Count} keycards");
+                    foreach (var item in roomObject.Value)
                     {
+
                         var basePos = room.Position;
                         var offset = item.Item1;
                         offset = room.transform.forward * -offset.x + room.transform.right * -offset.z + Vector3.up * offset.y;
@@ -61,9 +64,11 @@ namespace Gamer.Mistaken.ColorfullEZ
                         var keycard = gameObject.GetComponent<Pickup>();
                         keycard.Locked = true;
                         keycard.SetupPickup(card, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        a++;
                     }
                 }
             }
+            Log.Debug($"[ColorfullEZ] Spawned {a} keycards");
         }
 
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
