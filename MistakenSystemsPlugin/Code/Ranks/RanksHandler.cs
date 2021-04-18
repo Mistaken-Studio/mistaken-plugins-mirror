@@ -467,7 +467,8 @@ namespace Gamer.Mistaken.Ranks
                     SetRank(player, role.RoleColor, role.RoleName, null);
                 }
             }
-
+            else if (StaffHandler.Staff.Any(i => (i.discordid + "@discord" == player.UserId || i.steamid == player.UserId) && i.show_rank))
+                ApplyStaffRoles(player);
             ApplyDA(player);
         }
         internal static void ApplyStaffRoles(Player player)

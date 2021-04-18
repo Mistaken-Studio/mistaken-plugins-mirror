@@ -171,6 +171,7 @@ namespace Gamer.Mistaken.Systems.Staff
             public string discordid;
             public int active;
             public ulong slperms;
+            public bool show_rank;
         }
     }
 
