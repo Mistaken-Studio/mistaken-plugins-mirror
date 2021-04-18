@@ -155,7 +155,6 @@ namespace Gamer.Mistaken.Systems.Staff
             Staff = JsonConvert.DeserializeObject<UsersInfo>(Encoding.Default.GetString(e.Result)).users;
         }
 
-
         public class UsersInfo
         {
             public UserInfo[] users;
