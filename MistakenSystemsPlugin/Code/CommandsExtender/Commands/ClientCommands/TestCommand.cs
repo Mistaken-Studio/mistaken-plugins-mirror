@@ -98,8 +98,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     break;
                 case "spawn":
                     {
-                        if (keycard.ContainsKey(player))
-                            keycard[player].Delete();
+                        try
+                        {
+                            if (keycard.ContainsKey(player))
+                                keycard[player]?.Delete();
+                        }
+                        catch { }
                         var basePos = player.CurrentRoom.Position;
                         var offset = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
                         offset = player.CurrentRoom.transform.forward * -offset.x + player.CurrentRoom.transform.right * -offset.z + Vector3.up * offset.y;
