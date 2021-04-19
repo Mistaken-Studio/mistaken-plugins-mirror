@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Interfaces;
+using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using System;
@@ -27,7 +28,6 @@ namespace Gamer.Mistaken.ColorfullEZ
 
         private void Server_WaitingForPlayers()
         {
-
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
                 foreach (var item in roomObject.Value)
@@ -45,7 +45,7 @@ namespace Gamer.Mistaken.ColorfullEZ
                         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         Mirror.NetworkServer.Spawn(gameObject);
                         var keycard = gameObject.GetComponent<Pickup>();
-                        keycard.Locked = true;
+                        //keycard.Locked = true;
                         keycard.SetupPickup(ItemType.KeycardO5, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                     }
                 }
