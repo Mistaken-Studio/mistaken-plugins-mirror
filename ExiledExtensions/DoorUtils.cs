@@ -57,9 +57,9 @@ namespace Gamer.Utilities
             }
         }
 
-        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation) => 
-            SpawnDoor(type, name, position, Quaternion.Euler(rotation));
-        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Quaternion rotation)
+        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation, Vector3? size = null) => 
+            SpawnDoor(type, name, position, Quaternion.Euler(rotation), size ?? Vector3.one);
+        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Quaternion rotation, Vector3 size)
         {
             if(type == DoorType.AIRLOCK || type == DoorType.CHECKPOINT)
             {
@@ -68,6 +68,7 @@ namespace Gamer.Utilities
             else
             {
                 DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, rotation);
+                doorVariant.transform.localScale = size;
                 if (doorVariant is BasicDoor door)
                     door._portalCode = 1;
                 if (!string.IsNullOrEmpty(name))
