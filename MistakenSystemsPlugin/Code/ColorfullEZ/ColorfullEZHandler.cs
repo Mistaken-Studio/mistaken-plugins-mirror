@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.ColorfullEZ
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
-        private static void GetKeycard()
+        private static ItemType GetKeycard()
         {
             var tmp = new ItemType[]
             {
@@ -41,11 +41,10 @@ namespace Gamer.Mistaken.ColorfullEZ
                 ItemType.KeycardFacilityManager,
                 ItemType.KeycardContainmentEngineer
             };
-            tmp[UnityEngine.Random.Range(0, tmp.Length)];
+            return tmp[UnityEngine.Random.Range(0, tmp.Length)];
         }
         private void Server_WaitingForPlayers()
         {
-
             var card = GetKeycard();
             int a = 0;
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
