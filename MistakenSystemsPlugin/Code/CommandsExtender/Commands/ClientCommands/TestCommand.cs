@@ -18,7 +18,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
     {       
         public override string Description => "DEV STUFF";
         public override string Command => "test";
-        internal static Pickup keycard = null;
+        internal static Dictionary<Player, Pickup> keycard = new Dictionary<Player, Pickup>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
@@ -98,8 +98,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     break;
                 case "spawn":
                     {
-                        if (keycard != null)
-                            keycard.Delete();
+                        if (keycard.ContainsKey(player))
+                            keycard[player].Delete();
                         var basePos = player.CurrentRoom.Position;
                         var offset = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
                         offset = player.CurrentRoom.transform.forward * -offset.x + player.CurrentRoom.transform.right * -offset.z + Vector3.up * offset.y;
@@ -110,8 +110,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         gameObject.transform.rotation = Quaternion.Euler(player.CurrentRoom.transform.eulerAngles + new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])));
                         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         Mirror.NetworkServer.Spawn(gameObject);
-                        keycard = gameObject.GetComponent<Pickup>();
-                        keycard.SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        keycard[player] = gameObject.GetComponent<Pickup>();
+                        keycard[player].SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                         return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "", player.CurrentRoom.Type.ToString() + "" };
                     }
                 case "heh":
