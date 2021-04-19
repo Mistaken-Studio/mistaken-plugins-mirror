@@ -254,5 +254,15 @@ namespace Gamer.Mistaken.CassieRoom
         {
             door.ServerChangeLock((DoorLockReason)type, active);
         }
+
+        public static readonly List<(Vector3 Pos, Vector3 Size, Vector3 Rot)> Doors = new List<(Vector3 Pos, Vector3 Size, Vector3 Rot)>()
+        {
+            //spawn 183.4 993.5 -73 0 0 90 1 1 1
+            (new Vector3(183.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(185f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(195f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(193.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(188.1f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+        };
     }
 }
