@@ -21,6 +21,10 @@ namespace Gamer.Taser
     public class TaserHandler : Module
     {
         internal static readonly Vector3 Size = new Vector3(.75f, .75f, .75f);
+        internal static readonly HashSet<ItemType> usableItems = new HashSet<ItemType>()
+        { 
+            ItemType.MicroHID, ItemType.Medkit, ItemType.Painkillers, ItemType.SCP018, ItemType.SCP207, ItemType.SCP268, ItemType.SCP500, ItemType.GrenadeFrag, ItemType.GrenadeFlash, ItemType.Adrenaline
+        };
         /// <summary>
         /// USP that applies some effects on target.
         /// </summary>
@@ -96,7 +100,7 @@ namespace Gamer.Taser
                             targetPlayer.EnableEffect<CustomPlayerEffects.Deafened>(10);
                             targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
                             targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
-                            if (targetPlayer.CurrentItemIndex != -1)
+                            if (targetPlayer.CurrentItemIndex != -1 && !usableItems.Contains(targetPlayer.CurrentItem.id))
                                 targetPlayer.DropItem(targetPlayer.CurrentItem);
                             RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
                             targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
