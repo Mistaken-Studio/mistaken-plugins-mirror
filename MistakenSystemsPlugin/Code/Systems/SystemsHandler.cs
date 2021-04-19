@@ -165,42 +165,34 @@ namespace Gamer.Mistaken.Systems
 
         private void Server_WaitingForPlayers()
         {
-            if (Server.Port != 7790)
-                return;
-            Vector3 absolute = new Vector3(181f, 992.45f, -58.3f);
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = absolute;
-            gameObject.transform.localScale = new Vector3(18, 40, 0.05f);
-            gameObject.transform.rotation = Quaternion.Euler(90, 90, 0);
+            SpawnKeycard(ItemType.KeycardSeniorGuard, new Vector3(18, 40, 0.05f), new Vector3(90, 90, 0), new Vector3(181f, 992.461f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardSeniorGuard, new Vector3(30, 40, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.46f, -58.3f - 2f + 0.1f));
+            SpawnKeycard(ItemType.KeycardSeniorGuard, new Vector3(30, 40, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.46f, -58.3f + 2f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.45f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 45, 0), new Vector3(181f, 992.451f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 90, 0), new Vector3(181f, 992.452f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 135, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f));
+
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 90, 0), new Vector3(187.446f, 992.453f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 90, 0), new Vector3(174.56f, 992.453f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f - 6.45f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f + 6.45f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(187.446f, 992.453f, -58.3f + 0.1f + 4.45f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(174.56f, 992.453f, -58.3f + 0.1f - 4.45f));
+
+        }
+        public void SpawnKeycard(ItemType keycardType, Vector3 size, Vector3 rotation, Vector3 position)
+        {
+            GameObject  gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = position;
+            gameObject.transform.localScale = size;
+            gameObject.transform.rotation = Quaternion.Euler(rotation);
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             var keycard = gameObject.GetComponent<Pickup>();
-            keycard.SetupPickup(ItemType.KeycardNTFCommander, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            keycard.Locked = true;
-
-            absolute = new Vector3(181f, 992.45f, -58.3f - 2f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = absolute;
-            gameObject.transform.localScale = new Vector3(30, 40, 0.05f);
-            gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            keycard = gameObject.GetComponent<Pickup>();
-            keycard.SetupPickup(ItemType.KeycardNTFCommander, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            keycard.Locked = true;
-
-            absolute = new Vector3(181f, 992.45f, -58.3f + 2f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = absolute;
-            gameObject.transform.localScale = new Vector3(30, 40, 0.05f);
-            gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            keycard = gameObject.GetComponent<Pickup>();
-            keycard.SetupPickup(ItemType.KeycardNTFCommander, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            keycard.SetupPickup(keycardType, 200f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
             keycard.Locked = true;
         }
-
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
         {
             Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");
