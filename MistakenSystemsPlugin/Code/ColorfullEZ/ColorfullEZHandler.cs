@@ -28,12 +28,30 @@ namespace Gamer.Mistaken.ColorfullEZ
 
         private void Server_WaitingForPlayers()
         {
+            var tmp = new ItemType[]
+            {
+                ItemType.KeycardO5,
+                ItemType.KeycardScientist,
+                ItemType.KeycardScientistMajor,
+                ItemType.KeycardSeniorGuard,
+                ItemType.KeycardZoneManager,
+                ItemType.KeycardNTFLieutenant,
+                ItemType.KeycardNTFCommander,
+                ItemType.KeycardJanitor,
+                ItemType.KeycardGuard,
+                ItemType.KeycardFacilityManager,
+                ItemType.KeycardContainmentEngineer
+            };
+            var card = tmp[UnityEngine.Random.Range(0, tmp.Length)];
+            int a = 0;
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
-                foreach (var item in roomObject.Value)
+                foreach (var room in MapPlus.Rooms.Where(x => x.Type == roomObject.Key))
                 {
-                    foreach (var room in MapPlus.Rooms.Where(x => x.Type == roomObject.Key))
+                    Log.Debug($"[ColorfullEZ] Spawning {roomObject.Key}, {roomObject.Value.Count} keycards");
+                    foreach (var item in roomObject.Value)
                     {
+
                         var basePos = room.Position;
                         var offset = item.Item1;
                         offset = room.transform.forward * -offset.x + room.transform.right * -offset.z + Vector3.up * offset.y;
@@ -45,11 +63,13 @@ namespace Gamer.Mistaken.ColorfullEZ
                         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         Mirror.NetworkServer.Spawn(gameObject);
                         var keycard = gameObject.GetComponent<Pickup>();
-                        //keycard.Locked = true;
-                        keycard.SetupPickup(ItemType.KeycardO5, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        keycard.Locked = true;
+                        keycard.SetupPickup(card, 999f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        a++;
                     }
                 }
             }
+            Log.Debug($"[ColorfullEZ] Spawned {a} keycards");
         }
 
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
