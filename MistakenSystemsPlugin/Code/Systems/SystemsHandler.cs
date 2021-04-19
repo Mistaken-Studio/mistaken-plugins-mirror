@@ -120,21 +120,94 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined += this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-            Exiled.Events.Handlers.Scp049.FinishingRecall += Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle (() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
         }
 
-        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
+        
+        
+        private void Server_WaitingForPlayers()
         {
-            if (!ev.IsAllowed)
+            return; 
+            if (Server.Port != 7791)
                 return;
-            MEC.Timing.CallDelayed(1, () =>
+            MEC.Timing.CallDelayed(5, () =>
             {
-                if (!ev.Target.IsConnected)
-                    return;
-                if (ev.Target.Role != RoleType.Scp0492)
-                    return;
-                Exiled.Events.Handlers.Player.OnChangingRole(new Exiled.Events.EventArgs.ChangingRoleEventArgs(ev.Target, ev.Target.Role, new List<ItemType>(), true, false));
+                //.test wall 192 998 -73 0 0 0 2 8
+                SpawnWorkStations(new Vector3(192, 998, -73), new Vector3(0 - 180, 0 - 180, 0), new Vector3(2.1f, 8f, 0.1f));
+                SpawnWorkStations(new Vector3(182.2f, 998, -73), new Vector3(0 - 180, 0 - 180, 0), new Vector3(2.4f, 8f, 0.1f));
             });
+        }
+        private void SpawnWorkStations(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            SpawnWorkStation(pos - Vector3.right * 0.05f, rot, size);
+            SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x, rot.y + 180, rot.z), size);
+
+            SpawnWorkStation(pos - Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y, rot.z), size);
+            SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y + 180, rot.z), size);
+        }
+
+        private WorkStation prefab;
+        private void SpawnWorkStation(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            if (prefab == null)
+            {
+                foreach (var item in NetworkManager.singleton.spawnPrefabs)
+                {
+                    var ws = item.GetComponent<WorkStation>();
+                    if (ws)
+                    {
+                        prefab = ws;
+                    }
+                }
+            }
+            var spawned = GameObject.Instantiate(prefab.gameObject, pos, Quaternion.Euler(rot));
+            spawned.transform.localScale = size;
+            Log.Debug("Spawning");
+            GameObject.Destroy(spawned.GetComponent<WorkStation>());
+            NetworkServer.Spawn(spawned);
+        }
+
+        private void Server_WaitingForPlayers()
+        {
+            return; 
+            if (Server.Port != 7791)
+                return;
+            MEC.Timing.CallDelayed(5, () =>
+            {
+                //.test wall 192 998 -73 0 0 0 2 8
+                SpawnWorkStations(new Vector3(192, 998, -73), new Vector3(0 - 180, 0 - 180, 0), new Vector3(2.1f, 8f, 0.1f));
+                SpawnWorkStations(new Vector3(182.2f, 998, -73), new Vector3(0 - 180, 0 - 180, 0), new Vector3(2.4f, 8f, 0.1f));
+            });
+        }
+        private void SpawnWorkStations(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            SpawnWorkStation(pos - Vector3.right * 0.05f, rot, size);
+            SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x, rot.y + 180, rot.z), size);
+
+            SpawnWorkStation(pos - Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y, rot.z), size);
+            SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y + 180, rot.z), size);
+        }
+
+        private WorkStation prefab;
+        private void SpawnWorkStation(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            if (prefab == null)
+            {
+                foreach (var item in NetworkManager.singleton.spawnPrefabs)
+                {
+                    var ws = item.GetComponent<WorkStation>();
+                    if (ws)
+                    {
+                        prefab = ws;
+                    }
+                }
+            }
+            var spawned = GameObject.Instantiate(prefab.gameObject, pos, Quaternion.Euler(rot));
+            spawned.transform.localScale = size;
+            Log.Debug("Spawning");
+            GameObject.Destroy(spawned.GetComponent<WorkStation>());
+            NetworkServer.Spawn(spawned);
         }
 
         public override void OnDisable()
@@ -159,7 +232,60 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined -= this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-            Exiled.Events.Handlers.Scp049.FinishingRecall -= Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle < Exiled.Events.EventArgs.FinishingRecallEventArgs >((ev) => Scp049_FinishingRecall(ev));
+        }
+
+        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            MEC.Timing.CallDelayed(1, () =>
+            {
+                if (!ev.Target.IsConnected)
+                    return;
+                if (ev.Target.Role != RoleType.Scp0492)
+                    return;
+                Exiled.Events.Handlers.Player.OnChangingRole(new Exiled.Events.EventArgs.ChangingRoleEventArgs(ev.Target, ev.Target.Role, new List<ItemType>(), true, false));
+            });
+        }
+
+        private void Server_WaitingForPlayers()
+        {
+            if (Server.Port != 7790)
+                return;
+            Vector3 absolute = new Vector3(181f, 992.45f, -58.3f);
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = absolute;
+            gameObject.transform.localScale = new Vector3(18, 40, 0.05f);
+            gameObject.transform.rotation = Quaternion.Euler(90, 90, 0);
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            var keycard = gameObject.GetComponent<Pickup>();
+            keycard.SetupPickup(ItemType.KeycardNTFCommander, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            keycard.Locked = true;
+
+            absolute = new Vector3(181f, 992.45f, -58.3f - 2f);
+            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = absolute;
+            gameObject.transform.localScale = new Vector3(30, 40, 0.05f);
+            gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            keycard = gameObject.GetComponent<Pickup>();
+            keycard.SetupPickup(ItemType.KeycardNTFCommander, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            keycard.Locked = true;
+
+            absolute = new Vector3(181f, 992.45f, -58.3f + 2f);
+            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = absolute;
+            gameObject.transform.localScale = new Vector3(30, 40, 0.05f);
+            gameObject.transform.rotation = Quaternion.Euler(90, 0, 0);
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            keycard = gameObject.GetComponent<Pickup>();
+            keycard.SetupPickup(ItemType.KeycardNTFCommander, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            keycard.Locked = true;
         }
 
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
