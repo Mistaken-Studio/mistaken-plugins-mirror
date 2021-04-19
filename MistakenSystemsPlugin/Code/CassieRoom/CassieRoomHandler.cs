@@ -37,7 +37,7 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
             Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
         }
-
+       
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
         {
             WarheadStartButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
@@ -223,7 +223,7 @@ namespace Gamer.Mistaken.CassieRoom
             });
             return door;
         }
-
+            
         public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size)
         {
             var gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
