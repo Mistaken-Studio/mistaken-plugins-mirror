@@ -4,6 +4,7 @@ using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Mistaken.Systems.Staff;
 using Gamer.Utilities;
+using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
     class DevTestCommand : IBetterCommand
-    {       
+    {
+        private Pickup keycard;
+        private DoorVariant door;
         public override string Description => "DEV STUFF";
         public override string Command => "test";
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
@@ -97,12 +100,64 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     break;
                 case "spawn":
                     {
+                        if (keycard != null)
+                            keycard.Delete();
                         var basePos = player.CurrentRoom.Position;
                         var offset = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
                         offset = player.CurrentRoom.transform.forward * -offset.x + player.CurrentRoom.transform.right * -offset.z + Vector3.up * offset.y;
                         basePos += offset;
-                        ItemType.SCP018.Spawn(0, basePos);
-                        return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "" };
+                        GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+                        gameObject.transform.position = basePos;
+                        gameObject.transform.localScale = new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9]));
+                        gameObject.transform.rotation = Quaternion.Euler(player.CurrentRoom.transform.eulerAngles + new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])));
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        Mirror.NetworkServer.Spawn(gameObject);
+                        keycard = gameObject.GetComponent<Pickup>();
+                        keycard.SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "", player.CurrentRoom.Type.ToString() + "" };
+                    }
+                case "spawn2":
+                    {
+                        if (door != null)
+                            NetworkServer.Destroy(door.gameObject);
+                        var pos = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, "tmp_door", pos, new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])), new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9])));
+                        (door as BreakableDoor)._brokenPrefab = null;
+                        if (keycard != null)
+                            keycard.Delete();
+                        GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+                        gameObject.transform.position = pos - new Vector3(1.65f, 0, 0);
+                        gameObject.transform.localScale = new Vector3(float.Parse(args[7]) * 9, float.Parse(args[8]) * 410, float.Parse(args[9]) * 2);
+                        gameObject.transform.rotation = Quaternion.Euler(new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])));
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        Mirror.NetworkServer.Spawn(gameObject);
+                        keycard = gameObject.GetComponent<Pickup>();
+                        keycard.SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        return new string[] { door.transform.position.x + "", door.transform.position.y + "", door.transform.position.z + "" };
+                    }
+                case "spawn3":
+                    {
+                        if (keycard != null)
+                            keycard.Delete();
+                        var absolute = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+                        gameObject.transform.position = absolute;
+                        gameObject.transform.localScale = new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9]));
+                        gameObject.transform.rotation = Quaternion.Euler(player.CurrentRoom.transform.eulerAngles + new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])));
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        Mirror.NetworkServer.Spawn(gameObject);
+                        keycard = gameObject.GetComponent<Pickup>();
+                        keycard.SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        return new string[] { player.CurrentRoom.Type + "", absolute.x + "", absolute.y + "", absolute.z + "", player.CurrentRoom.Type.ToString() + "" };
+                    }
+                case "spawn4":
+                    {
+                        if (door != null)
+                            NetworkServer.Destroy(door.gameObject);
+                        var pos = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, "tmp_door", pos, new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])), new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9])));
+                        (door as BreakableDoor)._brokenPrefab = null;
+                        return new string[] { door.transform.position.x + "", door.transform.position.y + "", door.transform.position.z + "" };
                     }
                 case "heh":
                     {
