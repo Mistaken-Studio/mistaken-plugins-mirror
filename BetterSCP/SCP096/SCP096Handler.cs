@@ -64,24 +64,33 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
         private IEnumerator<float> Inform096Target()
         {
             yield return Timing.WaitForSeconds(1f);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
+            List<Player> added = new List<Player>();
+            Player[] lastAdded;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
-                foreach (var player in RealPlayers.List)
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+                lastAdded = added.ToArray();
+                added.Clear();
                 foreach (var scp096 in RealPlayers.Get(RoleType.Scp096))
                 {
                     if (scp096.Role == RoleType.Scp096 && scp096.ReferenceHub.scpsController.CurrentScp is PlayableScps.Scp096 scp096script && (scp096script.Enraged || scp096script.Enraging))
                     {
                         string targetMessage = plugin.ReadTranslation("Info_096Target", scp096script._targets.Count);
                         foreach (var item in scp096script._targets.ToArray())
-                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(Player.Get(item), "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, targetMessage);
+                        {
+                            var p = Player.Get(item);
+                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(p, "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, targetMessage);
+                            added.Add(p);
+                        }
                         var time = Mathf.RoundToInt(scp096script.EnrageTimeLeft).ToString();
                         if (time == "0")
                             time = "[REDACTED]";
                         Mistaken.Systems.GUI.PseudoGUIHandler.Set(scp096, "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, plugin.ReadTranslation("Info_096", scp096script._targets.Count, scp096script._targets.Count == 1 ? "" : "s", time));
+                        added.Add(scp096);
                     }
                 }
+                foreach (var player in lastAdded.Where(i => !added.Contains(i)))
+                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp096", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
 
                 yield return Timing.WaitForSeconds(1f);
             }
