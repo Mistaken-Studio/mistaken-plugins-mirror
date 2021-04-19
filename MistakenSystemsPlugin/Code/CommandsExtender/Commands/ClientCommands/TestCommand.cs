@@ -118,6 +118,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         keycard[player].SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                         return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "", player.CurrentRoom.Type.ToString() + "" };
                     }
+                case "colors":
+                    ColorfullEZ.ColorfullEZHandler.Generate((ItemType)byte.Parse(args[1]));
+                    break;
                 case "heh":
                     {
                         var p = Player.Get(args[1]);

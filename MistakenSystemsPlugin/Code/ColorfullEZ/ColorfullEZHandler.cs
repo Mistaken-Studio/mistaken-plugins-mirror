@@ -43,9 +43,9 @@ namespace Gamer.Mistaken.ColorfullEZ
             };
             return tmp[UnityEngine.Random.Range(0, tmp.Length)];
         }
-        private void Server_WaitingForPlayers()
+
+        internal static void Generate(ItemType card)
         {
-            var card = GetKeycard();
             int a = 0;
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
@@ -74,6 +74,10 @@ namespace Gamer.Mistaken.ColorfullEZ
                 }
             }
             Log.Debug($"[ColorfullEZ] Spawned {a} keycards");
+        }
+        private void Server_WaitingForPlayers()
+        {
+            Generate(GetKeycard());
         }
 
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
