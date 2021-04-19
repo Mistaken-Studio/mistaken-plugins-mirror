@@ -32,42 +32,20 @@ namespace Gamer.Mistaken.CassieRoom
        
         private void Server_WaitingForPlayers()
         {
-            //194.37 1002.871 -64.62
-            Vector3 pos = new Vector3(194.5f, 998f, -70f);
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = pos;
-            gameObject.transform.localScale = new Vector3(2, 2, 2);
-            gameObject.transform.rotation = Quaternion.Euler(0, -80, 65);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            Pickup pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(ItemType.Flashlight, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            pickup.Locked = true;
+            //CassieRoom-Outside
+            SpawnItem(ItemType.Flashlight, new Vector3(194.5f, 998f, -70f), new Vector3(0, -80, 65), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(194.5f, 998f, -70f), new Vector3(0, -30, 65), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(189f, 998f, -72.8f), new Vector3(0,  90, 90), new Vector3(2, 2, 2));
+            //Main-Outside
+            SpawnItem(ItemType.Flashlight, new Vector3(179f, 998f, -72.8f), new Vector3(0, 90, 45), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(176f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(182f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(173f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
 
-            pos = new Vector3(194.5f, 998f, -70f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = pos;
-            gameObject.transform.localScale = new Vector3(2, 2, 2);
-            gameObject.transform.rotation = Quaternion.Euler(0, -30, 65);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(ItemType.Flashlight, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            pickup.Locked = true;
-
-            pos = new Vector3(189f, 998f, -72.8f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = pos;
-            gameObject.transform.localScale = new Vector3(2, 2, 2);
-            gameObject.transform.rotation = Quaternion.Euler(0, 90, 90);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(ItemType.Flashlight, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            pickup.Locked = true;
             ItemType keycardType = ItemType.KeycardSeniorGuard;
-
-            //189.1 992.5 -73
             //MainDoor
             var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(189.1f, 992.5f, -73), Vector3.zero, Vector3.one);
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
@@ -83,39 +61,9 @@ namespace Gamer.Mistaken.CassieRoom
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(189.1f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            //189 999.95 -73 0 0 0 20 1020 2
-            pos = new Vector3(189f, 999.95f, -73f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = pos;
-            gameObject.transform.localScale = new Vector3(20, 1020, 2);
-            gameObject.transform.rotation = Quaternion.identity;
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(keycardType, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            pickup.Locked = true;
-            //189 1005 -73 0 0 0 80 500 2
-            pos = new Vector3(189f, 1005f, -73f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = pos;
-            gameObject.transform.localScale = new Vector3(80, 500, 2);
-            gameObject.transform.rotation = Quaternion.identity;
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(keycardType, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            pickup.Locked = true;
-            //189 1005 -84.5 90 90 0 100 2500 2
-            pos = new Vector3(189f, 1005f, -84.5f);
-            gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = pos;
-            gameObject.transform.localScale = new Vector3(100, 2500, 2);
-            gameObject.transform.rotation = Quaternion.Euler(90, 90, 0);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(keycardType, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            pickup.Locked = true;
+            SpawnItem(keycardType, new Vector3(189f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
+            SpawnItem(keycardType, new Vector3(189f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(80, 500, 2));
+            SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
 
             foreach (var item in Doors)
             {
@@ -125,17 +73,25 @@ namespace Gamer.Mistaken.CassieRoom
                 door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 (door as BreakableDoor)._brokenPrefab = null;
                 //Card
-                gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-                gameObject.transform.position = item.Pos - new Vector3(1.65f, 0, 0);
-                gameObject.transform.localScale = new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2);
-                gameObject.transform.rotation = Quaternion.Euler(item.Rot);
-                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                Mirror.NetworkServer.Spawn(gameObject);
-                pickup = gameObject.GetComponent<Pickup>();
-                pickup.SetupPickup(keycardType, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-                pickup.Locked = true;
+                SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0), item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
                 Log.Debug("Spawned Door");
             }
+
+            //View blocker
+            SpawnItem(ItemType.KeycardO5, new Vector3(189f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
+        }
+
+        public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            var gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = pos;
+            gameObject.transform.localScale = size;
+            gameObject.transform.rotation = Quaternion.Euler(rot);
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            var pickup = gameObject.GetComponent<Pickup>();
+            pickup.SetupPickup(type, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            pickup.Locked = true;
         }
 
         public static readonly List<(Vector3 Pos, Vector3 Size, Vector3 Rot)> Doors = new List<(Vector3 Pos, Vector3 Size, Vector3 Rot)>()
