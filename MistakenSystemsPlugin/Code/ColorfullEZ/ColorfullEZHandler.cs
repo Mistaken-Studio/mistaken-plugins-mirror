@@ -25,8 +25,7 @@ namespace Gamer.Mistaken.ColorfullEZ
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
-
-        private void Server_WaitingForPlayers()
+        private static ItemType GetKeycard()
         {
             var tmp = new ItemType[]
             {
@@ -42,7 +41,11 @@ namespace Gamer.Mistaken.ColorfullEZ
                 ItemType.KeycardFacilityManager,
                 ItemType.KeycardContainmentEngineer
             };
-            var card = tmp[UnityEngine.Random.Range(0, tmp.Length)];
+            return tmp[UnityEngine.Random.Range(0, tmp.Length)];
+        }
+        private void Server_WaitingForPlayers()
+        {
+            var card = GetKeycard();
             int a = 0;
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
@@ -61,6 +64,7 @@ namespace Gamer.Mistaken.ColorfullEZ
                         gameObject.transform.localScale = item.Item2;
                         gameObject.transform.rotation = Quaternion.Euler(room.transform.eulerAngles + item.Item3);
                         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        GameObject.DestroyImmediate(gameObject.GetComponent<Collider>());
                         Mirror.NetworkServer.Spawn(gameObject);
                         var keycard = gameObject.GetComponent<Pickup>();
                         keycard.Locked = true;
