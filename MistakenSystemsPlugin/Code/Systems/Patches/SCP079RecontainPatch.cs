@@ -61,6 +61,8 @@ namespace Gamer.Mistaken.Systems.Patches
 			SecondsLeft = -1;
 			Recontained = false;
 			ErrorMode = false;
+
+			SCP079RecontainInfoPatch.Restart();
 		}
 		[System.Obsolete("It's broken :/")]
 		private static IEnumerator<float> Recontain(bool forced)
@@ -336,6 +338,23 @@ namespace Gamer.Mistaken.Systems.Patches
 			Recontainer079.isLocked = false;
 			Handle = null;
 			yield break;
+		}
+	}
+
+	[HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
+	public static class SCP079RecontainInfoPatch
+	{
+		public static bool Recontaining { get; private set; } = false;
+
+		public static bool Prefix(bool forced)
+		{
+			Recontaining = true;
+			return true;
+		}
+
+		public static void Restart()
+		{
+			Recontaining = false;
 		}
 	}
 }

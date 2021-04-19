@@ -168,6 +168,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                     string blackout = $"<color=yellow>READY</color>";
                     string warheadStop = $"<color=yellow>READY</color>";
                     string cassie = $"<color=yellow>READY</color>";
+                    if (Systems.Patches.SCP079RecontainInfoPatch.Recontaining)
+                    {
+                        fakeSCP = $"<color=red>ERROR</color>";
+                        fakeMTF = $"<color=red>ERROR</color>";
+                        fakeCI = $"<color=red>ERROR</color>";
+                        fakeTesla = $"<color=red>ERROR</color>";
+                        fullScan = $"<color=red>ERROR</color>";
+                    } 
 
                     if (FakeSCPCommand.ReqLvl > player.Level + 1)
                         fakeSCP = $"<color=red>Require <color=yellow>{FakeSCPCommand.ReqLvl}</color> lvl</color>";
