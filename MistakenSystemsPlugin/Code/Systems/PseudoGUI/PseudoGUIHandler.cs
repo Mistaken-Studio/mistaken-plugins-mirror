@@ -48,6 +48,14 @@ namespace Gamer.Mistaken.Systems.GUI
             ToIgnore.Remove(p);
             ToUpdate.Add(p);
         }
+        public static void ClearAll(string key)
+        {
+            foreach (var item in CustomInfo.Where(i => i.Value.ContainsKey(key)))
+            {
+                CustomInfo[item.Key].Remove(key);
+                ToUpdate.Add(item.Key);
+            }
+        }
         public static void Set(Player player, string key, Position type, string content, float duration)
         {
             Set(player, key, type, content);
