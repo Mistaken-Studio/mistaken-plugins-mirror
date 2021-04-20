@@ -35,7 +35,7 @@ namespace Gamer.Mistaken.CassieRoom
             //CassieRoom-Outside
             SpawnItem(ItemType.Flashlight, new Vector3(194.5f, 998f, -70f), new Vector3(0, -80, 65), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(194.5f, 998f, -70f), new Vector3(0, -30, 65), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(189f, 998f, -72.8f), new Vector3(0,  90, 90), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(190f, 998f, -72.8f), new Vector3(0,  90, 90), new Vector3(2, 2, 2));
             //Main-Outside
             SpawnItem(ItemType.Flashlight, new Vector3(179f, 998f, -72.8f), new Vector3(0, 90, 45), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
@@ -54,22 +54,22 @@ namespace Gamer.Mistaken.CassieRoom
 
             ItemType keycardType = ItemType.KeycardSeniorGuard;
             //MainDoor
-            var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(189.1f, 992.5f, -73), Vector3.zero, Vector3.one);
+            var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
             (mainDoor as BreakableDoor)._brokenPrefab = null;
             mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             //UpperDoor
-            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(189.1f, 995.75f, -73), Vector3.zero, Vector3.one);
+            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(189.1f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
+            door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(189.1f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
+            door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            SpawnItem(keycardType, new Vector3(189f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
-            SpawnItem(keycardType, new Vector3(189f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(80, 500, 2));
+            SpawnItem(keycardType, new Vector3(190f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
+            SpawnItem(keycardType, new Vector3(190f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(80, 500, 2));
             SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
 
             foreach (var item in Doors)
@@ -85,7 +85,7 @@ namespace Gamer.Mistaken.CassieRoom
             }
 
             //View blocker
-            SpawnItem(ItemType.KeycardO5, new Vector3(189f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
+            SpawnItem(ItemType.KeycardO5, new Vector3(190f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
         }
 
         public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size)
@@ -107,8 +107,9 @@ namespace Gamer.Mistaken.CassieRoom
             (new Vector3(183.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(185f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(195f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(193.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(188.1f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(194.3f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(188f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(189f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
         };
     }
 }
