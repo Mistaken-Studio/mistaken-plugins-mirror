@@ -23,7 +23,16 @@ namespace Gamer.Taser
         internal static readonly Vector3 Size = new Vector3(.75f, .75f, .75f);
         internal static readonly HashSet<ItemType> usableItems = new HashSet<ItemType>()
         { 
-            ItemType.MicroHID, ItemType.Medkit, ItemType.Painkillers, ItemType.SCP018, ItemType.SCP207, ItemType.SCP268, ItemType.SCP500, ItemType.GrenadeFrag, ItemType.GrenadeFlash, ItemType.Adrenaline
+            ItemType.MicroHID, 
+            ItemType.Medkit, 
+            ItemType.Painkillers, 
+            ItemType.SCP018, 
+            ItemType.SCP207, 
+            ItemType.SCP268, 
+            ItemType.SCP500, 
+            ItemType.GrenadeFrag, 
+            ItemType.GrenadeFlash, 
+            ItemType.Adrenaline
         };
         /// <summary>
         /// USP that applies some effects on target.
