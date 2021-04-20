@@ -27,21 +27,41 @@ namespace Gamer.Mistaken.ColorfullEZ
         }
         private static ItemType GetKeycard()
         {
-            var tmp = new ItemType[]
+            /*var tmp = new ItemType[]
             {
-                ItemType.KeycardO5,
-                ItemType.KeycardScientist,
-                ItemType.KeycardScientistMajor,
-                ItemType.KeycardSeniorGuard,
-                ItemType.KeycardZoneManager,
-                ItemType.KeycardNTFLieutenant,
+                ItemType.KeycardO5, //
+                ItemType.KeycardScientist, //
+                ItemType.KeycardScientistMajor, //
+                ItemType.KeycardSeniorGuard, //
+                ItemType.KeycardZoneManager, //
+                ItemType.KeycardNTFLieutenant, //
                 ItemType.KeycardNTFCommander,
-                ItemType.KeycardJanitor,
-                ItemType.KeycardGuard,
-                ItemType.KeycardFacilityManager,
-                ItemType.KeycardContainmentEngineer
-            };
-            return tmp[UnityEngine.Random.Range(0, tmp.Length)];
+                ItemType.KeycardJanitor, //
+                ItemType.KeycardGuard, //
+                ItemType.KeycardFacilityManager, //
+                ItemType.KeycardContainmentEngineer //
+            };*/
+            int rand = UnityEngine.Random.Range(0, 100);
+            if (rand < 2)
+                return ItemType.KeycardContainmentEngineer;
+            if (rand < 5)
+                return ItemType.KeycardNTFLieutenant;
+            if (rand < 10)
+                return ItemType.KeycardJanitor;
+            if (rand < 20)
+                return ItemType.KeycardZoneManager;
+            if (rand < 30)
+                return ItemType.KeycardSeniorGuard;
+            if (rand < 40)
+                return ItemType.KeycardScientistMajor;
+            if (rand < 50)
+                return ItemType.KeycardScientist;
+            if (rand < 60)
+                return ItemType.KeycardGuard;
+            if (rand < 80)
+                return ItemType.KeycardFacilityManager;
+            return ItemType.KeycardO5;
+            //return tmp[UnityEngine.Random.Range(0, tmp.Length)];
         }
 
         internal static void Generate(ItemType card)
