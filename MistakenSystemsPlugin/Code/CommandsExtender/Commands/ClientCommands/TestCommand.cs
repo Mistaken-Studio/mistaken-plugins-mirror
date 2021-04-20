@@ -119,7 +119,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "", player.CurrentRoom.Type.ToString() + "" };
                     }
                 case "colors":
-                    ColorfullEZ.ColorfullEZHandler.Generate((ItemType)byte.Parse(args[1]));
+                    if(args.Length == 1)
+                        ColorfullEZ.ColorfullEZHandler.Generate(ColorfullEZ.ColorfullEZHandler.GetKeycard());
+                    else
+                        ColorfullEZ.ColorfullEZHandler.Generate((ItemType)byte.Parse(args[1]));
                     break;
                 case "heh":
                     {
