@@ -52,7 +52,14 @@ namespace Gamer.Mistaken.CassieRoom
             SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
 
-            ItemType keycardType = ItemType.KeycardSeniorGuard;
+            //150 1010 -45 -40 0 -90 1 1 1
+            for (int i = 0; i < 20; i++)
+            {
+                SpawnItem(ItemType.GunE11SR, new Vector3(150 + i*2, 1010, -45), new Vector3(-40, 0, -90), new Vector3(.01f, .01f, .01f));
+            }
+            
+
+            ItemType keycardType = ItemType.KeycardContainmentEngineer;
             //MainDoor
             var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
@@ -97,7 +104,7 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             var pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(type, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            pickup.SetupPickup(type, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
             pickup.Locked = true;
         }
 
