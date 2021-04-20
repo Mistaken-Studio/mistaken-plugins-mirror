@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Systems.Staff;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using MEC;
@@ -96,6 +97,8 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
         };
         private void CustomEvents_OnFirstTimeJoined(Exiled.Events.EventArgs.FirstTimeJoinedEventArgs ev)
         {
+            if (ev.Player.IsActiveDev())
+                return;
             string oldnick = ev.Player.Nickname.Trim();
             string newNick = ev.Player.Nickname.ToLower().Trim();
 

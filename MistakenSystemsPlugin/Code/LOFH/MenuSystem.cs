@@ -509,7 +509,7 @@ namespace Gamer.Mistaken.LOFH
                     {
                         string type = $"<color=white>[<color=red>{element.Type}</color>]</color>";
                         string threat = $"<color=red><<color=white>{element.ThreatLevel}</color>></color>";
-                        tmp.Add($"<color={RemoteAdmin.LOFHPatch.RoleToColor((RoleType)element.Role, false)}>{(element.Type == SL_PlayerType.USER ? "" : type)} <color=red>|<color=white>{element.Bans}</color>|</color>{(element.ThreatLevel == 0 ? "" : threat)} ({element.Id}) {element.Nickname} | {element.UserId}</color>");
+                        tmp.Add($"<color={LOFHPatch.RoleToColor((RoleType)element.Role, false)}>{(element.Type == SL_PlayerType.USER ? "" : type)} <color=red>|<color=white>{element.Bans}</color>|</color>{(element.ThreatLevel == 0 ? "" : threat)} ({element.Id}) {element.Nickname} | {element.UserId}</color>");
                     }
                     PlayerLists[item.Key] = string.Join("\n", tmp.ToArray());
                 }
@@ -541,7 +541,7 @@ namespace Gamer.Mistaken.LOFH
         }
 
         public static void ForceRefreshPlayerList(int menuId) => CurrentMenus.Where(i => i.Value == menuId).ToList().ForEach(p => ForceRefreshPlayerList(RealPlayers.Get(p.Key)));
-        private static void ForceRefreshPlayerList(Player p) => RemoteAdmin.LOFHPatch.Prefix("REQUEST_DATA PLAYER_LIST SILENT", p.Sender);
+        private static void ForceRefreshPlayerList(Player p) => LOFHPatch.Prefix("REQUEST_DATA PLAYER_LIST SILENT", p.Sender);
         
         private static string Generate(string name, int id) =>
             $"<color=green>[<color=orange>MENU</color>]<size=1><color=#00000000>({id})</color></size>{name}</color>\n";

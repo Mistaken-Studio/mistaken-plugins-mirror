@@ -21,9 +21,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if(!bool.TryParse(args[0], out bool value)) 
                 return new string[] { GetUsage() };
             if (!value) //false -> Default RA | true -> Modified RA
-                RemoteAdmin.LOFHPatch.DisabledFor.Add(sender.GetPlayer().UserId);
+                LOFH.LOFHPatch.DisabledFor.Add(sender.GetPlayer().UserId);
             else
-                RemoteAdmin.LOFHPatch.DisabledFor.Remove(sender.GetPlayer().UserId);
+                LOFH.LOFHPatch.DisabledFor.Remove(sender.GetPlayer().UserId);
             _s = true;
             return new string[] { "Done" };
         }

@@ -63,7 +63,7 @@ namespace Gamer.Mistaken.LOFH
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
             if (((CentralAuthPreauthFlags)ev.Flags).HasFlagFast(CentralAuthPreauthFlags.NorthwoodStaff) && !ev.UserId.IsDevUserId())
-                RemoteAdmin.LOFHPatch.DisabledFor.Add(ev.UserId);
+                LOFHPatch.DisabledFor.Add(ev.UserId);
             if (!LOFH.Country.ContainsKey(ev.UserId))
                 LOFH.Country.Add(ev.UserId, ev.Country);
             else
