@@ -261,8 +261,9 @@ namespace Gamer.Mistaken.CassieRoom
             (new Vector3(183.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(185f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(195f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(193.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(188.1f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(194.3f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(188f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
+            (new Vector3(189f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
         };
     }
 }
