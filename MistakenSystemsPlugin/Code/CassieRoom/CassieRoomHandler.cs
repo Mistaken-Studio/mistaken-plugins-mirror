@@ -38,12 +38,19 @@ namespace Gamer.Mistaken.CassieRoom
             SpawnItem(ItemType.Flashlight, new Vector3(189f, 998f, -72.8f), new Vector3(0,  90, 90), new Vector3(2, 2, 2));
             //Main-Outside
             SpawnItem(ItemType.Flashlight, new Vector3(179f, 998f, -72.8f), new Vector3(0, 90, 45), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(176f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(182f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(173f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.5f, -68.2f), new Vector3(0, 90, 0), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(176f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(182f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(173f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
+
+            SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(176f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(182f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(173f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
+            SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
 
             ItemType keycardType = ItemType.KeycardSeniorGuard;
             //MainDoor
