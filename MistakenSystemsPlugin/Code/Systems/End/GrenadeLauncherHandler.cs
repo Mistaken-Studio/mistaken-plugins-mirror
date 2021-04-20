@@ -67,7 +67,7 @@ namespace Gamer.Mistaken.Systems.End
                 Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Przeładowano", 3);
                 return false;
             }
-            public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject _)
+            public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject _, Vector3 position)
             {
                 int dur = (int)Math.Floor(this.GetInternalDurability(item));
                 Log.Debug($"Ammo: {dur} | {item.durability}");

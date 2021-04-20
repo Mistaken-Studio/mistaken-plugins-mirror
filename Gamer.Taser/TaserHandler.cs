@@ -14,6 +14,7 @@ using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
 using UnityEngine;
 using Gamer.RoundLoggerSystem;
+using Interactables.Interobjects.DoorUtils;
 
 namespace Gamer.Taser
 {
@@ -81,7 +82,7 @@ namespace Gamer.Taser
                 return false;
             }
             /// <inheritdoc/>
-            public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target)
+            public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target, Vector3 position)
             {
                 int dur = (int)this.GetInternalDurability(item);
                 if(!Cooldowns.TryGetValue(dur, out DateTime time))
@@ -118,7 +119,23 @@ namespace Gamer.Taser
                         }
                     }
                     else
-                        player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
+                    {
+                        var colliders = UnityEngine.Physics.OverlapSphere(position, 0.1f);
+                        if (colliders != null)
+                        {
+                            foreach (var _item in colliders)
+                            {
+                                if (!Mistaken.Systems.Misc.DoorHandler.Doors.TryGetValue(_item.gameObject, out var door) || door == null)
+                                    continue;
+                                door.ServerChangeLock(DoorLockReason.NoPower, true);
+                                MEC.Timing.CallDelayed(10, () => door.ServerChangeLock(DoorLockReason.NoPower, false));
+                                player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
+                            }
+                            player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
+                            RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit door");
+                            return false;
+                        }
+                    }
                 }
                 RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} didn't hit anyone");
                 return false;

@@ -39,7 +39,7 @@ namespace Gamer.API
             }
             public virtual void OnStartHolding(Player player, Inventory.SyncItemInfo item) { }
             public virtual void OnStopHolding(Player player, Inventory.SyncItemInfo item) { }
-            public virtual bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target) => true;
+            public virtual bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target, Vector3 position) => true;
             public virtual bool OnReload(Player player, Inventory.SyncItemInfo item) => true;
             public virtual bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
             {
