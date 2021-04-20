@@ -51,7 +51,7 @@ namespace Xname.ImpactGrenade
             {
                 MEC.Timing.CallDelayed(1f, () =>
                 {
-                    RoundLogger.Log("IMPACTGRENADE", "THROW", $"{player.PlayerToString()} threw an impact grenade");
+                    RoundLogger.Log("IMPACT GRENADE", "THROW", $"{player.PlayerToString()} threw an impact grenade");
                     Grenade grenade = UnityEngine.Object.Instantiate(player.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
                     grenade.fuseDuration = 999;
                     grenade.InitData(player.GrenadeManager, Vector3.zero, player.CameraTransform.forward, slow ? 0.75f : 1.5f);
@@ -78,6 +78,15 @@ namespace Xname.ImpactGrenade
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
+
+            public static void Give(Player player)
+            {
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    durability = 1.001f,
+                    id = ItemType.GrenadeFrag,
+                });
+            }
         }
         /// <inheritdoc/>
         public ImpHandler(IPlugin<IConfig> plugin) : base(plugin)
@@ -103,11 +112,11 @@ namespace Xname.ImpactGrenade
         {
             if (!grenades.Contains(ev.Grenade)) 
                 return;
-            RoundLogger.Log("IMPACTGRENADE", "EXPLODED", $"Impact grenade exploded");
+            RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
             foreach (Player player in ev.TargetToDamages.Keys.ToArray())
             {
                 ev.TargetToDamages[player] *= Damage_multiplayer;
-                RoundLogger.Log("IMPACTGRENADE", "HURT", $"{player.PlayerToString()} was hurt by an impact grenade");
+                RoundLogger.Log("IMPACT GRENADE", "HURT", $"{player.PlayerToString()} was hurt by an impact grenade");
             }
         }
 
@@ -119,7 +128,7 @@ namespace Xname.ImpactGrenade
             {
                 var locker = lockers[UnityEngine.Random.Range(0, lockers.Length)];
                 locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1.001f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
-                RoundLogger.Log("IMPACTGRENADE", "SPAWN", $"Impact grenade spawned");
+                RoundLogger.Log("IMPACT GRENADE", "SPAWN", $"Impact grenade spawned");
                 toSpawn--;
             }
         }

@@ -40,6 +40,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xname.ImpactGrenade", "Xnam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManager", "EventManager\EventManager.csproj", "{9B7459C9-1095-4D42-8D4C-AC2EEFAB73F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.CustomClasses", "Gamer.CustomClasses\Gamer.CustomClasses.csproj", "{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -168,6 +170,14 @@ Global
 		{9B7459C9-1095-4D42-8D4C-AC2EEFAB73F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B7459C9-1095-4D42-8D4C-AC2EEFAB73F5}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B7459C9-1095-4D42-8D4C-AC2EEFAB73F5}.Release|x86.Build.0 = Release|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB2DF5C2-7516-40EB-86D1-C6D1DA05A86C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

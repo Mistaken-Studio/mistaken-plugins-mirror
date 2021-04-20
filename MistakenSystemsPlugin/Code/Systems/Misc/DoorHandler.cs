@@ -17,7 +17,7 @@ using Interactables.Interobjects.DoorUtils;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
-    internal class DoorHandler : Module
+    public class DoorHandler : Module
     {
         public DoorHandler(PluginHandler p) : base(p)
         {
@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
         }
 
-        private readonly static Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
+        public readonly static Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
         private void Server_WaitingForPlayers()
         {
             Log.Debug("[DOOR] Starting");
