@@ -68,6 +68,7 @@ namespace Gamer.Utilities
             else
             {
                 DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, rotation);
+                GameObject.Destroy(doorVariant.GetComponent<DoorEventOpenerExtension>());
                 doorVariant.transform.localScale = size;
                 if (doorVariant is BasicDoor door)
                     door._portalCode = 1;
