@@ -11,6 +11,7 @@ using Gamer.Utilities;
 using Gamer.Diagnostics;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
+using Gamer.Mistaken.Systems.GUI;
 
 namespace Gamer.Mistaken.CassieRoom
 {
@@ -93,7 +94,7 @@ namespace Gamer.Mistaken.CassieRoom
 
             //View blocker
             SpawnItem(ItemType.KeycardO5, new Vector3(190f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
-        }
+        } 
 
         public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size)
         {
@@ -110,13 +111,12 @@ namespace Gamer.Mistaken.CassieRoom
 
         public static readonly List<(Vector3 Pos, Vector3 Size, Vector3 Rot)> Doors = new List<(Vector3 Pos, Vector3 Size, Vector3 Rot)>()
         {
-            //spawn 183.4 993.5 -73 0 0 90 1 1 1
             (new Vector3(183.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(185f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(195f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(194.3f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(188f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(189f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-        };
+        }; 
     }
 }
