@@ -78,7 +78,10 @@ namespace Xname.ImpactGrenade
             {
                 Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
-
+            /// <summary>
+            /// Gives Impact Grenade to <paramref name="player"/>
+            /// </summary>
+            /// <param name="player">Player that Impact Grenade should be given to</param>
             public static void Give(Player player)
             {
                 player.AddItem(new Inventory.SyncItemInfo
