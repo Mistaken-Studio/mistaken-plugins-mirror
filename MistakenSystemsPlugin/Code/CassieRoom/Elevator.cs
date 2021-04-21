@@ -48,7 +48,7 @@ namespace Gamer.Mistaken.CassieRoom
             // -15 1001 -42.5 0 0 90 2 1 1
             (new Vector3(-15f, 1001.34f, -43.1f), new Vector3(2, 1, 1), Vector3.forward * 90),
         };
-        public static readonly Vector3 Offset = new Vector3(-8.77f, 18.56f, 1.4f);
+        public static readonly Vector3 Offset = new Vector3(-8.77f, 18.56f, 0.9f);
         private void Server_WaitingForPlayers()
         {
             DoorDown = SpawnElevator(Vector3.zero);
@@ -58,7 +58,7 @@ namespace Gamer.Mistaken.CassieRoom
 
         public static DoorVariant SpawnElevator(Vector3 offset)
         {
-            ItemType keycardType = ItemType.KeycardFacilityManager;
+            ItemType keycardType = ItemType.KeycardNTFLieutenant;
 
             //Elevator
             //-15 1000 -41 0 90 0 1 1 1
