@@ -11,37 +11,34 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Gamer.Mistaken.ColorfullEZ
+namespace Xname.ColorfullEZ
 {
+    /// <inheritdoc/>
     public class ColorfullEZHandler : Module
     {
+        /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
+        /// <inheritdoc/>
+        public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
+        {
+        }
 
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
-
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
         }
+        /// <summary>
+        /// Returns random keycard
+        /// </summary>
+        /// <returns>Random keycard</returns>
         public static ItemType GetKeycard()
         {
-            /*var tmp = new ItemType[]
-            {
-                ItemType.KeycardO5, //
-                ItemType.KeycardScientist, //
-                ItemType.KeycardScientistMajor, //
-                ItemType.KeycardSeniorGuard, //
-                ItemType.KeycardZoneManager, //
-                ItemType.KeycardNTFLieutenant, //
-                ItemType.KeycardNTFCommander,
-                ItemType.KeycardJanitor, //
-                ItemType.KeycardGuard, //
-                ItemType.KeycardFacilityManager, //
-                ItemType.KeycardContainmentEngineer //
-            };*/
             int rand = UnityEngine.Random.Range(0, 100);
             if (rand < 2)
                 return ItemType.KeycardContainmentEngineer;
@@ -62,23 +59,23 @@ namespace Gamer.Mistaken.ColorfullEZ
             if (rand < 80)
                 return ItemType.KeycardFacilityManager;
             return ItemType.KeycardO5;
-            //return tmp[UnityEngine.Random.Range(0, tmp.Length)];
         }
-        internal static void Generate(ItemType card) => Timing.RunCoroutine(_generate(card));
+        /// <summary>
+        /// Removes all old generated keycards if presten. Generates Colorfull Entrance Zone.
+        /// </summary>
+        /// <param name="card">Card Type</param>
+        public static void Generate(ItemType card) => Timing.RunCoroutine(_generate(card));
         private static IEnumerator<float> _generate(ItemType card)
         {
             int a = 0;
             foreach (var item in Pickup.Instances)
             {
                 if (item.durability == 9991025f)
-                {
                     item.Delete();
-                    //yield return Timing.WaitForSeconds(0.005f);
-                }
             }
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
-                foreach (var room in MapPlus.Rooms.Where(x => x.Type == roomObject.Key))
+                foreach (var room in Map.Rooms.Where(x => x.Type == roomObject.Key))
                 {
                     Log.Debug($"[ColorfullEZ] Spawning {roomObject.Key}, {roomObject.Value.Count} keycards");
                     foreach (var item in roomObject.Value)
@@ -108,11 +105,6 @@ namespace Gamer.Mistaken.ColorfullEZ
         private void Server_WaitingForPlayers()
         {
             Generate(GetKeycard());
-        }
-
-        public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
-        {
-
         }
     }
 }

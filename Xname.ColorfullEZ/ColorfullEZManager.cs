@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Enums;
-using Gamer.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Gamer.Mistaken.ColorfullEZ
+namespace Xname.ColorfullEZ
 {
+    /// <summary>
+    /// Class used to store KeycardPositions
+    /// </summary>
     public static class ColorfullEZManager
     {
+        /// <summary>
+        /// List of Keycards bound to Room
+        /// </summary>
         //Pos, Size, Rot
         public static Dictionary<RoomType, List<(Vector3, Vector3, Vector3)>> keycardRooms = new Dictionary<RoomType, List<(Vector3, Vector3, Vector3)>>()
         {
