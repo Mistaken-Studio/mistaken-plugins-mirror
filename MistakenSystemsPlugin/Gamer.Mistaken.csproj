@@ -349,6 +349,7 @@
     <Compile Include="Systems\Bans\BansManager.cs" />
     <Compile Include="Systems\SystemsHandler.cs" />
     <Compile Include="CassieRoom\CassieRoomHandler.cs" />
+    <Compile Include="CassieRoom\Elevator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

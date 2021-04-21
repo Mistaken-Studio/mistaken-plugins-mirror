@@ -66,16 +66,20 @@ namespace Gamer.Mistaken.CassieRoom
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
             (mainDoor as BreakableDoor)._brokenPrefab = null;
             mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
             //UpperDoor
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             SpawnItem(keycardType, new Vector3(190f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
             SpawnItem(keycardType, new Vector3(190f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(80, 500, 2));
             SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
@@ -87,6 +91,7 @@ namespace Gamer.Mistaken.CassieRoom
                 door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, item.Pos, item.Rot, item.Size);
                 door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 (door as BreakableDoor)._brokenPrefab = null;
+                Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
                 //Card
                 SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0), item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
                 Log.Debug("Spawned Door");

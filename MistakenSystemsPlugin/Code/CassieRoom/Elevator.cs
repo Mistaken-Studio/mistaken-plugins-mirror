@@ -65,6 +65,7 @@ namespace Gamer.Mistaken.CassieRoom
             var elevatorDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15f, 1000f, -41.2f) + offset, Vector3.up * 90, Vector3.one);
             //elevatorDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
             (elevatorDoor as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(elevatorDoor);
             DoorVariant door;
             foreach (var item in ElevatorDoors)
             {
@@ -73,6 +74,7 @@ namespace Gamer.Mistaken.CassieRoom
                 door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, item.Pos + offset, item.Rot, item.Size);
                 door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 (door as BreakableDoor)._brokenPrefab = null;
+                Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
                 //Card
                 SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0) + offset, item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
                 Log.Debug("Spawned Door");
@@ -87,6 +89,7 @@ namespace Gamer.Mistaken.CassieRoom
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15, 1001.34f, -43) + offset, new Vector3(0, 90, 90), new Vector3(2, 0.25f, 1));
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
 
             //-16.58 1003.7 -41 90 180 0 15 550 6
             SpawnItem(keycardType, new Vector3(-16.58f, 1003.7f, -41f) + offset, new Vector3(90, 180, 0), new Vector3(15, 550, 6), true); //Up
@@ -104,6 +107,7 @@ namespace Gamer.Mistaken.CassieRoom
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-17.78f, 1001.47f, -42.5f) + offset, new Vector3(0, 90, 90), new Vector3(1.5f, 1.1f, 1));
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             var obj = new GameObject();
             var collider = obj.AddComponent<BoxCollider>();
             obj.transform.position = new Vector3(-16.58f, 1004f, -41f) + offset;
