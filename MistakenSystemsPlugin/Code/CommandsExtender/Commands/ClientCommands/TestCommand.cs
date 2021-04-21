@@ -159,6 +159,21 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         (door as BreakableDoor)._brokenPrefab = null;
                         return new string[] { door.transform.position.x + "", door.transform.position.y + "", door.transform.position.z + "" };
                     }
+                case "light":
+                    {
+                        if (keycard != null)
+                            keycard.Delete();
+                        var absolute = new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3]));
+                        GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+                        gameObject.transform.position = absolute;
+                        gameObject.transform.localScale = new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9]));
+                        gameObject.transform.rotation = Quaternion.Euler(player.CurrentRoom.transform.eulerAngles + new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6])));
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        Mirror.NetworkServer.Spawn(gameObject);
+                        keycard = gameObject.GetComponent<Pickup>();
+                        keycard.SetupPickup(ItemType.GunE11SR, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
+                        return new string[] { player.CurrentRoom.Type + "", absolute.x + "", absolute.y + "", absolute.z + "", player.CurrentRoom.Type.ToString() + "" };
+                    }
                 case "heh":
                     {
                         var p = Player.Get(args[1]);
