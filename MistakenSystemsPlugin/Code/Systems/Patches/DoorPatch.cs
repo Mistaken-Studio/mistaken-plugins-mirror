@@ -99,4 +99,18 @@ namespace Gamer.Mistaken.Systems.Patches
 			return false;
 		}
 	}
+
+	[HarmonyPatch(typeof(DoorLockUtils), "GetMode")]
+	public static class DoorLockPatch
+	{
+		public static bool Prefix(DoorLockReason reason, ref DoorLockMode __result)
+		{
+			if ((ushort)reason > 256)
+			{
+				__result = DoorLockMode.FullLock;
+				return false;
+			}
+			return true;
+		}
+	}
 }
