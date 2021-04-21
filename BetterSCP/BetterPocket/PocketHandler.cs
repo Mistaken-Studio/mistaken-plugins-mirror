@@ -215,7 +215,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
                         item.id,
                         item.durability,
                         player.GameObject,
-                        new Pickup.WeaponModifiers(false, item.modSight, item.modBarrel, item.modOther),
+                        new Pickup.WeaponModifiers(true, item.modSight, item.modBarrel, item.modOther),
                         Map.Rooms[UnityEngine.Random.Range(0, Map.Rooms.Count)].Position + new Vector3(0, 2, 0),
                         Quaternion.identity
                     );
