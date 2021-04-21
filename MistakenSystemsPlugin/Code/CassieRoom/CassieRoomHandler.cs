@@ -33,34 +33,28 @@ namespace Gamer.Mistaken.CassieRoom
        
         private void Server_WaitingForPlayers()
         {
-            //CassieRoom-Outside
-            SpawnItem(ItemType.Flashlight, new Vector3(194.5f, 998f, -70f), new Vector3(0, -80, 65), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(194.5f, 998f, -70f), new Vector3(0, -30, 65), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(190f, 998f, -72.8f), new Vector3(0,  90, 90), new Vector3(2, 2, 2));
-            //Main-Outside
-            SpawnItem(ItemType.Flashlight, new Vector3(179f, 998f, -72.8f), new Vector3(0, 90, 45), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(176f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(182f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(173f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
 
             SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(176f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(182f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(173f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
-            SpawnItem(ItemType.Flashlight, new Vector3(170f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
             SpawnItem(ItemType.Flashlight, new Vector3(184.5f, 992.75f, -51.5f), new Vector3(0, 90, 180), new Vector3(2, 2, 2));
 
             //150 1010 -45 -40 0 -90 1 1 1
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 22; i++)
             {
-                SpawnItem(ItemType.GunE11SR, new Vector3(150 + i*2, 1010, -45), new Vector3(-40, 0, -90), new Vector3(.01f, .01f, .01f));
+                SpawnItem(ItemType.GunE11SR, new Vector3(150 + i * 2, 1010, -45), new Vector3(-40, 0, -90), new Vector3(.01f, .01f, .01f));
+                if (i > 17)
+                    SpawnItem(ItemType.GunE11SR, new Vector3(150 + i * 2, 1010, -45), new Vector3(-35, 0, -90), new Vector3(.01f, .01f, .01f));
             }
 
+            
+
             //180 1006 -75 -90 0 90 1 1 1
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
@@ -89,7 +83,7 @@ namespace Gamer.Mistaken.CassieRoom
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             SpawnItem(keycardType, new Vector3(190f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
-            SpawnItem(keycardType, new Vector3(190f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(80, 500, 2));
+            SpawnItem(keycardType, new Vector3(188f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(70, 500, 2));
             SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
 
             foreach (var item in Doors)
@@ -107,6 +101,11 @@ namespace Gamer.Mistaken.CassieRoom
 
             //View blocker
             SpawnItem(ItemType.KeycardO5, new Vector3(190f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
+
+            var obj = new GameObject();
+            var collider = obj.AddComponent<BoxCollider>();
+            obj.transform.position = new Vector3(187f, 1005, -83f);
+            collider.size = new Vector3(20, 2, 20);
         } 
 
         public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size)
