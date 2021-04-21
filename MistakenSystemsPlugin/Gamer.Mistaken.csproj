@@ -303,6 +303,7 @@
     <Compile Include="Code\Systems\Misc\ClassDCellsDecontaminationHandler.cs" />
     <Compile Include="Code\Systems\Misc\CustomMaxHealthHandler.cs" />
     <Compile Include="Code\Systems\Misc\ResurectionHandler.cs" />
+    <Compile Include="Code\Systems\Patches\DoorPatch.cs" />
     <Compile Include="Code\Systems\Patches\NicknamePatch.cs" />
     <Compile Include="Code\Systems\Patches\ACSmolPatch.cs" />
     <Compile Include="Code\Systems\Patches\DisarmPatch.cs" />
