@@ -158,6 +158,7 @@
     <Compile Include="Code\Ban2\Ban2CommandHandler.cs" />
     <Compile Include="Code\Ban2\BansHandler.cs" />
     <Compile Include="Code\CassieRoom\CassieRoomHandler.cs" />
+    <Compile Include="Code\CassieRoom\Elevator.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TeslaOnCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\ClientCommands\TestCommand.cs" />
     <Compile Include="Code\CommandsExtender\Commands\FakeNickCommand.cs" />
