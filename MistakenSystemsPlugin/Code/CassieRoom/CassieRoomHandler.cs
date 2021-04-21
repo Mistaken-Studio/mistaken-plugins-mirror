@@ -58,7 +58,15 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 SpawnItem(ItemType.GunE11SR, new Vector3(150 + i*2, 1010, -45), new Vector3(-40, 0, -90), new Vector3(.01f, .01f, .01f));
             }
-            
+
+            //180 1006 -75 -90 0 90 1 1 1
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j < 5; j++)
+                {
+                    SpawnItem(ItemType.GunE11SR, new Vector3(180 + i * 4, 1005, -75 - j * 4), new Vector3(-90, 0, 90), new Vector3(.01f, .01f, .01f));
+                }
+            }
 
             ItemType keycardType = ItemType.KeycardContainmentEngineer;
             //MainDoor
