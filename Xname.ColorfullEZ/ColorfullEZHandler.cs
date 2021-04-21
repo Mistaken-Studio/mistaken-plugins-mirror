@@ -61,7 +61,7 @@ namespace Xname.ColorfullEZ
             return ItemType.KeycardO5;
         }
         /// <summary>
-        /// Removes all old generated keycards if presten. Generates Colorfull Entrance Zone.
+        /// Removes all old generated keycards if present. Generates Colorfull Entrance Zone.
         /// </summary>
         /// <param name="card">Card Type</param>
         public static void Generate(ItemType card) => Timing.RunCoroutine(_generate(card));
