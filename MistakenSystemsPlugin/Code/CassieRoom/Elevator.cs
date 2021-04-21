@@ -95,6 +95,11 @@ namespace Gamer.Mistaken.CassieRoom
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            //-15 1001.9 -40 0 0 90 1.4 1 1
+            door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15, 1001.9f, -39.5f) + offset, new Vector3(0, 0, 90), new Vector3(1.4f, 1, 1));
+            door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
 
             //-16.58 1003.7 -41 90 180 0 15 550 6
             SpawnItem(keycardType, new Vector3(-16.58f, 1003.7f, -41f) + offset, new Vector3(90, 180, 0), new Vector3(15, 550, 6), true); //Up
