@@ -266,4 +266,12 @@ namespace Gamer.Mistaken.CassieRoom
             (new Vector3(189f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
         }; 
     }
+
+    public static class Extensions
+    {
+        public static void ServerChangeLock(this DoorVariant door, CassieRoomHandler.PluginDoorLockReason type, bool active)
+        {
+            door.ServerChangeLock((DoorLockReason)type, active);
+        }
+    }
 }
