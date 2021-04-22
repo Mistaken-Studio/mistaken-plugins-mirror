@@ -190,7 +190,7 @@ namespace Gamer.Mistaken.Base
                     Escapes = 0,
                     Tk_deaths = 0,
                     Tk_kills = 0,
-                    DNT = ev.Player.DoNotTrack,
+                    DNT = ev.Player.IsDNT(),
                 });
             }
             else
@@ -202,7 +202,7 @@ namespace Gamer.Mistaken.Base
                 stats = Stats[ev.Player.UserId];
                 stats.Nickname = ev.Player.Nickname;
                 stats.UserId = ev.Player.UserId;
-                stats.DNT = ev.Player.DoNotTrack;
+                stats.DNT = ev.Player.IsDNT();
                 stats.Ip = ev.Player.IPAddress;
             }
             catch
