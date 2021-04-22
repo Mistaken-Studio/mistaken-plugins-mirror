@@ -54,6 +54,8 @@ namespace Gamer.Mistaken.Systems.Pets
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
+            if (ev.Target.UserId == null)
+                return;
             if (AlivePets.TryGetValue(ev.Target.UserId, out NPCS.Npc pet))
             {
                 pet.VisibleForRoles.Clear();
