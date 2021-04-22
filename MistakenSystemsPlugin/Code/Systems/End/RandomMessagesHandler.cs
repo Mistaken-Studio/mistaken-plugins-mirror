@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.Systems.End
             "<color=#CCC>Zamykanie drzwi swoim(wyjątkiem jest <color=orange>Klasa D</color>) = <color=red><b>ban</b></color></color>",
             "<color=#CCC><b>Zabijanie</b> członków swojej drużyny grozi banem(wyjątkiem jest <color=orange>Klasa D</color>)</color>",
             "<color=#CCC>Jeżeli znajdziesz błąd z działaniem pluginu, zgłoś go na discordzie lub dla Gamer#5833</color>",
-            "<color=#CCC>Została otwarta rekrutacja na Moderatora SCP:SL, link do formularza znajduje się na ogłoszeniach na naszym discordzie (<color=#6B9ADF>discord.mistaken.pl</color>)</color>",
+            //"<color=#CCC>Została otwarta rekrutacja na Moderatora SCP:SL, link do formularza znajduje się na ogłoszeniach na naszym discordzie (<color=#6B9ADF>discord.mistaken.pl</color>)</color>",
             "<color=#CCC>Regulamin serwera można znaleźć na naszej stronie(<color=#6B9ADF>mistaken.pl</color>) oraz na naszym discordzie (<color=#6B9ADF>discord.mistaken.pl</color>)</color>",
             "<color=#CCC>Zapraszamy do sprawdzenia oferty VIP na naszej stronie (<color=#6B9ADF>mistaken.pl/#scp-vip</color>)</color>",
             //"<color=#CCC>Administracja serwera Mistaken życzy wam wszystkim Wesołych Świąt i Szczęśliwego Nowego Roku!</color>",

@@ -14,7 +14,7 @@ using HarmonyLib;
 using System.Linq;
 using Gamer.Mistaken.Systems.Misc;
 
-namespace RemoteAdmin
+namespace Gamer.Mistaken.LOFH
 {
     [HarmonyPatch(typeof(CommandProcessor))]
     [HarmonyPatch("ProcessQuery")]
@@ -205,6 +205,8 @@ namespace RemoteAdmin
                                                 stringBuilder.Append("<color=white>");
                                                 float textSize = 95;
                                                 stringBuilder.Append("Nickname: " + hub.nicknameSync.CombinedName);
+                                                if(CommandsExtender.Commands.FakeNickCommand.FullNicknames.ContainsKey(hub.characterClassManager.UserId) && Systems.Patches.NicknamePatch.RealNicknames.TryGetValue(hub.characterClassManager.UserId, out string fname))
+                                                    stringBuilder.Append("\nFake Nickname: " + fname);
                                                 stringBuilder.Append("\nPlayer ID: " + hub.queryProcessor.PlayerId);
                                                 stringBuilder.Append("\nIP: " + ((networkConnection != null) ? ((query[1].ToUpper() == "PLAYER") ? networkConnection.address : "[REDACTED]") : "null"));
                                                 stringBuilder.Append("\nUser ID: " + (flag6 ? (string.IsNullOrEmpty(characterClassManager.UserId) ? "(none)" : characterClassManager.UserId) : "<color=#D4AF37>INSUFFICIENT PERMISSIONS</color>"));
@@ -421,6 +423,8 @@ namespace RemoteAdmin
                                             catch
                                             {
                                             }
+                                            if (!CommandsExtender.Commands.FakeNickCommand.FullNicknames.ContainsKey(player.UserId) || !Systems.Patches.NicknamePatch.RealNicknames.TryGetValue(player.UserId, out string fname))
+                                                fname = null;
                                             text3 = string.Concat(new object[]
                                             {
                                                 text3,
@@ -430,6 +434,7 @@ namespace RemoteAdmin
                                                 queryProcessor.PlayerId,
                                                 ") ",
                                                 player.ReferenceHub.nicknameSync.CombinedName.Replace("\n", string.Empty),
+                                                fname == null ? "" : $" *({fname})",
                                                 ovrm ? "<OVRM>" : string.Empty,
                                                 "</color>"
                                             });

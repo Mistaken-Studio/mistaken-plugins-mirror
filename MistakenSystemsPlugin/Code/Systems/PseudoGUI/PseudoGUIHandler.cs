@@ -95,9 +95,32 @@ namespace Gamer.Mistaken.Systems.GUI
         private DateTime start;
         private IEnumerator<float> DoRoundLoop()
         {
+            int i = 0;
             while (true)
             {
                 yield return Timing.WaitForSeconds(.25f);
+                i += 1;
+                if(i >= 40)
+                {
+                    start = DateTime.Now;
+                    foreach (var item in RealPlayers.List)
+                    {
+                        try
+                        {
+                            if (item.IsConnected && !ToIgnore.Contains(item))
+                                Update(item);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                        }
+                    }
+                    ToUpdate.Clear();
+                    i = 0;
+                    Diagnostics.MasterHandler.LogTime("PseudoGUI", "RoundLoop", start, DateTime.Now);
+                    continue;
+                }
                 if (!Run)
                     continue;
                 if (ToUpdate.Count == 0)

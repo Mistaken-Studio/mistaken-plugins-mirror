@@ -104,6 +104,16 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         ItemType.SCP018.Spawn(0, basePos);
                         return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "" };
                     }
+                case "spawn2":
+                    {
+                        var inv = Server.Host.Inventory;
+                        GameObject gameObject = UnityEngine.Object.Instantiate(inv.pickupPrefab);
+                        gameObject.transform.localScale = new Vector3(float.Parse(args[7]), float.Parse(args[8]), float.Parse(args[9]));
+                        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                        NetworkServer.Spawn(gameObject);
+                        gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 1, inv.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), new Vector3(float.Parse(args[1]), float.Parse(args[2]), float.Parse(args[3])), Quaternion.Euler(new Vector3(float.Parse(args[4]), float.Parse(args[5]), float.Parse(args[6]))));
+                        break;
+                    }
                 case "heh":
                     {
                         var p = Player.Get(args[1]);

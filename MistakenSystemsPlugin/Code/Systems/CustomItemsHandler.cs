@@ -181,6 +181,11 @@ namespace Gamer.Mistaken.Systems.CustomItems
             if (customItem == null)
                 return;
             ev.IsAllowed = customItem.OnDrop(ev.Player, ev.Item);
+            if(ev.IsAllowed)
+            {
+                if (ev.Player.CurrentItem == ev.Item)
+                    customItem.OnStopHolding(ev.Player, ev.Item);
+            }
         }
 
         private void Player_ChangingItem(Exiled.Events.EventArgs.ChangingItemEventArgs ev)
@@ -213,7 +218,7 @@ namespace Gamer.Mistaken.Systems.CustomItems
             var customItem = GetCustomItem(ev.Shooter.CurrentItem);
             if (customItem == null)
                 return;
-            ev.IsAllowed = customItem.OnShoot(ev.Shooter, ev.Shooter.CurrentItem, ev.Target);
+            ev.IsAllowed = customItem.OnShoot(ev.Shooter, ev.Shooter.CurrentItem, ev.Target, ev.Position);
         }
 
         private void Server_RestartingRound()

@@ -585,16 +585,61 @@ namespace Gamer.SNAV
                 yield return Timing.WaitForSeconds(0.1f);
             }
 
-            yield return Timing.WaitForSeconds(300);
+            //yield return Timing.WaitForSeconds(300);
             int rid = RoundPlus.RoundId;
             while(Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(15);
                 LastScan.Clear();
+                GateA = false;
+                GateAHole = false;
+                Nuke = false;
+                GateB = false;
+                Helipad = false;
+                Escape = false;
                 foreach (var player in RealPlayers.List.Where(p => p.IsAlive))
                 {
                     if (player.CurrentRoom != null)
                         LastScan.Add(player.CurrentRoom);
+                    if(player.Position.y > 900 && player.Position.y < 1012)
+                    {
+                        //194 +900 -44 -> 147 +900 -44
+                        if (player.Position.x <= 194 && player.Position.x >= 147)
+                        {
+                            if (player.Position.z >= -44)
+                            {
+                                Escape = true;
+                                continue;
+                            }
+                            else if(player.Position.z <= -73)
+                            {
+                                CassieRoom = true;
+                                continue;
+                            }
+                        }
+                        if (player.Position.x >= 148)
+                        {
+                            Helipad = true;
+                            continue;
+                        }
+                        if (player.Position.x >= 68)
+                        {
+                            GateB = true;
+                            continue;
+                        }
+                        if (player.Position.x <= 42 && player.Position.x >= 37 && player.Position.z <= -32 && player.Position.z >= -38)
+                        {
+                            Nuke = true;
+                            continue;
+                        }
+                        if (player.Position.z >= -21)
+                        {
+                            GateA = true;
+                            continue;
+                        }
+                        GateAHole = true;
+                        continue;
+                    }
                 }
                 RequireUpdateUltimate = true;
                 yield return Timing.WaitForSeconds(1);
@@ -865,6 +910,13 @@ namespace Gamer.SNAV
             }
             UpdateVisibility(player, true);
         }
+        private static bool GateA = false;
+        private static bool GateAHole = false;
+        private static bool Nuke = false;
+        private static bool GateB = false;
+        private static bool Helipad = false;
+        private static bool Escape = false;
+        private static bool CassieRoom = false;
         private static void UpdateInterface(Player player)
         {
             bool Ultimate;
@@ -903,35 +955,59 @@ __|  /‾‾‾‾|   '  |
             }
             else if (player.Position.y > 800)
             {
-                toWrite =
+                var tmp =
 @"    
-             ._.                                                          .______.
-         .___| |___.                                                      |      |
-         |         |                                                      |_|‾‾ ‾|
-       |‾  GATE  A |                                                      |ESCAPE|
-       `‾|         |                                                      | |____|
-          ‾‾|   |‾‾`                                                      | |___.  
-            |   |                                                         |___. |
-            |   |                                                             | |________.
-       .____|   |_____.                                                       |________. |
-       |              |                                                                | |
-       `‾‾‾‾|   |‾‾‾| |     ._____.                                                    | |
-            |   |   | |     |NUKE |                                                    : :
-            |   |   | |     |_. ._|                                                    | |
-       .____|   |___|_|_______| |_______.                                            ._| |_.
-       |                      | |   |   |   ._|‾|                  ._________________|     |
-       |                      | |   |   |   |   |__________________|                       |
-|‾‾‾‾‾‾‾‾‾‾‾|   |‾‾‾\ ‾‾‾‾‾‾‾‾` `‾‾‾|‾‾‾|‾‾‾|   GATE B                                     |
-|           |   |    ‾‾‾‾‾‾‾        |   |   `‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾                        |
-| CAR ENTRY |   |                   |   |                                  HELIPAD         |
-|           |   |                   |   |                                                  |
-|___________|   |___________________|   |__________________________.                       |
-       |                                |                          |                       |
-       |                                |                          `‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|     |
-       `‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾`                                            |     |
-                                                                                     |     |
-                                                                                     `‾‾‾‾‾`   
-".Split('\n');
+             <color=gatea_color>._.</color>                                                          <color=escape_color>.______.</color>
+         <color=gatea_color>.___| |___.</color>                                                      <color=escape_color>|      |</color>
+         <color=gatea_color>|         |</color>                                                      <color=escape_color>|_|‾‾ ‾|</color>
+       <color=gatea_color>|‾  GATE  A |</color>                                                      <color=escape_color>|ESCAPE|</color>
+       <color=gatea_color>`‾|         |</color>                                                      <color=escape_color>| |____|</color>
+          <color=gatea_color>‾‾|   |‾‾`</color>                                                      <color=escape_color>| |___.</color>
+            <color=gatea_color>|   |</color>                                                         <color=escape_color>|___. |</color>
+            <color=gatea_color>|   |</color>                                                             <color=escape_color>| |________.</color>
+       <color=gatea_color>.____|   |_____.</color>                                                       <color=escape_color>|________. |</color>
+       <color=gatea_color>|              |</color>                                                                <color=escape_color>| |</color>
+       <color=gatea_color>`‾‾‾‾<color=gateahole_color>|   |</color>‾‾‾<color=gateahole_color>| |</color>     <color=nuke_color>._____.</color>                                                    <color=escape_color>| |</color>
+            <color=gateahole_color>|   |   | |     <color=nuke_color>|NUKE |</color>                                                    <color=escape_color>: :</color>
+            <color=gateahole_color>|   |   | |     <color=nuke_color>|_. ._|</color>                                                    <color=escape_color>| |</color>
+       <color=gateahole_color>.____|   |___|_|_______| |_______.</color>                                            <color=escape_color>._| |_.</color>
+       <color=gateahole_color>|                      | |   |   |</color><color=gateb_color>   ._|‾|                  </color><color=helipad_color>._________________</color><color=escape_color>|     |</color>
+       <color=gateahole_color>|                      | |   |   |</color><color=gateb_color>   |   |__________________</color><color=helipad_color>|                       |</color>
+<color=gateahole_color>|‾‾‾‾‾‾‾‾‾‾‾|   |‾‾‾\ ‾‾‾‾‾‾‾‾` `‾‾‾|‾‾‾|</color><color=gateb_color>‾‾‾|   GATE B             </color><color=helipad_color>                        |</color>
+<color=gateahole_color>|           |   |    ‾‾‾‾‾‾‾        |   |</color><color=gateb_color>   `‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾</color><color=helipad_color>                        |</color>
+<color=gateahole_color>| CAR ENTRY |   |                   |   |</color><color=gateb_color>                          </color><color=helipad_color>        HELIPAD         |</color>
+<color=gateahole_color>|           |   |                   |   |</color><color=gateb_color>                          </color><color=helipad_color>                        |</color>
+<color=gateahole_color>|___________|   |___________________|   |</color><color=gateb_color>__________________________</color><color=helipad_color>.                       |</color>
+       <color=gateahole_color>|                                |</color><color=gateb_color>                          </color><color=helipad_color>|                       |</color>
+       <color=gateahole_color>|                                |</color><color=gateb_color>                          </color><color=helipad_color>`‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾</color><color=cassieroom_color>|     |</color>
+       <color=gateahole_color>`‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾`</color>                                            <color=cassieroom_color>|     |</color>
+                                                                                     <color=cassieroom_color>|     |</color>
+                                                                                     <color=cassieroom_color>`‾‾‾‾‾`</color>
+";
+                if (Ultimate)
+                {
+                    tmp = tmp.Replace("gatea_color", GateA ? "red" : "green");
+                    tmp = tmp.Replace("gateahole_color", GateAHole ? "red" : "green");
+                    tmp = tmp.Replace("nuke_color", Nuke ? "red" : "green");
+                    tmp = tmp.Replace("gateb_color", GateB ? "red" : "green");
+                    tmp = tmp.Replace("helipad_color", Helipad ? "red" : "green");
+                    tmp = tmp.Replace("escape_color", Escape ? "red" : "green");
+                    tmp = tmp.Replace("cassieroom_color", CassieRoom ? "red" : "green");
+
+                    toWrite = tmp.Split('\n');
+                }
+                else
+                {
+                    tmp = tmp.Replace("gatea_color", "green");
+                    tmp = tmp.Replace("gateahole_color", "green");
+                    tmp = tmp.Replace("nuke_color", "green");
+                    tmp = tmp.Replace("gateb_color", "green");
+                    tmp = tmp.Replace("helipad_color", "green");
+                    tmp = tmp.Replace("escape_color", "green");
+                    tmp = tmp.Replace("cassieroom_color", "green");
+
+                    toWrite = tmp.Split('\n');
+                }
             }
             else
             {
