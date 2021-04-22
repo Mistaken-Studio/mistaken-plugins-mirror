@@ -17,6 +17,7 @@ using Exiled.API.Extensions;
 using Gamer.API.CustomClass;
 using Gamer.Mistaken.Systems.GUI;
 using Gamer.Mistaken.Ranks;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.CustomClasses
 {
@@ -29,6 +30,8 @@ namespace Gamer.CustomClasses
         public override string Name => "GuardCommander";
         public override void OnEnable()
         {
+            if (Server.Port % 2 == 1 && Server.Port < 7790)
+                return;
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
         }
@@ -153,7 +156,11 @@ namespace Gamer.CustomClasses
                     var guards = RealPlayers.Get(RoleType.FacilityGuard).ToArray();
                     if (guards.Length < 3)
                         return;
-                    GuardCommander.Instance.Spawn(guards[UnityEngine.Random.Range(0, guards.Length)]);
+                    var devs = RealPlayers.List.Where(p => p.IsActiveDev()).ToArray();
+                    if(devs.Length > 0)
+                        GuardCommander.Instance.Spawn(devs[UnityEngine.Random.Range(0, devs.Length)]);
+                    else
+                        GuardCommander.Instance.Spawn(guards[UnityEngine.Random.Range(0, guards.Length)]);
                 }
                 catch(System.Exception ex)
                 {
