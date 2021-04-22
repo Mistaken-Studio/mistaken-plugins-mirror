@@ -43,6 +43,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
         {
             if (Server.Port >= 7790)
                 Spawn(Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.Hcz049));
+            else
+                Log.Debug("Not Test server");
         }
 
         public static void Spawn(Room room) => Timing.RunCoroutine(SpawnNPCZombie(room));
@@ -54,7 +56,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
             {
                 for (int i = 0; i < 20; i++)
                 {
-                    NPCS.Methods.CreateNPC(room.Position + Vector3.up, Vector2.zero, "zombie");
+                    NPCS.Methods.CreateNPC(room.Position + Vector3.up, Vector2.zero, "zombie.yml");
                 }
 
                 yield return Timing.WaitForSeconds(60 * 5);
