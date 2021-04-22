@@ -17,6 +17,17 @@ using Gamer.Mistaken.Systems.Misc;
 
 namespace Gamer.Mistaken.Ranks
 {
+    public static class Extensions
+    {
+        public static bool IsVIP(this Player player, out RanksHandler.VipLevel vipLevel)
+        {
+            vipLevel = RanksHandler.VipLevel.NONE;
+            if (!RanksHandler.VipList.TryGetValue(player.UserId, out RanksHandler.PlayerInfo role))
+                return false;
+            vipLevel = role.VipLevel;
+            return true;
+        }
+    }
     public class RankPerksHandler : Module
     {
         public override string Name => "Rank perks";
