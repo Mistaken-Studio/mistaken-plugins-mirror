@@ -17,6 +17,7 @@ namespace Gamer.Mistaken.Systems.End
 {
     internal class RandomItemSpawnsHandler : Module
     {
+        public override bool Enabled => false;
         public RandomItemSpawnsHandler(PluginHandler p) : base(p)
         {
         }
