@@ -21,6 +21,7 @@ namespace Gamer.CustomClasses
         public static PluginHandler Instance { get; private set; }
         public override void OnEnabled()
         {
+            new CustomClassesHandler(this);
             new GuardCommanderHandler(this);
 
             Diagnostics.Module.OnEnable(this);
