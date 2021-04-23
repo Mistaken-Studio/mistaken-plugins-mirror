@@ -125,7 +125,8 @@ namespace Gamer.Utilities
             CI_HEAVY_ARMOR,
             CI_TASER,
             CI_SNAV,
-            CI_IMPACT
+            CI_IMPACT,
+            CC_GUARD_COMMANDER
         }
         public static T GetSessionVar<T>(this Player me, SessionVarType type, T defaultValue = default) => me.GetSessionVar<T>(type.ToString(), defaultValue);
         public static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)

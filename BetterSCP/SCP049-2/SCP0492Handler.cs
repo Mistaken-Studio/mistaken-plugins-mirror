@@ -41,58 +41,26 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
 
         private void Server_RoundStarted()
         {
-            
+            if (Server.Port >= 7790)
+                Spawn(Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.Hcz049));
+            else
+                Log.Debug("Not Test server");
         }
 
         public static void Spawn(Room room) => Timing.RunCoroutine(SpawnNPCZombie(room));
 
         private static IEnumerator<float> SpawnNPCZombie(Room room)
         {
-            var zombie = NPCS.Methods.CreateNPC(room.Position + Vector3.up, Vector2.zero, Vector3.one, RoleType.Scp0492, ItemType.None, "Zombie");
-
-            //zombie.NPCPlayer.ReferenceHub.playerMovementSync._hub = zombie.NPCPlayer.ReferenceHub;
-            zombie.AIEnabled = true;
-            zombie.GotoRoom(Map.Rooms.First(r => r.Type == Exiled.API.Enums.RoomType.LczArmory));
-            yield break;
-
-            //PIERDOLE TE NPCE, JA SIĘ PRĘDZEJ ZAJEBIE NIŻ ZROBIE ŻEBY LOSOWE ZOMBIE DZIAŁAŁY
-
-            //zombie.AddNavTarget(NPCS.Navigation.NavigationNode.FromRoom());
-            var AIFindTarget = NPCS.AI.AITarget.GetFromToken("AIFindPlayerTarget");
-            AIFindTarget.Arguments["range"] = "20";
-            AIFindTarget.Arguments["allow_self_select"] = "false";
-            AIFindTarget.Arguments["role_whitelist"] = "1";
-            AIFindTarget.Arguments["role_blacklist"] = "0";// "0,3,5,7,9,10,16,17";
-
-            AIFindTarget.Arguments["target_npc"] = "false";
-            AIFindTarget.Arguments["target_godmode"] = "true";
-            AIFindTarget.Arguments["filter"] = "common";
-            AIFindTarget.Construct();
-
-            var AIAttackTarget = NPCS.AI.AITarget.GetFromToken("AIAttackTarget");
-            AIAttackTarget.Arguments["accuracy"] = "40";
-            AIAttackTarget.Arguments["damage"] = "25";
-            AIAttackTarget.Arguments["firerate"] = "1";
-            AIAttackTarget.Arguments["hitboxes"] = "BODY: 100";
-            AIAttackTarget.Arguments["use_ammo"] = "false";
-            AIAttackTarget.Construct();
-
-            var AINavigateToRoom = NPCS.AI.AITarget.GetFromToken("AINavigateToRoom");
-            AINavigateToRoom.Arguments["safe"] = "true";
-            AINavigateToRoom.Arguments["room"] = "random";
-            AINavigateToRoom.Construct();
-
-            zombie.OnTargetLostBehaviour = NPCS.Npc.TargetLostBehaviour.SEARCH;
-            //zombie.AIQueue.AddLast(AIFindTarget);
-            //zombie.AIQueue.AddLast(AIAttackTarget);
-            zombie.AIQueue.AddLast(AINavigateToRoom);
-            zombie.AIEnabled = true;
-
-            while (zombie.NPCPlayer.IsAlive)
+            yield return Timing.WaitForSeconds(1);
+            while (Round.IsStarted)
             {
-                yield return Timing.WaitForSeconds(1);
+                for (int i = 0; i < 20; i++)
+                {
+                    NPCS.Methods.CreateNPC(room.Position + Vector3.up, Vector2.zero, "zombie.yml");
+                }
+
+                yield return Timing.WaitForSeconds(60 * 5);
             }
-            yield break;
         }
     }
 }

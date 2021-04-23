@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
-    internal class ArmorHandler : Module
+    public class ArmorHandler : Module
     {
         public ArmorHandler(PluginHandler p) : base(p) { }
         public override string Name => "Armor";
@@ -64,7 +64,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                     player.EnableEffect<CustomPlayerEffects.Panic>();
-                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.85f));
+                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 0.85f));
                     if (player.ArtificialHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
                         player.ArtificialHealth = 10;
                     BlockInteractions.Remove(player);
@@ -210,7 +210,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
                 {
-                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 0.5f));
+                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 0.5f));
                     Armor.BlockInteractions.Remove(player);
                     Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"You are wearing <color=yellow>{this.ItemName}</color>");
                 });
@@ -354,7 +354,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 Timing.CallDelayed(8 * (fast ? 0 : 1), () =>
                 {
                     player.EnableEffect<CustomPlayerEffects.Disabled>();
-                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Floor(durability), durability / 60, 30, 0, 1f));
+                    Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 1f));
                     if (player.ArtificialHealth < 30 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
                         player.ArtificialHealth = 30;
                     Armor.BlockInteractions.Remove(player);

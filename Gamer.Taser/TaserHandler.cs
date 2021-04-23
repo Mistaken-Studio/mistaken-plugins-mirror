@@ -65,6 +65,15 @@ namespace Gamer.Taser
                     id = ItemType.GunUSP,
                 }, position, Quaternion.identity, Size);
             }
+            public static void Give(Player player)
+            {
+                float dur = 1.501f + (Index++) / 1000000f;
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    durability = dur,
+                    id = ItemType.GunUSP,
+                });
+            }
             /// <inheritdoc/>
             public override Upgrade[] Upgrades => new Upgrade[] 
             {
