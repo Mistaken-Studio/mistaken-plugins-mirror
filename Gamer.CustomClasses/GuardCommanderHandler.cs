@@ -189,9 +189,9 @@ namespace Gamer.CustomClasses
                 try
                 {
                     var guards = RealPlayers.Get(RoleType.FacilityGuard).ToArray();
-                    if (guards.Length < 3 && false)
+                    if (guards.Length < 3)
                         return;
-                    var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev() || true).ToArray();
+                    var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev()).ToArray();
                     if(devs.Length > 0)
                         GuardCommander.Instance.Spawn(devs[UnityEngine.Random.Range(0, devs.Length)]);
                     else
