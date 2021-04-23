@@ -122,9 +122,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     foreach (var item in ReusableItems)
                     {
                         if(item.Type == pickup.ItemId)
-                        {
                             pickup.Networkdurability = item.Uses;
-                        }
                     }
                 }
             });
