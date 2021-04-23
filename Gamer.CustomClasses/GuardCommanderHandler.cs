@@ -88,6 +88,7 @@ namespace Gamer.CustomClasses
                 });
                 CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
                 PseudoGUIHandler.Set(player, "Guard_Commander", PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{this.ClassDescription}", 20);
+                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, $"Grasz jako <color=blue>Dowódcą Ochrony</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"Spawned {player.PlayerToString()} as Guard Commander");
             }
 
@@ -95,6 +96,7 @@ namespace Gamer.CustomClasses
             {
                 base.OnDie(player);
                 CustomInfoHandler.Set(player, "Guard_Commander", null, false);
+                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
         private bool HasCommanderEscorted = false;
