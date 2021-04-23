@@ -205,7 +205,7 @@ namespace Gamer.Mistaken.LOFH
                                                 stringBuilder.Append("<color=white>");
                                                 float textSize = 95;
                                                 stringBuilder.Append("Nickname: " + hub.nicknameSync.CombinedName);
-                                                if(CommandsExtender.Commands.FakeNickCommand.FullNicknames.TryGetValue(hub.characterClassManager.UserId, out string fname))
+                                                if(CommandsExtender.Commands.FakeNickCommand.FullNicknames.ContainsKey(hub.characterClassManager.UserId) && Systems.Patches.NicknamePatch.RealNicknames.TryGetValue(hub.characterClassManager.UserId, out string fname))
                                                     stringBuilder.Append("\nFake Nickname: " + fname);
                                                 stringBuilder.Append("\nPlayer ID: " + hub.queryProcessor.PlayerId);
                                                 stringBuilder.Append("\nIP: " + ((networkConnection != null) ? ((query[1].ToUpper() == "PLAYER") ? networkConnection.address : "[REDACTED]") : "null"));
@@ -423,7 +423,7 @@ namespace Gamer.Mistaken.LOFH
                                             catch
                                             {
                                             }
-                                            if (!CommandsExtender.Commands.FakeNickCommand.FullNicknames.TryGetValue(player.UserId, out string fname))
+                                            if (!CommandsExtender.Commands.FakeNickCommand.FullNicknames.ContainsKey(player.UserId) || !Systems.Patches.NicknamePatch.RealNicknames.TryGetValue(player.UserId, out string fname))
                                                 fname = null;
                                             text3 = string.Concat(new object[]
                                             {

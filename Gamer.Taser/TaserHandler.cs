@@ -177,6 +177,7 @@ namespace Gamer.Taser
                     Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>Taser</color><br><mspace=0.5em><color=yellow>[<color=green>{bar}</color>]</color></mspace>");
                     yield return Timing.WaitForSeconds(1f);
                 }
+                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
