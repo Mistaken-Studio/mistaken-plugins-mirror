@@ -194,7 +194,7 @@ namespace Gamer.CustomClasses
                 try
                 {
                     var guards = RealPlayers.Get(RoleType.FacilityGuard).ToArray();
-                    if (guards.Length < 3)
+                    if (guards.Length < 3 && false)
                         return;
                     var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev()).ToArray();
                     if(devs.Length > 0)
@@ -231,7 +231,7 @@ namespace Gamer.CustomClasses
             {
                 PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, null);
             }
-
+            public override Vector3 Size => new Vector3(1,5,1);
         }
     }
 }
