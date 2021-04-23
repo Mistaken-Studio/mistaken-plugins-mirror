@@ -1,4 +1,7 @@
-﻿using System;
+﻿#pragma warning disable IDE0079
+#pragma warning disable IDE0060
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;

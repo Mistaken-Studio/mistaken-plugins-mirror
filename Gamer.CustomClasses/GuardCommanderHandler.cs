@@ -120,7 +120,6 @@ namespace Gamer.CustomClasses
             HasCommanderEscorted = true;
         }
 
-
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)

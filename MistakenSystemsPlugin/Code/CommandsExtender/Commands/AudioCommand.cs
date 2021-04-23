@@ -17,7 +17,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public string Permission => "audio";
         public string PluginName => PluginHandler.PluginName;
 
-#pragma warning disable CS0162 // Wykryto nieosiągalny kod
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
             _s = false;
@@ -29,6 +28,5 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             _s = true;
             return new string[] { "Done" };*/
         }
-#pragma warning restore CS0162 // Wykryto nieosiągalny kod
     }
 }

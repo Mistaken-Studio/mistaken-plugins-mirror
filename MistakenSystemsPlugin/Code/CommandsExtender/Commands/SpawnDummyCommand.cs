@@ -46,30 +46,27 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 case "RAW":
                     {
-                        float pos_x, pos_y, pos_z;
-                        float rot_x, rot_y, rot_z;
-                        float size_x, size_y, size_z;
                         RoleType role;
                         string Name;
                         bool success = false;
 
-                        if (float.TryParse(args[1], out pos_x))
+                        if (float.TryParse(args[1], out float pos_x))
                         {
-                            if (float.TryParse(args[2], out pos_y))
+                            if (float.TryParse(args[2], out float pos_y))
                             {
-                                if (float.TryParse(args[3], out pos_z))
+                                if (float.TryParse(args[3], out float pos_z))
                                 {
-                                    if (float.TryParse(args[4], out rot_x))
+                                    if (float.TryParse(args[4], out float rot_x))
                                     {
-                                        if (float.TryParse(args[5], out rot_y))
+                                        if (float.TryParse(args[5], out float rot_y))
                                         {
-                                            if (float.TryParse(args[6], out rot_z))
+                                            if (float.TryParse(args[6], out float rot_z))
                                             {
-                                                if (float.TryParse(args[7], out size_x))
+                                                if (float.TryParse(args[7], out float size_x))
                                                 {
-                                                    if (float.TryParse(args[8], out size_y))
+                                                    if (float.TryParse(args[8], out float size_y))
                                                     {
-                                                        if (float.TryParse(args[9], out size_z))
+                                                        if (float.TryParse(args[9], out float size_z))
                                                         {
                                                             if (int.TryParse(args[10], out int roleId))
                                                             {

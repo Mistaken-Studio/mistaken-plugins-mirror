@@ -30,12 +30,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (args.Length < 3) return new string[] { GetUsage() };
 
             var player = sender.GetPlayer();
-            float x, y, z;
-            if (float.TryParse(args[0].Replace("~", ""), out x))
+            if (float.TryParse(args[0].Replace("~", ""), out float x))
             {
-                if (float.TryParse(args[1].Replace("~", ""), out y))
+                if (float.TryParse(args[1].Replace("~", ""), out float y))
                 {
-                    if (float.TryParse(args[2].Replace("~", ""), out z))
+                    if (float.TryParse(args[2].Replace("~", ""), out float z))
                     {
                         if (args[0].Contains("~"))
                         {

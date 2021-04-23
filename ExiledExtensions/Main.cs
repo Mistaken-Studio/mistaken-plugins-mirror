@@ -133,8 +133,8 @@ namespace Gamer.Utilities
         {
             if (me.SessionVariables.TryGetValue(name, out object value))
             {
-                if (value is T)
-                    return (T)value;
+                if (value is T Tvalue)
+                    return Tvalue;
                 else
                     throw new ArgumentException($"Expected to see SessionVariable of type {typeof(T).FullName} but got {value.GetType().FullName}");
             }

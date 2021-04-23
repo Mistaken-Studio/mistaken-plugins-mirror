@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RemoteAdmin;
+﻿#pragma warning disable
+
 using HarmonyLib;
 using UnityEngine;
 using Exiled.API.Features;
-using Gamer.Mistaken.Utilities.APILib;
-using Mirror;
-using Gamer.Mistaken.Systems.Staff;
-using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Systems.Patches
 {

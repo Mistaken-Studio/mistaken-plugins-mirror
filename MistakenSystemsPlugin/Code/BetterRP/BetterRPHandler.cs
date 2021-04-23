@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿#pragma warning disable IDE0079
+#pragma warning disable IDE0060
+
+using System.Collections.Generic;
 using UnityEngine;
 using MEC;
 using System;

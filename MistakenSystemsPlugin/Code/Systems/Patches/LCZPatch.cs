@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Exiled.API.Features;
-using Gamer.Utilities;
+﻿#pragma warning disable
+
 using HarmonyLib;
 using Mirror;
 using UnityEngine;
