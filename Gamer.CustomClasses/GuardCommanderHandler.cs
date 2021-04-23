@@ -136,7 +136,7 @@ namespace Gamer.CustomClasses
             }
             else if (type == DoorType.GateA || type == DoorType.GateB)
             {
-                foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && p.Role == RoleType.Scientist || ((p.Role == RoleType.ClassD || p.Role == RoleType.ChaosInsurgency) && p.IsCuffed)))
+                foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && p.Role == RoleType.Scientist || (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF) || ((p.Role == RoleType.ClassD || p.Role == RoleType.ChaosInsurgency) && p.IsCuffed)))
                 {
                     if (Vector3.Distance(player.Position, ev.Player.Position) < 10)
                     {
