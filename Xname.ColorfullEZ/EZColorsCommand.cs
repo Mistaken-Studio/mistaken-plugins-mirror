@@ -30,6 +30,8 @@ namespace Xname.ColorfullEZ
         {
             if (args.Length == 0)
                 ColorfullEZHandler.Generate(ColorfullEZHandler.GetKeycard());
+            else if (args[0] == "none")
+                ColorfullEZHandler.Clear();
             else
                 ColorfullEZHandler.Generate((ItemType)byte.Parse(args[0]));
             _s = true;
