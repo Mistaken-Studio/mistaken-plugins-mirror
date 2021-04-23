@@ -34,11 +34,13 @@ namespace Gamer.CustomClasses
                 return;
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
 
         public class GuardCommander : CustomClass
@@ -95,6 +97,17 @@ namespace Gamer.CustomClasses
                 CustomInfoHandler.Set(player, "Guard_Commander", null, false);
             }
         }
+        private bool HasCommanderEscorted = false;
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        {
+            if (!ev.IsEscaped)
+                return;
+            if (ev.NewRole.GetTeam() != Team.MTF)
+                return;
+            if (GuardCommander.Instance.PlayingAsClass.Any(i => i.Position.y > 900))
+                HasCommanderEscorted = true;
+        }
+
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
@@ -136,7 +149,12 @@ namespace Gamer.CustomClasses
             }
             else if (type == DoorType.GateA || type == DoorType.GateB)
             {
-                foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && p.Role == RoleType.Scientist || (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF) || ((p.Role == RoleType.ClassD || p.Role == RoleType.ChaosInsurgency) && p.IsCuffed)))
+                if(HasCommanderEscorted)
+                {
+                    ev.IsAllowed = true;
+                    return;
+                }
+                foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && p.Role == RoleType.Scientist || ((p.Role == RoleType.ClassD || p.Role == RoleType.ChaosInsurgency) && p.IsCuffed)))
                 {
                     if (Vector3.Distance(player.Position, ev.Player.Position) < 10)
                     {
@@ -149,6 +167,7 @@ namespace Gamer.CustomClasses
 
         private void Server_RoundStarted()
         {
+            HasCommanderEscorted = false;
             MEC.Timing.CallDelayed(1.2f, () =>
             {
                 try
@@ -156,7 +175,7 @@ namespace Gamer.CustomClasses
                     var guards = RealPlayers.Get(RoleType.FacilityGuard).ToArray();
                     if (guards.Length < 3)
                         return;
-                    var devs = RealPlayers.List.Where(p => p.IsActiveDev()).ToArray();
+                    var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev()).ToArray();
                     if(devs.Length > 0)
                         GuardCommander.Instance.Spawn(devs[UnityEngine.Random.Range(0, devs.Length)]);
                     else
