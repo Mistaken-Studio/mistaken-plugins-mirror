@@ -117,12 +117,19 @@ namespace Xname.ImpactGrenade
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Map.ChangingIntoGrenade -= this.Handle<Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs>((ev) => Map_ChangingIntoGrenade(ev));
         }
-         
+        private GrenadeManager lastImpactThrower;
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
             if (!grenades.Contains(ev.Grenade)) 
                 return;
             RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
+            var tmp = (ev.Grenade.GetComponent<FragGrenade>()).thrower;
+            lastImpactThrower = tmp;
+            MEC.Timing.CallDelayed(1, () =>
+            {
+                if (lastImpactThrower == tmp) 
+                    lastImpactThrower = null;
+            });
             foreach (Player player in ev.TargetToDamages.Keys.ToArray())
             {
                 ev.TargetToDamages[player] *= Damage_multiplayer;
@@ -150,7 +157,7 @@ namespace Xname.ImpactGrenade
                 Grenade grenade = UnityEngine.Object.Instantiate(Server.Host.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
                 grenades.Add(grenade.gameObject);
                 grenade.fuseDuration = 0.01f;
-                grenade.InitData(Server.Host.GrenadeManager, Vector3.zero, Vector3.zero, 0f);
+                grenade.InitData(lastImpactThrower ?? Server.Host.GrenadeManager, Vector3.zero, Vector3.zero, 0f);
                 grenade.transform.position = ev.Pickup.position;
                 Mirror.NetworkServer.Spawn(grenade.gameObject);
                 ev.Pickup.Delete();
