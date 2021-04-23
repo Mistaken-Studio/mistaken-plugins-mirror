@@ -87,7 +87,7 @@ namespace Gamer.CustomClasses
                     durability = 1.301f
                 });
                 CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
-                PseudoGUIHandler.Set(player, "Guard_Commander", PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>{this.ClassName}</color></size><br>{this.ClassDescription}", 20);
+                PseudoGUIHandler.Set(player, "Guard_Commander", PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{this.ClassDescription}", 20);
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"Spawned {player.PlayerToString()} as Guard Commander");
             }
 
@@ -104,6 +104,11 @@ namespace Gamer.CustomClasses
                 return;
             if (ev.NewRole.GetTeam() != Team.MTF)
                 return;
+            if (!HasCommanderEscorted)
+            {
+                foreach (var item in GuardCommander.Instance.PlayingAsClass)
+                    PseudoGUIHandler.Set(item, "GuardCommander_Escort", PseudoGUIHandler.Position.TOP, "Dostałeś informację przez pager: W związu z eskortą personelu, od teraz jesteś autoryzowany do otwierania Gatów bez kogoś obok.", 10);
+            }
             HasCommanderEscorted = true;
         }
 
@@ -172,9 +177,9 @@ namespace Gamer.CustomClasses
                 try
                 {
                     var guards = RealPlayers.Get(RoleType.FacilityGuard).ToArray();
-                    if (guards.Length < 3)
+                    if (guards.Length < 3 && false)
                         return;
-                    var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev()).ToArray();
+                    var devs = RealPlayers.List.Where(p => (p.Role == RoleType.FacilityGuard || true) && p.IsActiveDev()).ToArray();
                     if(devs.Length > 0)
                         GuardCommander.Instance.Spawn(devs[UnityEngine.Random.Range(0, devs.Length)]);
                     else
