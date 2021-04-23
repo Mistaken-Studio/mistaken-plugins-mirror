@@ -19,6 +19,7 @@ using Gamer.Mistaken.Systems.GUI;
 using Gamer.Mistaken.Ranks;
 using Gamer.Mistaken.Systems.Staff;
 using Gamer.API.CustomItem;
+using Scp914;
 
 namespace Gamer.CustomClasses
 {
@@ -189,6 +190,15 @@ namespace Gamer.CustomClasses
         private void Server_RoundStarted()
         {
             HasCommanderEscorted = false;
+            MEC.Timing.CallDelayed(60 * 6, () =>
+            {
+                if (!HasCommanderEscorted)
+                {
+                    foreach (var item in GuardCommander.Instance.PlayingAsClass)
+                        PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś informację przez pager: Aktywowano protokuł GB-12, od teraz jesteś autoryzowany do otwierania Gatów bez kogoś obok.", 10);
+                    HasCommanderEscorted = true;
+                }
+            });
             MEC.Timing.CallDelayed(1.2f, () =>
             {
                 try
@@ -231,7 +241,12 @@ namespace Gamer.CustomClasses
             {
                 PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, null);
             }
-
+            public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
+            {
+                if (setting == Scp914Knob.Coarse || setting == Scp914Knob.Rough)
+                    return null;
+                return base.OnUpgrade(pickup, setting);
+            }
         }
     }
 }
