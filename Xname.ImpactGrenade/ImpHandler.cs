@@ -117,6 +117,7 @@ namespace Xname.ImpactGrenade
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Map.ChangingIntoGrenade -= this.Handle<Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs>((ev) => Map_ChangingIntoGrenade(ev));
         }
+         
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
             if (!grenades.Contains(ev.Grenade)) 
@@ -153,6 +154,7 @@ namespace Xname.ImpactGrenade
                 grenade.transform.position = ev.Pickup.position;
                 Mirror.NetworkServer.Spawn(grenade.gameObject);
                 ev.Pickup.Delete();
+                RoundLogger.Log("IMPACT GRENADE", "CHAINED", $"Impact grenade chained");
             }
         }
     }
