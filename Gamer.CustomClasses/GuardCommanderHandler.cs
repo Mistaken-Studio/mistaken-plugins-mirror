@@ -18,6 +18,7 @@ using Gamer.API.CustomClass;
 using Gamer.Mistaken.Systems.GUI;
 using Gamer.Mistaken.Ranks;
 using Gamer.Mistaken.Systems.Staff;
+using Gamer.API.CustomItem;
 
 namespace Gamer.CustomClasses
 {
@@ -25,6 +26,7 @@ namespace Gamer.CustomClasses
     {
         public GuardCommanderHandler(PluginHandler plugin) : base(plugin)
         {
+            new GuardCommanderKeycard();
         }
 
         public override string Name => "GuardCommander";
@@ -75,7 +77,11 @@ namespace Gamer.CustomClasses
                     player.AddItem(ItemType.GunProject90);
                     player.Ammo[(int)AmmoType.Nato9] = 150;
                 }
-                player.AddItem(ItemType.KeycardSeniorGuard);
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    id = ItemType.KeycardSeniorGuard,
+                    durability = 1.001f
+                });
                 player.AddItem(ItemType.Disarmer);
                 player.AddItem(ItemType.Radio);
                 ArmorHandler.LiteArmor.Give(player, 15);
@@ -88,7 +94,7 @@ namespace Gamer.CustomClasses
                 });
                 CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
                 PseudoGUIHandler.Set(player, "Guard_Commander", PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{this.ClassDescription}", 20);
-                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, $"Grasz jako <color=blue>Dowódcą Ochrony</color>");
+                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, "Grasz jako <color=blue>Dowódca Ochrony</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"Spawned {player.PlayerToString()} as Guard Commander");
             }
 
@@ -117,11 +123,16 @@ namespace Gamer.CustomClasses
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
-            if (ev.IsAllowed)
+            if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
+                return;
+            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
                 return;
             if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
+            {
+                ev.IsAllowed = false;
                 return;
-            if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
+            }
+            if (ev.IsAllowed)
                 return;
             var type = ev.Door.Type();
             if(type == DoorType.NukeSurface && false)
@@ -179,9 +190,9 @@ namespace Gamer.CustomClasses
                 try
                 {
                     var guards = RealPlayers.Get(RoleType.FacilityGuard).ToArray();
-                    if (guards.Length < 3)
+                    if (guards.Length < 3 && false)
                         return;
-                    var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev()).ToArray();
+                    var devs = RealPlayers.List.Where(p => p.Role == RoleType.FacilityGuard && p.IsActiveDev() || true).ToArray();
                     if(devs.Length > 0)
                         GuardCommander.Instance.Spawn(devs[UnityEngine.Random.Range(0, devs.Length)]);
                     else
@@ -193,6 +204,30 @@ namespace Gamer.CustomClasses
                     Log.Error(ex.StackTrace);
                 }
             });
+        }
+        public class GuardCommanderKeycard : CustomItem
+        {
+            public GuardCommanderKeycard()
+            {
+                base.Register();
+            }
+            public override string ItemName => "Karta Dowódcy Ochrony";
+
+            public override ItemType Item => ItemType.KeycardSeniorGuard;
+
+            public override int Durability => 001;
+            public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                if(GuardCommander.Instance.PlayingAsClass.Contains(player))
+                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "Trzymasz kartę <color=blue>Dowódcy Ochrony</color>");
+                else
+                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "Trzymasz kartę <color=blue>Dowódcy Ochrony</color>, ale chyba nie możesz jej używać");
+            }
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, null);
+            }
+
         }
     }
 }
