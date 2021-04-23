@@ -134,7 +134,12 @@ namespace Gamer.CustomClasses
             if (ev.IsAllowed)
                 return;
             var type = ev.Door.Type();
-            if(type == DoorType.NukeSurface && false)
+            if(type == DoorType.Intercom)
+            {
+                ev.IsAllowed = true;
+                return;
+            }
+            else if(type == DoorType.NukeSurface && false)
             {
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF)))
                 {
