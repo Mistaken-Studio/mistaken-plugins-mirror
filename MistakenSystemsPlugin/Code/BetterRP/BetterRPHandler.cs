@@ -117,7 +117,7 @@ namespace Gamer.Mistaken.BetterRP
                     if (mute.EndTime == -1)
                         writer.Put($"You are muted so you can't play on RolePlay servers.. You are muted for \"{reason}\", mute has no end date, ask Admin to unmute you.");
                     else
-                        writer.Put($"You are muted so you can't play on RolePlay servers.. You are muted for \"{reason}\" until {new DateTime(mute.EndTime):dd.MM.yyyy} UTC");
+                        writer.Put($"You are muted so you can't play on RolePlay servers.. You are muted for \"{reason}\" until {new DateTime(mute.EndTime):dd.MM.yyyy HH:mm:ss} UTC");
                 }
                 ev.Request.Reject(writer);
                 ev.Disallow();
