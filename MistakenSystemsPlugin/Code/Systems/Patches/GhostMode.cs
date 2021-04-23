@@ -1,13 +1,9 @@
-﻿using System;
+﻿#pragma warning disable
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RemoteAdmin;
-using HarmonyLib;
 using UnityEngine;
 using Exiled.API.Features;
-using Gamer.Mistaken.Utilities.APILib;
-using PlayableScps;
 using CustomPlayerEffects;
 using Mirror;
 using Exiled.Events;

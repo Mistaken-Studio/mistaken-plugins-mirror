@@ -1,4 +1,7 @@
-﻿using Exiled.API.Enums;
+﻿#pragma warning disable IDE0079
+#pragma warning disable IDE0060
+
+using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;

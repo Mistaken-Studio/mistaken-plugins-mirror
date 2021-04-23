@@ -18,8 +18,10 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject(nameof(InRage), typeof(InRage), typeof(BoxCollider));
-                    prefab.layer = Layer;
+                    prefab = new GameObject(nameof(InRage), typeof(InRage), typeof(BoxCollider))
+                    {
+                        layer = Layer
+                    };
                     var collider = prefab.GetComponent<BoxCollider>();
                     collider.isTrigger = true;
                 }

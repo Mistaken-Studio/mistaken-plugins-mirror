@@ -1,4 +1,8 @@
-﻿using Exiled.API.Extensions;
+﻿#pragma warning disable IDE0079
+#pragma warning disable IDE0042
+#pragma warning disable IDE0060
+
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
@@ -79,8 +83,7 @@ namespace Gamer.Mistaken.Ranks
         {
             if (PluginHandler.IsSSLSleepMode || forceOld)
             {
-                string url;
-                if (!Utilities.APILib.API.GetUrl(APIType.RANKS_SL, out url, ""))
+                if (!Utilities.APILib.API.GetUrl(APIType.RANKS_SL, out string url, ""))
                     return;
                 using (var client = new WebClient())
                 {
@@ -405,10 +408,9 @@ namespace Gamer.Mistaken.Ranks
         }
         internal static void ApplyRoles(Player player, RoleType toshow = RoleType.UNKNOWN)
         {
-            PlayerInfo role;
             if (StaffHandler.Staff.Any(i => (i.discordid + "@discord" == player.UserId || i.steamid == player.UserId) && i.show_rank))
                 ApplyStaffRoles(player);
-            else if (VipList.TryGetValue(player.UserId, out role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.VIP))
+            else if (VipList.TryGetValue(player.UserId, out PlayerInfo role) && (toshow == RoleType.UNKNOWN || toshow == RoleType.VIP))
             {
                 if (role.VipLevel != VipLevel.NONE)
                 {

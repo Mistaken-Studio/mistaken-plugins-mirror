@@ -51,6 +51,7 @@ namespace Gamer.Mistaken.BetterSCP
 
     public class BSConfig : Config
     {
+#pragma warning disable IDE1006
         #region SCP079
         public int requiedlvl { get; set; } = 3;
         public int apcost { get; set; } = 100;
@@ -72,5 +73,6 @@ namespace Gamer.Mistaken.BetterSCP
         public int apcostCassie { get; set; } = 200;
         public int cooldownCassie { get; set; } = 300;
         #endregion
+#pragma warning restore IDE1006
     }
 }

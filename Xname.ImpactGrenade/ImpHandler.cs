@@ -1,4 +1,8 @@
-﻿using System;
+﻿#pragma warning disable IDE0079
+#pragma warning disable IDE0060
+#pragma warning disable IDE0051
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -158,7 +162,7 @@ namespace Xname.ImpactGrenade
     public class ImpComponent : MonoBehaviour
     {
         private bool used;
-        void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter(Collision collision)
         {
             if (!used)
                 this.GetComponent<FragGrenade>().NetworkfuseTime = 0.01f;

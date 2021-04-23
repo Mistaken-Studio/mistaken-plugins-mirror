@@ -1,10 +1,7 @@
-﻿using System;
+﻿#pragma warning disable
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using RemoteAdmin;
 using HarmonyLib;
-using UnityEngine;
 using Exiled.API.Features;
 using MEC;
 using Interactables.Interobjects.DoorUtils;
