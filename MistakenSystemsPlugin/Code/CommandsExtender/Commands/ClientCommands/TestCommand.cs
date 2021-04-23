@@ -184,6 +184,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         SpawnWorkStation(pos + Vector3.right * 0.05f, new Vector3(rot.x + 180, rot.y + 180, rot.z), new Vector3(width, height, 0.1f));
                         break;
                     }
+                case "cc_gc":
+                    API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassName == "Dowódca Ochrony").Spawn(player);
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
