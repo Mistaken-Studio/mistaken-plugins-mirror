@@ -100,6 +100,18 @@ namespace Gamer.Utilities
         public static bool IsPlayer(this CommandSender me) => GetPlayer(me) != null;
         public static bool IsPlayer(this ICommandSender me) => GetPlayer(me) != null;
 
+        public static bool IsDNT(this Player me)
+        {
+            switch (me.RawUserId.Split('@')[0])
+            {
+                //vorenus aka kgbp
+                case "vorenus":
+                    return false;
+                default:
+                    return me.DoNotTrack;
+            }
+        }
+
         public enum SessionVarType
         {
             TALK,

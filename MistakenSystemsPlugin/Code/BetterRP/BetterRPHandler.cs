@@ -158,7 +158,7 @@ namespace Gamer.Mistaken.BetterRP
                 }
             }
             if (ev.HitInformations.GetDamageType() == DamageTypes.Bleeding)
-                ev.Amount *= ev.Target.UserId == "76561198861875204@steam" ? 0.5f : 0.45f;
+                ev.Amount *= 0.45f;
             if (ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth)
                 return;
             if (!PluginHandler.Config.IsRP()) 
