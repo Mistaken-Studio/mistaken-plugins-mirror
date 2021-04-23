@@ -51,7 +51,7 @@ namespace Gamer.CustomClasses
             public static GuardCommander Instance = new GuardCommander();
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_GUARD_COMMANDER;
             public override string ClassName => "Dowódca Ochrony";
-            public override string ClassDescription => "Twoim zadaniem jest dowodzenie <color=#7795a9>ochroną placówki</color>.<br>Twoja karta <color=yellow>pozwala</color> ci otworzyć Gate A i Gate B, ale tylko gdy:<br>- Obok jest <color=#f1e96e>Naukowiec</color><br>- Obok jest skuta <color=#ff8400>Klasa D</color><br>- Obok jest skuty <color=#1d6f00>Rebeliant Chaosu</color>";
+            public override string ClassDescription => "Twoim zadaniem jest <color=yellow>dowodzenie</color> <color=#7795a9>ochroną placówki</color>.<br>Twoja karta <color=yellow>pozwala</color> ci otworzyć Gate A i Gate B, ale tylko gdy:<br>- Obok jest <color=#f1e96e>Naukowiec</color><br>- Obok jest skuta <color=#ff8400>Klasa D</color><br>- Obok jest skuty <color=#1d6f00>Rebeliant Chaosu</color>";
             public override RoleType Role => RoleType.NtfCommander;
 
             public override void Spawn(Player player)
@@ -95,7 +95,7 @@ namespace Gamer.CustomClasses
                 });
                 CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
                 PseudoGUIHandler.Set(player, "Guard_Commander", PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{this.ClassDescription}", 20);
-                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, "Grasz jako <color=blue>Dowódca Ochrony</color>");
+                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=blue>Dowódca Ochrony</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"Spawned {player.PlayerToString()} as Guard Commander");
             }
 
@@ -116,7 +116,7 @@ namespace Gamer.CustomClasses
             if (!HasCommanderEscorted)
             {
                 foreach (var item in GuardCommander.Instance.PlayingAsClass)
-                    PseudoGUIHandler.Set(item, "GuardCommander_Escort", PseudoGUIHandler.Position.TOP, "Dostałeś informację przez pager: W związu z eskortą personelu, od teraz jesteś autoryzowany do otwierania Gatów bez kogoś obok.", 10);
+                    PseudoGUIHandler.Set(item, "GuardCommander_Escort", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: W związu z <color=yellow>eskortą personelu</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok.", 10);
             }
             HasCommanderEscorted = true;
         }
@@ -195,7 +195,7 @@ namespace Gamer.CustomClasses
                 if (!HasCommanderEscorted)
                 {
                     foreach (var item in GuardCommander.Instance.PlayingAsClass)
-                        PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś informację przez pager: Aktywowano protokuł GB-12, od teraz jesteś autoryzowany do otwierania Gatów bez kogoś obok.", 10);
+                        PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-12</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok.", 10);
                     HasCommanderEscorted = true;
                 }
             });
@@ -233,9 +233,9 @@ namespace Gamer.CustomClasses
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 if(GuardCommander.Instance.PlayingAsClass.Contains(player))
-                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "Trzymasz kartę <color=blue>Dowódcy Ochrony</color>");
+                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
                 else
-                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "Trzymasz kartę <color=blue>Dowódcy Ochrony</color>, ale chyba nie możesz jej używać");
+                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
@@ -247,7 +247,7 @@ namespace Gamer.CustomClasses
                     return null;
                 return base.OnUpgrade(pickup, setting);
             }
-            public override Vector3 Size => new Vector3(1,5,1);
+            public override Vector3 Size => new Vector3(1, 5, 1);
         }
     }
 }
