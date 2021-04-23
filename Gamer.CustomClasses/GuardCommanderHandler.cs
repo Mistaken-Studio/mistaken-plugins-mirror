@@ -104,8 +104,7 @@ namespace Gamer.CustomClasses
                 return;
             if (ev.NewRole.GetTeam() != Team.MTF)
                 return;
-            if (GuardCommander.Instance.PlayingAsClass.Any(i => i.Position.y > 900))
-                HasCommanderEscorted = true;
+            HasCommanderEscorted = true;
         }
 
 
@@ -118,7 +117,7 @@ namespace Gamer.CustomClasses
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
             var type = ev.Door.Type();
-            if(type == DoorType.NukeSurface)
+            if(type == DoorType.NukeSurface && false)
             {
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF)))
                 {
@@ -129,7 +128,7 @@ namespace Gamer.CustomClasses
                     }
                 }
             }
-            else if (type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom)
+            else if ((type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom) && false)
             {
                 if (!Map.IsLCZDecontaminated)
                     return;
