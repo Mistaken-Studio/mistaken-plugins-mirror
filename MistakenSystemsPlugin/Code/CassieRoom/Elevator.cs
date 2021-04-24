@@ -54,6 +54,7 @@ namespace Gamer.Mistaken.CassieRoom
             DoorDown = SpawnElevator(Vector3.zero);
             DoorUp = SpawnElevator(Offset);
             DoorUp.NetworkTargetState = true;
+            Spawn1499ContainmentChamber();
         }
 
         public static DoorVariant SpawnElevator(Vector3 offset)
@@ -130,6 +131,29 @@ namespace Gamer.Mistaken.CassieRoom
                 InElevator.Remove(p);
             });
             return elevatorDoor;
+        }
+
+        public static DoorVariant Spawn1499ContainmentChamber()
+        {
+            ItemType keycardType = ItemType.KeycardNTFLieutenant;
+
+            //-23.7 1018.6 -43.5 0 90 0 1 1 1
+            var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-23.8f, 1018.6f, -43.5f), Vector3.up * 90, Vector3.one);
+            mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree;
+            (mainDoor as BreakableDoor)._brokenPrefab = null;
+            //Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
+            DoorVariant door;
+
+            //-23.7 1022.35 -43.5 0 90 0 10 110 1
+            SpawnItem(keycardType, new Vector3(-23.8f, 1022.33f, -43.5f), new Vector3(0, 90, 0), new Vector3(10, 110, 2), true);
+
+
+
+            //door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-17.78f, 1001.47f, -42.5f), new Vector3(0, 90, 90), new Vector3(1.5f, 1.1f, 1));
+            //door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            //(door as BreakableDoor)._brokenPrefab = null;
+            //Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            return mainDoor;
         }
 
         public static readonly List<Player> InElevator = new List<Player>();
