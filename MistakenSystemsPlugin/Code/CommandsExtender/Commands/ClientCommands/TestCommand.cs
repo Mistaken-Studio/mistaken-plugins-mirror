@@ -21,7 +21,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         private DoorVariant door;
         public override string Description => "DEV STUFF";
         public override string Command => "test";
-        internal static Dictionary<Player, Pickup> keycard = new Dictionary<Player, Pickup>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
