@@ -102,6 +102,8 @@ namespace Gamer.Utilities
 
         public static bool IsDNT(this Player me)
         {
+            if (me?.RawUserId == null)
+                return me?.DoNotTrack ?? false;
             switch (me.RawUserId.Split('@')[0])
             {
                 //vorenus aka kgbp
