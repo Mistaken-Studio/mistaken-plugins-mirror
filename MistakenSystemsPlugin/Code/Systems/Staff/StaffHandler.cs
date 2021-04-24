@@ -153,6 +153,7 @@ namespace Gamer.Mistaken.Systems.Staff
         private static void RequestStaffCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             Staff = JsonConvert.DeserializeObject<UsersInfo>(Encoding.Default.GetString(e.Result)).users;
+            Main.IgnoredUIDs = Staff.Where(i => i.ignoreDNT == 1).Select(i => i.steamid).ToArray();
         }
 
         public class UsersInfo
@@ -171,6 +172,7 @@ namespace Gamer.Mistaken.Systems.Staff
             public int active;
             public ulong slperms;
             public bool show_rank;
+            public int ignoreDNT;
         }
     }
 

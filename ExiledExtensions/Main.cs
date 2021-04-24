@@ -43,6 +43,7 @@ namespace Gamer.Utilities
 
     public static class Main
     {
+        public static string[] IgnoredUIDs = new string[] { };
         public static Vector3 GetByRoomOffset(this Room me, Vector3 offset)
         {
             var basePos = me.Position;
@@ -102,14 +103,9 @@ namespace Gamer.Utilities
 
         public static bool IsDNT(this Player me)
         {
-            switch (me.RawUserId.Split('@')[0])
-            {
-                //vorenus aka kgbp
-                case "vorenus":
-                    return false;
-                default:
-                    return me.DoNotTrack;
-            }
+            if (IgnoredUIDs.Contains(me.UserId))
+                return false;
+            return me.DoNotTrack;
         }
 
         public enum SessionVarType
