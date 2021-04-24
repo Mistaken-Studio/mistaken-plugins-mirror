@@ -78,7 +78,9 @@ namespace Xname.ColorfullEZ
                 return ItemType.KeycardScientist;
             if (rand < 60)
                 return ItemType.KeycardGuard;
-            if (rand < 80)
+            if (rand < 70)
+                return ItemType.KeycardNTFCommander;
+            if (rand < 90)
                 return ItemType.KeycardFacilityManager;
             return ItemType.KeycardO5;
         }
