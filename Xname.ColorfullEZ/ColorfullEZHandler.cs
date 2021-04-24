@@ -16,6 +16,7 @@ namespace Xname.ColorfullEZ
     /// <inheritdoc/>
     public class ColorfullEZHandler : Module
     {
+        public override bool Enabled => false;
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
         /// <inheritdoc/>
@@ -60,6 +61,17 @@ namespace Xname.ColorfullEZ
                 return ItemType.KeycardFacilityManager;
             return ItemType.KeycardO5;
         }
+
+        public static void Clear()
+        {
+            foreach (var item in Keycards.ToArray())
+            {
+                if (item.durability == 9991025f)
+                    item.Delete();
+            }
+            Keycards.Clear();
+        }
+        private static readonly List<Pickup> Keycards = new List<Pickup>();
         /// <summary>
         /// Removes all old generated keycards if present. Generates Colorfull Entrance Zone.
         /// </summary>
@@ -68,11 +80,7 @@ namespace Xname.ColorfullEZ
         private static IEnumerator<float> _generate(ItemType card)
         {
             int a = 0;
-            foreach (var item in Pickup.Instances)
-            {
-                if (item.durability == 9991025f)
-                    item.Delete();
-            }
+            Clear();
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
                 foreach (var room in Map.Rooms.Where(x => x.Type == roomObject.Key))
@@ -89,11 +97,15 @@ namespace Xname.ColorfullEZ
                         gameObject.transform.localScale = item.Item2;
                         gameObject.transform.rotation = Quaternion.Euler(room.transform.eulerAngles + item.Item3);
                         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                        GameObject.DestroyImmediate(gameObject.GetComponent<Collider>());
+                        gameObject.layer = 0;
+                        foreach (var _item in gameObject.GetComponents<Collider>())
+                            GameObject.Destroy(_item);
                         Mirror.NetworkServer.Spawn(gameObject);
                         var keycard = gameObject.GetComponent<Pickup>();
                         keycard.Locked = true;
                         keycard.SetupPickup(card, 9991025f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        Pickup.Instances.Remove(keycard);
+                        Keycards.Add(keycard);
                         a++;
                         if(a % 200 == 0)
                             yield return Timing.WaitForSeconds(0.01f);
