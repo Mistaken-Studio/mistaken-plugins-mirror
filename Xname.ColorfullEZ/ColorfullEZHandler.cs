@@ -8,6 +8,7 @@ using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -15,9 +16,9 @@ using UnityEngine;
 namespace Xname.ColorfullEZ
 {
     /// <inheritdoc/>
-    public class ColorfullEZHandler : Module
+    public class ColorfullEZHandler : Gamer.Diagnostics.Module
     {
-        public override bool Enabled => false;
+        public override bool Enabled => true;
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
         /// <inheritdoc/>
@@ -29,11 +30,30 @@ namespace Xname.ColorfullEZ
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Player.Verified += Player_Verified;
         }
+
+        private void Player_Verified(VerifiedEventArgs ev)
+        {
+            MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+            if (sendSpawnMessage != null)
+            {
+                foreach (var netid in networkIdentities)
+                {
+                    sendSpawnMessage.Invoke(null, new object[]
+                    {
+                                netid,
+                                ev.Player.Connection
+                    });
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Player.Verified -= Player_Verified;
         }
         /// <summary>
         /// Returns random keycard
@@ -70,6 +90,7 @@ namespace Xname.ColorfullEZ
             KeycardsGameObjects.Clear();
         }
         private static readonly List<GameObject> KeycardsGameObjects = new List<GameObject>();
+        private static readonly List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>();
         /// <summary>
         /// Removes all old generated keycards if present. Generates Colorfull Entrance Zone.
         /// </summary>
@@ -99,6 +120,11 @@ namespace Xname.ColorfullEZ
                         var keycard = gameObject.GetComponent<Pickup>();
                         keycard.Locked = true;
                         keycard.SetupPickup(card, 9991025f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        foreach (var c in keycard.model.GetComponents<Component>())
+                        {
+                            GameObject.Destroy(c.gameObject);
+                        }
+                        networkIdentities.Add(keycard.netIdentity);
                         Pickup.Instances.Remove(keycard);
                         GameObject.Destroy(keycard);
                         foreach (var _item in gameObject.GetComponents<Collider>())
@@ -107,13 +133,31 @@ namespace Xname.ColorfullEZ
                             GameObject.Destroy(_item);
                         Mirror.NetworkServer.Spawn(gameObject);
                         KeycardsGameObjects.Add(gameObject);
+                        gameObject.SetActive(false);
                         a++;
                         if(a % 200 == 0)
                             yield return Timing.WaitForSeconds(0.01f);
                     }
                 }
             }
+            Log.Debug("--------------------------------------");
+            PrintComponents(KeycardsGameObjects[0], 0);
+            Log.Debug("--------------------------------------");
             Log.Debug($"[ColorfullEZ] Spawned {a} keycards");
+        }
+        static string reeeeee = "                                                                    ";
+        public static void PrintComponents(GameObject go, int iteration)
+        {
+            foreach (var c in go.GetComponents<Component>())
+            {
+                Log.Debug(reeeeee.Substring(0,iteration) + c.GetType().Name);
+                Log.Debug(reeeeee.Substring(0,iteration) + c.GetType().FullName);
+                Log.Debug("------------");
+            }
+            for(int i = go.transform.childCount; i > 0; i--)
+            {
+                PrintComponents(go.transform.GetChild(i - 1).gameObject,iteration+1);
+            }
         }
         private void Server_WaitingForPlayers()
         {
