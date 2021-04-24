@@ -5,6 +5,7 @@ using System.Text;
 using Exiled.API.Features;
 using Gamer.Utilities;
 using MistakenSocket.Client;
+using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.AIRS;
 using MistakenSocket.Shared.API;
@@ -18,6 +19,10 @@ namespace Gamer.Mistaken.AIRS
         public override ResponseData? Execute()
         {
             LOFH.MenuSystem.RefreshReports();
+            AIRS.Handler.Reports--;
+            if (Data.ServerId == (byte)SSL.Client.MyType)
+                AIRS.Handler.ReportsOnThisServer--;
+            AIRS.Handler.UpdateAll();
             if (!ReportHandler.Reports.TryGetValue(Data.ReportId, out ReportHandler.ExtendedReportData reportInfo))
                 return null;
             reportInfo.SetStatus((ReportHandler.ReportStatus)Data.Status, Data.Message);
