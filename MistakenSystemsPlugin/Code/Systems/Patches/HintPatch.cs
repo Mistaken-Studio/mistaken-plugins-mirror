@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.Systems.Patches
 				return false;
 			}
 			Tries.Remove(message);
-			message = message.Replace("\n", "<br>").Replace("\\n", "<br>");
+			message = message.Replace("\n", "<br>").Replace("\\n", "<br>").Replace("{", "[").Replace("}", "]");
 			__instance.HintDisplay.Show(new Hints.TextHint(message, new Hints.HintParameter[]
 			{
 				new Hints.StringHintParameter(message)
