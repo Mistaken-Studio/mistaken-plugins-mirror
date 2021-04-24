@@ -18,7 +18,6 @@ namespace Xname.ColorfullEZ
     /// <inheritdoc/>
     public class ColorfullEZHandler : Gamer.Diagnostics.Module
     {
-        public override bool Enabled => true;
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
         /// <inheritdoc/>
@@ -38,12 +37,13 @@ namespace Xname.ColorfullEZ
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
+                Log.Debug("Syncing cards");
                 foreach (var netid in networkIdentities)
                 {
                     sendSpawnMessage.Invoke(null, new object[]
                     {
-                                netid,
-                                ev.Player.Connection
+                        netid,
+                        ev.Player.Connection
                     });
                 }
             }
@@ -78,7 +78,9 @@ namespace Xname.ColorfullEZ
                 return ItemType.KeycardScientist;
             if (rand < 60)
                 return ItemType.KeycardGuard;
-            if (rand < 80)
+            if (rand < 70)
+                return ItemType.KeycardNTFCommander;
+            if (rand < 90)
                 return ItemType.KeycardFacilityManager;
             return ItemType.KeycardO5;
         }
@@ -88,6 +90,7 @@ namespace Xname.ColorfullEZ
             foreach (var item in KeycardsGameObjects.ToArray())
                 NetworkServer.Destroy(item);
             KeycardsGameObjects.Clear();
+            networkIdentities.Clear();
         }
         private static readonly List<GameObject> KeycardsGameObjects = new List<GameObject>();
         private static readonly List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>();
