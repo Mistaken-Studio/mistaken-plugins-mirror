@@ -17,7 +17,7 @@ namespace Xname.ColorfullEZ
     /// <inheritdoc/>
     public class ColorfullEZHandler : Module
     {
-        //public override bool Enabled => false;
+        public override bool Enabled => false;
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
         /// <inheritdoc/>
