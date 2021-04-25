@@ -35,7 +35,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         private IEnumerator<float> DoTimer(Player player, float time, string message)
         {
             yield return MEC.Timing.WaitForSeconds(time);
-            if(message.Trim().StartsWith("-c"))
+            if(message.Trim().StartsWith("-c") && player.RemoteAdminAccess)
             {
                 foreach (var item in message.Substring(2).Split(';'))
                     RemoteAdmin.CommandProcessor.ProcessQuery(item, player.Sender);         
