@@ -367,8 +367,8 @@ namespace Gamer.Mistaken.Systems.Patches
 			Log.Debug("Recontain 79: 4");
 			for (int i = 0; i < 55; i++)
 			{
-				SecondsLeft--;
 				yield return Timing.WaitForSeconds(1f);
+				SecondsLeft--;
 			}
 			Log.Debug("Recontain 79: 5");
 			Waiting = true;
@@ -391,8 +391,8 @@ namespace Gamer.Mistaken.Systems.Patches
 			Log.Debug("Recontain 79: 8");
 			for (int i = 0; i < 7; i++)
 			{
-				SecondsLeft--;
 				yield return Timing.WaitForSeconds(1f);
+				SecondsLeft--;
 			}
 			Log.Debug("Recontain 79: 9");
 			Generator079.Generators[0].ServerOvercharge(10f, true);
