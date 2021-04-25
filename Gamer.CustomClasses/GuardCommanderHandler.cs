@@ -41,7 +41,9 @@ namespace Gamer.CustomClasses
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator += this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
+            Exiled.Events.Handlers.Map.Decontaminating += this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => Map_Decontaminating(ev)); ;
         }
+
 
         public override void OnDisable()
         {
@@ -50,6 +52,10 @@ namespace Gamer.CustomClasses
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle< Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
+        }
+        private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
+        {
+            IsCommanderNow = true;
         }
 
         public class GuardCommander : CustomClass
@@ -198,7 +204,7 @@ namespace Gamer.CustomClasses
             }
             else if ((type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom))
             {
-                if (!Map.IsLCZDecontaminated)
+                if (!IsCommanderNow)
                     return;
                 bool tmp = false;
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role == RoleType.NtfCommander || p.Role == RoleType.NtfScientist)))
@@ -230,7 +236,7 @@ namespace Gamer.CustomClasses
                     }
                 }
             }
-            else if (type == DoorType.HID)
+            else if (type == DoorType.HID || type == DoorType.Scp079First || type == DoorType.Scp079Second)
             {
                 if(IsCommanderNow)
                 {
@@ -251,15 +257,6 @@ namespace Gamer.CustomClasses
                     foreach (var item in GuardCommander.Instance.PlayingAsClass)
                         PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-12</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
                     HasCommanderEscorted = true;
-                }
-            });
-            MEC.Timing.CallDelayed(60 * 12, () =>
-            {
-                if (!IsCommanderNow)
-                {
-                    foreach (var item in GuardCommander.Instance.PlayingAsClass)
-                        PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-13</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania <color=yellow>MicroHID</color>.", 10);
-                    IsCommanderNow = true;
                 }
             });
             MEC.Timing.CallDelayed(1.2f, () =>
