@@ -65,7 +65,7 @@ namespace Gamer.Mistaken.Systems.GUI
             Set(player, key, type, content);
             Timing.CallDelayed(duration, () =>
             {
-                if (localId == SetIds[key])
+                //if (localId == SetIds[key])
                     Set(player, key, type, null);
             });
         }
