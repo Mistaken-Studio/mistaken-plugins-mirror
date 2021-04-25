@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Gamer.Diagnostics;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Client.SL;
+using Gamer.Mistaken.Systems.Staff;
 
 namespace Gamer.Mistaken.LOFH
 {
@@ -62,7 +63,7 @@ namespace Gamer.Mistaken.LOFH
 
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
-            if (((CentralAuthPreauthFlags)ev.Flags).HasFlagFast(CentralAuthPreauthFlags.NorthwoodStaff) && !ev.UserId.IsDevUserId())
+            if (((CentralAuthPreauthFlags)ev.Flags).HasFlagFast(CentralAuthPreauthFlags.NorthwoodStaff) && !ev.UserId.IsStaff())
                 LOFHPatch.DisabledFor.Add(ev.UserId);
             if (!LOFH.Country.ContainsKey(ev.UserId))
                 LOFH.Country.Add(ev.UserId, ev.Country);
