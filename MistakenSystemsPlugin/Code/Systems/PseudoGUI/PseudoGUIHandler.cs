@@ -21,7 +21,7 @@ namespace Gamer.Mistaken.Systems.GUI
         //public override bool Enabled => false;
         public PseudoGUIHandler(PluginHandler p) : base(p)
         {
-            Timing.RunCoroutine(DoRoundLoop());
+            Timing.RunCoroutine(DoLoop());
         }
 
         public override string Name => "PseudoGUI";
@@ -56,10 +56,18 @@ namespace Gamer.Mistaken.Systems.GUI
                 ToUpdate.Add(item.Key);
             }
         }
+        private static readonly Dictionary<string, uint> SetIds = new Dictionary<string, uint>();
+        private static uint SetId = 0;
         public static void Set(Player player, string key, Position type, string content, float duration)
         {
+            uint localId = SetId++;
+            SetIds[key] = localId;
             Set(player, key, type, content);
-            Timing.CallDelayed(duration, () => Set(player, key, type, null));
+            Timing.CallDelayed(duration, () =>
+            {
+                if (localId == SetIds[key])
+                    Set(player, key, type, null);
+            });
         }
         public static void Set(Player player, string key, Position type, string content)
         {
@@ -87,13 +95,15 @@ namespace Gamer.Mistaken.Systems.GUI
             CustomInfo.Clear();
             ToUpdate.Clear();
             ToIgnore.Clear();
+            SetId = 0;
+            SetIds.Clear();
         }
 
         private static readonly HashSet<Player> ToIgnore = new HashSet<Player>();
 
         private bool Run = false;
         private DateTime start;
-        private IEnumerator<float> DoRoundLoop()
+        private IEnumerator<float> DoLoop()
         {
             int i = 0;
             while (true)
@@ -210,5 +220,14 @@ namespace Gamer.Mistaken.Systems.GUI
             player.ShowHint($"<size=75%><color=#FFFFFFFF>{toWrite}</color><br><br><br><br><br><br><br><br><br><br></size>", 7200);
             //Log.Debug($"Updating {player.Id} with {toWrite}");
         }
+    }
+
+    public static class Extensions
+    {
+        public static void SetGUI(this Player player, string key, PseudoGUIHandler.Position type, string content, float duration) =>
+            PseudoGUIHandler.Set(player, key, type, content, duration);
+        public static void SetGUI(this Player player, string key, PseudoGUIHandler.Position type, string content) => 
+            PseudoGUIHandler.Set(player, key, type, content);
+        
     }
 }
