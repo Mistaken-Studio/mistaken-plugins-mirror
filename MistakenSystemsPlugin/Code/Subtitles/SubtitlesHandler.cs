@@ -61,7 +61,8 @@ namespace Gamer.Mistaken.Subtitles
                     tmp2[CassiePatch2.Index] = $"<color=yellow>{tmp2[CassiePatch2.Index]}</color>";
                     tmp = string.Join(" ", tmp2);
                 }
-                PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
+                if(tmp.Trim().Length != 0)
+                    PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
             }
         }
 
