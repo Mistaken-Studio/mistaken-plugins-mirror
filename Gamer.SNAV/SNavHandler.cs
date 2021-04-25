@@ -36,7 +36,7 @@ namespace Gamer.SNAV
                     Input = ItemType.WeaponManagerTablet,
                     Durability = 0,
                     Chance = 100,
-                    KnobSetting = Scp914Knob.Fine
+                    KnobSetting = Scp914Knob.OneToOne
                 }
             };
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
