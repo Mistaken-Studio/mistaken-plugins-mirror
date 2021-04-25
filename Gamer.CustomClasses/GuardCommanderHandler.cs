@@ -117,6 +117,8 @@ namespace Gamer.CustomClasses
             }
         }
         private bool HasCommanderEscorted = false;
+        private bool IsCommanderNow;
+
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (!ev.IsEscaped)
@@ -135,9 +137,9 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
+            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
-            if(!HasCommanderEscorted || !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
+            if(!HasCommanderEscorted && !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
                 ev.IsAllowed = false;
                 return;
@@ -183,7 +185,7 @@ namespace Gamer.CustomClasses
                 ev.IsAllowed = true;
                 return;
             }
-            else if(type == DoorType.NukeSurface && false)
+            else if(type == DoorType.NukeSurface)
             {
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF)))
                 {
@@ -194,7 +196,7 @@ namespace Gamer.CustomClasses
                     }
                 }
             }
-            else if ((type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom) && false)
+            else if ((type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom))
             {
                 if (!Map.IsLCZDecontaminated)
                     return;
@@ -228,11 +230,20 @@ namespace Gamer.CustomClasses
                     }
                 }
             }
+            else if (type == DoorType.HID)
+            {
+                if(IsCommanderNow)
+                {
+                    ev.IsAllowed = true;
+                    return;
+                }
+            }
         }
 
         private void Server_RoundStarted()
         {
             HasCommanderEscorted = false;
+            IsCommanderNow = false;
             MEC.Timing.CallDelayed(60 * 6, () =>
             {
                 if (!HasCommanderEscorted)
@@ -240,6 +251,15 @@ namespace Gamer.CustomClasses
                     foreach (var item in GuardCommander.Instance.PlayingAsClass)
                         PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-12</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
                     HasCommanderEscorted = true;
+                }
+            });
+            MEC.Timing.CallDelayed(60 * 12, () =>
+            {
+                if (!IsCommanderNow)
+                {
+                    foreach (var item in GuardCommander.Instance.PlayingAsClass)
+                        PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-13</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania <color=yellow>MicroHID</color>.", 10);
+                    IsCommanderNow = true;
                 }
             });
             MEC.Timing.CallDelayed(1.2f, () =>
