@@ -429,6 +429,8 @@ namespace Gamer.Mistaken.Systems.Patches
 			Log.Debug("Recontain 79: 15");
 			Recontainer079.isLocked = false;
 			Log.Debug("Recontain 79: 16");
+			SecondsLeft = -1;
+			Waiting = false;
 			yield break;
 		}
 	}
