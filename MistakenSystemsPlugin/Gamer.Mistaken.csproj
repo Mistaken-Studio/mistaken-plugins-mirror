@@ -173,6 +173,8 @@
     <Compile Include="Code\Ranks\RankPerksHandler.cs" />
     <Compile Include="Code\Ranks\RanksCommandHandler.cs" />
     <Compile Include="Code\Ranks\RanksHandler.cs" />
+    <Compile Include="Code\Subtitles\CassiePatch.cs" />
+    <Compile Include="Code\Subtitles\SubtitlesHandler.cs" />
     <Compile Include="Code\Systems\AntiAfk\AntiAFK.cs" />
     <Compile Include="Code\BetterMutes\BetterMutesHandler.cs" />
     <Compile Include="Code\BetterMutes\Commands.cs" />

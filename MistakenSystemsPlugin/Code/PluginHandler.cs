@@ -59,6 +59,7 @@ namespace Gamer.Mistaken
             new Ranks.RanksHandler(this);
             new Ban2.BansHandler(this);
             new Ranks.RankPerksHandler(this);
+            new Subtitles.SubtitlesHandler(this);
             if (Config.WhitelistEnabled)
                 Log.SendRaw("! Whitelist is enabled !", ConsoleColor.Red);
             else
