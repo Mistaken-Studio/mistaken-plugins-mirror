@@ -120,7 +120,10 @@ namespace Gamer.Taser
                             targetPlayer.EnableEffect<CustomPlayerEffects.Blinded>(10);
                             targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
                             if (targetPlayer.CurrentItemIndex != -1 && !usableItems.Contains(targetPlayer.CurrentItem.id))
+                            {
                                 targetPlayer.DropItem(targetPlayer.CurrentItem);
+                                Exiled.Events.Handlers.Player.OnItemDropped(new Exiled.Events.EventArgs.ItemDroppedEventArgs(targetPlayer, null));
+                            }
                             RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
                             targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
                             targetPlayer.SendConsoleMessage($"You have been tased by: {player.Nickname} [{player.Role}]", "yellow");
