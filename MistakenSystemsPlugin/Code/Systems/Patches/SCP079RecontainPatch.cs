@@ -357,11 +357,11 @@ namespace Gamer.Mistaken.Systems.Patches
 			{
 				RespawnEffectsController.PlayCassieAnnouncement(string.Concat(new object[]
 				{
-				"JAM_",
-				UnityEngine.Random.Range(0, 70).ToString("000"),
-				"_",
-				UnityEngine.Random.Range(2, 5),
-				" SCP079RECON5"
+					"JAM_",
+					UnityEngine.Random.Range(0, 70).ToString("000"),
+					"_",
+					UnityEngine.Random.Range(2, 5),
+					" SCP079RECON5"
 				}), false, true);
 			}
 			Log.Debug("Recontain 79: 4");
@@ -380,11 +380,11 @@ namespace Gamer.Mistaken.Systems.Patches
 			Log.Debug("Recontain 79: 6");
 			RespawnEffectsController.PlayCassieAnnouncement(string.Concat(new object[]
 			{
-			"JAM_",
-			UnityEngine.Random.Range(0, 70).ToString("000"),
-			"_",
-			UnityEngine.Random.Range(1, 4),
-			" SCP079RECON6"
+				"JAM_",
+				UnityEngine.Random.Range(0, 70).ToString("000"),
+				"_",
+				UnityEngine.Random.Range(1, 4),
+				" SCP079RECON6"
 			}), true, true);
 			Log.Debug("Recontain 79: 7");
 			RespawnEffectsController.PlayCassieAnnouncement((Scp079PlayerScript.instances.Count > 0) ? "SCP 0 7 9 SUCCESSFULLY TERMINATED USING GENERATOR RECONTAINMENT SEQUENCE" : "FACILITY IS BACK IN OPERATIONAL MODE", false, true);
