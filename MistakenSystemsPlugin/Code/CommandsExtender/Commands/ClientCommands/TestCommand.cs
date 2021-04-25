@@ -185,7 +185,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         break;
                     }
                 case "cc_gc":
-                    API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassName == "Dowódca Ochrony").Spawn(player);
+                    API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassSessionVarType == Main.SessionVarType.CC_GUARD_COMMANDER).Spawn(player);
                     break;
             }
             success = true;

@@ -28,29 +28,37 @@ namespace Gamer.CustomClasses
         public GuardCommanderHandler(PluginHandler plugin) : base(plugin)
         {
             new GuardCommanderKeycard();
+            new GuardCommander();
         }
 
         public override string Name => "GuardCommander";
         public override void OnEnable()
         {
-            if (Server.Port % 2 == 1 && Server.Port < 7790)
+            if (Server.Port % 2 == 1 && Server.Port < 7790 && false)
                 return;
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator += this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
+
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle< Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
 
         public class GuardCommander : CustomClass
         {
-            public static GuardCommander Instance = new GuardCommander();
+            public GuardCommander() : base()
+            {
+                Instance = this;
+            }
+            public static GuardCommander Instance;
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_GUARD_COMMANDER;
             public override string ClassName => "Dowódca Ochrony";
             public override string ClassDescription => "Twoim zadaniem jest <color=yellow>dowodzenie</color> <color=#7795a9>ochroną placówki</color>.<br>Twoja karta <color=yellow>pozwala</color> ci otworzyć Gate A i Gate B, ale tylko gdy:<br>- Obok jest <color=#f1e96e>Naukowiec</color><br>- Obok jest skuta <color=#ff8400>Klasa D</color><br>- Obok jest skuty <color=#1d6f00>Rebeliant Chaosu</color>";
@@ -135,20 +143,40 @@ namespace Gamer.CustomClasses
                 return;
             }    
         }
+        private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
+        {
+            if (ev.KnobSetting == Scp914Knob.OneToOne)
+            {
+                foreach (var player in ev.Players)
+                {
+                    if (Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(player.CurrentItem)?.ItemName == "Karta Dowódcy Ochrony")
+                    {
+                        GuardCommanderKeycard.Instance.CurrentOwner = player;
+                        GuardCommanderKeycard.Instance.OnStartHolding(player, player.CurrentItem);
+                    }
+                }
+            }
+        }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
+            Log.Debug("a1");
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
+            Log.Debug("a2");
+            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
-            if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
+            Log.Debug("a3");
+            Log.Debug(guardCommanderKeycard.CurrentOwner?.Id + " " + guardCommanderKeycard.CurrentOwner?.Nickname);
+            if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
                 ev.IsAllowed = false;
                 return;
             }
+            Log.Debug("a4");
             if (ev.IsAllowed)
                 return;
+            Log.Debug("a5");
             var type = ev.Door.Type();
             if(type == DoorType.Intercom)
             {
@@ -236,8 +264,10 @@ namespace Gamer.CustomClasses
         }
         public class GuardCommanderKeycard : CustomItem
         {
+            public static GuardCommanderKeycard Instance;
             public GuardCommanderKeycard()
             {
+                Instance = this;
                 base.Register();
             }
             public override string ItemName => "Karta Dowódcy Ochrony";
@@ -245,9 +275,11 @@ namespace Gamer.CustomClasses
             public override ItemType Item => ItemType.KeycardSeniorGuard;
 
             public override int Durability => 001;
+
+            public Player CurrentOwner;
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                if(GuardCommander.Instance.PlayingAsClass.Contains(player))
+                if(GuardCommander.Instance.PlayingAsClass.Contains(player) || player == CurrentOwner)
                     PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
                 else
                     PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");
@@ -256,11 +288,20 @@ namespace Gamer.CustomClasses
             {
                 PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, null);
             }
+            public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
+            {
+                CurrentOwner = null;
+                return true;
+            }
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {
                 if (setting == Scp914Knob.Coarse || setting == Scp914Knob.Rough)
                     return null;
                 return base.OnUpgrade(pickup, setting);
+            }
+            public override void OnRestart()
+            {
+                CurrentOwner = null;
             }
             public override Vector3 Size => new Vector3(1, 5, 1);
         }
