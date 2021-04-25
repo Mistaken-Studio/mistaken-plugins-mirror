@@ -65,6 +65,8 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
+                    if (!player.IsAlive)
+                        return;
                     Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
                     player.EnableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 0.85f));
