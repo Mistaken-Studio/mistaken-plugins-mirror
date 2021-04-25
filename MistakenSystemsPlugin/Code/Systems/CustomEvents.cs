@@ -62,7 +62,7 @@ namespace Exiled.Events
 				{
 					get
 					{
-						return TimeToRecontainment != -1;
+						return TimeToRecontainment > -1;
 					}
 				}
 
