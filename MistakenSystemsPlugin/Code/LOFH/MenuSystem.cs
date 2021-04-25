@@ -500,8 +500,16 @@ namespace Gamer.Mistaken.LOFH
                 var tmp = data.Payload.Deserialize<(ReportData Report, ReportStatusType Status, DateTime Timestamp)[]>(0, 0, out _, false).ToList();
                 Reports = tmp.Where(i => (DateTime.Now - i.Timestamp).TotalMinutes < 30).OrderBy(i => -i.Timestamp.Ticks).ToArray();
                 Reported.Clear();
+                AIRS.Handler.ReportsOnThisServer = 0;
+                AIRS.Handler.Reports = 0;
                 foreach (var item in Reports)
                 {
+                    if(item.Status == ReportStatusType.NONE)
+                    {
+                        AIRS.Handler.Reports++;
+                        if (item.Report.Type == SSL.Client.MyType)
+                            AIRS.Handler.ReportsOnThisServer++;
+                    }
                     if((item.Status == ReportStatusType.NONE || item.Status == ReportStatusType.PROCCEDING) && item.Report.ReportedData.UserId == null)
                         Reported.Add(item.Report.ReportedData.UserId);
                 }

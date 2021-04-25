@@ -19,10 +19,6 @@ namespace Gamer.Mistaken.AIRS
         public override ResponseData? Execute()
         {
             LOFH.MenuSystem.RefreshReports();
-            AIRS.Handler.Reports--;
-            if (Data.ServerId == (byte)SSL.Client.MyType)
-                AIRS.Handler.ReportsOnThisServer--;
-            AIRS.Handler.UpdateAll();
             if (!ReportHandler.Reports.TryGetValue(Data.ReportId, out ReportHandler.ExtendedReportData reportInfo))
                 return null;
             reportInfo.SetStatus((ReportHandler.ReportStatus)Data.Status, Data.Message);

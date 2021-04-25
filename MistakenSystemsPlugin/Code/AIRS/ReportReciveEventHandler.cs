@@ -19,14 +19,8 @@ namespace Gamer.Mistaken.AIRS
         public override ResponseData? Execute()
         {
             LOFH.MenuSystem.RefreshReports();
-            AIRS.Handler.Reports++;
             if (Data.ServerId == (byte)SSL.Client.MyType)
-            {
-                AIRS.Handler.UpdateAll();
                 return null;
-            }
-            AIRS.Handler.ReportsOnThisServer++;
-            AIRS.Handler.UpdateAll();
             MapPlus.Broadcast("AIRS", 10, $"[{Data.Server}] ({Data.Suspect.Id}) {Data.Suspect.Nickname} was reported by {Data.ReporterName} for {Data.Reason}", Broadcast.BroadcastFlags.AdminChat);
             return null;
         }

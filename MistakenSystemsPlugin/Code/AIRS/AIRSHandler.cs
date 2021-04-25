@@ -37,7 +37,6 @@ namespace Gamer.Mistaken.AIRS
         }
         public static int Reports = 0;
         public static int ReportsOnThisServer = 0;
-        public static HashSet<string> ProccesingReports = new HashSet<string>();
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (!ev.Player.IsStaff())
@@ -68,7 +67,7 @@ namespace Gamer.Mistaken.AIRS
         }
         private static void Update(Player p, bool hide)
         {
-            PseudoGUIHandler.Set(p, "AIRS", PseudoGUIHandler.Position.TOP, hide ? null : $"Reports: <color=yellow>{Reports}</color> | Reports on #<color=yellow>{Server.Port - 7776}</color>: <color=yellow>{ReportsOnThisServer}</color>" + (ProccesingReports.Contains(p.UserId) ? "<br><color=yellow>You</color> are doing report" : ""));
+            PseudoGUIHandler.Set(p, "AIRS", PseudoGUIHandler.Position.TOP, hide ? null : $"Reports: <color=yellow>{Reports}</color> | Reports on #<color=yellow>{Server.Port - 7776}</color>: <color=yellow>{ReportsOnThisServer}</color>");
         }
 
         public static readonly HashSet<int> AlreadyReported = new HashSet<int>();
