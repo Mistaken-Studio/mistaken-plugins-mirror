@@ -135,7 +135,7 @@ namespace Gamer.Mistaken.Systems.GUI
 
         public static Generator079 cache_nearestGenerator;
 
-        public static int dynamic_maxRespawnCI => Math.Min(cache_maxCI, cache_ticketsCI);
+        public static int dynamic_maxRespawnCI => Math.Min(cache_maxCI, cache_ticketsCI == 0 ? 5 : cache_ticketsCI);
         public static int dynamic_maxRespawnMTF => Math.Min(cache_maxMTF, cache_ticketsMTF);
 
         private IEnumerator<float> UpdateCache()
