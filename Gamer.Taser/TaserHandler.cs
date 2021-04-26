@@ -102,6 +102,8 @@ namespace Gamer.Taser
                 }
                 else
                 {
+                    if (player.GetEffectActive<CustomPlayerEffects.Scp268>())
+                        player.DisableEffect<CustomPlayerEffects.Scp268>();
                     Cooldowns[dur] = DateTime.Now.AddSeconds(Cooldown);
                     var targetPlayer = Player.Get(target);
                     if (targetPlayer != null)
