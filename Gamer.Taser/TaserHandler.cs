@@ -121,8 +121,11 @@ namespace Gamer.Taser
                             targetPlayer.EnableEffect<CustomPlayerEffects.Amnesia>(5);
                             if (targetPlayer.CurrentItemIndex != -1 && !usableItems.Contains(targetPlayer.CurrentItem.id))
                             {
-                                targetPlayer.DropItem(targetPlayer.CurrentItem);
-                                Exiled.Events.Handlers.Player.OnItemDropped(new Exiled.Events.EventArgs.ItemDroppedEventArgs(targetPlayer, null));
+                                Exiled.Events.Handlers.Player.OnDroppingItem(new Exiled.Events.EventArgs.DroppingItemEventArgs(targetPlayer, targetPlayer.CurrentItem));
+                                var pickup = MapPlus.Spawn(targetPlayer.CurrentItem, targetPlayer.Position, Quaternion.identity, Vector3.one);
+                                //targetPlayer.DropItem(targetPlayer.CurrentItem);
+                                targetPlayer.RemoveItem(targetPlayer.CurrentItem);
+                                Exiled.Events.Handlers.Player.OnItemDropped(new Exiled.Events.EventArgs.ItemDroppedEventArgs(targetPlayer, pickup));
                             }
                             RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
                             targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
