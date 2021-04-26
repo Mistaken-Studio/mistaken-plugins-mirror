@@ -5,9 +5,6 @@
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using Gamer.Mistaken.Utilities.APILib;
-using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.ClientToCentral;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +22,7 @@ namespace Gamer.Mistaken.Subtitles
     public class SubtitlesHandler : Module
     {
         public static readonly HashSet<string> WithoutSubtitles = new HashSet<string>();
+        public static readonly HashSet<string> IgnoredSubtitles = new HashSet<string>();
         internal SubtitlesHandler(PluginHandler plugin) : base(plugin)
         {
         }
@@ -54,6 +52,8 @@ namespace Gamer.Mistaken.Subtitles
             else
             {
                 string tmp = CassiePatch.Messages.Peek();
+                if (IgnoredSubtitles.Contains(tmp))
+                    return;
                 string[] tmp2 = tmp.Split(' ');
                 if (CassiePatch2.Index != -1 && CassiePatch2.Index < tmp2.Length)
                 {
@@ -61,7 +61,9 @@ namespace Gamer.Mistaken.Subtitles
                     tmp2[CassiePatch2.Index] = $"<color=yellow>{tmp2[CassiePatch2.Index]}</color>";
                     tmp = string.Join(" ", tmp2);
                 }
-                if(tmp.Trim().Length != 0)
+                if(tmp.Trim().Length == 0)
+                    PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, null);
+                else
                     PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
             }
         }
