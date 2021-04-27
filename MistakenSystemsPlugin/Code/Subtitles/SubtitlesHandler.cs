@@ -57,7 +57,6 @@ namespace Gamer.Mistaken.Subtitles
                 string[] tmp2 = tmp.Split(' ');
                 if (CassiePatch2.Index != -1 && CassiePatch2.Index < tmp2.Length)
                 {
-                    Log.Debug(tmp2[CassiePatch2.Index]);
                     tmp2[CassiePatch2.Index] = $"<color=yellow>{tmp2[CassiePatch2.Index]}</color>";
                     tmp = string.Join(" ", tmp2);
                 }
