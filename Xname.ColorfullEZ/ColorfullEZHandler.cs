@@ -27,7 +27,14 @@ namespace Xname.ColorfullEZ
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Player.Verified += Player_Verified;
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+        }
+
+        /// <inheritdoc/>
+        public override void OnDisable()
+        {
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
 
         private void Player_Verified(VerifiedEventArgs ev)
@@ -49,12 +56,6 @@ namespace Xname.ColorfullEZ
             }
         }
 
-        /// <inheritdoc/>
-        public override void OnDisable()
-        {
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Player.Verified -= Player_Verified;
-        }
         /// <summary>
         /// Returns random keycard
         /// </summary>
@@ -126,9 +127,7 @@ namespace Xname.ColorfullEZ
                         keycard.Locked = true;
                         keycard.SetupPickup(card, 9991025f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                         foreach (var c in keycard.model.GetComponents<Component>())
-                        {
                             GameObject.Destroy(c.gameObject);
-                        }
                         networkIdentities.Add(keycard.netIdentity);
                         Pickup.Instances.Remove(keycard);
                         GameObject.Destroy(keycard);

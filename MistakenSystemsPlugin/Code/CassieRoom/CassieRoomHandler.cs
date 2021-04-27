@@ -29,6 +29,7 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
             Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
         public override void OnDisable()
         {
@@ -36,8 +37,27 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
             Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
        
+
+        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        {
+            System.Reflection.MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+            if (sendSpawnMessage != null)
+            {
+                Log.Debug("Syncing cards");
+                foreach (var netid in networkIdentities)
+                {
+                    sendSpawnMessage.Invoke(null, new object[]
+                    {
+                        netid,
+                        ev.Player.Connection
+                    });
+                }
+            }
+        }
+
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
         {
             WarheadStartButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
@@ -231,10 +251,25 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.transform.localScale = size;
             gameObject.transform.rotation = Quaternion.Euler(rot);
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
+            if (collide)
+            {
+                gameObject.AddComponent<BoxCollider>();
+                gameObject.layer = LayerMask.GetMask("Default");
+            }
             var pickup = gameObject.GetComponent<Pickup>();
-            pickup.SetupPickup(type, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
+            pickup.SetupPickup(type, 78253f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
             pickup.Locked = true;
+            foreach (var c in pickup.model.GetComponents<Component>())
+                GameObject.Destroy(c.gameObject);
+            networkIdentities.Add(pickup.netIdentity);
+            Pickup.Instances.Remove(pickup);
+            GameObject.Destroy(pickup);
+            foreach (var _item in gameObject.GetComponents<Collider>())
+                GameObject.Destroy(_item);
+            foreach (var _item in gameObject.GetComponents<MeshRenderer>())
+                GameObject.Destroy(_item);
+            Mirror.NetworkServer.Spawn(gameObject);
+            gameObject.SetActive(false);
         }
 
         public static readonly List<(Vector3 Pos, Vector3 Size, Vector3 Rot)> Doors = new List<(Vector3 Pos, Vector3 Size, Vector3 Rot)>()
