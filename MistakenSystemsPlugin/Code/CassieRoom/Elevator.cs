@@ -26,12 +26,31 @@ namespace Gamer.Mistaken.CassieRoom
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
 
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+        }
+
+        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        {
+            System.Reflection.MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+            if (sendSpawnMessage != null)
+            {
+                Log.Debug("Syncing cards");
+                foreach (var netid in networkIdentities)
+                {
+                    sendSpawnMessage.Invoke(null, new object[]
+                    {
+                        netid,
+                        ev.Player.Connection
+                    });
+                }
+            }
         }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
@@ -137,7 +156,6 @@ namespace Gamer.Mistaken.CassieRoom
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree;
             (mainDoor as BreakableDoor)._brokenPrefab = null;
             //Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
-            DoorVariant door;
 
             //-23.7 1022.35 -43.5 0 90 0 10 110 1
             SpawnItem(keycardType, new Vector3(-23.8f, 1022.33f, -43.5f), new Vector3(0, 90, 0), new Vector3(10, 110, 2), true);
@@ -233,6 +251,7 @@ namespace Gamer.Mistaken.CassieRoom
             Moving = false;
         }
 
+        private static readonly List<Mirror.NetworkIdentity> networkIdentities = new List<Mirror.NetworkIdentity>();
         public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size, bool collide = false)
         {
             var gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
@@ -245,10 +264,20 @@ namespace Gamer.Mistaken.CassieRoom
                 gameObject.AddComponent<BoxCollider>();
                 gameObject.layer = LayerMask.GetMask("Default");
             }
-            Mirror.NetworkServer.Spawn(gameObject);
             var pickup = gameObject.GetComponent<Pickup>();
             pickup.SetupPickup(type, 78253f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
             pickup.Locked = true;
+            foreach (var c in pickup.model.GetComponents<Component>())
+                GameObject.Destroy(c.gameObject);
+            networkIdentities.Add(pickup.netIdentity);
+            Pickup.Instances.Remove(pickup);
+            GameObject.Destroy(pickup);
+            foreach (var _item in gameObject.GetComponents<Collider>())
+                GameObject.Destroy(_item);
+            foreach (var _item in gameObject.GetComponents<MeshRenderer>())
+                GameObject.Destroy(_item);
+            Mirror.NetworkServer.Spawn(gameObject);
+            gameObject.SetActive(false);
         }
 
         public static DoorVariant SpawnDoor(Vector3 pos, Vector3 rot, Vector3 size)
