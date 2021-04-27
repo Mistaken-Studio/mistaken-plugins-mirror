@@ -294,24 +294,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
 
         private void Server_RoundStarted()
         {
-            Vector3 positionToSpawn;
-            Vector3 s012 = new Vector3(0, 1002, 0);
-            foreach (var door in Map.Doors)
-            {
-                if (door.Type() == DoorType.Scp012Bottom)
-                {
-                    var deoe = door.GetComponent<DoorEventOpenerExtension>();
-                    if (door != null)
-                        GameObject.Destroy(deoe);
-                    var door012 = door as BreakableDoor;
-                    door.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree;
-                    door012._ignoredDamageSources = DoorDamageType.Grenade | DoorDamageType.Scp096 | DoorDamageType.Weapon;
-                    s012 = door.transform.position + (door.transform.right * 1.5f) + (door.transform.forward * 8.5f);
-                    break;
-                }
-            }
-
-            positionToSpawn = s012 + Vector3.up;
+            var positionToSpawn = new Vector3(-26, 1020, -44);
             MEC.Timing.CallDelayed(5, () =>
             {
                 var tmp = ItemType.GrenadeFlash.Spawn(1.149f, Vector3.zero);
@@ -337,13 +320,23 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
-            if (ev.Door.Type() == DoorType.Scp012Bottom && !ev.Player.IsBypassModeEnabled && ev.Player.Role != RoleType.Scp079)
+            if (ev.Door.GetNametag() != "SCP1499Chamber")
+            {
+                Log.Debug(ev.Door.GetNametag());
+                return;
+            }
+            if(ev.Door.NetworkTargetState)
+            {
+                ev.IsAllowed = false;
+                return;
+            }
+            if (!ev.Player.IsBypassModeEnabled && ev.Player.Role != RoleType.Scp079)
             {
                 var currentItemType = ev.Player.CurrentItem.id;
-                if (!currentItemType.IsKeycard() || !(currentItemType == ItemType.KeycardO5 || currentItemType == ItemType.KeycardFacilityManager || currentItemType == ItemType.KeycardContainmentEngineer))
+                if (!(currentItemType == ItemType.KeycardO5 || currentItemType == ItemType.KeycardFacilityManager || currentItemType == ItemType.KeycardContainmentEngineer))
                 {
                     ev.IsAllowed = false;
-                    ev.Player.SetGUI("scp012Door", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_012_Denied"), 5);
+                    ev.Player.SetGUI("scp1499Door", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_012_Denied"), 5);
                     //ev.Player.ShowHintPulsating(plugin.ReadTranslation("Info_012_Denied"), 2f, true, true);
                 }
             }

@@ -138,7 +138,7 @@ namespace Gamer.Mistaken.CassieRoom
             ItemType keycardType = ItemType.KeycardNTFLieutenant;
 
             //-23.7 1018.6 -43.5 0 90 0 1 1 1
-            var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-23.8f, 1018.6f, -43.5f), Vector3.up * 90, Vector3.one);
+            var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, "SCP1499Chamber", new Vector3(-23.8f, 1018.6f, -43.5f), Vector3.up * 90, Vector3.one);
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree;
             (mainDoor as BreakableDoor)._brokenPrefab = null;
             //Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
@@ -146,8 +146,16 @@ namespace Gamer.Mistaken.CassieRoom
 
             //-23.7 1022.35 -43.5 0 90 0 10 110 1
             SpawnItem(keycardType, new Vector3(-23.8f, 1022.33f, -43.5f), new Vector3(0, 90, 0), new Vector3(10, 110, 2), true);
-
-
+            //-23.8 1020.35 -41.92 0 90 0 5.5 610 2
+            SpawnItem(keycardType, new Vector3(-23.8f, 1020.35f, -41.92f), new Vector3(0, 90, 0), new Vector3(5.5f, 610, 2), true);
+            //-23.8 1020.35 -45.1 0 90 0 5.5 610 2
+            SpawnItem(keycardType, new Vector3(-23.8f, 1020.35f, -45.1f), new Vector3(0, 90, 0), new Vector3(5.5f, 610, 2), true);
+            //-23.8 1020.35 -45.7 0 90 90 2.2 0.37 1
+            SpawnDoor(new Vector3(-23.8f, 1020.35f, -45.7f), new Vector3(0, 90, 90), new Vector3(2.2f, 0.37f, 1));
+            //-23.8 1020.35 -45.55 0 0 90 2.2 1 1
+            SpawnDoor(new Vector3(-23.8f, 1020.35f, -45.55f), new Vector3(0, 0, 90), new Vector3(2.2f, 1, 1));
+            //-25.5 1020.35 -45.55 0 0 0 15 650 2.5
+            SpawnItem(keycardType, new Vector3(-25.5f, 1020.35f, -45.55f), new Vector3(0, 0, 0), new Vector3(15f, 650, 2.5f), true);
 
             //door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-17.78f, 1001.47f, -42.5f), new Vector3(0, 90, 90), new Vector3(1.5f, 1.1f, 1));
             //door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
@@ -238,11 +246,23 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.transform.rotation = Quaternion.Euler(rot);
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             if (collide)
+            {
+                gameObject.AddComponent<BoxCollider>();
                 gameObject.layer = LayerMask.GetMask("Default");
+            }
             Mirror.NetworkServer.Spawn(gameObject);
             var pickup = gameObject.GetComponent<Pickup>();
             pickup.SetupPickup(type, 78253f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
             pickup.Locked = true;
+        }
+
+        public static DoorVariant SpawnDoor(Vector3 pos, Vector3 rot, Vector3 size)
+        {
+            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos, rot, size);
+            door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            return door;
         }
     }
 }
