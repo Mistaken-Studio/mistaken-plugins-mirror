@@ -21,6 +21,10 @@ using Gamer.Mistaken.Systems.Logs;
 using CustomPlayerEffects;
 using Gamer.Mistaken.Systems.Staff;
 using Grenades;
+using MistakenSocket.Shared.ClientToCentral;
+using MistakenSocket.Shared;
+using MistakenSocket.Client.SL;
+using Gamer.API;
 
 namespace Gamer.Mistaken.Systems
 {
@@ -121,6 +125,7 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
             Exiled.Events.Handlers.Scp049.FinishingRecall += Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
         }
 
         private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
@@ -160,6 +165,23 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
             Exiled.Events.Handlers.Scp049.FinishingRecall -= Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
+        }
+        public static readonly Dictionary<string, PlayerPreferences> PlayerPreferencesDict = new Dictionary<string, PlayerPreferences>();
+        private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
+        {
+            if (string.IsNullOrWhiteSpace(ev.UserId))
+                return;
+            PlayerPreferencesDict[ev.UserId] = PlayerPreferences.NONE;
+            MistakenSocket.Client.SL.SSL.Client.Send(MistakenSocket.Shared.API.MessageType.CMD_REQUEST_DATA, new RequestData
+            {
+                Type = MistakenSocket.Shared.API.DataType.SL_PLAYER_PREFERENCES,
+                argument = ev.UserId.Serialize(false)
+            }).GetResponseDataCallback((data) =>
+            {
+                if(data.Type == MistakenSocket.Shared.API.ResponseType.OK)
+                    PlayerPreferencesDict[ev.UserId] = data.Payload.Deserialize<PlayerPreferences>(false);
+            });
         }
 
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)

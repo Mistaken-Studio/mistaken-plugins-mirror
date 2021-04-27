@@ -91,6 +91,10 @@
       <Project>{c50d9525-091d-4176-acae-890b5750d2b0}</Project>
       <Name>Gamer.Diagnostics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MistakenSystemsPlugin\Gamer.Mistaken.csproj">
+      <Project>{55dc9d88-e32a-4176-ad17-9502a0440341}</Project>
+      <Name>Gamer.Mistaken</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
