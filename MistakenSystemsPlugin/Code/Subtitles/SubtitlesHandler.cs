@@ -21,7 +21,6 @@ namespace Gamer.Mistaken.Subtitles
 {
     public class SubtitlesHandler : Module
     {
-        public static readonly HashSet<string> WithoutSubtitles = new HashSet<string>();
         public static readonly HashSet<string> IgnoredSubtitles = new HashSet<string>();
         internal SubtitlesHandler(PluginHandler plugin) : base(plugin)
         {
@@ -45,7 +44,7 @@ namespace Gamer.Mistaken.Subtitles
 
         private static void Update(Player player)
         {
-            if (WithoutSubtitles.Contains(player.UserId))
+            if ((Systems.Handler.PlayerPreferencesDict[player.UserId] & API.PlayerPreferences.DISABLE_TRANSCRYPT) != API.PlayerPreferences.NONE)
                 return;
             if (CassiePatch.Messages.Count == 0)
                 PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, null);

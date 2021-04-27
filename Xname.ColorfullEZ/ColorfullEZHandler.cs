@@ -34,6 +34,8 @@ namespace Xname.ColorfullEZ
 
         private void Player_Verified(VerifiedEventArgs ev)
         {
+            if ((Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] & Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ) != Gamer.API.PlayerPreferences.NONE)
+                return;
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
