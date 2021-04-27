@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
-            _s = false;
+            _s = true;
             var player = sender.GetPlayer();
             var prefs = Systems.Handler.PlayerPreferencesDict[player.UserId];
             if(args.Length == 0)
