@@ -111,7 +111,7 @@ namespace Xname.ColorfullEZ
             {
                 foreach (var room in Map.Rooms.Where(x => x.Type == roomObject.Key))
                 {
-                    Log.Debug($"[ColorfullEZ] Spawning {roomObject.Key}, {roomObject.Value.Count} keycards");
+                    Log.Debug($"Spawning {roomObject.Key}, {roomObject.Value.Count} keycards");
                     foreach (var item in roomObject.Value)
                     {
                         var basePos = room.Position;
@@ -150,7 +150,7 @@ namespace Xname.ColorfullEZ
             Log.Debug("--------------------------------------");
             PrintComponents(KeycardsGameObjects[0], 0);
             Log.Debug("--------------------------------------");
-            Log.Debug($"[ColorfullEZ] Spawned {a} keycards");
+            Log.Debug($"Spawned {a} keycards");
         }
         static string reeeeee = "                                                                    ";
         public static void PrintComponents(GameObject go, int iteration)

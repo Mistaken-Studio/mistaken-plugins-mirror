@@ -653,29 +653,29 @@ namespace Gamer.SNAV
         {
             try
             {
-                Log.Debug("[SNAV] Try WaitingForPlayers");
+                Log.Debug("Try WaitingForPlayers");
                 try
                 {
                     if (MapPlus.Rooms == null)
-                        Log.Error("[SNAV] Room List is Null");
+                        Log.Error("Room List is Null");
                     else if (MapPlus.Rooms.Any(r => r == null))
-                        Log.Error("[SNAV] Some Rooms Are Null");
+                        Log.Error("Some Rooms Are Null");
                     else if (!MapPlus.Rooms.Any(r => r.Type == RoomType.LczClassDSpawn))
-                        Log.Error("[SNAV] No ClassDSpwan Room");
+                        Log.Error("No ClassDSpwan Room");
                     else
                     {
                         var room = MapPlus.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
                         if(room == null)
-                            Log.Error("[SNAV] Found ClassDSpwan Room but null");
+                            Log.Error("Found ClassDSpwan Room but null");
                         else if(room.gameObject == null)
-                            Log.Error("[SNAV] Found ClassDSpwan Room but gameObject is null");
+                            Log.Error("Found ClassDSpwan Room but gameObject is null");
                         else
                             OffsetClassD = GetRotateion(room);
                     }
                 }
                 catch(System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 1");
+                    Log.Error("CatchId: 1");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
@@ -691,7 +691,7 @@ namespace Gamer.SNAV
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 2");
+                    Log.Error("CatchId: 2");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
@@ -712,7 +712,7 @@ namespace Gamer.SNAV
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 3");
+                    Log.Error("CatchId: 3");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
@@ -737,7 +737,7 @@ namespace Gamer.SNAV
                                 }
                                 catch (System.Exception ex)
                                 {
-                                    Log.Error("[SNAV] CatchId: 4.2");
+                                    Log.Error("CatchId: 4.2");
                                     Log.Error(ex.Message);
                                     Log.Error(ex.StackTrace);
                                 }
@@ -745,7 +745,7 @@ namespace Gamer.SNAV
                         }
                         catch (System.Exception ex)
                         {
-                            Log.Error("[SNAV] CatchId: 4.1");
+                            Log.Error("CatchId: 4.1");
                             Log.Error(ex.Message);
                             Log.Error(ex.StackTrace);
                         }
@@ -753,7 +753,7 @@ namespace Gamer.SNAV
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 4");
+                    Log.Error("CatchId: 4");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
@@ -775,7 +775,7 @@ namespace Gamer.SNAV
                         }
                         catch (System.Exception ex)
                         {
-                            Log.Error("[SNAV] CatchId: 5.1");
+                            Log.Error("CatchId: 5.1");
                             Log.Error(ex.Message);
                             Log.Error(ex.StackTrace);
                         }
@@ -783,7 +783,7 @@ namespace Gamer.SNAV
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 5");
+                    Log.Error("CatchId: 5");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
@@ -804,7 +804,7 @@ namespace Gamer.SNAV
                         }
                         catch (System.Exception ex)
                         {
-                            Log.Error("[SNAV] CatchId: 6.1");
+                            Log.Error("CatchId: 6.1");
                             Log.Error(ex.Message);
                             Log.Error(ex.StackTrace);
                         }
@@ -812,7 +812,7 @@ namespace Gamer.SNAV
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 6");
+                    Log.Error("CatchId: 6");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
@@ -835,7 +835,7 @@ namespace Gamer.SNAV
                                 }
                                 catch (System.Exception ex)
                                 {
-                                    Log.Error("[SNAV] CatchId: 7.2");
+                                    Log.Error("CatchId: 7.2");
                                     Log.Error(ex.Message);
                                     Log.Error(ex.StackTrace);
                                 }
@@ -843,7 +843,7 @@ namespace Gamer.SNAV
                         }
                         catch (System.Exception ex)
                         {
-                            Log.Error("[SNAV] CatchId: 7.1");
+                            Log.Error("CatchId: 7.1");
                             Log.Error(ex.Message);
                             Log.Error(ex.StackTrace);
                         }
@@ -851,14 +851,14 @@ namespace Gamer.SNAV
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error("[SNAV] CatchId: 7");
+                    Log.Error("CatchId: 7");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
             }
             catch (System.Exception ex)
             {
-                Log.Error("[SNAV] CatchId: 0");
+                Log.Error("CatchId: 0");
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
                 MEC.Timing.CallDelayed(5, Server_WaitingForPlayers);
