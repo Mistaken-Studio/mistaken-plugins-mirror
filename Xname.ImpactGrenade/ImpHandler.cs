@@ -56,6 +56,8 @@ namespace Xname.ImpactGrenade
                 MEC.Timing.CallDelayed(1f, () =>
                 {
                     RoundLogger.Log("IMPACT GRENADE", "THROW", $"{player.PlayerToString()} threw an impact grenade");
+                    if (player.GetEffectActive<CustomPlayerEffects.Scp268>())
+                        player.DisableEffect<CustomPlayerEffects.Scp268>();
                     Grenade grenade = UnityEngine.Object.Instantiate(player.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();
                     grenade.fuseDuration = 999;
                     grenade.InitData(player.GrenadeManager, Vector3.zero, player.CameraTransform.forward, slow ? 0.5f : 1f);
