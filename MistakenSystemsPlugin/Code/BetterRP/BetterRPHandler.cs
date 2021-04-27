@@ -71,7 +71,10 @@ namespace Gamer.Mistaken.BetterRP
                         if (item.id == ItemType.KeycardO5)
                         {
                             ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
-                            ev.Player.AddItem(ItemType.KeycardO5);
+                            if (ev.Player.Inventory.items.Count >= 8)
+                                ItemType.KeycardO5.Spawn(0, ev.Player.Position);
+                            else
+                                ev.Player.AddItem(ItemType.KeycardO5);
                             continue;
                         }
                         else if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
@@ -79,7 +82,10 @@ namespace Gamer.Mistaken.BetterRP
                             if (item.id == ItemType.KeycardFacilityManager || item.id == ItemType.KeycardContainmentEngineer)
                             {
                                 ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
-                                ev.Player.AddItem(ItemType.KeycardO5);
+                                if (ev.Player.Inventory.items.Count >= 8)
+                                    ItemType.KeycardO5.Spawn(0, ev.Player.Position);
+                                else
+                                    ev.Player.AddItem(ItemType.KeycardO5);
                                 continue;
                             }
                         }
