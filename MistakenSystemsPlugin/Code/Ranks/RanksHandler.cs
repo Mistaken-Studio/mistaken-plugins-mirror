@@ -31,8 +31,10 @@ namespace Gamer.Mistaken.Ranks
 
         public static readonly HashSet<string> ReservedSlots = new HashSet<string>();
         public override bool IsBasic => true;
+        private new static __Log Log;
         internal RanksHandler(PluginHandler plugin) : base(plugin)
         {
+            Log = base.Log;
         }
 
         public override string Name => "Ranks";

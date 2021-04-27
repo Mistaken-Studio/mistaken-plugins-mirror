@@ -20,8 +20,10 @@ namespace Gamer.Mistaken.Base
         public static WantedData[] Wanteds = new WantedData[0];
         public readonly static HashSet<string> WantedUserIds = new HashSet<string>();
 
+        private new static __Log Log;
         public JoinsHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
+            Log = base.Log;
         }
 
         public override string Name => nameof(JoinsHandler);

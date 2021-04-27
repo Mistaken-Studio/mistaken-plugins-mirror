@@ -458,8 +458,10 @@ namespace Gamer.SNAV
         public readonly static HashSet<Room> LastScan = new HashSet<Room>();
 
         public override string Name => "SNavHandler";
+        private new static __Log Log;
         public SNavHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
             new SNavClasicItem();
             new SNavUltimateItem();
         }

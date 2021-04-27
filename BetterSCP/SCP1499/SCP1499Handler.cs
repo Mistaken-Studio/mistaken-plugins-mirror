@@ -21,8 +21,10 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
     public class SCP1499Handler : Module
     {
         private static PluginHandler StaticPlugin;
+        private new static __Log Log;
         public SCP1499Handler(PluginHandler plugin) : base(plugin)
         {
+            Log = base.Log;
             new SCP1499CustomItem();
             StaticPlugin = plugin;
             plugin.RegisterTranslation("scp1499_info_cooldown", "<color=red>SCP 1499</color> is on cooldown for next <color=yellow>{0}</color> seconds");

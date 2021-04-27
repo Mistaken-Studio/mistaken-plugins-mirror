@@ -90,11 +90,11 @@ namespace Gamer.Diagnostics
                 return tor;
             }
         }
-        
 
-        public static void LogTime(string moduleName, string name, DateTime start, DateTime end) => 
+
+        public static void LogTime(string moduleName, string name, DateTime start, DateTime end) =>
             Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{moduleName}: {name}] {(end - start).TotalMilliseconds}");
-        
+
 
         private static bool Initiated = false;
 
@@ -166,7 +166,7 @@ namespace Gamer.Diagnostics
                 ZipFile.CreateFromDirectory(day, $"{day}.zip");
                 Directory.Delete(day, true);
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Error("Failed to compress");
                 Log.Error(ex.Message);
@@ -179,10 +179,10 @@ namespace Gamer.Diagnostics
             if (!File.Exists(file))
                 return;
             var result = AnalizeContent(File.ReadAllLines(file), DateTime.Now.AddHours(-1));
-            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file)+ ".analized.log"), Newtonsoft.Json.JsonConvert.SerializeObject(result));
+            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".analized.log"), Newtonsoft.Json.JsonConvert.SerializeObject(result));
             File.Delete(file);
         }
-            
+
         private static Dictionary<string, Data> AnalizeContent(string[] lines, DateTime dateTime)
         {
             Dictionary<string, List<(float Took, DateTime Time)>> times = new Dictionary<string, List<(float Took, DateTime Time)>>();
@@ -259,6 +259,8 @@ namespace Gamer.Diagnostics
         public readonly IPlugin<IConfig> plugin;
         public virtual bool IsBasic { get; } = false;
 
+        protected __Log Log => new __Log(Name);
+
         public Module(IPlugin<IConfig> plugin)
         {
             this.plugin = plugin;
@@ -273,9 +275,9 @@ namespace Gamer.Diagnostics
             foreach (var item in Modules[plugin].Where(i => i.Enabled))
             {
                 MasterHandler.Ini();
-                Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                Exiled.API.Features.Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
                 item.OnEnable();
-                Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
         public static void OnDisable(IPlugin<IConfig> plugin)
@@ -283,9 +285,9 @@ namespace Gamer.Diagnostics
             foreach (var item in Modules[plugin].Where(i => i.Enabled))
             {
                 MasterHandler.Ini();
-                Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                Exiled.API.Features.Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
                 item.OnDisable();
-                Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
 
@@ -296,9 +298,9 @@ namespace Gamer.Diagnostics
                 foreach (var item in module.Value.Where(i => i.Enabled && !i.IsBasic))
                 {
                     MasterHandler.Ini();
-                    Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                    Exiled.API.Features.Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
                     item.OnEnable();
-                    Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                    Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
                 }
             }
         }
@@ -310,14 +312,24 @@ namespace Gamer.Diagnostics
                 foreach (var item in module.Value.Where(i => i.Enabled && !i.IsBasic))
                 {
                     MasterHandler.Ini();
-                    Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
+                    Exiled.API.Features.Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
                     item.OnDisable();
-                    Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
+                    Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
                 }
             }
         }
 
         public abstract void OnEnable();
         public abstract void OnDisable();
+    }
+
+    public class __Log
+    {
+        private string module;
+        public __Log(string module) => this.module = module;
+        public void Debug(object message, bool canBeSant = true) => Log.Debug($"[{module}] {message}", canBeSant);
+        public void Info(object message) => Log.Info($"[{module}] {message}");
+        public void Warn(object message) => Log.Warn($"[{module}] {message}");
+        public void Error(object message) => Log.Error($"[{module}] {message}");
     }
 }

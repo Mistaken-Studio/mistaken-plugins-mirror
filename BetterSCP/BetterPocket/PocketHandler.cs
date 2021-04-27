@@ -16,8 +16,10 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
 {
     class PocketHandler : Module
     {
+        private new static __Log Log;
         public PocketHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
         }
 
         public override string Name => nameof(PocketHandler);

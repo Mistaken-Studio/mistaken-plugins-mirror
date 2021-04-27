@@ -12,8 +12,10 @@ namespace Gamer.Mistaken.Systems.Seasonal
 {
     internal class EasterHandler : Module
     {
+        private new static __Log Log;
         public EasterHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
             new Egg(1, RoomType.LczPlants, new Vector3(-5, 1.5f, 0));
             new Egg(2, RoomType.LczCafe, new Vector3(2, 3, -10));
             new Egg(3, RoomType.LczToilets, new Vector3(9.25f, 3, 0.5f));

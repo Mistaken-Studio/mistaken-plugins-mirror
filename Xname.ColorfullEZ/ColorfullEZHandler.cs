@@ -20,9 +20,11 @@ namespace Xname.ColorfullEZ
     {
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
+        private new static __Log Log;
         /// <inheritdoc/>
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
+            Log = base.Log;
         }
 
         /// <inheritdoc/>

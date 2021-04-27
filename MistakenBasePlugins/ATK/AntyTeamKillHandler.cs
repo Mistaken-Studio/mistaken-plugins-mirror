@@ -135,9 +135,11 @@ namespace Gamer.Mistaken.Base
         private static AntyTeamKillHandler Instance;
 
         public override string Name => nameof(AntyTeamKillHandler);
+        private new static __Log Log;
         public AntyTeamKillHandler(PluginHandler p) : base(p)
         {
             Instance = this;
+            Log = base.Log;
         }
 
         public override void OnEnable()

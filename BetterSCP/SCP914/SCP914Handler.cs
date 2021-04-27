@@ -152,7 +152,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
             Log(ev.Player, Systems.Logs.SCP914Action.ACTIVATE);
         }
 
-        private void Log(Player p, Systems.Logs.SCP914Action type) 
+        private new void Log(Player p, Systems.Logs.SCP914Action type) 
         {
             if (!Systems.Logs.LogManager.SCP914Logs.ContainsKey(RoundPlus.RoundId))
                 Systems.Logs.LogManager.SCP914Logs.Add(RoundPlus.RoundId, new List<Systems.Logs.SCP914Log>());

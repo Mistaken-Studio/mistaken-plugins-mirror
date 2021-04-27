@@ -18,8 +18,10 @@ namespace Gamer.Mistaken.Systems.Misc
 {
     internal class ClassDCellsDecontaminationHandler : Module
     {
+        private new static __Log Log;
         public ClassDCellsDecontaminationHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
         }
 
         public override bool Enabled => false;

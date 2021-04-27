@@ -17,8 +17,10 @@ namespace Gamer.Mistaken.Systems.Misc
 {
     internal class ResurectionHandler : Module
     {
+        private new static __Log Log;
         public ResurectionHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
         }
 
         public override string Name => "Resurection";
