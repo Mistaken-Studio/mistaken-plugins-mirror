@@ -21,7 +21,6 @@ namespace EventManager.Events
         public override string Id => "tsl";
 
         public override string Description { get; set; } = "Trouble in Secret Laboratory";
-        public override Gamer.EventManager.EventCreator.Version Version => new Gamer.EventManager.EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>
         {
@@ -700,7 +699,7 @@ namespace EventManager.Events
     }
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    public class ShopCommandHandler : IBetterCommand
+    internal class ShopCommandHandler : IBetterCommand
     {
         public override string Command => "traitorShop";
 

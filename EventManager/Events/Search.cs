@@ -21,8 +21,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "Search";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "D", "Musisz znaleźć MicroHID'a w HCZ i uciec z nim" }

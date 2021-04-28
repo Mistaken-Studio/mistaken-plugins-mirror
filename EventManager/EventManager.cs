@@ -31,14 +31,21 @@ namespace Gamer.EventManager
         internal const bool DNPN = true;
 
         #region Vars
+        /// <summary>
+        /// Currenlty acitve event or null
+        /// </summary>
         public static EventCreator.IEMEventClass ActiveEvent { get; internal set; }
+        /// <summary>
+        /// If Any Event is Acitve
+        /// </summary>
+        /// <returns></returns>
         public static bool EventActive() => ActiveEvent != null;
 
         internal static int rounds_without_event = 0;
         internal static bool ForceEnd = false;
 
-        public static readonly string EMLB = $"[<color=#6B9ADF><b>Event Manager</b></color> {(DNPN ? "<color=#6B9ADF>Test Build</color>" : "")}] ";
-        public Queue<EventCreator.IEMEventClass> EventQueue = new Queue<EventCreator.IEMEventClass>();
+        internal static readonly string EMLB = $"[<color=#6B9ADF><b>Event Manager</b></color> {(DNPN ? "<color=#6B9ADF>Test Build</color>" : "")}] ";
+        internal Queue<EventCreator.IEMEventClass> EventQueue = new Queue<EventCreator.IEMEventClass>();
         #endregion
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -50,7 +57,9 @@ namespace Gamer.EventManager
 
             base.OnEnabled();
         }
-
+        /// <summary>
+        /// Refreshes translations
+        /// </summary>
         public static void RefreshTranslation()
         {
             foreach (var pluginTranslations in Translations.ToArray())
@@ -64,11 +73,11 @@ namespace Gamer.EventManager
                 pluginTranslations.Key.Description = TranslationManager.ReadTranslation("Description", "Event_" + pluginTranslations.Key.Id);
             }
         }
-
-        public static EventCreator.Version EMVersion { get; } = new EventCreator.Version(4, 0, 0);
-        public static readonly Dictionary<EventCreator.IEMEventClass, Dictionary<string, string>> Translations = new Dictionary<IEMEventClass, Dictionary<string, string>>();
-        public static readonly Dictionary<string, EventCreator.IEMEventClass> Events = new Dictionary<string, IEMEventClass>();
-
+        private static readonly Dictionary<EventCreator.IEMEventClass, Dictionary<string, string>> Translations = new Dictionary<IEMEventClass, Dictionary<string, string>>();
+        internal static readonly Dictionary<string, EventCreator.IEMEventClass> Events = new Dictionary<string, IEMEventClass>();
+        /// <summary>
+        /// Loads Events
+        /// </summary>
         public void LoadEvents()
         {
             Gamer.Utilities.Logger.Info("EVENT_LOADER", "Loading Events Started");
@@ -86,27 +95,22 @@ namespace Gamer.EventManager
         private void PrepareEvent(IEMEventClass ev)
         {
             Gamer.Utilities.Logger.Info("EVENT_LOADER", "Event loaded: " + ev.Id);
-            if (!Gamer.EventManager.EventManager.EMVersion.Compatible(ev.Version))
+            Events[ev.Id] = ev;
+            Translations[ev] = new Dictionary<string, string>();
+            TranslationManager.RegisterTranslation("Name", "Event_" + ev.Id, ev.Name);
+            TranslationManager.RegisterTranslation("Description", "Event_" + ev.Id, ev.Description);
+            foreach (var item in ev.Translations)
             {
-                Gamer.Utilities.Logger.Warn("EVENT_LOADER", "Trying to load an outdated event " + ev.Id + " " + ev.Version);
+                Translations[ev][item.Key] = item.Value;
+                TranslationManager.RegisterTranslation(item.Key, "Event_" + ev.Id, item.Value);
             }
-            else
-            {
-                Events[ev.Id] = ev;
-                Translations[ev] = new Dictionary<string, string>();
-                TranslationManager.RegisterTranslation("Name", "Event_" + ev.Id, ev.Name);
-                TranslationManager.RegisterTranslation("Description", "Event_" + ev.Id, ev.Description);
-                foreach (var item in ev.Translations)
-                {
-                    Translations[ev][item.Key] = item.Value;
-                    TranslationManager.RegisterTranslation(item.Key, "Event_" + ev.Id, item.Value);
-                }
-                //ev.SetPlugin(this);
-                ev.Register();
-                Gamer.Utilities.Logger.Info("EVENT_LOADER", "Event loaded: " + ev.Id);
-            }
+            //ev.SetPlugin(this);
+            ev.Register();
+            Gamer.Utilities.Logger.Info("EVENT_LOADER", "Event loaded: " + ev.Id);
         }
-
+        /// <summary>
+        /// Loads external events
+        /// </summary>
         public void LoadExternalEvents()
         {
             try
@@ -167,138 +171,131 @@ namespace Gamer.EventManager
         }
 
         #region Lang
+        /// <summary>
+        /// Translation
+        /// </summary>
         public static string T_Event_Start = "Uruchomiono event: ";
+        /// <summary>
+        /// Translation
+        /// </summary>
         public static string T_Event_WIN = "<color=#6B9ADF>$player</color> wygrał!";
+        /// <summary>
+        /// Translation
+        /// </summary>
         public static string T_Event_NO_WIN = "Nikt nie wygrał.";
+        /// <summary>
+        /// Translation
+        /// </summary>
         public static string T_Event_NUM_ALIVE = "Zostało $players <color=#6B9ADF>żywych</color>";
         #endregion
     }
-
+    /// <inheritdoc/>
     public class EMConfig : API.Config
     {
+        /// <summary>
+        /// If event should automaticly enalbe
+        /// </summary>
         public bool AutoEvent { get; set; } = false;
+        /// <summary>
+        /// Number of round
+        /// </summary>
         public int AutoEvent_Rounds { get; set; } = 5;
     }
-
-    public static class Functions
-    {
-        public static ItemType GetRandomItem()
-        {
-            int rand = new System.Random().Next(0, Enum.GetValues(typeof(ItemType)).ToArray<int>().Max<int>());
-            return (ItemType)rand;
-        }
-    }
-
+    /// <summary>
+    /// Extensions
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Waits 1s, changes role, waits 1s, sets position if is not default
+        /// </summary>
+        /// <param name="player">player</param>
+        /// <param name="role">role</param>
+        /// <param name="pos">position</param>
         public static void SlowChangeRole(this Player player, RoleType role, Vector3 pos = default) => Timing.RunCoroutine(SlowFC(player, role, pos));
         private static IEnumerator<float> SlowFC(Player player, RoleType role, Vector3 pos = default)
         {
             yield return Timing.WaitForSeconds(1);
             player.Role = role;
-            yield return Timing.WaitForSeconds(1);
             if (pos != default)
+            {
+                yield return Timing.WaitForSeconds(1);
                 player.Position = pos;
+            }
         }
     }
 
     namespace EventCreator
     {
-        public struct Version
-        {
-            public int Major;
-            public int Minor;
-            public int Patch;
-
-            public Version(int major, int minor, int patch)
-            {
-                Major = major;
-                Minor = minor;
-                Patch = patch;
-            }
-
-            public Version(string txt)
-            {
-                var data = txt.Split('.');
-                try
-                {
-                    Major = int.Parse(data[0]);
-                    Minor = int.Parse(data[1]);
-                    Patch = int.Parse(data[2]);
-                }
-                catch (System.Exception)
-                {
-                    throw new Exception("Wrong version string");
-                }
-            }
-
-            public bool Compatible(Version v) => Major == v.Major && Minor == v.Minor;
-
-            public override string ToString()
-            {
-                return $"{Major}.{Minor}.{Patch}";
-            }
-        }
+        /// <summary>
+        /// Every event base
+        /// </summary>
         public interface IEMEvent
         {
+            /// <summary>
+            /// Event name
+            /// </summary>
             string Name { get; }
+            /// <summary>
+            /// Event Id
+            /// </summary>
             string Id { get; }
+            /// <summary>
+            /// Event Description
+            /// </summary>
             string Description { get; }
         }
         internal interface InternalEvent
         {
         }
+        /// <inheritdoc/>
         public abstract class IEMEventClass : IEMEvent
         {
+            /// <summary>
+            /// Is Event Active
+            /// </summary>
             protected bool Running = false;
+            /// <summary>
+            /// If Event is active
+            /// </summary>
             public bool Active => EventManager.ActiveEvent?.Id == Id;
 
-            //protected Plugin plugin;
-
-            //public void OnEnd(Player player = null)
-            //{
-            //    if (player == null)
-            //        Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_NO_WIN}");
-            //    else
-            //        Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_WIN.Replace("$player", player.Nickname)}");
-            //    DeInitiate();
-            //    Round.IsLocked = false;
-            //    EventManager.ForceEnd = true;
-            //    //WaitAndExecute(10, () => { Round.Restart(true); });
-            //}
-
-            //public void SetPlugin(Plugin p) => this.plugin = p;
-
+            /// <summary>
+            /// Ends event
+            /// </summary>
+            /// <param name="winner">winner</param>
+            /// <param name="customWinText">if winner is text</param>
             public void OnEnd(string winner = null, bool customWinText = false)
             {
-                if (winner == null) Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_NO_WIN}");
-                else if (!customWinText) Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_WIN.Replace("$player", winner)}");
-                else Map.Broadcast(10, $"{EventManager.EMLB} {winner}");
+                if (winner == null) 
+                    Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_NO_WIN}");
+                else if (!customWinText) 
+                    Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_WIN.Replace("$player", winner)}");
+                else 
+                    Map.Broadcast(10, $"{EventManager.EMLB} {winner}");
                 DeInitiate();
                 Round.IsLocked = false;
                 EventManager.ForceEnd = true;
-                //WaitAndExecute(10, () => { Round.Restart(true); });
             }
-
+            /// <summary>
+            /// Ends event on one alive of class
+            /// </summary>
+            /// <param name="role"></param>
             public void EndOnOneAliveOf(RoleType role = RoleType.ClassD)
             {
-                var players = RealPlayers.List.Where(x => x.Role == role && x.IsAlive).ToArray();
-                if (players.Length == 1) OnEnd(players[0].Nickname);
+                var players = RealPlayers.List.Where(x => x.Role == role).ToArray();
+                if (players.Length == 1) 
+                    OnEnd(players[0].Nickname);
             }
-
+            /// <summary>
+            /// Initiates event
+            /// </summary>
             public void Initiate()
             {
                 Log.Debug("Deinitiating modules");
                 Gamer.Diagnostics.Module.DisableAllExcept(EventManager.singleton);
                 Log.Debug("Deinitiated modules");
-                /*EventData eventData = new EventData(this);
-                foreach (var item in EventManager.EventHandlers.ToArray())
-                {
-                    eventData.ExecuteHandler(item.Value);
-                }
-                if (!eventData.Allow) return;*/
                 Running = true;
-                //plugin = p;
                 EventManager.ActiveEvent = this;
                 Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_Start} <color=#6B9ADF>{Name}</color>");
                 OnIni();
@@ -355,24 +352,33 @@ namespace Gamer.EventManager
                     }
                 }
             }
-
-            public virtual void DeInitiate()
+            /// <summary>
+            /// DeInitiates event
+            /// </summary>
+            public void DeInitiate()
             {
                 OnDeIni();
                 Log.Debug("Event Deactivated");
                 Log.Debug("Reinitiating modules");
                 Gamer.Diagnostics.Module.EnableAllExcept(EventManager.singleton);
                 Log.Debug("Reinitiated modules");
-                //plugin = null;
                 Running = false;
                 EventManager.ActiveEvent = null;
             }
-
+            /// <summary>
+            /// Waits <paramref name="time"/> and calls <paramref name="action"/>
+            /// </summary>
+            /// <param name="time">time in s</param>
+            /// <param name="action">action</param>
             protected void WaitAndExecute(float time, Action action)
             {
-                Timing.RunCoroutine(IEWaitAndExecute(time, action));
+                Timing.CallDelayed(time, action);
             }
-
+            /// <summary>
+            /// Calls <paramref name="action"/> every <paramref name="time"/>
+            /// </summary>
+            /// <param name="time">time in s</param>
+            /// <param name="action">action</param>
             protected void WaitAndExecuteLoop(float time, Action action)
             {
                 Timing.RunCoroutine(IEWaitAndExecute(time, () =>
@@ -388,32 +394,67 @@ namespace Gamer.EventManager
                 action?.Invoke();
             }
 
-
+            /// <summary>
+            /// Called on Register
+            /// </summary>
             public abstract void Register();
+            /// <summary>
+            /// Called on Ini
+            /// </summary>
             public abstract void OnIni();
+            /// <summary>
+            /// Called on DeIni
+            /// </summary>
             public abstract void OnDeIni();
 
+            /// <summary>
+            /// Event Name
+            /// </summary>
             public abstract string Name { get; set; }
+            /// <summary>
+            /// Event Id
+            /// </summary>
             public abstract string Id { get; }
+            /// <summary>
+            /// Event Description
+            /// </summary>
             public abstract string Description { get; set; }
-            public abstract Version Version { get; }
-            public abstract Dictionary<string, string> Translations { get; }
+            /// <summary>
+            /// Translations
+            /// </summary>
+            public virtual Dictionary<string, string> Translations { get; }
         }
-
+        /// <summary>
+        /// Event ends on Escape
+        /// </summary>
         public interface IWinOnEscape
         {
         }
+        /// <summary>
+        /// Event ends on Last Alive
+        /// </summary>
         public interface IWinOnLastAlive
         {
         }
+        /// <summary>
+        /// Event ends on No alive
+        /// </summary>
         public interface IEndOnNoAlive
         {
         }
-
+        /// <summary>
+        /// Announcec when someone dies
+        /// </summary>
         public interface IAnnouncPlayersAlive
         {
+            /// <summary>
+            /// If broadcasts should be cleared before sending
+            /// </summary>
             bool ClearPrevious { get; }
         }
+        /// <summary>
+        /// Spawns random items on start
+        /// </summary>
         public interface ISpawnRandomItems
         {
         }

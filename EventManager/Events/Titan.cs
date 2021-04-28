@@ -14,8 +14,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "Titan";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "T", "Jesteś <color=green>Tytanem</color>. Twoim zadaniem jest rozprawienie się z <color=blue>MFO</color> atakujących Ciebie." },

@@ -19,8 +19,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "WarheadRun";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "D", "Jesteś klasą D. Musisz uciec z placówki. Pierwszy gracz który ucieknie wygrywa" }

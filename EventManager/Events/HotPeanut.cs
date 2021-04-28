@@ -16,8 +16,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "Hot Peanut";
 
-        public override Gamer.EventManager.EventCreator.Version Version => new Gamer.EventManager.EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             //{ "", "" }

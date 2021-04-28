@@ -19,8 +19,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "DeathmatchTag";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "CI", "Twoim zadanie jest zabicie członków <color=blue>MFO</color>, znajdziesz ich w <color=yellow>Heavy Containment Zone</color>" },

@@ -21,8 +21,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "DBoiBattleRoyal";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "D_KILL", "You have been decontaminated" }

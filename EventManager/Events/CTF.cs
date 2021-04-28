@@ -19,8 +19,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "CTF";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "TaskMTF", "Jesteś członkiem <color=blue>MFO</color>. Waszym zadaniem jest przejęcie flagi drużyny przeciwnej (<color=green>CI</color>). Bazy odznaczają się obecnością <color=yellow>latarki</color> w pomieszczeniu." },

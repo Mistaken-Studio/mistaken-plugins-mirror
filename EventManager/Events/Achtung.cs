@@ -17,8 +17,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "Achtung";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "D", "Granaty pojawią się pod Tobą. Ostatni żywy wygrywa!" }
