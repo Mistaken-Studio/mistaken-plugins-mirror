@@ -268,8 +268,8 @@ namespace Gamer.Mistaken.Systems.GUI
                 }
                 catch (System.Exception ex)
                 {
-                    Gamer.Utilities.Logger.Error("SpecInfo", ex.Message);
-                    Gamer.Utilities.Logger.Error("SpecInfo", ex.StackTrace);
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
             }
         }

@@ -100,8 +100,6 @@ namespace Gamer.Mistaken.LOFH
                 return $"[<color=red><color=#FFC0CB>I</color>MUTED</color>]";
             return "";
         }
-
-        internal static void WriteError(string data, string url) => Gamer.Utilities.Logger.Error("LOFH\n" + url, data);
         
         public class Prefix
         {

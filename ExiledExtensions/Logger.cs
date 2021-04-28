@@ -3,6 +3,7 @@ using Exiled.API.Features;
 
 namespace Gamer.Utilities
 {
+    [System.Obsolete("Use Module Logger")]
     public static class Logger
     {
         public static void Debug(string tag, string message)

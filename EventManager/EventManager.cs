@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿#pragma warning disable CS0618 // Typ lub składowa jest przestarzała
+
+using System.Linq;
 using System.IO;
 using System;
 using System.Collections.Generic;

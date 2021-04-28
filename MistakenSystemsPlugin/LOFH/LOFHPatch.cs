@@ -468,8 +468,8 @@ namespace Gamer.Mistaken.LOFH
             }
             catch (System.Exception e)
             {
-                Gamer.Utilities.Logger.Error("LOFHBase Late Error Catch", e.Message);
-                Gamer.Utilities.Logger.Error("LOFHBase Late Error Catch", e.StackTrace);
+                Exiled.API.Features.Log.Error($"[LOFHBase Late Error Catch] {e.Message}");
+                Exiled.API.Features.Log.Error($"[LOFHBase Late Error Catch] {e.StackTrace}");
                 return true;
             }
         }
