@@ -88,7 +88,9 @@ namespace Xname.ColorfullEZ
                 return ItemType.KeycardFacilityManager;
             return ItemType.KeycardO5;
         }
-
+        /// <summary>
+        /// Removes all cards
+        /// </summary>
         public static void Clear()
         {
             foreach (var item in KeycardsGameObjects.ToArray())
@@ -153,7 +155,7 @@ namespace Xname.ColorfullEZ
             Log.Debug($"Spawned {a} keycards");
         }
         static string reeeeee = "                                                                    ";
-        public static void PrintComponents(GameObject go, int iteration)
+        private static void PrintComponents(GameObject go, int iteration)
         {
             foreach (var c in go.GetComponents<Component>())
             {
