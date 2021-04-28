@@ -2,11 +2,8 @@
 #pragma warning disable IDE0060
 #pragma warning disable IDE0051
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
