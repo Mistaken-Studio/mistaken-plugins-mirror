@@ -1,7 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Systems.End;
 using Gamer.Utilities;
 using Grenades;
 using MEC;
@@ -13,7 +12,7 @@ using System.Linq;
 using System.Net;
 using UnityEngine;
 
-namespace Gamer.Mistaken.Systems.GUI
+namespace Gamer.Mistaken.Base.GUI
 {
     public class PseudoGUIHandler : Module
     {

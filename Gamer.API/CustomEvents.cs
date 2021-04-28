@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
-using Gamer.Mistaken.Systems.Patches;
 
 namespace Exiled.Events
 {
@@ -50,13 +49,7 @@ namespace Exiled.Events
 
 			public static class SCP079
 			{
-				public static int TimeToRecontainment
-				{
-					get
-					{
-						return SCP079RecontainPatch.SecondsLeft;
-					}
-				}
+				public static int TimeToRecontainment;
 
 				public static bool IsBeingRecontained
 				{
@@ -66,13 +59,7 @@ namespace Exiled.Events
 					}
 				}
 
-				public static bool IsRecontainmentPaused
-				{
-					get
-					{
-						return SCP079RecontainPatch.Waiting;
-					}
-				}
+				public static bool IsRecontainmentPaused;
 			}
 		}
 	}

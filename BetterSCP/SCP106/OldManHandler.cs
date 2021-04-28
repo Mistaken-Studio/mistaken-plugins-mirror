@@ -372,11 +372,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 {
                     if (!player.IsConnected)
                         break;
-                    Systems.GUI.PseudoGUIHandler.Set(player, "scp106", Systems.GUI.PseudoGUIHandler.Position.TOP, $"Cooldown: <color=yellow>{15 - i}</color>s");
+                    Base.GUI.PseudoGUIHandler.Set(player, "scp106", Base.GUI.PseudoGUIHandler.Position.TOP, $"Cooldown: <color=yellow>{15 - i}</color>s");
                     yield return Timing.WaitForSeconds(1);
                 }
                 Cooldown.Remove(player.Id);
-                Systems.GUI.PseudoGUIHandler.Set(player, "scp106", Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+                Base.GUI.PseudoGUIHandler.Set(player, "scp106", Base.GUI.PseudoGUIHandler.Position.TOP, null);
             }
         }
 

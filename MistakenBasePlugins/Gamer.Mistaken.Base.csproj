@@ -96,8 +96,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomInfoHandler.cs" />
+    <Compile Include="CustomItems\CustomItemsHandler.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GUI\PseudoGUIHandler.cs" />
+    <Compile Include="Staff\StaffHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">

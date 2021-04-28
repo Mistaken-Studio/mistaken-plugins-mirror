@@ -95,17 +95,17 @@ namespace Gamer.CustomClasses
                     id = ItemType.WeaponManagerTablet,
                     durability = 1.301f
                 });
-                CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
-                PseudoGUIHandler.Set(player, "Guard_Commander", PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{this.ClassDescription}", 20);
-                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=blue>Dowódca Ochrony</color>");
+                Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "Guard_Commander", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{this.ClassDescription}", 20);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "Guard_Commander_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=blue>Dowódca Ochrony</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"Spawned {player.PlayerToString()} as Guard Commander");
             }
 
             public override void OnDie(Player player)
             {
                 base.OnDie(player);
-                CustomInfoHandler.Set(player, "Guard_Commander", null, false);
-                PseudoGUIHandler.Set(player, "Guard_Commander_Info", PseudoGUIHandler.Position.BOTTOM, null);
+                Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", null, false);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "Guard_Commander_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
         private bool HasCommanderEscorted = false;
@@ -118,7 +118,7 @@ namespace Gamer.CustomClasses
             if (!HasCommanderEscorted)
             {
                 foreach (var item in GuardCommander.Instance.PlayingAsClass)
-                    PseudoGUIHandler.Set(item, "GuardCommander_Escort", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: W związu z <color=yellow>eskortą personelu</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(item, "GuardCommander_Escort", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: W związu z <color=yellow>eskortą personelu</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
             }
             HasCommanderEscorted = true;
         }
@@ -127,7 +127,7 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
+            if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
                 return;
             if(!HasCommanderEscorted || !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
             {
@@ -140,7 +140,7 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
+            if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
                 return;
             if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
             {
@@ -210,7 +210,7 @@ namespace Gamer.CustomClasses
                 if (!HasCommanderEscorted)
                 {
                     foreach (var item in GuardCommander.Instance.PlayingAsClass)
-                        PseudoGUIHandler.Set(item, "GuardCommander_Access", PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-12</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
+                        Mistaken.Base.GUI.PseudoGUIHandler.Set(item, "GuardCommander_Access", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-12</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
                     HasCommanderEscorted = true;
                 }
             });
@@ -248,13 +248,13 @@ namespace Gamer.CustomClasses
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 if(GuardCommander.Instance.PlayingAsClass.Contains(player))
-                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
                 else
-                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
-                PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, null);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {

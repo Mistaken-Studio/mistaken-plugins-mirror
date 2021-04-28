@@ -70,17 +70,17 @@ namespace Xname.ImpactGrenade
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>Granat Uderzeniowy</color>");
+                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>Granat Uderzeniowy</color>");
             }
             /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <inheritdoc/>
             public override void OnForceclass(Player player)
             {
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <summary>
             /// Gives Impact Grenade to <paramref name="player"/>

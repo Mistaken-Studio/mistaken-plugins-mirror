@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Exiled.API.dll</HintPath>
     </Reference>
+    <Reference Include="Exiled.Events, Version=2.9.4.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Exiled.Events.dll</HintPath>
+    </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
@@ -61,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="CustomClass.cs" />
+    <Compile Include="CustomEvents.cs" />
     <Compile Include="CustomItem.cs" />
     <Compile Include="PlayerPreferences.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

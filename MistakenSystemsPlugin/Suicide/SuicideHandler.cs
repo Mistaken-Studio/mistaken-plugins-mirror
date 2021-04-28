@@ -7,7 +7,7 @@ using Gamer.Utilities;
 using MEC;
 using UnityEngine;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Systems.CustomItems;
+using Gamer.Mistaken.Base.CustomItems;
 
 namespace Gamer.Mistaken.Suicide
 {

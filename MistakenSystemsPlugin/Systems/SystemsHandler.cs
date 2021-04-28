@@ -54,9 +54,6 @@ namespace Gamer.Mistaken.Systems
 
             new GUI.SpecInfoHandler(plugin);
             new GUI.InformerHandler(plugin);
-            new GUI.PseudoGUIHandler(plugin);
-
-            new CustomItems.CustomItemsHandler(plugin);
 
             new Misc.ClassDCellsDecontaminationHandler(plugin); // OFF
             new Misc.CustomMaxHealthHandler(plugin);
@@ -88,8 +85,7 @@ namespace Gamer.Mistaken.Systems
 
             new Seasonal.EasterHandler(plugin);
             new Seasonal.PrimaAprilisHanlder(plugin);
-
-            new CustomInfoHandler(plugin);
+      
 
             /*MEC.Timing.CallDelayed(2, () =>
             {
@@ -324,12 +320,12 @@ namespace Gamer.Mistaken.Systems
                 {
                     if(item.Role != RoleType.Scp049)
                     {
-                        Systems.CustomInfoHandler.Set(item, "cuff", null, false);
+                        Base.CustomInfoHandler.Set(item, "cuff", null, false);
                         break;
                     }
                     if (wasCuffed != item.IsCuffed)
                         break;
-                    Systems.CustomInfoHandler.Set(item, "cuff", item.IsCuffed ? "<color=red><b>CUFFED</b></color>" : null, false);
+                    Base.CustomInfoHandler.Set(item, "cuff", item.IsCuffed ? "<color=red><b>CUFFED</b></color>" : null, false);
                     //Dodać aby Spekci widzieli że jest skuty, np ranga z new linem i w new linie wiadomość, ale jeszcze gdy gracz wejdzie, umrze, zrespi
                     wasCuffed = item.IsCuffed;
                 }

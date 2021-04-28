@@ -42,7 +42,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 player.EnableEffect<CustomPlayerEffects.Concussed>(30);
                 player.EnableEffect<CustomPlayerEffects.Bleeding>();
                 Player cuffer = RealPlayers.Get(player.CufferId);
-                Mistaken.Systems.GUI.PseudoGUIHandler.Set(cuffer, "try", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>!! {player.Nickname} <color=yellow>próbował</color> się rozkuć !!</b>", 10);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(cuffer, "try", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>!! {player.Nickname} <color=yellow>próbował</color> się rozkuć !!</b>", 10);
                 success = true;
                 return new string[] { "Nie udało ci się" };
             }

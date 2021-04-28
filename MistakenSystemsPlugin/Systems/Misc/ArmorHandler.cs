@@ -60,14 +60,14 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 5);
+                    //Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
                 Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
                     if (!player.IsAlive)
                         return;
-                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
+                    Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
                     player.EnableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 0.85f));
                     if (player.ArtificialHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
@@ -84,7 +84,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{this.ItemName}</color>", 3);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{this.ItemName}</color>", 3);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(3);
                 }
                 MEC.Timing.CallDelayed(3 * (fast ? 0 : 1), () => {
@@ -92,12 +92,12 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.DisableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Remove(player);
                     BlockInteractions.Remove(player);
-                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                    Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
             {
-                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -107,7 +107,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 this.OnWear(player, pickup, false);
@@ -119,7 +119,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 return true;
@@ -210,14 +210,14 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 2);
+                    //Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(2);
                 }
                 Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
                 {
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 0.5f));
                     Armor.BlockInteractions.Remove(player);
-                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
+                    Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
                 });
             }
             public void OnUnWear(Player player, bool fast)
@@ -229,18 +229,18 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{this.ItemName}</color>", 2);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{this.ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(1);
                 }
                 MEC.Timing.CallDelayed(1 * (fast ? 0 : 1), () => {
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
-                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                    Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
             {
-                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -250,7 +250,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 this.OnWear(player, pickup, false);
@@ -262,7 +262,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 return true;
@@ -353,7 +353,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    //Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 8);
+                    //Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 8);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(8);
                 }
                 Timing.CallDelayed(8 * (fast ? 0 : 1), () =>
@@ -363,7 +363,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (player.ArtificialHealth < 30 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
                         player.ArtificialHealth = 30;
                     Armor.BlockInteractions.Remove(player);
-                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
+                    Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{this.ItemName}</color>");
                 });
             }
             public void OnUnWear(Player player, bool fast)
@@ -375,7 +375,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (Armor.BlockInteractions.Contains(player))
                         return;
                     MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{this.ItemName}</color>", 5);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{this.ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
                 MEC.Timing.CallDelayed(5 * (fast ? 0 : 1), () => {
@@ -383,12 +383,12 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.DisableEffect<CustomPlayerEffects.Disabled>();
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
-                    Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                    Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 });
             }
             public override void OnForceclass(Player player)
             {
-                Systems.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Base.GUI.PseudoGUIHandler.Set(player, "ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
             public override bool OnPickup(Player player, Pickup pickup)
@@ -398,7 +398,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit  <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit  <color=yellow>{this.ItemName}s</color> (<color=yellow>{1} {this.ItemName}</color>)", 2);
                     return false;
                 }
                 this.OnWear(player, pickup, false);
@@ -410,7 +410,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return false;
                 if (player.Inventory.items.Any(i => i.id == pickup.ItemId))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(player, "Armor", Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}</color> (<color=yellow>{1} {this.ItemName}</color>)", 2); 
+                    Base.GUI.PseudoGUIHandler.Set(player, "Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Już <b>osiągnąłeś</b> limit <color=yellow>{this.ItemName}</color> (<color=yellow>{1} {this.ItemName}</color>)", 2); 
                     return false;
                 }
                 return true;

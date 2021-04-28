@@ -5,7 +5,7 @@ using Exiled.API.Features;
 using Gamer.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using Gamer.Mistaken.Systems.CustomItems;
+using Gamer.Mistaken.Base.CustomItems;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {

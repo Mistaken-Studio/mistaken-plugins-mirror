@@ -9,12 +9,11 @@ using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
 using MEC;
 using Newtonsoft.Json;
-using UnidecodeSharpFork;
 using UnityEngine;
 using Gamer.RoundLoggerSystem;
 using Exiled.API.Extensions;
 
-namespace Gamer.Mistaken.Systems.Staff
+namespace Gamer.Mistaken.Base.Staff
 {
     public class StaffHandler : Module
     {
@@ -48,7 +47,7 @@ namespace Gamer.Mistaken.Systems.Staff
                 if (cgea.IsAllowed && ev.Player.Group != cgea.NewGroup)
                     ev.Player.Group = cgea.NewGroup;
             }
-            Base.CustomInfoHandler.Set(ev.Player, "STAFF", $"Player Id: <b>{ev.Player.Id}</b>", true);
+            CustomInfoHandler.Set(ev.Player, "STAFF", $"Player Id: <b>{ev.Player.Id}</b>", true);
         }
 
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)

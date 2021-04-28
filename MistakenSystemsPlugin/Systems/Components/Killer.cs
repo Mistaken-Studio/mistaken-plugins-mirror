@@ -85,7 +85,7 @@ namespace Gamer.Mistaken.Systems.Components
                 yield return Timing.WaitForSeconds(1);
                 foreach (var item in hinted.Where(p => !InArea.Contains(p)))
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(item, "killer", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    Base.GUI.PseudoGUIHandler.Set(item, "killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 }
                 foreach (var player in InArea.ToArray())
                 {
@@ -94,7 +94,7 @@ namespace Gamer.Mistaken.Systems.Components
                     if (player.IsGodModeEnabled || player.IsDead)
                         continue;
                     player.Hurt(this.Dmg, new DamageTypes.DamageType("*Anty Camper"), this.Message);
-                    Systems.GUI.PseudoGUIHandler.Set(player, "killer", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
+                    Base.GUI.PseudoGUIHandler.Set(player, "killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
                     hinted.Add(player);
                     RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({this.Dmg}) with message \"{this.Message}\"");
                 }

@@ -18,7 +18,12 @@ namespace Gamer.Mistaken.Base
         public override void OnEnabled()
         {
             Instance = this;
-            
+
+            new CustomInfoHandler(this);
+            new GUI.PseudoGUIHandler(this);
+
+            new CustomItems.CustomItemsHandler(this);
+
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }

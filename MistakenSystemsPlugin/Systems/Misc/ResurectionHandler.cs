@@ -43,12 +43,12 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+            Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+            Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
 
         private void Server_RestartingRound()
@@ -99,17 +99,17 @@ namespace Gamer.Mistaken.Systems.Misc
                 var target = Player.Get(nearest.ragdoll.owner.PlayerId);
                 if (Resurected.Contains(target.UserId))
                 {
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz może zostać wskrzeszony raz na rundę", 5);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz może zostać wskrzeszony raz na rundę", 5);
                     return false;
                 }
                 if (Resurections.Where(i => i == target.UserId).Count() > 3)
                 {
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Możesz wskrzesić 3 osoby na rundę", 5);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Możesz wskrzesić 3 osoby na rundę", 5);
                     return false;
                 }
                 player.EnableEffect<CustomPlayerEffects.Amnesia>(15);
                 player.EnableEffect<CustomPlayerEffects.Ensnared>(11);
-                Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Używam <color=yellow>SCP 500</color> na {target.Nickname}", 9);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Używam <color=yellow>SCP 500</color> na {target.Nickname}", 9);
                 Timing.CallDelayed(10, () =>
                 {
                     if (player.Role == originalRole)
@@ -117,17 +117,17 @@ namespace Gamer.Mistaken.Systems.Misc
                         target = Player.Get(nearest.ragdoll.owner.PlayerId);
                         if (target == null || target.GameObject == null || !target.IsConnected)
                         {
-                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracza nie ma na serwerze", 5);
+                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracza nie ma na serwerze", 5);
                             return;
                         }
                         if (target.IsOverwatchEnabled)
                         {
-                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz chyba nie chce być wskrzeszony", 5);
+                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz chyba nie chce być wskrzeszony", 5);
                             return;
                         }
                         if (target.IsAlive)
                         {
-                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Jesteś pewien że ten gracz jest martwy?", 5);
+                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Jesteś pewien że ten gracz jest martwy?", 5);
                             return;
                         }
                         Vector3 pos = nearest.ragdoll.transform.position;
@@ -150,7 +150,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         {
                             Misc.SpawnProtectHandler.SpawnKillProtected.RemoveAll(i => i.Key == target.Id);
                             target.Position = pos + Vector3.up;
-                            Mistaken.Systems.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"Zostałeś <color=yellow>wskrzeszony</color> przez {player.Nickname}", 5);
+                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Zostałeś <color=yellow>wskrzeszony</color> przez {player.Nickname}", 5);
                             target.Health = 5;
                             target.ArtificialHealth = 75;
                             target.EnableEffect<CustomPlayerEffects.Blinded>(10);
@@ -210,14 +210,14 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (nearestDistance != 999)
                     {
-                        Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, $"Wpisz '.u500' w konsoli(~) aby <color=yellow>wskrzesić</color> {target.Nickname} ({15 - Math.Floor((DateTime.Now - nearest.DeathTime).TotalSeconds)}s)");
+                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, $"Wpisz '.u500' w konsoli(~) aby <color=yellow>wskrzesić</color> {target.Nickname} ({15 - Math.Floor((DateTime.Now - nearest.DeathTime).TotalSeconds)}s)");
                     }
                     else
-                        Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
                 }
                 yield return Timing.WaitForSeconds(1);
             }
-            Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+            Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
     }
 }

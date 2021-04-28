@@ -92,6 +92,10 @@
       <Project>{4bffbb2d-a061-4e50-a8b0-99cbfbfb7184}</Project>
       <Name>Gamer.RoundLogger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MistakenBasePlugins\Gamer.Mistaken.Base.csproj">
+      <Project>{6eecbfa8-dbcb-47cd-9c23-ff15bc11b40c}</Project>
+      <Name>Gamer.Mistaken.Base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MistakenSystemsPlugin\Gamer.Mistaken.csproj">
       <Project>{55dc9d88-e32a-4176-ad17-9502a0440341}</Project>
       <Name>Gamer.Mistaken</Name>

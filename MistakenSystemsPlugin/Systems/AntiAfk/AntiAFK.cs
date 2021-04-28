@@ -107,7 +107,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
 
         private static IEnumerator<float> InformAFK(Player p)
         {
-            Systems.GUI.PseudoGUIHandler.Ignore(p);
+            Base.GUI.PseudoGUIHandler.Ignore(p);
             for (int i = 60; i > -1; i--)
             {
                 if (AfkPosition.TryGetValue(p.Id, out KeyValuePair<int, Vector3> value))
@@ -116,13 +116,13 @@ namespace Gamer.Mistaken.Systems.AntiAFK
                         p.ShowHint(AfkMessage.Replace("{sLeft}", i.ToString("00")), 2);
                     else
                     {
-                        Systems.GUI.PseudoGUIHandler.StopIgnore(p);
+                        Base.GUI.PseudoGUIHandler.StopIgnore(p);
                         yield break;
                     }
                 }
                 else
                 {
-                    Systems.GUI.PseudoGUIHandler.StopIgnore(p);
+                    Base.GUI.PseudoGUIHandler.StopIgnore(p);
                     yield break;
                 }
                 yield return Timing.WaitForSeconds(1);

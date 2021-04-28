@@ -67,7 +67,7 @@ namespace Gamer.Mistaken.AIRS
         }
         private static void Update(Player p, bool hide)
         {
-            PseudoGUIHandler.Set(p, "AIRS", PseudoGUIHandler.Position.TOP, hide ? null : $"Reports: <color=yellow>{Reports}</color> | Reports on #<color=yellow>{Server.Port - 7776}</color>: <color=yellow>{ReportsOnThisServer}</color>");
+            Base.GUI.PseudoGUIHandler.Set(p, "AIRS", Base.GUI.PseudoGUIHandler.Position.TOP, hide ? null : $"Reports: <color=yellow>{Reports}</color> | Reports on #<color=yellow>{Server.Port - 7776}</color>: <color=yellow>{ReportsOnThisServer}</color>");
         }
 
         public static readonly HashSet<int> AlreadyReported = new HashSet<int>();

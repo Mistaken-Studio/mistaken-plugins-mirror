@@ -6,12 +6,12 @@ using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
 using MEC;
 using UnityEngine;
 
-namespace Gamer.Mistaken.Systems
+namespace Gamer.Mistaken.Base
 {
     public class CustomInfoHandler : Module
     {

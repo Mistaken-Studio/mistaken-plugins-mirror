@@ -86,7 +86,7 @@ namespace Gamer.Mistaken.Systems.GUI
             if (sci && UnityEngine.Random.Range(0, 5) == 0) 
                 message = "Ochrona placówki zgłosiła, że potrzebna jest osoba z wyższymi uprawnieniami do wykonania pewnych zadań. Przysłano więc Ciebie.";
             player.SendConsoleMessage(message, "grey");
-            GUI.PseudoGUIHandler.Set(player, "escape", PseudoGUIHandler.Position.MIDDLE, message, 15);
+            Base.GUI.PseudoGUIHandler.Set(player, "escape", Base.GUI.PseudoGUIHandler.Position.MIDDLE, message, 15);
         }
 
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
@@ -94,7 +94,7 @@ namespace Gamer.Mistaken.Systems.GUI
             if(ev.Player.Team == Team.SCP)
             {
                 ev.IsAllowed = false;
-                GUI.PseudoGUIHandler.Set(ev.Player, "warhead", PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_WarheadDenied"), 10);
+                Base.GUI.PseudoGUIHandler.Set(ev.Player, "warhead", Base.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_WarheadDenied"), 10);
             }
         }
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
@@ -109,11 +109,11 @@ namespace Gamer.Mistaken.Systems.GUI
         IEnumerator<float> InformSpeaker(Player player)
         {
             string message = plugin.ReadTranslation("Info_Intercom");
-            GUI.PseudoGUIHandler.Set(player, "intercom", PseudoGUIHandler.Position.BOTTOM, message);
+            Base.GUI.PseudoGUIHandler.Set(player, "intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, message);
             yield return Timing.WaitForSeconds(1);
             while(Intercom.host?.speaker != null)
                 yield return Timing.WaitForSeconds(1);
-            GUI.PseudoGUIHandler.Set(player, "intercom", PseudoGUIHandler.Position.BOTTOM, null);
+            Base.GUI.PseudoGUIHandler.Set(player, "intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
         }
 
         private void CustomEvents_OnFirstTimeJoined(Exiled.Events.EventArgs.FirstTimeJoinedEventArgs ev)
@@ -123,7 +123,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 Log.Warn("Joined player is null");
                 return;
             }
-            GUI.PseudoGUIHandler.Set(ev.Player, "welcome", PseudoGUIHandler.Position.BOTTOM, WelcomeMessage.Replace("{nickname}", ev.Player.Nickname), 20);
+            Base.GUI.PseudoGUIHandler.Set(ev.Player, "welcome", Base.GUI.PseudoGUIHandler.Position.BOTTOM, WelcomeMessage.Replace("{nickname}", ev.Player.Nickname), 20);
         }
 
         private void Server_WaitingForPlayers()
@@ -175,9 +175,9 @@ namespace Gamer.Mistaken.Systems.GUI
                         customInfoMessage += $" Vanish ({vanishLevel})";
                         infoMessage += $"<br>Vanish: <color=yellow>Active ({vanishLevel})</color>";
                     }
-                    GUI.PseudoGUIHandler.Set(player, "admin", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>{infoMessage}</size>");
-                    
-                    CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>", false);
+                    Base.GUI.PseudoGUIHandler.Set(player, "admin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=50%>{infoMessage}</size>");
+
+                    Base.CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>", false);
                 }
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update", start, DateTime.Now);
             }
@@ -193,9 +193,9 @@ namespace Gamer.Mistaken.Systems.GUI
                 {
                     var effect = player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp268>();
                     if (effect.Intensity > 0)
-                        GUI.PseudoGUIHandler.Set(player, "268", PseudoGUIHandler.Position.BOTTOM, plugin.ReadTranslation("Info_268", Mathf.RoundToInt(CustomPlayerEffects.Scp268.maxTime - effect.curTime)));
+                        Base.GUI.PseudoGUIHandler.Set(player, "268", Base.GUI.PseudoGUIHandler.Position.BOTTOM, plugin.ReadTranslation("Info_268", Mathf.RoundToInt(CustomPlayerEffects.Scp268.maxTime - effect.curTime)));
                     else
-                        GUI.PseudoGUIHandler.Set(player, "268", PseudoGUIHandler.Position.BOTTOM, null);
+                        Base.GUI.PseudoGUIHandler.Set(player, "268", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 }
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update268", start, DateTime.Now);
                 yield return Timing.WaitForSeconds(1);

@@ -45,10 +45,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             while(GlobalMuteActive)
             {
-                Systems.GUI.PseudoGUIHandler.Set(player, "globalMute", Systems.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
+                Base.GUI.PseudoGUIHandler.Set(player, "globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
                 yield return MEC.Timing.WaitForSeconds(1);
             }
-            Systems.GUI.PseudoGUIHandler.Set(player, "globalMute", Systems.GUI.PseudoGUIHandler.Position.TOP, null);
+            Base.GUI.PseudoGUIHandler.Set(player, "globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
     }
 }

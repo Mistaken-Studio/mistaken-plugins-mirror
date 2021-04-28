@@ -77,20 +77,20 @@ namespace Gamer.Mistaken.Systems.Misc
                             if (ev.Pickup.Networkdurability != tmp)
                             {
                                 ev.Pickup.Networkdurability = tmp;
-                                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
+                                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
                             }
                             else
                             {
                                 string name = item.Type.ToString();
                                 if (!name.EndsWith("s"))
                                     name += "s";
-                                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2);
+                                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2);
                             }
                         }
                         ev.IsAllowed = false;
                         return;
                     }
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
                     break;
                 }
             }
@@ -175,11 +175,11 @@ namespace Gamer.Mistaken.Systems.Misc
             yield return Timing.WaitForSeconds(.1f);
             ItemType itemType = p.CurrentItem.id;
             var reusable = ReusableItems.First(i => i.Type == itemType);
-            Mistaken.Systems.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left");
+            Mistaken.Base.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left");
             yield return Timing.WaitForSeconds(1f);
             while (p.CurrentItem.id == itemType)
                 yield return Timing.WaitForSeconds(1);
-            Mistaken.Systems.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            Mistaken.Base.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
         }
 
         private void Player_UsingMedicalItem(Exiled.Events.EventArgs.UsingMedicalItemEventArgs ev)

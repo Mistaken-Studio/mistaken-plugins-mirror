@@ -43,7 +43,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
 
         private IEnumerator<float> ExecuteRecontainment(Player scp049, Player recontainer)
         {
-            Systems.GUI.PseudoGUIHandler.Set(scp049, "contain049", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>5</color>s", 5);
+            Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>5</color>s", 5);
             yield return Timing.WaitForSeconds(1);
             Vector3 pos = scp049.Position;
             for (int i = 4; i >= 0; i--)
@@ -52,18 +52,18 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
                     continue;
                 if(pos != scp049.Position)
                 {
-                    Systems.GUI.PseudoGUIHandler.Set(scp049, "contain049", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color>", 5);
-                    Systems.GUI.PseudoGUIHandler.Set(recontainer, "contain049", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color><br>SCP-049 <color=yellow>moved</color>", 5);
+                    Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color>", 5);
+                    Base.GUI.PseudoGUIHandler.Set(recontainer, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color><br>SCP-049 <color=yellow>moved</color>", 5);
                     AlreadyRunning = false;
                     yield break;
                 }
-                Systems.GUI.PseudoGUIHandler.Set(scp049, "contain049", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>{i}</color>s");
+                Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>{i}</color>s");
                 yield return Timing.WaitForSeconds(1);
             }
             AlreadyRunning = false;
             Vector3 oldPos = scp049.Position;
             scp049.SetRole(recontainer.Role == RoleType.ChaosInsurgency ? RoleType.ChaosInsurgency : RoleType.NtfScientist, true);
-            Systems.GUI.PseudoGUIHandler.Set(scp049, "contain049", Systems.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment successfull</size></color>", 5);
+            Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment successfull</size></color>", 5);
             string recontainerName;
             if (recontainer.Role == RoleType.ChaosInsurgency)
                 recontainerName = "CHAOS INSURGENCY";

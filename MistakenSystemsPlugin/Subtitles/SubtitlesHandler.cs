@@ -47,7 +47,7 @@ namespace Gamer.Mistaken.Subtitles
             if ((Systems.Handler.PlayerPreferencesDict[player.UserId] & API.PlayerPreferences.DISABLE_TRANSCRYPT) != API.PlayerPreferences.NONE)
                 return;
             if (CassiePatch.Messages.Count == 0)
-                PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, null);
+                Base.GUI.PseudoGUIHandler.Set(player, "subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             else
             {
                 string tmp = CassiePatch.Messages.Peek();
@@ -60,9 +60,9 @@ namespace Gamer.Mistaken.Subtitles
                     tmp = string.Join(" ", tmp2);
                 }
                 if(tmp.Trim().Length == 0)
-                    PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, null);
+                    Base.GUI.PseudoGUIHandler.Set(player, "subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 else
-                    PseudoGUIHandler.Set(player, "subtitles", PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
+                    Base.GUI.PseudoGUIHandler.Set(player, "subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
             }
         }
 

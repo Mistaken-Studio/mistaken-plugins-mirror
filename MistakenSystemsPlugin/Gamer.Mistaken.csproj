@@ -251,7 +251,6 @@
     <Compile Include="Systems\Components\InRageBall.cs" />
     <Compile Include="Systems\Components\InRage.cs" />
     <Compile Include="Systems\Components\Killer.cs" />
-    <Compile Include="Systems\CustomInfoHandler.cs" />
     <Compile Include="Systems\End\RoundLogHandler.cs" />
     <Compile Include="Systems\End\OverwatchHandler.cs" />
     <Compile Include="Systems\End\AutoUpdateHandler.cs" />
@@ -292,12 +291,10 @@
     <Compile Include="LOFH\LOFH.cs" />
     <Compile Include="LOFH\LOFHHandler.cs" />
     <Compile Include="LOFH\LOFHPatch.cs" />
-    <Compile Include="Systems\CustomItemsHandler.cs" />
     <Compile Include="Systems\Misc\DoorHandler.cs" />
     <Compile Include="Systems\Misc\MassTKDetectionHandler.cs" />
     <Compile Include="Systems\NicknameFixer\NicknameFixerHandler.cs" />
     <Compile Include="PluginHandler.cs" />
-    <Compile Include="Systems\CustomEvents.cs" />
     <Compile Include="Systems\Logs\Commands\DoorLogCommand.cs" />
     <Compile Include="Systems\Logs\Commands\ElevatorLogCommand.cs" />
     <Compile Include="Systems\Logs\LogManager.cs" />
@@ -329,7 +326,6 @@
     <Compile Include="Systems\Misc\ReusableItemsHandler.cs" />
     <Compile Include="Systems\End\RoundEndHandler.cs" />
     <Compile Include="Systems\Misc\SpawnProtectHandler.cs" />
-    <Compile Include="Systems\PseudoGUI\PseudoGUIHandler.cs" />
     <Compile Include="Systems\PseudoGUI\SpecInfoHandler.cs" />
     <Compile Include="Systems\End\WaitingScreenHandler.cs" />
     <Compile Include="Systems\Misc\ArmorHandler.cs" />

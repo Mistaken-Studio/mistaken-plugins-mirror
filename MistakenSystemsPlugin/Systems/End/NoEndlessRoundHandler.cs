@@ -117,7 +117,7 @@ namespace Gamer.Mistaken.Systems.End
                     player.Health *= 5;
                     player.ArtificialHealth = 50;
                     player.CustomInfo = "Tau-5 Samsara";
-                    CustomInfoHandler.Set(player, "TAU-5", "Tau-5 Samsara", false);
+                    Base.CustomInfoHandler.Set(player, "TAU-5", "Tau-5 Samsara", false);
                     player.Ammo[(int)AmmoType.Nato556] = 500;
                     player.Ammo[(int)AmmoType.Nato9] = 500;
                     player.Ammo[(int)AmmoType.Nato762] = 500;
@@ -125,7 +125,7 @@ namespace Gamer.Mistaken.Systems.End
                     Systems.Shield.ShieldedManager.Add(new Shield.Shielded(player, 50, 0.25f, 30, 0, -1));
                     MEC.Timing.CallDelayed(8f, () =>
                     {
-                        Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "tau-5", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", 10);
+                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "tau-5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", 10);
                     });
                 });
             });

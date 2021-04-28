@@ -40,7 +40,7 @@ namespace Gamer.Mistaken.Systems.Misc
             if (SpawnKillProtected.Any(i => i.Key == ev.Shooter.Id))
             {
                 ev.IsAllowed = false;
-                Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Shooter, "spawnProtectShoot", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "You can't shoot if your spawn protected", 2);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Shooter, "spawnProtectShoot", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "You can't shoot if your spawn protected", 2);
                 RoundLogger.Log("SPAWN PROTECT", "BLOCK", $"Blocked shooting because of spawn protect for {ev.Shooter.PlayerToString()}");
             }
         }
@@ -90,7 +90,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 ev.Amount = 0;
                 if (ev.Attacker.Side == ev.Target.Side)
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Attacker, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=300%>Watch <color=yellow>your</color> fire, <br>you'r hiting <color=yellow>friendlies</color></size>", 5);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Attacker, "spawnProtect", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=300%>Watch <color=yellow>your</color> fire, <br>you'r hiting <color=yellow>friendlies</color></size>", 5);
                 else if (SpawnKillProtected.Any(i => i.Key == ev.Target.Id && i.Value == true))
                 {
                     ev.Attacker.Kill("You have tried to spawn kill");
@@ -98,7 +98,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 else
                 {
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(ev.Attacker, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=150%>Player you're <color=yellow>attaking</color> has spawn protect</size>", 5);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Attacker, "spawnProtect", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=150%>Player you're <color=yellow>attaking</color> has spawn protect</size>", 5);
                     RoundLogger.Log("SPAWN PROTECT", "WARN", $"Warned {ev.Attacker.PlayerToString()} about spawn protect");
                 }
             }
@@ -114,7 +114,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 try
                 {
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=green>[<color=orange>Spawn Protect</color>]</color> You are spawn protected for next <color=yellow>{i}</color> second{(i == 1 ? "" : "s")}");
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=green>[<color=orange>Spawn Protect</color>]</color> You are spawn protected for next <color=yellow>{i}</color> second{(i == 1 ? "" : "s")}");
                 }
                 catch(System.Exception ex)
                 {
@@ -125,7 +125,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             try
             {
-                Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "spawnProtect", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 SpawnKillProtected.RemoveAll(i => i.Key == id);
             }
             catch (System.Exception ex)

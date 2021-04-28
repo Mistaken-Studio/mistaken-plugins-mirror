@@ -98,7 +98,7 @@ namespace Gamer.Taser
                     Cooldowns.Add(dur, DateTime.Now);
                 if (DateTime.Now < time)
                 {
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taserAmmo", Mistaken.Systems.GUI.PseudoGUIHandler.Position.TOP, "You have <color=yellow>no ammo</color>", 3);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "taserAmmo", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "You have <color=yellow>no ammo</color>", 3);
                 }
                 else
                 {
@@ -182,20 +182,20 @@ namespace Gamer.Taser
                         else
                             bar += "|";
                     }
-                    Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>Taser</color><br><mspace=0.5em><color=yellow>[<color=green>{bar}</color>]</color></mspace>");
+                    Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>Taser</color><br><mspace=0.5em><color=yellow>[<color=green>{bar}</color>]</color></mspace>");
                     yield return Timing.WaitForSeconds(1f);
                 }
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <inheritdoc/>
             public override void OnForceclass(Player player)
             {
-                Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "taser", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
         /// <inheritdoc/>

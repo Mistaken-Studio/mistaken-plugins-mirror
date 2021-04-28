@@ -154,8 +154,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                 }
                 foreach (var player in RealPlayers.List.Where(p => p.Role != RoleType.Scp079))
                 {
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 }
                 foreach (var player in RealPlayers.Get(RoleType.Scp079))
                 {
@@ -254,8 +254,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
 <align=left>Warhead Stop</align><line-height=1px><br></line-height><align=right>{warheadStop}</align>
 <align=left>Cassie</align><line-height=1px><br></line-height><align=right>{cassie}</align>
 </size>";
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Systems.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
-                    Mistaken.Systems.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Systems.GUI.PseudoGUIHandler.Position.BOTTOM, msg);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
+                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, msg);
                 }
                 yield return MEC.Timing.WaitForSeconds(1);
             }

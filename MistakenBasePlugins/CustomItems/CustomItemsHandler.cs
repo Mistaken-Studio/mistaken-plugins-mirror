@@ -14,7 +14,7 @@ using Exiled.API.Extensions;
 using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
 
-namespace Gamer.Mistaken.Systems.CustomItems
+namespace Gamer.Mistaken.Base.CustomItems
 {
     public class CustomItemsHandler : Module
     {
