@@ -57,9 +57,9 @@ namespace Gamer.Mistaken.Systems.Misc
         internal static readonly Dictionary<int, (uint Kills, uint TkKills, uint TkDeaths, uint Escapes, float DmgToSCP)> LastStats = new Dictionary<int, (uint Kills, uint TkKills, uint TkDeaths, uint Escapes, float DmgToSCP)>();
         private void DisplayStats(Player player)
         {
-            if (Base.PlayerStatsHandler.Stats.ContainsKey(player.UserId))
+            if (PStats.PlayerStatsHandler.Stats.ContainsKey(player.UserId))
             {
-                var stats = Base.PlayerStatsHandler.Stats[player.UserId];
+                var stats = PStats.PlayerStatsHandler.Stats[player.UserId];
                 var kills = stats.Kills;
                 var tk_kills = stats.Tk_kills;
                 var tk_deaths = stats.Tk_deaths;

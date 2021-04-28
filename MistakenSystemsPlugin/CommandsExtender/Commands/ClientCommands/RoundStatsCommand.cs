@@ -18,9 +18,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             success = false;
             var player = sender.GetPlayer();
-            if (Base.PlayerStatsHandler.Stats.ContainsKey(player.UserId))
+            if (PStats.PlayerStatsHandler.Stats.ContainsKey(player.UserId))
             {
-                var stats = Base.PlayerStatsHandler.Stats[player.UserId];
+                var stats = PStats.PlayerStatsHandler.Stats[player.UserId];
                 var kills = stats.Kills;
                 var tk_kills = stats.Tk_kills;
                 var tk_deaths = stats.Tk_deaths;

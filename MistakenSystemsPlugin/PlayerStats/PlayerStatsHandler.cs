@@ -14,7 +14,7 @@ using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
 using MEC;
 
-namespace Gamer.Mistaken.Base
+namespace Gamer.Mistaken.PStats
 {
     public class PlayerStatsHandler : Diagnostics.Module
     {
@@ -34,7 +34,6 @@ namespace Gamer.Mistaken.Base
             Exiled.Events.Handlers.Server.RoundEnded += this.Handle<Exiled.Events.EventArgs.RoundEndedEventArgs>((ev) => Server_RoundEnded(ev));
             Exiled.Events.Handlers.Player.Destroying += this.Handle<Exiled.Events.EventArgs.DestroyingEventArgs>((ev) => Player_Destroying(ev));
             Exiled.Events.Handlers.Player.Escaping += this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
-            Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Scp079.GainingExperience += this.Handle<Exiled.Events.EventArgs.GainingExperienceEventArgs>((ev) => Scp079_GainingExperience(ev));
             Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
         }
@@ -46,7 +45,6 @@ namespace Gamer.Mistaken.Base
             Exiled.Events.Handlers.Server.RoundEnded -= this.Handle<Exiled.Events.EventArgs.RoundEndedEventArgs>((ev) => Server_RoundEnded(ev));
             Exiled.Events.Handlers.Player.Destroying -= this.Handle<Exiled.Events.EventArgs.DestroyingEventArgs>((ev) => Player_Destroying(ev));
             Exiled.Events.Handlers.Player.Escaping -= this.Handle<Exiled.Events.EventArgs.EscapingEventArgs>((ev) => Player_Escaping(ev));
-            Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Scp079.GainingExperience -= this.Handle<Exiled.Events.EventArgs.GainingExperienceEventArgs>((ev) => Scp079_GainingExperience(ev));
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
         }
@@ -100,11 +98,6 @@ namespace Gamer.Mistaken.Base
                 Log.Error("Error:" + e.Message);
                 Log.Error("StackTrace:" + e.StackTrace);
             }
-        }
-
-        private void Server_RestartingRound()
-        {
-            PluginHandler.EventOnGoing = false;
         }
 
         private void Player_Escaping(EscapingEventArgs ev)
@@ -212,12 +205,10 @@ namespace Gamer.Mistaken.Base
 
         private void Player_Dying(DyingEventArgs ev)
         {
-            if (PluginHandler.EventOnGoing) 
-                return;
             if (ev.Target.Role == RoleType.Spectator)
                 return;
             //Log.Debug(ev.Target.Nickname + ":" + ev.Killer.Nickname);
-            bool tk = AntyTeamKillHandler.IsTeamkill(ev.Killer, ev.Target);
+            bool tk = ATK.AntyTeamKillHandler.IsTeamkill(ev.Killer, ev.Target);
             if (!string.IsNullOrEmpty(ev.Target?.UserId) && !string.IsNullOrEmpty(ev.Killer?.UserId))
             {
                 try
@@ -249,16 +240,11 @@ namespace Gamer.Mistaken.Base
                     if(Stats.ContainsKey(player.UserId)) Stats[player.UserId].Kills++;
             }
 
-            Logger.Debug("DEATH", $"{ev.Target.Nickname} ({ev.Target.Role}) was killed by {ev.Killer?.Nickname ?? "WORLD"} ({ev.Killer?.Role.ToString() ?? "WORLD"}) using {ev.HitInformation.GetDamageName()}");
+            Log.Debug($"{ev.Target.Nickname} ({ev.Target.Role}) was killed by {ev.Killer?.Nickname ?? "WORLD"} ({ev.Killer?.Role.ToString() ?? "WORLD"}) using {ev.HitInformation.GetDamageName()}");
         }
 
         public void SendStats(string userid, uint kills, uint deaths, Int32 time, uint tk_kills, uint tk_deaths, uint escapes)
         {
-            if (PluginHandler.EventOnGoing)
-            {
-                Log.Info("Cancled sending stats|EventOnGoing");
-                return;
-            }
             if (time > 60 * 60 * 2)
             {
                 Log.Warn("To much time. Max is 2 h");

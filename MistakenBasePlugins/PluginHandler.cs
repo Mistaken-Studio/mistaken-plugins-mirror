@@ -18,10 +18,7 @@ namespace Gamer.Mistaken.Base
         public override void OnEnabled()
         {
             Instance = this;
-            new JoinsHandler(this);
-            new LoggerHandler(this);
-            new PlayerStatsHandler(this);
-            new AntyTeamKillHandler(this);
+            
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }
@@ -30,11 +27,6 @@ namespace Gamer.Mistaken.Base
         {
             Diagnostics.Module.OnDisable(this);
             base.OnDisabled();
-        }
-
-        public static void UpdateWanted()
-        {
-            JoinsHandler.GetWanteds();
         }
     }
 

@@ -316,7 +316,7 @@ namespace Gamer.Mistaken.LOFH
         public static string Execute(Player player, string query)
         {
             string[] args = query.Split(' ');
-            Base.LoggerHandler.SendCommand(args[0], string.Join(" ", args.Skip(1)), new Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs(player.Sender, player, player.Nickname, args.ToList()), player.UserId);
+            Logger.LoggerHandler.SendCommand(args[0], string.Join(" ", args.Skip(1)), new Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs(player.Sender, player, player.Nickname, args.ToList()), player.UserId);
             if (RemoteAdmin.CommandProcessor.RemoteAdminCommandHandler.TryGetCommand(args[0], out ICommand cmd))
             {
                 if (!cmd.Execute(new ArraySegment<string>(args), player.Sender, out string response))

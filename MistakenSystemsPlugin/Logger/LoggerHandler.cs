@@ -9,7 +9,7 @@ using Gamer.Diagnostics;
 using Gamer.Mistaken.Utilities.APILib;
 using Gamer.Utilities;
 
-namespace Gamer.Mistaken.Base
+namespace Gamer.Mistaken.Logger
 {
     public class LoggerHandler : Diagnostics.Module
     {

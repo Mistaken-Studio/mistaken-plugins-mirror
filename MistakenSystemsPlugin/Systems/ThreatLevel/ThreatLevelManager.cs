@@ -165,16 +165,16 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                         }
                         catch (System.Exception e)
                         {
-                            Logger.Error("ThreatLevelManager1", e.Message);
-                            Logger.Error("ThreatLevelManager1", e.StackTrace);
+                            Log.Error(e.Message);
+                            Log.Error(e.StackTrace);
                         }
                     };
                     client.DownloadDataAsync(new Uri($"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=$key&steamids={UserId.Split('@')[0]}".Replace("$key", steamKey)));
                 }
                 catch (System.Exception e)
                 {
-                    Logger.Error("ThreatLevelManager", e.Message);
-                    Logger.Error("ThreatLevelManager", e.StackTrace);
+                    Log.Error(e.Message);
+                    Log.Error(e.StackTrace);
                 }
             }
         }

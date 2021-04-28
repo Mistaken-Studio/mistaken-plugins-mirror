@@ -96,10 +96,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ATK\AntyTeamKillHandler.cs" />
-    <Compile Include="PlayerStats\PlayerStatsHandler.cs" />
-    <Compile Include="Logger\LoggerHandler.cs" />
-    <Compile Include="Joins\JoinsHandler.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

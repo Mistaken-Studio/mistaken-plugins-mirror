@@ -33,8 +33,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 if (args.Length > 1 && args[1].ToLower() == "vic")
                 {
 
-                    var data = Mistaken.Base.AntyTeamKillHandler.TeamAttacksList.FindAll(item => item.Victim.UserId == player.UserId);
-                    var data1 = Mistaken.Base.AntyTeamKillHandler.TeamKillsList.FindAll(item => item.Victim.UserId == player.UserId);
+                    var data = ATK.AntyTeamKillHandler.TeamAttacksList.FindAll(item => item.Victim.UserId == player.UserId);
+                    var data1 = ATK.AntyTeamKillHandler.TeamKillsList.FindAll(item => item.Victim.UserId == player.UserId);
                     if (data.Count > 0 || data1.Count > 0) tor.Add("Victim");
                     if (data.Count > 0)
                     {
@@ -45,7 +45,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             tor.Add("Killer: " + item.Victim.Nickname + "(" + item.Victim.UserId + ")");
                             tor.Add("Damage: " + item.Info.Amount);
                             tor.Add("Tool:" + item.Info.GetDamageName());
-                            tor.Add("RoundsAgo:" + (Mistaken.Base.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
+                            tor.Add("RoundsAgo:" + (ATK.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
                         }
                     }
 
@@ -57,14 +57,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             tor.Add("TeamKill");
                             tor.Add("Killer: " + item.Victim.Nickname + "(" + item.Victim.UserId + ")");
                             tor.Add("Tool:" + item.Info.GetDamageName());
-                            tor.Add("RoundsAgo:" + (Mistaken.Base.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
+                            tor.Add("RoundsAgo:" + (ATK.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
                         }
                     }
                 }
                 else
                 {
-                    var data = Mistaken.Base.AntyTeamKillHandler.TeamAttacksList.FindAll(item => item.Killer.UserId == player.UserId);
-                    var data1 = Mistaken.Base.AntyTeamKillHandler.TeamKillsList.FindAll(item => item.Killer.UserId == player.UserId);
+                    var data = ATK.AntyTeamKillHandler.TeamAttacksList.FindAll(item => item.Killer.UserId == player.UserId);
+                    var data1 = ATK.AntyTeamKillHandler.TeamKillsList.FindAll(item => item.Killer.UserId == player.UserId);
                     if (data.Count > 0 || data1.Count > 0) tor.Add("Attacker");
                     if (data.Count > 0)
                     {
@@ -75,7 +75,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             tor.Add("Victim: " + item.Victim.Nickname + "(" + item.Victim.UserId + ")");
                             tor.Add("Damage: " + item.Info.Amount);
                             tor.Add("Tool:" + item.Info.GetDamageName());
-                            tor.Add("RoundsAgo:" + (Mistaken.Base.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
+                            tor.Add("RoundsAgo:" + (ATK.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
                         }
                     }
 
@@ -87,7 +87,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             tor.Add("TeamKill");
                             tor.Add("Victim: " + item.Victim.Nickname + "(" + item.Victim.UserId + ")");
                             tor.Add("Tool:" + item.Info.GetDamageName());
-                            tor.Add("RoundsAgo:" + (Mistaken.Base.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
+                            tor.Add("RoundsAgo:" + (ATK.AntyTeamKillHandler.CurrentRoundId - item.RoundId));
                         }
                     }
                 }

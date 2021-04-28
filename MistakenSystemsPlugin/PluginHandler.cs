@@ -60,6 +60,10 @@ namespace Gamer.Mistaken
             new Ban2.BansHandler(this);
             new Ranks.RankPerksHandler(this);
             new Subtitles.SubtitlesHandler(this);
+            new Joins.JoinsHandler(this);
+            new Logger.LoggerHandler(this);
+            new PStats.PlayerStatsHandler(this);
+            new ATK.AntyTeamKillHandler(this);
             if (Config.WhitelistEnabled)
                 Log.SendRaw("! Whitelist is enabled !", ConsoleColor.Red);
             else
@@ -88,7 +92,9 @@ namespace Gamer.Mistaken
     public class MSConfig : Config
     {
         public bool WhitelistEnabled { get; set; } = false;
+        public bool IsRankingEnabled { get; set; } = true;
 
+        public Stats_ServerType RankingType { get; set; } = Stats_ServerType.RANKED;
         public MSP_ServerType Type { get; set; } = MSP_ServerType.NORMAL;
         public bool IsRP() => Type != MSP_ServerType.NORMAL;
         public bool IsHardRP() => Type == MSP_ServerType.HARD_RP;
@@ -99,5 +105,11 @@ namespace Gamer.Mistaken
         NORMAL,
         RP,
         HARD_RP
+    }
+    public enum Stats_ServerType
+    {
+        RANKED,
+        RP,
+        CASUAL
     }
 }

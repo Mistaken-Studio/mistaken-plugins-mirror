@@ -17,7 +17,7 @@ using Grenades;
 using Exiled.API.Extensions;
 using UnityEngine.Assertions.Must;
 
-namespace Gamer.Mistaken.Base
+namespace Gamer.Mistaken.ATK
 {
     public class AntyTeamKillHandler : Diagnostics.Module
     {
@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.Base
             public int RoundId;
             public Player Killer;
             public Player Victim;
-            public PlayerStats.HitInfo Info;
+            public global::PlayerStats.HitInfo Info;
 
             private TeamKill(Exiled.Events.EventArgs.DyingEventArgs ev, string killerUserId)
             {
@@ -96,7 +96,7 @@ namespace Gamer.Mistaken.Base
             public int RoundId;
             public Player Killer;
             public Player Victim;
-            public PlayerStats.HitInfo Info;
+            public global::PlayerStats.HitInfo Info;
 
             private TeamAttack(Exiled.Events.EventArgs.HurtingEventArgs ev, string attackerUserId)
             {

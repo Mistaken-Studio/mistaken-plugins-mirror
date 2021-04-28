@@ -12,7 +12,7 @@ using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
 using Gamer.RoundLoggerSystem;
 
-namespace Gamer.Mistaken.Base
+namespace Gamer.Mistaken.Joins
 {
     public class JoinsHandler : Diagnostics.Module
     {
