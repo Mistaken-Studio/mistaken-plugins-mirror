@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class Controll079Command : IBetterCommand, IPermissionLocked
+    internal class Controll079Command : IBetterCommand, IPermissionLocked
     {
         public string Permission => "controll079";
 

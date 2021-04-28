@@ -8,7 +8,7 @@ using System.Linq;
 namespace Gamer.EventManager
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class CommandHandler : IBetterCommand
+    internal class CommandHandler : IBetterCommand
     {
         public static CommandHandler singleton { get; set; }
 

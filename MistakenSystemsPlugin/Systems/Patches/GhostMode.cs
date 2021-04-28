@@ -172,7 +172,7 @@ namespace Gamer.Mistaken.Systems.Patches
                                                 }
                                             }
                                         }
-                                        IL_37D:;
+                                    IL_37D:;
                                     }
                                 }
                                 catch (System.Exception ex)

@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class TeslaOffCommand : IBetterCommand
+    internal class TeslaOffCommand : IBetterCommand
     {
         public override string Description => "Disabled all tesla gates";
         public override string Command => "teslaOff";

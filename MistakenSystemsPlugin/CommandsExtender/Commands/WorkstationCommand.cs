@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class WorkstationCommand : IBetterCommand, IPermissionLocked
+    internal class WorkstationCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "workstation";

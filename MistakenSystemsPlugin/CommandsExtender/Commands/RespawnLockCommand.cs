@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class RespawnLockCommand : IBetterCommand
+    internal class RespawnLockCommand : IBetterCommand
     {
 
         public override string Description =>

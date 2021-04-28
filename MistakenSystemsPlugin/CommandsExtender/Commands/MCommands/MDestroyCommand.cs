@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class MDestroyCommand : IBetterCommand, IPermissionLocked
+    internal class MDestroyCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "m.destroy";

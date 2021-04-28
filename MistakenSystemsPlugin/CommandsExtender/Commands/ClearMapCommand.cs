@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class ClearMapCommand : IBetterCommand, IPermissionLocked
+    internal class ClearMapCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "clearmap";
 

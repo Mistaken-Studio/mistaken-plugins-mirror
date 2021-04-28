@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class BlackoutCommand : IBetterCommand, IPermissionLocked
+    internal class BlackoutCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "blackout";
 

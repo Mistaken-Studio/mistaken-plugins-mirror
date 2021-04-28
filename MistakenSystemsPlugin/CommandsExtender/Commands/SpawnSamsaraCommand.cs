@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class SpawnSamsaraCommand : IBetterCommand, IPermissionLocked
+    internal class SpawnSamsaraCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "samsara";
 

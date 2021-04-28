@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class DmgInfoCommand : IBetterCommand, IPermissionLocked
+    internal class DmgInfoCommand : IBetterCommand, IPermissionLocked
     {
 
 

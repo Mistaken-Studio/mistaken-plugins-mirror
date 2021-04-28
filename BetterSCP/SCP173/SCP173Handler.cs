@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP173
 {
-    class SCP173Handler : Module
+    internal class SCP173Handler : Module
     {
         public override string Name => nameof(SCP173Handler);
         public SCP173Handler(PluginHandler p) : base(p)

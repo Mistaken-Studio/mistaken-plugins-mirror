@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class HideCommand : IBetterCommand, IPermissionLocked
+    internal class HideCommand : IBetterCommand, IPermissionLocked
     {
         public override string Command => "hide";
 

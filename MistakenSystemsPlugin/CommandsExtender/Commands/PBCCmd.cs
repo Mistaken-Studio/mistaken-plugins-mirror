@@ -7,7 +7,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class PBCCmd : IBetterCommand, IPermissionLocked
+    internal class PBCCmd : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "pbc";

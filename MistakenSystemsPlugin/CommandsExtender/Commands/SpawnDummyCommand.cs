@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class SpawnDummyCommand : IBetterCommand, IPermissionLocked
+    internal class SpawnDummyCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "spawndummy";
 

@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class WeaponCustomAmmoCommand : IBetterCommand, IPermissionLocked
+    internal class WeaponCustomAmmoCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "wca";

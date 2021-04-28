@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace Gamer.Mistaken.Subtitles
 {
     [HarmonyPatch(typeof(RespawnEffectsController), "RpcCassieAnnouncement")]
-    static class CassiePatch
+    internal static class CassiePatch
     {
         public static readonly Queue<string> Messages = new Queue<string>();
         public static void Postfix(string words)
@@ -26,7 +26,7 @@ namespace Gamer.Mistaken.Subtitles
     }
 
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.Start))]
-    static class CassiePatch2
+    internal static class CassiePatch2
     {
         public static int Index = -1;
         public static bool Prefix(NineTailedFoxAnnouncer __instance)

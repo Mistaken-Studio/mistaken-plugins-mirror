@@ -5,7 +5,7 @@ using Respawning.NamingRules;
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), "GetCassieUnitName")]
-    static class SCPDeathFixPatch
+    internal static class SCPDeathFixPatch
     {
         public static bool Prefix(ref string regular)
         {

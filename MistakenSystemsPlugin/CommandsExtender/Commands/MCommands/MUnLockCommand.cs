@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class MUnlockCommand : IBetterCommand, IPermissionLocked
+    internal class MUnlockCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "m.unlock";
 

@@ -8,7 +8,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class BallCmd : IBetterCommand, IPermissionLocked
+    internal class BallCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ball";
         public override string Description =>

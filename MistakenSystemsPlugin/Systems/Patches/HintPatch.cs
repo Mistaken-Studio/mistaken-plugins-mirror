@@ -9,7 +9,7 @@ namespace Gamer.Mistaken.Systems.Patches
 {
 
     [HarmonyPatch(typeof(Exiled.API.Features.Player), "ShowHint")] //Check
-    static class HintPatch
+    internal static class HintPatch
     {
         private static readonly Dictionary<string, int> Tries = new Dictionary<string, int>();
         public static bool Prefix(Player __instance, ref string message, float duration = 3f)

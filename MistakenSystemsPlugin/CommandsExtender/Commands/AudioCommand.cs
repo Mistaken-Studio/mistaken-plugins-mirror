@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class AudioCommand : IBetterCommand, IPermissionLocked
+    internal class AudioCommand : IBetterCommand, IPermissionLocked
     {
         public override string Command => "audio";
 

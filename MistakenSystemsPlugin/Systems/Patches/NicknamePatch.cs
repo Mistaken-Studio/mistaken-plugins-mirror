@@ -17,7 +17,7 @@ namespace Gamer.Mistaken.Systems.Patches
         }
     }
     [HarmonyPatch(typeof(NicknameSync), "SetNick", typeof(string))]
-    static class NicknamePatch2
+    internal static class NicknamePatch2
     {
         public static bool Prefix(NicknameSync __instance, ref string nick)
         {

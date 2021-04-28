@@ -5,7 +5,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class CustomInfoCommand : IBetterCommand, IPermissionLocked
+    internal class CustomInfoCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "custominfo";
 

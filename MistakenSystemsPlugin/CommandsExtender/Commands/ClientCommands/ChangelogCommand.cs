@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class ChangelogCommand : IBetterCommand
+    internal class ChangelogCommand : IBetterCommand
     {
         public override string Description => "ChangeLog";
 

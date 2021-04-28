@@ -5,7 +5,7 @@ using Searching;
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(ItemSearchCompletor), "ValidateAny")]
-    static class PickingItemPatch //Check
+    internal static class PickingItemPatch //Check
     {
         public static bool Prefix(ItemSearchCompletor __instance)
         {

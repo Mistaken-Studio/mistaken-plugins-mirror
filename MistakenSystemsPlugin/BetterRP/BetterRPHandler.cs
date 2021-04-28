@@ -501,7 +501,8 @@ namespace Gamer.Mistaken.BetterRP
         public static bool AmbientLock = false;
         public const float DefaultChance = 10;
         public static float Chance { get; private set; } = DefaultChance;
-        IEnumerator<float> DoAmbients()
+
+        private IEnumerator<float> DoAmbients()
         {
             UsedAmbients.Clear();
             yield return Timing.WaitForSeconds(5);

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Gamer.EventManager.Events
 {
-    class HotPeanut :
+    internal class HotPeanut :
         IEMEventClass,
         InternalEvent
     {

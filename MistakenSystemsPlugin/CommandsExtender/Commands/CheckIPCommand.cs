@@ -12,7 +12,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.GameConsoleCommandHandler))]
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class CheckIPCommand : IBetterCommand, IPermissionLocked
+    internal class CheckIPCommand : IBetterCommand, IPermissionLocked
     {
         public override string Description =>
         "Checks IPs";

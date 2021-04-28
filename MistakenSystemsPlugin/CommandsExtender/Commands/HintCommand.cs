@@ -6,7 +6,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class HintCommand : IBetterCommand, IPermissionLocked
+    internal class HintCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "hint";
 

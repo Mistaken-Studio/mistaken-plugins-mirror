@@ -9,7 +9,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class ShakeCommand : IBetterCommand, IPermissionLocked
+    internal class ShakeCommand : IBetterCommand, IPermissionLocked
     {
 
 

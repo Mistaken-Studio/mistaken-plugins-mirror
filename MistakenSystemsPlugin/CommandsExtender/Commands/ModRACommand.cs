@@ -5,7 +5,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class ModRACommand : IBetterCommand
+    internal class ModRACommand : IBetterCommand
     {
         public override string Description => "Toggle default RA";
 

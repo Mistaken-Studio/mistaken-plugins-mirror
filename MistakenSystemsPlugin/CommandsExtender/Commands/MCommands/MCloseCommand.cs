@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class MCloseCommand : IBetterCommand, IPermissionLocked
+    internal class MCloseCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "m.close";
 

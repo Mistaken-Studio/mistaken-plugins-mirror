@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(Handcuffs), "CallCmdCuffTarget")]
-    static class DisarmPatch
+    internal static class DisarmPatch
     {
         public static bool Prefix(Handcuffs __instance, GameObject target)
         {

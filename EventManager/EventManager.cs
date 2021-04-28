@@ -16,16 +16,19 @@ using UnityEngine;
 
 namespace Gamer.EventManager
 {
+    /// <inheritdoc/>
     public class EventManager : Plugin<EMConfig>
     {
+        /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Highest;
+        /// <inheritdoc/>
         public override string Name => "EventManager";
-
+        /// <inheritdoc/>
         public override string Author => "Gamer & Xname";
 
         internal static EventManager singleton;
 
-        public const bool DNPN = true;
+        internal const bool DNPN = true;
 
         #region Vars
         public static EventCreator.IEMEventClass ActiveEvent { get; internal set; }
@@ -37,7 +40,7 @@ namespace Gamer.EventManager
         public static readonly string EMLB = $"[<color=#6B9ADF><b>Event Manager</b></color> {(DNPN ? "<color=#6B9ADF>Test Build</color>" : "")}] ";
         public Queue<EventCreator.IEMEventClass> EventQueue = new Queue<EventCreator.IEMEventClass>();
         #endregion
-
+        /// <inheritdoc/>
         public override void OnEnabled()
         {
             singleton = this;

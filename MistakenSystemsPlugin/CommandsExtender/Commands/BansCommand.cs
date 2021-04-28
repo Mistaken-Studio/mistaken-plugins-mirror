@@ -8,7 +8,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class BansCommand : IBetterCommand, IPermissionLocked
+    internal class BansCommand : IBetterCommand, IPermissionLocked
     {
         public string GetUsage()
         {

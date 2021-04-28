@@ -3,7 +3,7 @@
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(Radio), "UseBattery")]
-    static class RadioPatch
+    internal static class RadioPatch
     {
         public static bool Prefix(Radio __instance)
         {

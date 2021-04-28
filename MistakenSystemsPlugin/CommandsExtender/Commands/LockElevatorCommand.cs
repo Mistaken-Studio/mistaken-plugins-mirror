@@ -6,7 +6,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class LockElevatorCommand : IBetterCommand, IPermissionLocked
+    internal class LockElevatorCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "lockelevator";
 

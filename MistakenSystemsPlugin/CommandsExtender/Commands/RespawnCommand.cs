@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class RespawnCommand : IBetterCommand, IPermissionLocked
+    internal class RespawnCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "respawn";
 

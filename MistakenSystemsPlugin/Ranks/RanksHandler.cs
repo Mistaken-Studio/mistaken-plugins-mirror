@@ -286,7 +286,7 @@ namespace Gamer.Mistaken.Ranks
             return uId;
         }
 
-        static void DownloadDataCompletedTop10(object sender, DownloadDataCompletedEventArgs e)
+        private static void DownloadDataCompletedTop10(object sender, DownloadDataCompletedEventArgs e)
         {
             byte[] raw = e.Result;
             string body = Encoding.Default.GetString(raw);
@@ -315,7 +315,8 @@ namespace Gamer.Mistaken.Ranks
                 }
             }
         }
-        static void DownloadDataCompletedTopDiscord(object sender, DownloadDataCompletedEventArgs e)
+
+        private static void DownloadDataCompletedTopDiscord(object sender, DownloadDataCompletedEventArgs e)
         {
             byte[] raw = e.Result;
             string body = Encoding.Default.GetString(raw);
@@ -344,7 +345,8 @@ namespace Gamer.Mistaken.Ranks
                 }
             }
         }
-        static void DownloadDataCompletedVip(object sender, DownloadDataCompletedEventArgs e)
+
+        private static void DownloadDataCompletedVip(object sender, DownloadDataCompletedEventArgs e)
         {
             byte[] raw = e.Result;
             string body = Encoding.Default.GetString(raw);

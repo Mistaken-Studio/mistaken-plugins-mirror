@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class SetSizeCommand : IBetterCommand, IPermissionLocked
+    internal class SetSizeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "setsize";
 

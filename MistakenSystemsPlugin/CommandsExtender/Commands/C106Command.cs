@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class C106Command : IBetterCommand, IPermissionLocked
+    internal class C106Command : IBetterCommand, IPermissionLocked
     {
         public string Permission => "c106";
 

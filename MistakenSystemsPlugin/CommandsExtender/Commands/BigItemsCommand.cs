@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class BigItemsCommand : IBetterCommand, IPermissionLocked
+    internal class BigItemsCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "big_items";
 

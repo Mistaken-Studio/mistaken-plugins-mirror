@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.Pocket
 {
-    class PocketHandler : Module
+    internal class PocketHandler : Module
     {
         private new static __Log Log;
         public PocketHandler(PluginHandler p) : base(p)

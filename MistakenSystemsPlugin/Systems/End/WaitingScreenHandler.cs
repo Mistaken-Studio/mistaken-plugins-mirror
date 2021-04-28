@@ -70,7 +70,7 @@ namespace Gamer.Mistaken.Systems.End
                 ev.Player.Position = startPos;
         }
 
-        IEnumerator<float> WaitingForPlayers()
+        private IEnumerator<float> WaitingForPlayers()
         {
             while (!Round.IsStarted)
             {

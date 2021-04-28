@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class PoliceCommand : IBetterCommand, IPermissionLocked
+    internal class PoliceCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "police";
 

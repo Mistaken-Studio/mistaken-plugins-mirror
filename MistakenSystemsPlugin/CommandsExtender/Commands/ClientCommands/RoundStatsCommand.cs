@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class RoundStatsCommand : IBetterCommand
+    internal class RoundStatsCommand : IBetterCommand
     {
         public override string Description => "Display Round Stats";
         public override string Command => "roundstats";

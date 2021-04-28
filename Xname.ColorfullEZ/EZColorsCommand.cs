@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Xname.ColorfullEZ
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class EZColorsCommand : IBetterCommand, IPermissionLocked
+    internal class EZColorsCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "colors";
 

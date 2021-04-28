@@ -7,7 +7,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class TutorialMeCommand : IBetterCommand, IPermissionLocked
+    internal class TutorialMeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "tutorial";
 

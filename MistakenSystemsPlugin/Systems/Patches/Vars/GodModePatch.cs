@@ -3,7 +3,7 @@ using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Systems.Patches.Vars
 {
-    static class GodModePatch
+    internal static class GodModePatch
     {
         public static void Postfix(Player __instance, bool value)
         {
@@ -11,7 +11,7 @@ namespace Gamer.Mistaken.Systems.Patches.Vars
         }
     }
 
-    static class BypassPatch
+    internal static class BypassPatch
     {
         public static void Postfix(Player __instance, bool value)
         {
@@ -19,7 +19,7 @@ namespace Gamer.Mistaken.Systems.Patches.Vars
         }
     }
 
-    static class OverwatchPatch
+    internal static class OverwatchPatch
     {
         public static void Postfix(ServerRoles __instance, bool status)
         {
@@ -27,14 +27,15 @@ namespace Gamer.Mistaken.Systems.Patches.Vars
         }
     }
 
-    static class NicknamePatch
+    internal static class NicknamePatch
     {
         public static void Postfix(NicknameSync __instance, string value)
         {
             AnnonymousEvents.Call("NICKNAME", (Player.Get(__instance.gameObject), value));
         }
     }
-    static class NoClipPatch
+
+    internal static class NoClipPatch
     {
         public static void Postfix(ServerRoles __instance, byte status)
         {

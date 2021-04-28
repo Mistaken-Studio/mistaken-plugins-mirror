@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace EventManager.Events
 {
-    class TSL : IEMEventClass
+    internal class TSL : IEMEventClass
     {
         public override string Name { get; set; } = "TSL";
 

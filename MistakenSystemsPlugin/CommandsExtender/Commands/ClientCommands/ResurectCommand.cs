@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class ResurectCommand : IBetterCommand
+    internal class ResurectCommand : IBetterCommand
     {
         public override string Description => "Resurection";
 

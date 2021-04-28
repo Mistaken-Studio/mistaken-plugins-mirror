@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class TryUnHandcuffCommand : IBetterCommand
+    internal class TryUnHandcuffCommand : IBetterCommand
     {
         public override string Description => "Try your luck";
 

@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class FlashLogCommand : IBetterCommand
+    internal class FlashLogCommand : IBetterCommand
     {
         public override string Command => "flashlog";
 

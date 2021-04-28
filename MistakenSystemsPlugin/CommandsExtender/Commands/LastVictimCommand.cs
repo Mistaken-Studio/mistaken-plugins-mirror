@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class LastVictimCommand : IBetterCommand, IPermissionLocked
+    internal class LastVictimCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "last_attacker";
 

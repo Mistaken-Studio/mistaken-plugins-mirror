@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Gamer.Mistaken.BetterRP
 {
-    class NicknameHandler : Module
+    internal class NicknameHandler : Module
     {
         public NicknameHandler(PluginHandler plugin) : base(plugin)
         {

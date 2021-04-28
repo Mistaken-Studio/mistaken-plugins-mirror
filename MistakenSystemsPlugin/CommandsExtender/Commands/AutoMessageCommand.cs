@@ -7,7 +7,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [System.Obsolete]
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class AutoMessageCommand : IBetterCommand, IPermissionLocked
+    internal class AutoMessageCommand : IBetterCommand, IPermissionLocked
     {
         public string GetUsage()
         {

@@ -9,7 +9,7 @@ using System.Linq;
 namespace Gamer.Mistaken.EVO
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class CommandHandler : IBetterCommand
+    internal class CommandHandler : IBetterCommand
     {
         public override string Command => "evo";
 

@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class LongOverwatchCommand : IBetterCommand
+    internal class LongOverwatchCommand : IBetterCommand
     {
         public override string Description =>
             "Long Overwatch";

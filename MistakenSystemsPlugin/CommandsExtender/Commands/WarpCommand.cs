@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class WarpCommand : IBetterCommand, IPermissionLocked
+    internal class WarpCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "warp";
         public override string Description => "Warp";

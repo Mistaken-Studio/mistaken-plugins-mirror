@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class TalkCommand : IBetterCommand, IPermissionLocked
+    internal class TalkCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "talk";
 

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP914
 {
-    class SCP914Handler : Module
+    internal class SCP914Handler : Module
     {
         public override string Name => nameof(SCP914Handler);
         public SCP914Handler(PluginHandler p) : base(p)

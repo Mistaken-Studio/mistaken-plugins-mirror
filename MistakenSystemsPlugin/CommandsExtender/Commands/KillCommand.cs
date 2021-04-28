@@ -7,7 +7,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class KillCommand : IBetterCommand, IPermissionLocked
+    internal class KillCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "kill";

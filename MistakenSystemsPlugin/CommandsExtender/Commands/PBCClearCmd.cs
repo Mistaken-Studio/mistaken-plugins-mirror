@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class PBCClearCmd : IBetterCommand, IPermissionLocked
+    internal class PBCClearCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "pbcc";
 

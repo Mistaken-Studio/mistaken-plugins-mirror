@@ -6,7 +6,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class AfkCommand : IBetterCommand, IPermissionLocked
+    internal class AfkCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "afk";
 

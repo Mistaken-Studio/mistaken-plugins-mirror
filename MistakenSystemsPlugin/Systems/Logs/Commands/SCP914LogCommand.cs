@@ -6,7 +6,7 @@ using System.Linq;
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class SCP914LogCommand : IBetterCommand, IPermissionLocked
+    internal class SCP914LogCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "scp914log";
 

@@ -7,7 +7,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class FlashCmd : IBetterCommand, IPermissionLocked
+    internal class FlashCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "flash";
 

@@ -6,7 +6,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class GrenadeCmd : IBetterCommand, IPermissionLocked
+    internal class GrenadeCmd : IBetterCommand, IPermissionLocked
     {
 
 

@@ -10,7 +10,7 @@ using System.Linq;
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(Log), "SendRaw")] //Check
-    static class LogRemoverPatch
+    internal static class LogRemoverPatch
     {
         public static bool Prefix(ref object message, ConsoleColor color)
         {

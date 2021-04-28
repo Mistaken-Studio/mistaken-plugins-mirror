@@ -6,7 +6,7 @@ using System.Linq;
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class PlayerLogCommand : IBetterCommand
+    internal class PlayerLogCommand : IBetterCommand
     {
         public override string Description =>
          "PlayerLog";

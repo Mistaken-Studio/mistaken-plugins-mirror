@@ -14,7 +14,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class CandelaCmd : IBetterCommand, IPermissionLocked
+    internal class CandelaCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "canadel";
 

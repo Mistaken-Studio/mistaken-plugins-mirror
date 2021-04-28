@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class PlayerTeamKillsCmd : IBetterCommand, IPermissionLocked
+    internal class PlayerTeamKillsCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ptkd";
 

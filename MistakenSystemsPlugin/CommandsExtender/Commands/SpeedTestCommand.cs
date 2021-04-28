@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class SpeedTestCommand : IBetterCommand, IPermissionLocked
+    internal class SpeedTestCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "speed";
 

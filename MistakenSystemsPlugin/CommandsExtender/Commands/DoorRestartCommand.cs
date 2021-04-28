@@ -5,7 +5,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class DoorRestartCommand : IBetterCommand, IPermissionLocked
+    internal class DoorRestartCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "doorrestart";
 

@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class PetCommand : IBetterCommand
+    internal class PetCommand : IBetterCommand
     {
         public override string Command => "pet";
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.BetterRP
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class ForceAmbient : IBetterCommand, IPermissionLocked
+    internal class ForceAmbient : IBetterCommand, IPermissionLocked
     {
         public string Permission => "force_ambient";
 
@@ -51,7 +51,7 @@ namespace Gamer.Mistaken.BetterRP
     }
 
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class ForceRPEvents : IBetterCommand, IPermissionLocked
+    internal class ForceRPEvents : IBetterCommand, IPermissionLocked
     {
         public string Permission => "rp_events_force";
 

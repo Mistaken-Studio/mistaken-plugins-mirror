@@ -56,7 +56,7 @@ namespace Gamer.Mistaken.Systems.End
 
         public int CurrentId = 0;
 
-        IEnumerator<float> AutoMessage(int id)
+        private IEnumerator<float> AutoMessage(int id)
         {
             yield return Timing.WaitForSeconds(UnityEngine.Random.Range(60, 300));
             while (CurrentId == id)

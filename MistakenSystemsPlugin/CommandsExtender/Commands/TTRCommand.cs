@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class TTRCommand : IBetterCommand, IPermissionLocked
+    internal class TTRCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ttr";
 

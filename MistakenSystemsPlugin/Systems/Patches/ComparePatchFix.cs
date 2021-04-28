@@ -4,7 +4,7 @@ using System;
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(Inventory.SyncItemInfo), "Equals", typeof(Inventory.SyncItemInfo))]
-    static class ComparePatchFix
+    internal static class ComparePatchFix
     {
         public static bool Prefix(Inventory.SyncItemInfo __instance, Inventory.SyncItemInfo other, ref bool __result)
         {

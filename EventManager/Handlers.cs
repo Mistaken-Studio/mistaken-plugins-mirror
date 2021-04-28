@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Gamer.EventManager
 {
-    class SystemsHandler
+    internal class SystemsHandler
     {
         private readonly EventManager plugin;
 

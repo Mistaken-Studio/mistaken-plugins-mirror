@@ -6,7 +6,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class UnMuteAllCommand : IBetterCommand, IPermissionLocked
+    internal class UnMuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "muteall";
 

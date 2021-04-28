@@ -6,7 +6,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class IntercomCommand : IBetterCommand, IPermissionLocked
+    internal class IntercomCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "intercom";

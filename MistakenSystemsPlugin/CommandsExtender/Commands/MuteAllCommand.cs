@@ -8,7 +8,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class MuteAllCommand : IBetterCommand, IPermissionLocked
+    internal class MuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "muteall";
 
@@ -43,7 +43,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             return new string[] { "Done" };
         }
 
-        IEnumerator<float> InformGlobalMute(Player player)
+        private IEnumerator<float> InformGlobalMute(Player player)
         {
             while (GlobalMuteActive)
             {

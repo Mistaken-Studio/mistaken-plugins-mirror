@@ -6,7 +6,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class UnloadGunCommand : IBetterCommand
+    internal class UnloadGunCommand : IBetterCommand
     {
         public override string Description => "Unload all ammo";
         public override string Command => "unload";

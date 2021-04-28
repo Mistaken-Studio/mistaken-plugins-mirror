@@ -2,7 +2,7 @@
 
 namespace Gamer.Mistaken.BetterSCP.SCP939
 {
-    class SCP939Handler : Diagnostics.Module
+    internal class SCP939Handler : Diagnostics.Module
     {
         public override string Name => nameof(SCP939Handler);
         public SCP939Handler(PluginHandler p) : base(p)

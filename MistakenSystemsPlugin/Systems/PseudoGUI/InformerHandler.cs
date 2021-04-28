@@ -101,7 +101,7 @@ namespace Gamer.Mistaken.Systems.GUI
             Timing.RunCoroutine(InformSpeaker(ev.Player));
         }
 
-        IEnumerator<float> InformSpeaker(Player player)
+        private IEnumerator<float> InformSpeaker(Player player)
         {
             string message = plugin.ReadTranslation("Info_Intercom");
             player.SetGUI("intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, message);
@@ -133,7 +133,8 @@ namespace Gamer.Mistaken.Systems.GUI
         }
 
         public int NextUpdate = 5;
-        IEnumerator<float> Update()
+
+        private IEnumerator<float> Update()
         {
             yield return Timing.WaitForSeconds(1);
             int rid = RoundPlus.RoundId;
@@ -177,7 +178,8 @@ namespace Gamer.Mistaken.Systems.GUI
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update", start, DateTime.Now);
             }
         }
-        IEnumerator<float> Update268()
+
+        private IEnumerator<float> Update268()
         {
             yield return Timing.WaitForSeconds(1);
             int rid = RoundPlus.RoundId;

@@ -7,7 +7,7 @@ using MistakenSocket.Shared.SLToCentral;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class PrefCommand : IBetterCommand
+    internal class PrefCommand : IBetterCommand
     {
         public override string Command => "pref";
         public override string[] Aliases => new string[] { "prefs", "preferences" };

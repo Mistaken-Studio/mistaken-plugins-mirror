@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP096
 {
-    class SCP096Handler : Diagnostics.Module
+    internal class SCP096Handler : Diagnostics.Module
     {
         public SCP096Handler(PluginHandler p) : base(p)
         {

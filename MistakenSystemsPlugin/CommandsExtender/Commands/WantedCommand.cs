@@ -7,7 +7,7 @@ using System.Net;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class WantedCommand : IBetterCommand, IPermissionLocked
+    internal class WantedCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "wanted";
 

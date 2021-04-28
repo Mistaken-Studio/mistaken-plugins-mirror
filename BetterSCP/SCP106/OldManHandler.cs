@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP106
 {
-    class SCP106Handler : Module
+    internal class SCP106Handler : Module
     {
         public SCP106Handler(PluginHandler p) : base(p)
         {

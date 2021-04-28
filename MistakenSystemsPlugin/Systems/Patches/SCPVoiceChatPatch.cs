@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.Systems.Patches
 {
     [HarmonyPatch(typeof(DissonanceUserSetup), "CallCmdAltIsActive")]
-    static class SCPVoiceChatPatch
+    internal static class SCPVoiceChatPatch
     {
         internal static readonly HashSet<string> HasAccessToSCPAlt = new HashSet<string>();
         public static readonly List<RoleType> MimicedRoles = new List<RoleType>();

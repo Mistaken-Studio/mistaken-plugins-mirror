@@ -13,7 +13,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class DevTestCommand : IBetterCommand
+    internal class DevTestCommand : IBetterCommand
     {
         public override string Description => "DEV STUFF";
         public override string Command => "test";

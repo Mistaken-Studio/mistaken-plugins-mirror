@@ -7,7 +7,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class GiveRankCommand : IBetterCommand, IPermissionLocked
+    internal class GiveRankCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "giverank";
 

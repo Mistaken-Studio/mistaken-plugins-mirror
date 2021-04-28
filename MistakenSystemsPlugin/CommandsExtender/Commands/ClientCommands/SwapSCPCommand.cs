@@ -8,7 +8,7 @@ using System.Linq;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    class SwapSCPCommand : IBetterCommand, IPermissionLocked
+    internal class SwapSCPCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "swapscp";
 

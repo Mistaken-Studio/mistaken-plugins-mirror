@@ -8,7 +8,7 @@ using System.Globalization;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class CustomRoundTimeCommand : IBetterCommand
+    internal class CustomRoundTimeCommand : IBetterCommand
     {
         public override string Description =>
         "CRT";

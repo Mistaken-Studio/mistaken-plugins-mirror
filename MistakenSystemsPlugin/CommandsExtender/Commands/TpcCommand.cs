@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class TpcCommand : IBetterCommand, IPermissionLocked
+    internal class TpcCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "tpc";
 

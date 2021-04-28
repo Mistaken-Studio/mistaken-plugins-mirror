@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class ElevatorLogCommand : IBetterCommand
+    internal class ElevatorLogCommand : IBetterCommand
     {
         public static HashSet<int> Active = new HashSet<int>();
 

@@ -4,7 +4,7 @@ using Gamer.Utilities;
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
-    class CassiePrivateCommand : IBetterCommand, IPermissionLocked
+    internal class CassiePrivateCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "cassie_p";
 
