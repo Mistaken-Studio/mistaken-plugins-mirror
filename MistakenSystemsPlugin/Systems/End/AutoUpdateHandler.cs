@@ -63,7 +63,7 @@ namespace Gamer.Mistaken.Systems.End
             {
                 if (item.Name == "plugins.tar.gz")
                 {
-                    var responseRaw = await github.Connection.Get<Byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
+                    var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate(release);
                 }
@@ -147,7 +147,7 @@ namespace Gamer.Mistaken.Systems.End
             {
                 stream.Read(buffer, 0, 100);
                 var name = Encoding.ASCII.GetString(buffer).Trim('\0');
-                if (System.String.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(name))
                     break;
                 stream.Seek(24, SeekOrigin.Current);
                 stream.Read(buffer, 0, 12);

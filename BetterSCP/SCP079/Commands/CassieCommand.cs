@@ -6,28 +6,30 @@ using System;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
+    /// <inheritdoc/>
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     public class CassieCommand : IBetterCommand
     {
+        /// <inheritdoc/>
         public override string Command => "cassie";
-
+        /// <inheritdoc/>
         public override string[] Aliases => new string[] { };
-
+        /// <inheritdoc/>
         public override string Description => "Play custom cassie";
-
+        /// <inheritdoc/>
         public string GetUsage()
         {
             return ".cassie [MESSAGE]";
         }
 
         private static DateTime Lastuse = new DateTime();
-        public static float Cooldown => PluginHandler.Config.cooldownCassie;
-        public static float Cost => PluginHandler.Config.apcostCassie;
-        public static float ReqLvl => PluginHandler.Config.requiedlvlCassie;
+        internal static float Cooldown => PluginHandler.Config.cooldownCassie;
+        internal static float Cost => PluginHandler.Config.apcostCassie;
+        internal static float ReqLvl => PluginHandler.Config.requiedlvlCassie;
 
-        public static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
-        public static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
-
+        internal static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
+        internal static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();

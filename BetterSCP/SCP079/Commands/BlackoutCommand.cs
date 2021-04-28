@@ -5,30 +5,32 @@ using System;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
+    /// <inheritdoc/>
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     public class BlackoutCommand : IBetterCommand
     {
+        /// <inheritdoc/>
         public override string Command => "blackout";
-
+        /// <inheritdoc/>
         public override string[] Aliases => new string[] { };
-
+        /// <inheritdoc/>
         public override string Description => "Do blackout";
-
+        /// <inheritdoc/>
         public string GetUsage()
         {
             return ".blackout [duration]";
         }
 
-        private static DateTime Lastuse = new DateTime();
-        public static float Cooldown => PluginHandler.Config.cooldownBlackout;
-        public static float Cost => PluginHandler.Config.apcostBlackout;
-        public static float ReqLvl => PluginHandler.Config.requiedlvlBlackout;
+        internal static DateTime Lastuse = new DateTime();
+        internal static float Cooldown => PluginHandler.Config.cooldownBlackout;
+        internal static float Cost => PluginHandler.Config.apcostBlackout;
+        internal static float ReqLvl => PluginHandler.Config.requiedlvlBlackout;
 
-        public static bool IsReady => Lastuse.Ticks <= DateTime.Now.Ticks;
-        public static long TimeLeft => Lastuse.Ticks - DateTime.Now.Ticks;
+        internal static bool IsReady => Lastuse.Ticks <= DateTime.Now.Ticks;
+        internal static long TimeLeft => Lastuse.Ticks - DateTime.Now.Ticks;
 
         private float LastCooldown;
-
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();

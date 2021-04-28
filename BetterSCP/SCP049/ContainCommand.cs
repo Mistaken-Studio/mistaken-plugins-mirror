@@ -10,15 +10,18 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
 {
+    /// <inheritdoc/>
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     public class ContainCommand : IBetterCommand
     {
+        /// <inheritdoc/>
         public override string Command => "contain049";
-
+        /// <inheritdoc/>
         public override string[] Aliases => new string[] { "contain" };
-
+        /// <inheritdoc/>
         public override string Description => "Recontain SCP 049";
-        public static bool AlreadyRunning = false;
+        private static bool AlreadyRunning = false;
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
