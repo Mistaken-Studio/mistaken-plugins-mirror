@@ -2,6 +2,7 @@
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using MEC;
 using System.Collections.Generic;
@@ -248,7 +249,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             yield return Timing.WaitForSeconds(5);
             int rid = RoundPlus.RoundId;
             yield return Timing.WaitForSeconds(55);
-            while(RealPlayers.Any(RoleType.Scp106) && rid == RoundPlus.RoundId)
+            while (RealPlayers.Any(RoleType.Scp106) && rid == RoundPlus.RoundId)
             {
                 foreach (var player in RealPlayers.Get(RoleType.Scp106).Where(p => p.IsInPocketDimension))
                     player.Position = Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106);
@@ -372,11 +373,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 {
                     if (!player.IsConnected)
                         break;
-                    Base.GUI.PseudoGUIHandler.Set(player, "scp106", Base.GUI.PseudoGUIHandler.Position.TOP, $"Cooldown: <color=yellow>{15 - i}</color>s");
+                    player.SetGUI("scp106", Base.GUI.PseudoGUIHandler.Position.TOP, $"Cooldown: <color=yellow>{15 - i}</color>s");
                     yield return Timing.WaitForSeconds(1);
                 }
                 Cooldown.Remove(player.Id);
-                Base.GUI.PseudoGUIHandler.Set(player, "scp106", Base.GUI.PseudoGUIHandler.Position.TOP, null);
+                player.SetGUI("scp106", Base.GUI.PseudoGUIHandler.Position.TOP, null);
             }
         }
 
@@ -436,7 +437,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 return false;
             if (!sameZone && targetZone == room.Zone)
                 return false;
-            if (LightContainmentZoneDecontamination.DecontaminationController.Singleton.IsLCZDecontaminated(30) && room.Zone == ZoneType.LightContainment)
+            if (MapPlus.IsLCZDecontaminated(30) && room.Zone == ZoneType.LightContainment)
                 return false;
             if (!UnityEngine.Physics.Raycast(room.Position + Vector3.up / 2, Vector3.down, 5))
                 return false;

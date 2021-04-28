@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
-using Gamer.Mistaken.Utilities.APILib;
-using Newtonsoft.Json;
-using Gamer.Mistaken.Systems.Staff;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.LOFH
 {
@@ -32,14 +26,14 @@ namespace Gamer.Mistaken.LOFH
         public static void RemoveVanish(string userId) => InVanish.Remove(userId);
         public static void ClearVanish() => InVanish.Clear();
 
-        public static bool HasStaffFlag(string userId) => userId.IsStaff();      
+        public static bool HasStaffFlag(string userId) => userId.IsStaff();
 
         public static string[] GetFlags(string userId)
         {
             List<string> flags = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
             if (InVanish.TryGetValue(userId, out int vanishLevel))
                 flags.Add($"Active flag: <color=#808080>Vanish: <{vanishLevel}></color>");
-            if(Flags.TryGetValue(userId, out Flag flag)) 
+            if (Flags.TryGetValue(userId, out Flag flag))
                 flags.Add((flag.AddSM ? "Active flag: " : "") + flag.Value);
 
             flags.Add($"<color=#FF0000>Bans</color>: {Systems.Bans.BansManager.GetBans(userId).Length}");
@@ -48,8 +42,8 @@ namespace Gamer.Mistaken.LOFH
             return tor;
         }
 
-        public static string GetBans(string userId) => 
-            $"<color=#FF0000>|</color><color=white>{Systems.Bans.BansManager.GetBans(userId).Length}</color><color=#FF0000>|</color>";   
+        public static string GetBans(string userId) =>
+            $"<color=#FF0000>|</color><color=white>{Systems.Bans.BansManager.GetBans(userId).Length}</color><color=#FF0000>|</color>";
 
         public static string GetPrefixes(string userId)
         {
@@ -60,7 +54,7 @@ namespace Gamer.Mistaken.LOFH
                 tor = $"[<color=#808080>V <{vanishLevel}></color>] ";
             if (userId.IsDevUserId())
             {
-                if(userId.IsStaff())
+                if (userId.IsStaff())
                     return $"{tor}[<color=#FF0000>|</color><b><color=#FFD700><b>DEV</b></color></b><color=#FF0000>|</color>] ";
                 else
                     return $"{tor}[<color=#FFFF00>|</color><b><color=#FF0000><b>R-DEV</b></color></b><color=#FFFF00>|</color>] ";
@@ -100,7 +94,7 @@ namespace Gamer.Mistaken.LOFH
                 return $"[<color=red><color=#FFC0CB>I</color>MUTED</color>]";
             return "";
         }
-        
+
         public class Prefix
         {
             public bool AddSE = true;

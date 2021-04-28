@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Interactables.Interobjects.DoorUtils;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using MEC;
-using Exiled.API.Features;
-using System.Security.Policy;
-using Exiled.API.Enums;
-using Interactables.Interobjects.DoorUtils;
-using Exiled.API.Extensions;
 
 namespace Gamer.EventManager.Events
 {

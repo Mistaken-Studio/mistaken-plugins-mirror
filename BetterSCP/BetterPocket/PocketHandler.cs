@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
-using MEC;
 using Mirror;
 using NPCS;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.Pocket
@@ -101,7 +97,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
 
         private void Player_EscapingPocketDimension(Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs ev)
         {
-            if(ev.Player.IsNPC())
+            if (ev.Player.IsNPC())
             {
                 ev.IsAllowed = false;
                 return;
@@ -242,12 +238,12 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
                     //foreach (var p in Player.Get(RoleType.Scp106))
                     //    Mistaken.CustomAchievements.RoundEventHandler.AddProggress("OldMan", p);
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
-                
+
                 Manager.SpawnRagdoll(
                     Map.Rooms[UnityEngine.Random.Range(0, Map.Rooms.Count)].Position + new Vector3(0, 3, 0),
                     Quaternion.identity,

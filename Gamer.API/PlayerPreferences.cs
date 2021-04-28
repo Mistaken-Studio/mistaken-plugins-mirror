@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gamer.API
+﻿namespace Gamer.API
 {
+    /// <summary>
+    /// Player preferences enum
+    /// </summary>
     public enum PlayerPreferences : ulong
     {
+#pragma warning disable CS1591
         NONE = 0,
         DISABLE_COLORFUL_EZ = 1,
         DISABLE_TRANSCRYPT = 2,
+#pragma warning restore CS1591
     }
 }

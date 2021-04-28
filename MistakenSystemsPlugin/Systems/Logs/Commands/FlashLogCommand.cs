@@ -1,14 +1,10 @@
-﻿using Mirror;
-using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using Gamer.Utilities;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class FlashLogCommand : IBetterCommand
     {
         public override string Command => "flashlog";

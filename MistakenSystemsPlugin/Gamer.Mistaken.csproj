@@ -340,7 +340,6 @@
     <Compile Include="Systems\Seasonal\EasterHandler.cs" />
     <Compile Include="Systems\Seasonal\PrimaAprilisHanlder.cs" />
     <Compile Include="Systems\Shield\ShieldedManager.cs" />
-    <Compile Include="Systems\Staff\StaffHandler.cs" />
     <Compile Include="Systems\ThreatLevel\ThreatLevelManager.cs" />
     <Compile Include="Systems\Utilities\API.cs" />
     <Compile Include="Systems\Utilities\UtilitiesHandler.cs" />

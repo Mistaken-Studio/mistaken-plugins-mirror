@@ -1,19 +1,13 @@
 ﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
@@ -170,12 +164,12 @@ namespace Gamer.Mistaken.Systems.Misc
                     var door = item as BreakableDoor;
                     if (door == null)
                         continue;
-                    if((door._ignoredDamageSources & DoorDamageType.Weapon) == (DoorDamageType)0)
+                    if ((door._ignoredDamageSources & DoorDamageType.Weapon) == (DoorDamageType)0)
                         RegisterDoors(door, item.transform);
                 }
                 Log.Debug("[DOOR] Registered Doors");
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Error("[DOOR] Failed to set door health");
                 Log.Error(ex.Message);
@@ -195,7 +189,7 @@ namespace Gamer.Mistaken.Systems.Misc
             if (ev.Target == null)
             {
                 var citem = Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Shooter.CurrentItem);
-                if(citem != null)
+                if (citem != null)
                     return;
                 var colliders = UnityEngine.Physics.OverlapSphere(ev.Position, 0.1f);
                 if (colliders == null)

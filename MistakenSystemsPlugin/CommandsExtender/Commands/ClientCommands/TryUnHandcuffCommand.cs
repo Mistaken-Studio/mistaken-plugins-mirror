@@ -1,14 +1,14 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class TryUnHandcuffCommand : IBetterCommand
-    {       
+    {
         public override string Description => "Try your luck";
 
         public override string Command => "try";
@@ -42,7 +42,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 player.EnableEffect<CustomPlayerEffects.Concussed>(30);
                 player.EnableEffect<CustomPlayerEffects.Bleeding>();
                 Player cuffer = RealPlayers.Get(player.CufferId);
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(cuffer, "try", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>!! {player.Nickname} <color=yellow>próbował</color> się rozkuć !!</b>", 10);
+                cuffer.SetGUI("try", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>!! {player.Nickname} <color=yellow>próbował</color> się rozkuć !!</b>", 10);
                 success = true;
                 return new string[] { "Nie udało ci się" };
             }

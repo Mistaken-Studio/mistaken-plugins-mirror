@@ -1,18 +1,10 @@
-﻿
-using Mirror;
-
-
-
-using System.Linq;
-using UnityEngine;
-
-using System.Collections.Generic;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using CommandSystem;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class WeaponCustomAmmoCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class WeaponCustomAmmoCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "wca";

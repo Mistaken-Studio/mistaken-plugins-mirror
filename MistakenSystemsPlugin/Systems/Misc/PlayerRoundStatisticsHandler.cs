@@ -1,20 +1,11 @@
 ﻿#pragma warning disable IDE0079
 #pragma warning disable IDE0060
 
-using Exiled.API.Enums;
 using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
-using Exiled.API.Extensions;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
@@ -49,7 +40,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            if(ev.Target.IsReadyPlayer())
+            if (ev.Target.IsReadyPlayer())
                 DisplayStats(ev.Target);
         }
 
@@ -72,7 +63,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     tk_deaths -= oldStats.TkDeaths;
                     escapes -= oldStats.Escapes;
                     scpDmg -= oldStats.DmgToSCP;
-                }    
+                }
                 string message = "";
                 if (kills > 0)
                     message += $"Kills: <color=yellow>{kills}</color><br>";

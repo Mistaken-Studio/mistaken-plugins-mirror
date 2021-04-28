@@ -8,7 +8,8 @@ using System.Collections.Generic;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class GetAttCmd : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class GetAttCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "ga";
 
@@ -24,7 +25,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) => {
+            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            {
                 List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
                 try
                 {

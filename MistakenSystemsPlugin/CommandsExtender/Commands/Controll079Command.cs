@@ -1,16 +1,11 @@
-﻿using Assets._Scripts.Dissonance;
-using CommandSystem;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class Controll079Command : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class Controll079Command : IBetterCommand, IPermissionLocked
     {
         public string Permission => "controll079";
 
@@ -33,7 +28,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             _s = false;
             if (args.Length < 3) return new string[] { GetUsage() };
             if (!byte.TryParse(args[2], out byte value)) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) => {
+            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            {
                 switch (args[1].ToLower())
                 {
                     case "lvl":

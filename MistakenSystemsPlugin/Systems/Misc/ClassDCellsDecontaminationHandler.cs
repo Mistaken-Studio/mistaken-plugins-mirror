@@ -1,18 +1,13 @@
 ﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
+using MEC;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
@@ -58,7 +53,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 yield break;
             int time = UnityEngine.Random.Range(90, 300);
             DecontaminatedIn = time + 40 + 18;
-            while(time > 0)
+            while (time > 0)
             {
                 time--;
                 DecontaminatedIn--;
@@ -97,7 +92,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Cassie.Message("ClassD Chamber DECONTAMINATION Successful", false, Mistaken.PluginHandler.Config.IsHardRP());
             foreach (var item in Map.Doors)
             {
-                if(item.name.Contains("PrisonDoor"))
+                if (item.name.Contains("PrisonDoor"))
                 {
                     item.NetworkTargetState = false;
                     item.NetworkActiveLocks = (byte)DoorLockReason.AdminCommand;
@@ -133,7 +128,7 @@ namespace Gamer.Mistaken.Systems.Misc
             "SP_DCP (5)",
             "SP_DCP (6)",
         };
-    
+
         private static void InformOnlyInLCZ(string message)
         {
             foreach (var player in RealPlayers.List.Where(p => p.CurrentRoom?.Zone == ZoneType.LightContainment))
@@ -142,7 +137,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     player.PlayCassieAnnouncement(message);
                 }
-                catch(System.Exception ex) 
+                catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);

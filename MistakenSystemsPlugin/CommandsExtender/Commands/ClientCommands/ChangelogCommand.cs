@@ -1,7 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using MEC;
 using Octokit;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class ChangelogCommand : IBetterCommand
-    {       
+    {
         public override string Description => "ChangeLog";
 
         public override string Command => "changelog";
@@ -48,7 +47,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         Since = curRelease.PublishedAt,
                         Until = prevRelease.PublishedAt
                     });
-                    if(prevRelease.TagName.Split('-')[0] != curRelease.TagName.Split('-')[0]) 
+                    if (prevRelease.TagName.Split('-')[0] != curRelease.TagName.Split('-')[0])
                         tor.Add($"{tag}:");
                     foreach (var commit in commits)
                     {
@@ -71,7 +70,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     tor.Add($"- {commit.Commit.Message}");
                 }
             }
-            
+
             player.SendConsoleMessage(string.Join("\n", tor), "green");
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(tor);
         }

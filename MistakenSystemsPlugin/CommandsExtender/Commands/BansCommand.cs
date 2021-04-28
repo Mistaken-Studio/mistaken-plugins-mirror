@@ -1,16 +1,13 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class BansCommand : IBetterCommand, IPermissionLocked
     {
         public string GetUsage()
@@ -98,7 +95,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 }
                 if (adminUid == "@steam")
                     adminUid = "Unknown";
-                var admin = Systems.Staff.StaffHandler.Staff.FirstOrDefault(_item => _item.steamid + "@steam" == adminUid || _item.discordid + "@discord" == adminUid);
+                var admin = Base.Staff.StaffHandler.Staff.FirstOrDefault(_item => _item.steamid + "@steam" == adminUid || _item.discordid + "@discord" == adminUid);
                 if (admin != null)
                     adminUid = $"{admin.nick} ({adminUid})";
                 message += $"\n<color=blue>#{i}|{adminUid}|<color=red>{fulldur}</color>|{item.Time}|Reason:</color>";
@@ -138,10 +135,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     success = true;
                     return new string[] { "Done" };
                 }
-                else 
+                else
                     return new string[] { "Player not found" };
             }
-            else 
+            else
                 return new string[] { GetUsage() };
         }
     }

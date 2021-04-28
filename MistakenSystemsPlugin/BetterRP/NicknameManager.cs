@@ -1,9 +1,5 @@
 ﻿using Exiled.API.Features;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gamer.Mistaken.BetterRP
 {
@@ -126,7 +122,7 @@ namespace Gamer.Mistaken.BetterRP
 
         private static string _generateNickname(RoleType role, string unit = "", string subTeam = "")
         {
-            switch(role)
+            switch (role)
             {
                 case RoleType.ClassD:
                     return UnityEngine.Random.Range(1000, 9999).ToString();
@@ -160,7 +156,7 @@ namespace Gamer.Mistaken.BetterRP
                         break;
                     }
                     result = _generateNickname(role, unit, subTeam);
-                    i++;   
+                    i++;
                 }
 
                 UsedNames.Add(result);
@@ -184,8 +180,8 @@ namespace Gamer.Mistaken.BetterRP
                 case RoleType.Spectator:
                 default:
                     return "default";
-                //default:
-                //    return $"{role.ToString().Replace("_", "-").ToUpper()}";
+                    //default:
+                    //    return $"{role.ToString().Replace("_", "-").ToUpper()}";
             }
         }
     }

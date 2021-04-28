@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
@@ -21,8 +20,8 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
         public static void Execute(Player p, Interactables.Interobjects.DoorUtils.DoorVariant d, List<DoorLog> data)
         {
             Active.Remove(p.Id);
-            string toWrite = "DoorLog for door " + (d.name == "" ? "without name" : d.name)+ " | " + d.Type();
-            if(data != null)
+            string toWrite = "DoorLog for door " + (d.name == "" ? "without name" : d.name) + " | " + d.Type();
+            if (data != null)
             {
                 foreach (var item in data)
                 {
@@ -30,7 +29,7 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
                 }
             }
 
-            p.Broadcast("DoorLog" ,5, "Printed in console (~)",  Broadcast.BroadcastFlags.AdminChat);
+            p.Broadcast("DoorLog", 5, "Printed in console (~)", Broadcast.BroadcastFlags.AdminChat);
             Systems.Patches.RAPatch.LogCommand(p.Sender, $"dlog {(d.Type().ToString() == "" ? "NO_NAME" : d.Type().ToString())} {d.transform.position}", toWrite);
             p.SendConsoleMessage(toWrite, "green");
         }

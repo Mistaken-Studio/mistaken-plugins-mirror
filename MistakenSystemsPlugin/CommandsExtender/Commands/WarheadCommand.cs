@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
-using Gamer.Utilities;
 using Gamer.Mistaken.Systems.Misc;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class WarheadCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "basic";
@@ -26,7 +24,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (args.Length == 0)
                 return new string[] { GetUsage() };
             var admin = sender.GetPlayer();
-            
+
             switch (args[0])
             {
                 case "start":

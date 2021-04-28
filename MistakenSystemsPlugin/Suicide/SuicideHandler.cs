@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using MEC;
-using UnityEngine;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.CustomItems;
+using Gamer.Utilities;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Suicide
 {

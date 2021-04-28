@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Utilities.APILib;
 using Gamer.Utilities;
+using System;
+using System.Linq;
+using System.Net;
 
 namespace Gamer.Mistaken.Logger
 {
@@ -31,9 +29,9 @@ namespace Gamer.Mistaken.Logger
 
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {
-            if (string.IsNullOrWhiteSpace(ev.Name)) 
+            if (string.IsNullOrWhiteSpace(ev.Name))
                 return;
-            if(ev.Name.StartsWith("@"))
+            if (ev.Name.StartsWith("@"))
             {
                 SendCommand("AdminChat", ev.Name.Substring(1) + string.Join(" ", ev.Arguments), ev, "0");
                 return;
@@ -83,7 +81,7 @@ namespace Gamer.Mistaken.Logger
                             SendCommand(ev.Name.ToLower(), "", ev, "0");
                         else
                         {
-                            if(ev.Arguments[0].Split('.').Length > 2)
+                            if (ev.Arguments[0].Split('.').Length > 2)
                             {
                                 Player player = RealPlayers.Get(ev.Arguments[0].Split('.')[0]);
                                 SendCommand(ev.Name.ToLower(), ev.Arguments[0], ev, player?.UserId);
@@ -244,7 +242,7 @@ namespace Gamer.Mistaken.Logger
 
         public static void SendCommand(string command, string arg, Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev, string userId)
         {
-            if (ev.Sender == null) 
+            if (ev.Sender == null)
                 return;
             if (arg.Contains("&"))
                 arg.Replace("&", "");
@@ -274,11 +272,11 @@ namespace Gamer.Mistaken.Logger
             if (command.Contains("?"))
                 command.Replace("?", "");
 
-            if (!Utilities.APILib.API.GetUrl(APIType.SEND_LOGS, out string url, command, "RemoteCommand", userId, AdminUId, ServerConsole.Ip, Server.Port.ToString())) 
+            if (!Utilities.APILib.API.GetUrl(APIType.SEND_LOGS, out string url, command, "RemoteCommand", userId, AdminUId, ServerConsole.Ip, Server.Port.ToString()))
                 return;
             using (var client = new WebClient())
             {
-                if(url.Contains("#"))
+                if (url.Contains("#"))
                     url = url.Replace("#", "");
                 //Log.Debug(url);
                 client.DownloadStringAsync(new Uri(url));

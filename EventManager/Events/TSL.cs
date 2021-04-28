@@ -1,22 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gamer.EventManager.EventCreator;
-using UnityEngine;
-using MEC;
-using RemoteAdmin;
-using System.Security.Policy;
-using Microsoft.Win32;
-using Gamer.Utilities;
-using CommandSystem;
-using Exiled.API.Features;
+﻿using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.EventManager;
-using Grenades;
-using Mirror;
+using Gamer.EventManager.EventCreator;
+using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
+using MEC;
+using Mirror;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace EventManager.Events
 {
@@ -765,7 +759,7 @@ namespace EventManager.Events
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor.Add(sender.Id, "harmor");
                         return "You have bought Harmor";
                     }
-                case"LOCKDOWN":
+                case "LOCKDOWN":
                     return (Gamer.EventManager.EventManager.ActiveEvent as TSL).TraitorEventsManager(sender, "LOCKDOWN");
                 case "BLACKOUT":
                     return (Gamer.EventManager.EventManager.ActiveEvent as TSL).TraitorEventsManager(sender, "BLACKOUT");

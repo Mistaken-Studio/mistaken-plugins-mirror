@@ -1,13 +1,11 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class OverchargeCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class OverchargeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "overcharge";
 

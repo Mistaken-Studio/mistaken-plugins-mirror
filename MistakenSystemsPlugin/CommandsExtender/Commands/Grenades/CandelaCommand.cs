@@ -1,21 +1,20 @@
-﻿using Grenades;
+﻿using CommandSystem;
+using Exiled.API.Features;
+using Gamer.Utilities;
+using Grenades;
 using MEC;
 using Mirror;
-
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 //
 
 
 using System.Linq;
-using Gamer.Utilities;
-using CommandSystem;
-using Exiled.API.Features;
+using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class CandelaCmd : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class CandelaCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "canadel";
 
@@ -72,9 +71,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             GrenadeSettings settings = grenadeManager.availableGrenades[1];
 
             Grenade originalComponent = UnityEngine.Object.Instantiate<GameObject>(settings.grenadeInstance).GetComponent<Grenade>();
-            if (throwIt) 
+            if (throwIt)
                 originalComponent.InitData(grenadeManager, Vector3.zero, Player.Get(grenadeManager.gameObject).ReferenceHub.PlayerCameraReference.forward);
-            else 
+            else
                 originalComponent.InitData(grenadeManager, Vector3.zero, Vector3.down);
             NetworkServer.Spawn(originalComponent.gameObject);
             yield return Timing.WaitForSeconds(2);

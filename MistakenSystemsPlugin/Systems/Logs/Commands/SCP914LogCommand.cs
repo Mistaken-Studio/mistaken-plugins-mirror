@@ -1,13 +1,11 @@
-﻿using Mirror;
-using UnityEngine;
+﻿using CommandSystem;
+using Gamer.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using Gamer.Utilities;
-using CommandSystem;
 
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class SCP914LogCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "scp914log";

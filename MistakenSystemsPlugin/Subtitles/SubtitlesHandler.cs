@@ -2,20 +2,11 @@
 #pragma warning disable IDE0042
 #pragma warning disable IDE0060
 
-using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using Gamer.Diagnostics;
-using MistakenSocket.Shared.API;
-using MistakenSocket.Shared;
-using Gamer.Mistaken.Systems.Staff;
-using MEC;
-using Gamer.Mistaken.Systems.GUI;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Utilities;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Subtitles
 {
@@ -47,7 +38,7 @@ namespace Gamer.Mistaken.Subtitles
             if ((Systems.Handler.PlayerPreferencesDict[player.UserId] & API.PlayerPreferences.DISABLE_TRANSCRYPT) != API.PlayerPreferences.NONE)
                 return;
             if (CassiePatch.Messages.Count == 0)
-                Base.GUI.PseudoGUIHandler.Set(player, "subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                player.SetGUI("subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             else
             {
                 string tmp = CassiePatch.Messages.Peek();
@@ -59,10 +50,10 @@ namespace Gamer.Mistaken.Subtitles
                     tmp2[CassiePatch2.Index] = $"<color=yellow>{tmp2[CassiePatch2.Index]}</color>";
                     tmp = string.Join(" ", tmp2);
                 }
-                if(tmp.Trim().Length == 0)
-                    Base.GUI.PseudoGUIHandler.Set(player, "subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                if (tmp.Trim().Length == 0)
+                    player.SetGUI("subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 else
-                    Base.GUI.PseudoGUIHandler.Set(player, "subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
+                    player.SetGUI("subtitles", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=66%><color=yellow>Transkrypt</color>: {tmp}</size><br><br>");
             }
         }
 

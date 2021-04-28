@@ -1,15 +1,12 @@
-﻿using Grenades;
-using Mirror;
-
-using UnityEngine;
-
-
-using Gamer.Utilities;
+﻿
 using CommandSystem;
+using Gamer.Utilities;
+using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class SetSizeCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class SetSizeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "setsize";
 

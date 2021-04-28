@@ -1,19 +1,20 @@
-﻿using Exiled.API.Enums;
-using Interactables.Interobjects;
+﻿using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using MapGeneration;
 using Mirror;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Utilities
 {
+    /// <summary>
+    /// Door Utils
+    /// </summary>
     public static class DoorUtils
     {
+        /// <summary>
+        /// Calls Ini
+        /// </summary>
         public static void Ini()
         {
             Prefabs.Clear();
@@ -34,16 +35,24 @@ namespace Gamer.Utilities
             }
         }
 
-        public static readonly Dictionary<DoorType, DoorVariant> Prefabs = new Dictionary<DoorType, DoorVariant>();
+        private static readonly Dictionary<DoorType, DoorVariant> Prefabs = new Dictionary<DoorType, DoorVariant>();
 
+        /// <summary>
+        /// Door Type
+        /// </summary>
         public enum DoorType
         {
+#pragma warning disable CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
             EZ_BREAKABLE,
             HCZ_BREAKABLE,
             LCZ_BREAKABLE,
-            AIRLOCK,
-            CHECKPOINT,
+#pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }
+        /// <summary>
+        /// Returns door prefab
+        /// </summary>
+        /// <param name="type">Door Type</param>
+        /// <returns>Prefab</returns>
         public static DoorVariant GetPrefab(DoorType type)
         {
             switch (type)
@@ -56,25 +65,25 @@ namespace Gamer.Utilities
                     return null;
             }
         }
-
-        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation) => 
-            SpawnDoor(type, name, position, Quaternion.Euler(rotation));
-        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Quaternion rotation)
+        /// <summary>
+        /// Spawns Door
+        /// </summary>
+        /// <param name="type">Door Type</param>
+        /// <param name="name">Door name or <see langword="null"/> if there should be no name</param>
+        /// <param name="position">Door Position, if <see cref="Vector3.y"/> is smaller than 900 then door are automaticly locked to prevent crash</param>
+        /// <param name="rotation">Door Rotation</param>
+        /// <returns></returns>
+        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation)
         {
-            if(type == DoorType.AIRLOCK || type == DoorType.CHECKPOINT)
-            {
-                return null;
-            }
-            else
-            {
-                DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, rotation);
-                if (doorVariant is BasicDoor door)
-                    door._portalCode = 1;
-                if (!string.IsNullOrEmpty(name))
-                    doorVariant.gameObject.AddComponent<DoorNametagExtension>().UpdateName(name);
-                NetworkServer.Spawn(doorVariant.gameObject);
-                return doorVariant;
-            }
+            DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, Quaternion.Euler(rotation));
+            if (doorVariant is BasicDoor door)
+                door._portalCode = 1;
+            if (!string.IsNullOrEmpty(name))
+                doorVariant.gameObject.AddComponent<DoorNametagExtension>().UpdateName(name);
+            if (position.y < 900)
+                doorVariant.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            NetworkServer.Spawn(doorVariant.gameObject);
+            return doorVariant;
         }
     }
 }

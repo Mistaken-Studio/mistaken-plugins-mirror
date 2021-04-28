@@ -1,17 +1,5 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
+﻿using Gamer.Diagnostics;
 using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -35,7 +23,8 @@ namespace Gamer.Mistaken.Systems.End
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null) return;
-            MEC.Timing.CallDelayed(5, () => {
+            MEC.Timing.CallDelayed(5, () =>
+            {
                 if (ev.Player.Team == Team.SCP || ev.Player.Team == Team.TUT || ev.Player.Team == Team.RIP)
                 {
                     ev.Player.Scale = Vector3.one;

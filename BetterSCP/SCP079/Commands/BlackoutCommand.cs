@@ -2,10 +2,6 @@
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
@@ -27,7 +23,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
         public static float Cooldown => PluginHandler.Config.cooldownBlackout;
         public static float Cost => PluginHandler.Config.apcostBlackout;
         public static float ReqLvl => PluginHandler.Config.requiedlvlBlackout;
-        
+
         public static bool IsReady => Lastuse.Ticks <= DateTime.Now.Ticks;
         public static long TimeLeft => Lastuse.Ticks - DateTime.Now.Ticks;
 
@@ -67,7 +63,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                             }
                             else
                             {
-                                return new string[] { SCP079Handler.Translations.trans_failed_ap.Replace("${ap}", ToDrain.ToString())};
+                                return new string[] { SCP079Handler.Translations.trans_failed_ap.Replace("${ap}", ToDrain.ToString()) };
                             }
                         }
                         else

@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Interactables.Interobjects.DoorUtils;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Features;
-using UnityEngine;
-using Interactables.Interobjects.DoorUtils;
-using Exiled.API.Extensions;
-using Exiled.API.Enums;
 
 namespace Gamer.EventManager.Events
 {
     internal class WarheadRun :
-        EventCreator.IEMEventClass, 
+        EventCreator.IEMEventClass,
         EventCreator.IEndOnNoAlive,
         EventCreator.IWinOnEscape,
         EventCreator.InternalEvent

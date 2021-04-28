@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using MEC;
 using Mirror;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP914
@@ -37,7 +34,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
 
         private void Scp914_ChangingKnobSetting(Exiled.Events.EventArgs.ChangingKnobSettingEventArgs ev)
         {
-            switch(ev.KnobSetting)
+            switch (ev.KnobSetting)
             {
                 case Scp914.Scp914Knob.Rough:
                     Log(ev.Player, Systems.Logs.SCP914Action.CHANGE_ROUGH);
@@ -76,7 +73,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
                                     ATK.AntyTeamKillHandler.TeamKill.Create(new Exiled.Events.EventArgs.DyingEventArgs(Last914User, player, hitInfo), null);
                                 if (player.UserId == Last914User.UserId && player.Role == RoleType.Scp0492)
                                     MapPlus.Broadcast("Better 914", 10, $"{Last914User.Nickname} has commited suicide in 914 as Zombie", Broadcast.BroadcastFlags.AdminChat);
-                            }   
+                            }
                             ps.HurtPlayer(hitInfo, player.GameObject);
                             Log(player, Systems.Logs.SCP914Action.HURT_ROUGH);
                             break;
@@ -116,7 +113,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
                             if (player.Team == Team.SCP)
                                 return;
                             var num = UnityEngine.Random.Range(-10, 5);
-                            if(num == 1)
+                            if (num == 1)
                                 Log(player, Systems.Logs.SCP914Action.RECIVE_SCP207_1);
                             else if (num == 2)
                                 Log(player, Systems.Logs.SCP914Action.RECIVE_SCP207_2);
@@ -152,7 +149,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
             Log(ev.Player, Systems.Logs.SCP914Action.ACTIVATE);
         }
 
-        private new void Log(Player p, Systems.Logs.SCP914Action type) 
+        private new void Log(Player p, Systems.Logs.SCP914Action type)
         {
             if (!Systems.Logs.LogManager.SCP914Logs.ContainsKey(RoundPlus.RoundId))
                 Systems.Logs.LogManager.SCP914Logs.Add(RoundPlus.RoundId, new List<Systems.Logs.SCP914Log>());

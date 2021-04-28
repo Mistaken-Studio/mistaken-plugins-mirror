@@ -1,13 +1,9 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 namespace Xname.ColorfullEZ
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class EZColorsCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "colors";

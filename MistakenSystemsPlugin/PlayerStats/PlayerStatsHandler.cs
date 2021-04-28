@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
+﻿using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
-using Gamer.Utilities;
 using Gamer.Mistaken.Utilities.APILib;
-using MEC;
+using Gamer.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 
 namespace Gamer.Mistaken.PStats
 {
     public class PlayerStatsHandler : Diagnostics.Module
     {
-        public override bool IsBasic => true; 
+        public override bool IsBasic => true;
         public static readonly Dictionary<string, PlayerStats> Stats = new Dictionary<string, PlayerStats>();
 
         public override string Name => nameof(PlayerStatsHandler);
@@ -148,9 +142,9 @@ namespace Gamer.Mistaken.PStats
                         }
                         else
                         {
-                            if (stat.Leavetime == null) 
+                            if (stat.Leavetime == null)
                                 stat.Leavetime = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                            SendStats(stat.UserId, stat.Kills, stat.Deaths, (Int32)(stat.Leavetime - stat.Jointime), stat.Tk_kills, stat.Tk_deaths, stat.Escapes); 
+                            SendStats(stat.UserId, stat.Kills, stat.Deaths, (Int32)(stat.Leavetime - stat.Jointime), stat.Tk_kills, stat.Tk_deaths, stat.Escapes);
                         }
                     }
                     catch (Exception e)
@@ -229,15 +223,15 @@ namespace Gamer.Mistaken.PStats
                             Stats[ev.Target.UserId].Tk_deaths++;
                     }
                 }
-                catch 
-                { 
-                    Log.Error("Error"); 
+                catch
+                {
+                    Log.Error("Error");
                 }
             }
             if (ev.HitInformation.GetDamageType() == DamageTypes.Pocket || ev.Target.Position.y < -1800)
             {
                 foreach (var player in RealPlayers.Get(RoleType.Scp106))
-                    if(Stats.ContainsKey(player.UserId)) Stats[player.UserId].Kills++;
+                    if (Stats.ContainsKey(player.UserId)) Stats[player.UserId].Kills++;
             }
 
             Log.Debug($"{ev.Target.Nickname} ({ev.Target.Role}) was killed by {ev.Killer?.Nickname ?? "WORLD"} ({ev.Killer?.Role.ToString() ?? "WORLD"}) using {ev.HitInformation.GetDamageName()}");
@@ -272,7 +266,7 @@ namespace Gamer.Mistaken.PStats
             }
             using (var client = new WebClient())
             {
-                if (!Utilities.APILib.API.GetUrl(APIType.SEND_STATS, out string url, userid, ((byte)PluginHandler.Config.RankingType).ToString(), (kills - tk_kills).ToString(), (deaths - tk_deaths).ToString(), time.ToString(), tk_kills.ToString(), tk_deaths.ToString(), escapes.ToString())) 
+                if (!Utilities.APILib.API.GetUrl(APIType.SEND_STATS, out string url, userid, ((byte)PluginHandler.Config.RankingType).ToString(), (kills - tk_kills).ToString(), (deaths - tk_deaths).ToString(), time.ToString(), tk_kills.ToString(), tk_deaths.ToString(), escapes.ToString()))
                     return;
                 //Log.Debug(url);
                 client.DownloadStringAsync(new Uri(url));
@@ -282,7 +276,7 @@ namespace Gamer.Mistaken.PStats
 
         public void Forget(string userId)
         {
-            if (!Utilities.APILib.API.GetUrl(APIType.FORGET, out string url, userId)) 
+            if (!Utilities.APILib.API.GetUrl(APIType.FORGET, out string url, userId))
                 return;
             using (var client = new WebClient())
             {

@@ -1,16 +1,12 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
+using Gamer.Diagnostics;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
 using Mirror;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
-using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -44,7 +40,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            if((DateTime.Now.Day == 31 && DateTime.Now.Month == 12 && DateTime.Now.Hour >= 20) || (DateTime.Now.Day == 1 && DateTime.Now.Month == 1 && DateTime.Now.Hour < 2))
+            if ((DateTime.Now.Day == 31 && DateTime.Now.Month == 12 && DateTime.Now.Hour >= 20) || (DateTime.Now.Day == 1 && DateTime.Now.Month == 1 && DateTime.Now.Hour < 2))
                 Timing.RunCoroutine(Loop());
         }
         private static readonly HashSet<GameObject> Grenades = new HashSet<GameObject>();

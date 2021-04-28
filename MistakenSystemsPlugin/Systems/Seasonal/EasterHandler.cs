@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Diagnostics;
-using Gamer.Utilities;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Seasonal
@@ -66,7 +66,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
         public static readonly Dictionary<Pickup, Egg> Eggs = new Dictionary<Pickup, Egg>();
         public static readonly Dictionary<byte, HashSet<string>> AlreadyFound = new Dictionary<byte, HashSet<string>>();
 
-        private static readonly DateTime EnableDate =  new DateTime(2021, 4, 1);
+        private static readonly DateTime EnableDate = new DateTime(2021, 4, 1);
         private static readonly DateTime DisableDate = new DateTime(2021, 4, 7);
         private bool active = false;
         private void Server_WaitingForPlayers()
@@ -82,7 +82,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
                 if (!active)
                     return;
             }
-            
+
             foreach (var egg in EggsList)
                 egg.Spawn();
         }
@@ -114,7 +114,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
                 offset = room.transform.forward * -offset.x + room.transform.right * -offset.z + Vector3.up * offset.y;
                 basePos += offset;
                 GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-                
+
                 gameObject.transform.localScale = Size;
                 MEC.Timing.CallDelayed(2, () =>
                 {
@@ -129,16 +129,16 @@ namespace Gamer.Mistaken.Systems.Seasonal
             public void OnPickup(Player player)
             {
                 if (AlreadyFound[this.Id].Contains(player.UserId))
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
+                    player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
                 else
                 {
                     foreach (var line in File.ReadAllLines(MyPath))
                         AlreadyFound[this.Id].Add(line);
                     if (AlreadyFound[this.Id].Contains(player.UserId))
-                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
+                        player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
                     else
                     {
-                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Brawo, znalazłeś <color=yellow>jajko({this.Id})</color>", 5);
+                        player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Brawo, znalazłeś <color=yellow>jajko({this.Id})</color>", 5);
                         EVO.Handler.AddProgress(2000, player.UserId);
                         File.AppendAllText(MyPath, $"{player.UserId}\n");
                     }

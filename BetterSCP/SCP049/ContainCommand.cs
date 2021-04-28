@@ -1,12 +1,11 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
@@ -24,16 +23,16 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
         {
             var player = sender.GetPlayer();
             success = false;
-            if(!Mistaken.PluginHandler.Config.IsRP())
+            if (!Mistaken.PluginHandler.Config.IsRP())
                 return new string[] { "You can only use this command on RP servers" };
-            if (player.Side != Exiled.API.Enums.Side.Mtf && player.Role != RoleType.ChaosInsurgency) 
+            if (player.Side != Exiled.API.Enums.Side.Mtf && player.Role != RoleType.ChaosInsurgency)
                 return new string[] { "Only Foundation Personnel(MTF, Guards, Sciencists) can use this command" };
-            if (player.Position.y < -800 || player.Position.y > -700) 
+            if (player.Position.y < -800 || player.Position.y > -700)
                 return new string[] { "You have to be in SCP-049 containment chamber" };
             var scps = RealPlayers.List.Where(p => p.Role == RoleType.Scp049 && (player.Position.y < -700 && player.Position.y > -800));
             if (scps.Count() == 0)
                 return new string[] { "There is no SCP-049 in SCP-049 containment chamber" };
-            if(AlreadyRunning)
+            if (AlreadyRunning)
                 return new string[] { "SCP-049 is already in recontainment process" };
             AlreadyRunning = true;
             foreach (var scp049 in scps)
@@ -43,33 +42,33 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
 
         private IEnumerator<float> ExecuteRecontainment(Player scp049, Player recontainer)
         {
-            Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>5</color>s", 5);
+            scp049.SetGUI("contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>5</color>s", 5);
             yield return Timing.WaitForSeconds(1);
             Vector3 pos = scp049.Position;
             for (int i = 4; i >= 0; i--)
             {
                 if (!scp049.IsConnected)
                     continue;
-                if(pos != scp049.Position)
+                if (pos != scp049.Position)
                 {
-                    Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color>", 5);
-                    Base.GUI.PseudoGUIHandler.Set(recontainer, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color><br>SCP-049 <color=yellow>moved</color>", 5);
+                    scp049.SetGUI("contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color>", 5);
+                    recontainer.SetGUI("contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment canceled</size></color><br>SCP-049 <color=yellow>moved</color>", 5);
                     AlreadyRunning = false;
                     yield break;
                 }
-                Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>{i}</color>s");
+                scp049.SetGUI("contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>You are being recontained</size></color><br>Stand still for <color=yellow>{i}</color>s");
                 yield return Timing.WaitForSeconds(1);
             }
             AlreadyRunning = false;
             Vector3 oldPos = scp049.Position;
             scp049.SetRole(recontainer.Role == RoleType.ChaosInsurgency ? RoleType.ChaosInsurgency : RoleType.NtfScientist, true);
-            Base.GUI.PseudoGUIHandler.Set(scp049, "contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment successfull</size></color>", 5);
+            scp049.SetGUI("contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment successfull</size></color>", 5);
             string recontainerName;
             if (recontainer.Role == RoleType.ChaosInsurgency)
                 recontainerName = "CHAOS INSURGENCY";
             else if (recontainer.Role == RoleType.Scientist)
                 recontainerName = "SCIENCE PERSONNEL";
-            else 
+            else
             {
                 string unit = recontainer.ReferenceHub.characterClassManager.CurUnitName;
                 if (unit.StartsWith("<color="))

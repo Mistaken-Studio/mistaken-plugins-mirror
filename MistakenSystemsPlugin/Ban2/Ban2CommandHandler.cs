@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
 using MEC;
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Mistaken.Ban2
 {
@@ -116,7 +113,7 @@ namespace Gamer.Mistaken.Ban2
             }
 
             textTime = $"BAN: {dur} {type}";
-            if (dur == 0) 
+            if (dur == 0)
                 textTime = "KICK";
             else if (dur != 1)
                 textTime += "s";
@@ -136,7 +133,7 @@ namespace Gamer.Mistaken.Ban2
                     if (target == null)
                         return new string[] { "Player not found" };
 
-                    if(Sender.IsPlayer())
+                    if (Sender.IsPlayer())
                     {
                         var Admin = Sender.GetPlayer();
 
@@ -161,7 +158,7 @@ namespace Gamer.Mistaken.Ban2
                     var suggestedLength = Systems.Bans.BansAnalizer.GuessBanDuration(Systems.Bans.BansManager.GetBans(target.UserId), Systems.Bans.BansAnalizer.GetBanCategory(reason));
                     var durrationCategory = Systems.Bans.BansAnalizer.GetDurationCategory(duration);
                     var suggestedLengthCategory = Systems.Bans.BansAnalizer.GetDurationCategory(suggestedLength);
-                    if (suggestedLengthCategory != durrationCategory) 
+                    if (suggestedLengthCategory != durrationCategory)
                     {
                         requireConfirmation = true;
                         confirmationReason = $"Guessed ban duration is diffrent, {durrationCategory} => {suggestedLengthCategory}";

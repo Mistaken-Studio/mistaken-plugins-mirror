@@ -1,14 +1,11 @@
 ﻿using CommandSystem;
-using Exiled.API.Features;
 using Gamer.Utilities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class HubCommand : IBetterCommand
-    {       
+    {
         public override string Command => "hub";
 
         public string GetUsage()

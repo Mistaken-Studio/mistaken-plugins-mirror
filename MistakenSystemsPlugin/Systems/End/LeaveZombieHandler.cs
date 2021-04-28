@@ -1,15 +1,9 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.End
@@ -40,7 +34,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
-            if(ev.Target.Role == RoleType.Scp0492)
+            if (ev.Target.Role == RoleType.Scp0492)
             {
                 if (ev.HitInformation.GetDamageType() == DamageTypes.Wall)
                     MapPlus.Broadcast("SCP049-2", 10, $"({ev.Target.Id}) {ev.Target.Nickname} was killed by \"WALL\" | Room: {ev.Target.CurrentRoom?.Type.ToString() ?? "Unknown"} | Pos: {ev.Target.Position}", Broadcast.BroadcastFlags.AdminChat);
@@ -96,7 +90,7 @@ namespace Gamer.Mistaken.Systems.End
 
 
         private readonly List<ZombieInfo> ZombiesThatLeft = new List<ZombieInfo>();
-     
+
         private class ZombieInfo
         {
             public string UserId;
@@ -109,6 +103,6 @@ namespace Gamer.Mistaken.Systems.End
                 HP = p.Health;
                 Position = p.Position;
             }
-        } 
+        }
     }
 }

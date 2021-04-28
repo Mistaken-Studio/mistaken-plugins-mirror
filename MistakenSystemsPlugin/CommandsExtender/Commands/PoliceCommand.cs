@@ -2,17 +2,12 @@
 using Exiled.API.Features;
 using Gamer.Utilities;
 using MEC;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class PoliceCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "police";
@@ -57,7 +52,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         private IEnumerator<float> Execute(Player player)
         {
-            while(PoliceMode.TryGetValue(player.UserId, out float time))
+            while (PoliceMode.TryGetValue(player.UserId, out float time))
             {
                 if (player.RankColor != "red")
                     player.RankColor = "red";

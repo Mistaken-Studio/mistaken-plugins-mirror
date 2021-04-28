@@ -1,17 +1,12 @@
 ﻿using CommandSystem;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
-using System.Net;
-using System.Text;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class WarpCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "warp";
@@ -31,7 +26,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 return res;
             else
                 return new string[] { "Player not found" };
-            }
+        }
 
         public string GetUsage()
         {
@@ -112,7 +107,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "checkpoint_lcz_b":
                     {
-                        player.Position = Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.LczChkpB).transform.position + Vector3.up; 
+                        player.Position = Map.Rooms.FirstOrDefault(r => r.Type == Exiled.API.Enums.RoomType.LczChkpB).transform.position + Vector3.up;
                         return new string[] { "Done" };
                     }
                 case "checkpoint_ez":

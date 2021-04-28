@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Mistaken.LOFH
@@ -25,7 +24,7 @@ namespace Gamer.Mistaken.LOFH
         public static string ProccessPress(Player player, int id, int duration, string reason)
         {
             duration /= 60;
-            switch(CurrentMenus[player.Id])
+            switch (CurrentMenus[player.Id])
             {
                 case 10:
                     return Execute(player, $"ban2 {id} {duration} {reason}");
@@ -58,7 +57,7 @@ namespace Gamer.Mistaken.LOFH
         {
             if (!AutoRepeat.ContainsKey(player.Id))
                 AutoRepeat.Add(player.Id, 0);
-            if(!autoRepeat)
+            if (!autoRepeat)
                 AutoRepeat[player.Id] = 0;
             string tor = "Changed Menu";
             if (id < 8000)
@@ -80,7 +79,7 @@ namespace Gamer.Mistaken.LOFH
                         }
                         break;
                     case 13:
-                        if(!ReportSelectedReport.ContainsKey(player.Id) && id < 0)
+                        if (!ReportSelectedReport.ContainsKey(player.Id) && id < 0)
                         {
                             ReportSelectedReport.Add(player.Id, -id);
                             return $"Selected Report: {-id}";
@@ -89,7 +88,7 @@ namespace Gamer.Mistaken.LOFH
                     case 14:
                         return Execute(player, $"talk {rawId}");
                 }
-            }         
+            }
 
             switch (id)
             {
@@ -355,7 +354,7 @@ namespace Gamer.Mistaken.LOFH
             if (!CurrentMenus.TryGetValue(player.Id, out int selected))
                 CurrentMenus.Add(player.Id, 0);
             var menu = GetMenu(selected);
-            if(menu == null)
+            if (menu == null)
             {
                 GeneratePlayerList = false;
                 return $"{Generate("BACK", 8000)}ERROR UNKNOWN CATEGORY\n";
@@ -367,8 +366,8 @@ namespace Gamer.Mistaken.LOFH
                     tor = menu.Get(out GeneratePlayerList);
                     if (!Systems.End.VanishHandler.Vanished.TryGetValue(player.Id, out int vanishLevel))
                         vanishLevel = 0;
-                    if(vanishLevel == 0)
-                        tor = tor.Replace("$v0","green");
+                    if (vanishLevel == 0)
+                        tor = tor.Replace("$v0", "green");
                     else if (vanishLevel == 1)
                         tor = tor.Replace("$v1", "green");
                     else if (vanishLevel == 2)
@@ -390,7 +389,7 @@ namespace Gamer.Mistaken.LOFH
                     if (PlayerLogSelectedRound.TryGetValue(player.Id, out int roundId))
                     {
                         tor = menu.Get(out GeneratePlayerList);
-                        if(!Systems.Logs.LogManager.PlayerLogs.ContainsKey(roundId))
+                        if (!Systems.Logs.LogManager.PlayerLogs.ContainsKey(roundId))
                         {
                             tor = $"(0) ERROR | WRONG ROUND ID\n{Generate("BACK", 8954)}";
                             return tor;
@@ -416,7 +415,7 @@ namespace Gamer.Mistaken.LOFH
                     tor = tor.Replace("$lbutton", Systems.Misc.BetterWarheadHandler.Warhead.ButtonLock ? "green" : "red");
                     tor = tor.Replace("$llever", Systems.Misc.BetterWarheadHandler.Warhead.LeverLock ? "green" : "red");
                     string time = Math.Round(Warhead.DetonationTimer).ToString();
-                    if (time.Length < 3) 
+                    if (time.Length < 3)
                         time = "  " + time;
                     tor = tor.Replace("TIME_LEFT", Warhead.IsDetonated ? "DETONATED" : Warhead.IsInProgress ? $"               {time}" : "      PAUSED");
                     return tor;
@@ -452,7 +451,7 @@ namespace Gamer.Mistaken.LOFH
                         tor = menu.Get(out GeneratePlayerList);
                         foreach (var report in Reports.Take(20))
                             tor += $"<color={AIRS.ReportUpdateEventHandler.GetColorByStatus(report.Status)}>[#{report.Report.Type}]<size=1><color=#00000000>(-{report.Report.ReportId})</color></size>{report.Report.ReportedName}</color>\n";
-                    }       
+                    }
                     return tor;
             }
             return menu.Get(out GeneratePlayerList);
@@ -504,13 +503,13 @@ namespace Gamer.Mistaken.LOFH
                 AIRS.Handler.Reports = 0;
                 foreach (var item in Reports)
                 {
-                    if(item.Status == ReportStatusType.NONE)
+                    if (item.Status == ReportStatusType.NONE)
                     {
                         AIRS.Handler.Reports++;
                         if (item.Report.Type == SSL.Client.MyType)
                             AIRS.Handler.ReportsOnThisServer++;
                     }
-                    if((item.Status == ReportStatusType.NONE || item.Status == ReportStatusType.PROCCEDING) && item.Report.ReportedData.UserId == null)
+                    if ((item.Status == ReportStatusType.NONE || item.Status == ReportStatusType.PROCCEDING) && item.Report.ReportedData.UserId == null)
                         Reported.Add(item.Report.ReportedData.UserId);
                 }
                 ForceRefreshPlayerList(13);
@@ -519,7 +518,7 @@ namespace Gamer.Mistaken.LOFH
 
         public static void ForceRefreshPlayerList(int menuId) => CurrentMenus.Where(i => i.Value == menuId).ToList().ForEach(p => ForceRefreshPlayerList(RealPlayers.Get(p.Key)));
         private static void ForceRefreshPlayerList(Player p) => LOFHPatch.Prefix("REQUEST_DATA PLAYER_LIST SILENT", p.Sender);
-        
+
         private static string Generate(string name, int id) =>
             $"<color=green>[<color=orange>MENU</color>]<size=1><color=#00000000>({id})</color></size>{name}</color>\n";
 
@@ -560,7 +559,7 @@ namespace Gamer.Mistaken.LOFH
             var classDTime = ClassDCellsDecontaminationHandler.DecontaminatedIn;
             var classDTime_s = classDTime % 60;
             stringBuilder.Append($"\n<color=#00AA00>Class D Decontamination</color>:" + (ClassDCellsDecontaminationHandler.Decontaminated ? "<color=orange>Decontaminated</color>" : $"<color=orange>{(classDTime - classDTime_s) / 60}</color>m <color=orange>{(classDTime_s < 10 ? "0" : "") + classDTime_s}</color>s"));
-            
+
             return stringBuilder.ToString();
         }
 
@@ -572,16 +571,16 @@ namespace Gamer.Mistaken.LOFH
                 (8350, "                 REPORTS"),
                 (8955, "                        BAN"),
                 (8956, "       IMUTE/MUTE"),
-                (8100, "           Commands"), 
+                (8100, "           Commands"),
                 (8200, "                      NPCs"),
                 (8250, "               Warhead"),
                 (8052, "                    Server"),
                 (8051, "  Request Restart")
-            ), 
+            ),
             new Menu(2, "           COMMANDS                 ", false, 1,
-                (8951, "        Get Attacker"), 
-                (8952, "        Last Attacker"), 
-                (8953, "     Player TK Data"), 
+                (8951, "        Get Attacker"),
+                (8952, "        Last Attacker"),
+                (8953, "     Player TK Data"),
                 (8954, "            Player Log"),
                 (8960, "                      TALK"),
                 (8150, "               Overheat"),
@@ -597,14 +596,14 @@ namespace Gamer.Mistaken.LOFH
             ),
             new Menu(3, "           OVERHEAT                 ", false, 2,
                 (8160, "                 CANCEL"),
-                (8151, "            30 Minutes"), 
-                (8152, "            25 Minutes"), 
-                (8153, "            20 Minutes"), 
-                (8154, "            15 Minutes"), 
-                (8155, "            10 Minutes"), 
-                (8156, "            05 Minutes"), 
-                (8157, "            03 Minutes"), 
-                (8158, "            90 Seconds"), 
+                (8151, "            30 Minutes"),
+                (8152, "            25 Minutes"),
+                (8153, "            20 Minutes"),
+                (8154, "            15 Minutes"),
+                (8155, "            10 Minutes"),
+                (8156, "            05 Minutes"),
+                (8157, "            03 Minutes"),
+                (8158, "            90 Seconds"),
                 (8159, "            00 Seconds")
             ),
             new Menu(4, "                 NPCs                      ", false, 1
@@ -666,7 +665,7 @@ namespace Gamer.Mistaken.LOFH
             public string Get(out bool GeneratePlayerList)
             {
                 GeneratePlayerList = this.GeneratePlayerList;
-                if(this.Id == 0)
+                if (this.Id == 0)
                     return $"{Generate("                      MENU", 8000)}{string.Concat(Options.Select(i => Generate(i.Item2, i.Item1)))}";
                 else
                     return $"<color=red>[<color=green><size=1><color=#00000000>({-1})</color></size>{Name}</color>]</color>\n{Generate("                      BACK", 8000)}{string.Concat(Options.Select(i => Generate(i.Item2, i.Item1)))}";

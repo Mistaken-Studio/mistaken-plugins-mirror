@@ -1,16 +1,12 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Systems.End;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.GUI
@@ -72,8 +68,8 @@ namespace Gamer.Mistaken.Systems.GUI
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if(ev.NewRole != RoleType.Spectator)
-                Base.GUI.PseudoGUIHandler.Set(ev.Player, "specInfo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+            if (ev.NewRole != RoleType.Spectator)
+                ev.Player.SetGUI("specInfo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
         }
 
         //private List<Player> SpawnQueue = new List<Player>();
@@ -100,8 +96,8 @@ namespace Gamer.Mistaken.Systems.GUI
             MEC.Timing.CallDelayed(20, () =>
             {
                 RespawnQueueSeed = -1;
-            }); 
-        }      
+            });
+        }
         private void Server_RestartingRound()
         {
             RespawnQueueSeed = -1;
@@ -113,7 +109,8 @@ namespace Gamer.Mistaken.Systems.GUI
 
             Timing.RunCoroutine(TTRUpdate());
             Timing.RunCoroutine(UpdateCache());
-            MEC.Timing.CallDelayed(45, () => {
+            MEC.Timing.CallDelayed(45, () =>
+            {
                 Is106 = RealPlayers.List.Any(p => p.Role == RoleType.Scp106);
             });
         }
@@ -163,7 +160,7 @@ namespace Gamer.Mistaken.Systems.GUI
         private IEnumerator<float> TTRUpdate()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(1);
@@ -262,7 +259,7 @@ namespace Gamer.Mistaken.Systems.GUI
                         else
                             message += ttrPlayer;
                         //player.ShowHint(message, 2);
-                        Base.GUI.PseudoGUIHandler.Set(player, "specInfo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<br><br><br><br><br>" + message);
+                        player.SetGUI("specInfo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<br><br><br><br><br>" + message);
                     }
                     Diagnostics.MasterHandler.LogTime("SpecInfoHandler", "TTRUpdate", start, DateTime.Now);
                 }
@@ -279,9 +276,9 @@ namespace Gamer.Mistaken.Systems.GUI
             //string masterAdminMessage = "";//"[<color=yellow>No warning active</color>]";
             if (Round.IsLocked)
                 masterAdminMessage = "[<color=yellow>ROUND LOCK <b>ACTIVE</b></color>]";
-            else if(Utilities.API.Map.RespawnLock)
+            else if (Utilities.API.Map.RespawnLock)
                 masterAdminMessage = "[<color=yellow>RESPAWN LOCK <b>ACTIVE</b></color>]";
-            else if(RealPlayers.List.Count() < 4)
+            else if (RealPlayers.List.Count() < 4)
                 masterAdminMessage = "[<color=yellow>LESS THAN 4 PLAYERS | <b>NOT SAVING</b> ACTIVITY</color>]";
 
             var systemTimeString = plugin.ReadTranslation("time_info", DateTime.Now.ToString("HH:mm:ss").Replace(":", "</color>:<color=yellow>"));
@@ -292,7 +289,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 lczString = plugin.ReadTranslation("lcz_info_decontcaminated");
             if (Warhead.IsInProgress)
                 lczString = plugin.ReadTranslation("warhead_info", Warhead.DetonationTimer.ToString("00"));
-            if(Warhead.IsDetonated)
+            if (Warhead.IsDetonated)
                 lczString = plugin.ReadTranslation("lcz_info_decontcaminated");
             var roundTimeString = plugin.ReadTranslation("round_info", Round.ElapsedTime.Minutes.ToString("00"), Round.ElapsedTime.Seconds.ToString("00"));
             var repsawnString = plugin.ReadTranslation("respawn_info", ((ttr - (ttr % 60)) / 60).ToString("00"), (ttr % 60).ToString("00"));

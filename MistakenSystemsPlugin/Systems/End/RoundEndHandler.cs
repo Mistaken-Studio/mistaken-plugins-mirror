@@ -1,17 +1,8 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using Gamer.Utilities;
-
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
+using System.Linq;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -33,7 +24,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_EndingRound(Exiled.Events.EventArgs.EndingRoundEventArgs ev)
         {
-            if (!ev.IsRoundEnded) 
+            if (!ev.IsRoundEnded)
                 return;
             bool CanClassCIWin = true;
             bool CanClassMTFWin = true;

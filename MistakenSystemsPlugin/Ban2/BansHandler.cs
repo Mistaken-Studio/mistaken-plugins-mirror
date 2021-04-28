@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
-using Gamer.Utilities;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Mistaken.Utilities.APILib;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Utilities;
+using System;
+using System.Net;
 
 namespace Gamer.Mistaken.Ban2
 {
@@ -114,14 +108,14 @@ namespace Gamer.Mistaken.Ban2
             }
             else
                 MapPlus.Broadcast("BAN", 10, $"({ev.Target.Id}) {ev.Target.Nickname} has been banned for \"{reason}\" for {textDuration} by ({ev.Issuer.Id}) {ev.Issuer.Nickname}", Broadcast.BroadcastFlags.AdminChat);
-                
-            
+
+
             SendBans(reason, ev);
         }
         public void SendBans(string reason, BanningEventArgs ev)
         {
             string adminUid = ev.Issuer?.UserId ?? "0";
-            if (!Utilities.APILib.API.GetUrl(APIType.SEND_BAN, out string url, ev.Target.UserId, adminUid, reason, (ev.Duration).ToString(), ServerConsole.Ip, Server.Port.ToString())) 
+            if (!Utilities.APILib.API.GetUrl(APIType.SEND_BAN, out string url, ev.Target.UserId, adminUid, reason, (ev.Duration).ToString(), ServerConsole.Ip, Server.Port.ToString()))
                 return;
             using (var client = new WebClient())
             {

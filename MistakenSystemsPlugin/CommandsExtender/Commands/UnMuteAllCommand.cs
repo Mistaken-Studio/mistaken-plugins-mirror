@@ -1,12 +1,12 @@
 ﻿using CommandSystem;
-using Exiled.API.Features;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class UnMuteAllCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class UnMuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "muteall";
 
@@ -30,7 +30,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 {
                     var player = RealPlayers.List.First(p => p.UserId == uId);
                     player.IsMuted = false;
-                    Base.GUI.PseudoGUIHandler.Set(player, "globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone was unmuted", 5);
+                    player.SetGUI("globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone was unmuted", 5);
                     MuteAllCommand.Muted.Remove(uId);
                     //player.Broadcast("GLOBAL MUTE", 10, "Everyone was unmuted");
                 }

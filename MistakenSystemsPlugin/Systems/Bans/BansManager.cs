@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Gamer.Mistaken.Utilities.APILib;
+﻿using Gamer.Mistaken.Utilities.APILib;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared.ClientToCentral;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
 
 namespace Gamer.Mistaken.Systems.Bans
 {
@@ -32,7 +31,7 @@ namespace Gamer.Mistaken.Systems.Bans
 
         private static void GetBansFromDB(string userId)
         {
-            if(Requesting.Contains(userId))
+            if (Requesting.Contains(userId))
                 return;
             Requesting.Add(userId);
             MEC.Timing.CallDelayed(15, () => Requesting.Remove(userId));

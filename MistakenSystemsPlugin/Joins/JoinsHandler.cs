@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Exiled.API.Interfaces;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Utilities.APILib;
+using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Exiled.API.Interfaces;
-using Gamer.Diagnostics;
-using Gamer.Utilities;
-using Gamer.Mistaken.Utilities.APILib;
-using Gamer.RoundLoggerSystem;
 
 namespace Gamer.Mistaken.Joins
 {
@@ -66,7 +64,7 @@ namespace Gamer.Mistaken.Joins
                 Log.Error("Player is null");
                 return;
             }
-            if (Wanteds.Length == 0) 
+            if (Wanteds.Length == 0)
                 GetWanteds();
             if (WantedUserIds.Contains(player.UserId))
             {
@@ -130,7 +128,7 @@ namespace Gamer.Mistaken.Joins
         {
             using (var client = new WebClient())
             {
-                if (!Utilities.APILib.API.GetUrl(APIType.SEND_BAN, out string url, playeruid, adminuid, reason, (duration * 60).ToString(), ServerConsole.Ip, Server.Port.ToString())) 
+                if (!Utilities.APILib.API.GetUrl(APIType.SEND_BAN, out string url, playeruid, adminuid, reason, (duration * 60).ToString(), ServerConsole.Ip, Server.Port.ToString()))
                     return;
                 client.DownloadStringAsync(new System.Uri(url));
             }
@@ -141,7 +139,7 @@ namespace Gamer.Mistaken.Joins
             using (var client = new WebClient())
             {
                 int serverId = Server.Port - 7776;
-                if (!Utilities.APILib.API.GetUrl(APIType.LOG_PLAYER, out string url, serverId.ToString(), player.UserId, ServerConsole.Ip)) 
+                if (!Utilities.APILib.API.GetUrl(APIType.LOG_PLAYER, out string url, serverId.ToString(), player.UserId, ServerConsole.Ip))
                     return;
                 try
                 {
@@ -156,7 +154,7 @@ namespace Gamer.Mistaken.Joins
 
         public static void GetWanteds()
         {
-            if (!Utilities.APILib.API.GetUrl(APIType.WANTED_GET, out string url, "")) 
+            if (!Utilities.APILib.API.GetUrl(APIType.WANTED_GET, out string url, ""))
                 return;
             using (var client = new WebClient())
             {
@@ -167,7 +165,7 @@ namespace Gamer.Mistaken.Joins
 
         private static void GetWantedsCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            if(e.Error != null)
+            if (e.Error != null)
             {
                 Log.Error("Error donwloading bans");
                 Log.Error(e.Error.Message);
@@ -175,7 +173,7 @@ namespace Gamer.Mistaken.Joins
                 return;
             }
             string body = Encoding.Default.GetString(e.Result);
-            if (string.IsNullOrWhiteSpace(body)) 
+            if (string.IsNullOrWhiteSpace(body))
                 return;
             WantedUserIds.Clear();
             Wanteds = Newtonsoft.Json.JsonConvert.DeserializeObject<WantedData[]>(body);
@@ -186,9 +184,9 @@ namespace Gamer.Mistaken.Joins
         {
             private string pUId = "";
             [Newtonsoft.Json.JsonProperty("usersid")]
-            public string PlayerUserId 
-            { 
-            
+            public string PlayerUserId
+            {
+
                 get
                 {
                     return pUId;

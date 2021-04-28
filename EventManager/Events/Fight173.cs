@@ -1,11 +1,5 @@
-﻿using System;
+﻿using Exiled.API.Features;
 using System.Collections.Generic;
-using System.Linq;
-using Exiled.API.Features;
-using Exiled.API.Enums;
-using UnityEngine;
-using System.Reflection;
-using MEC;
 
 namespace Gamer.EventManager.Events
 {

@@ -2,13 +2,7 @@
 using Exiled.API.Features;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
-using Respawning.NamingRules;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
@@ -38,7 +32,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
         {
             var player = sender.GetPlayer();
             success = false;
-            if (player.Role != RoleType.Scp079) 
+            if (player.Role != RoleType.Scp079)
                 return new string[] { "Only SCP 079" };
             if (Systems.Patches.SCP079RecontainInfoPatch.Recontaining) return new string[] { "Systems overloaded" };
             if (player.Level >= ReqLvl - 1)

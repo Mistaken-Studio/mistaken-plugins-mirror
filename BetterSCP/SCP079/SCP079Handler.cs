@@ -1,6 +1,6 @@
-﻿using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.BetterSCP.SCP079.Commands;
 using Gamer.Utilities;
 using System;
@@ -37,9 +37,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
             ReferenceHub rh = player.ReferenceHub;
             rh.scp079PlayerScript.NetworkcurMana -= ap;
             var id = rh.scp079PlayerScript.NetworkcurLvl;
-            if (id >= rh.scp079PlayerScript.levels.Length) 
+            if (id >= rh.scp079PlayerScript.levels.Length)
                 id = (byte)(rh.scp079PlayerScript.levels.Length - 1);
-            else if (id < 0) 
+            else if (id < 0)
                 id = 0;
             float num4 = 1f / Mathf.Clamp(rh.scp079PlayerScript.levels[id].manaPerSecond / 1.5f, 1f, 5f);
             ap = Mathf.Round(ap * num4 * 10f) / 10f;
@@ -106,14 +106,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
         }
 
         private void Server_RoundStarted()
-        { 
+        {
             MEC.Timing.RunCoroutine(UpdateGeneratorsTimer());
         }
 
         private IEnumerator<float> UpdateGeneratorsTimer()
         {
             yield return MEC.Timing.WaitForSeconds(30);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 string msg = "";
@@ -154,8 +154,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                 }
                 foreach (var player in RealPlayers.List.Where(p => p.Role != RoleType.Scp079))
                 {
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    player.SetGUI("scp079", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    player.SetGUI("scp079_message", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 }
                 foreach (var player in RealPlayers.Get(RoleType.Scp079))
                 {
@@ -175,7 +175,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                         fakeCI = $"<color=red>ERROR</color>";
                         fakeTesla = $"<color=red>ERROR</color>";
                         fullScan = $"<color=red>ERROR</color>";
-                    } 
+                    }
 
                     if (FakeSCPCommand.ReqLvl > player.Level + 1)
                         fakeSCP = $"<color=red>Require <color=yellow>{FakeSCPCommand.ReqLvl}</color> lvl</color>";
@@ -254,8 +254,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
 <align=left>Warhead Stop</align><line-height=1px><br></line-height><align=right>{warheadStop}</align>
 <align=left>Cassie</align><line-height=1px><br></line-height><align=right>{cassie}</align>
 </size>";
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp079_message", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, msg);
+                    player.SetGUI("scp079", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, sumMessage);
+                    player.SetGUI("scp079_message", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, msg);
                 }
                 yield return MEC.Timing.WaitForSeconds(1);
             }

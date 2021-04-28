@@ -2,15 +2,11 @@
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
-using Gamer.Utilities;
 using MEC;
 using Mirror;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Xname.ColorfullEZ
@@ -144,7 +140,7 @@ namespace Xname.ColorfullEZ
                         KeycardsGameObjects.Add(gameObject);
                         gameObject.SetActive(false);
                         a++;
-                        if(a % 200 == 0)
+                        if (a % 200 == 0)
                             yield return Timing.WaitForSeconds(0.01f);
                     }
                 }
@@ -159,13 +155,13 @@ namespace Xname.ColorfullEZ
         {
             foreach (var c in go.GetComponents<Component>())
             {
-                Log.Debug(reeeeee.Substring(0,iteration) + c.GetType().Name);
-                Log.Debug(reeeeee.Substring(0,iteration) + c.GetType().FullName);
+                Log.Debug(reeeeee.Substring(0, iteration) + c.GetType().Name);
+                Log.Debug(reeeeee.Substring(0, iteration) + c.GetType().FullName);
                 Log.Debug("------------");
             }
-            for(int i = go.transform.childCount; i > 0; i--)
+            for (int i = go.transform.childCount; i > 0; i--)
             {
-                PrintComponents(go.transform.GetChild(i - 1).gameObject,iteration+1);
+                PrintComponents(go.transform.GetChild(i - 1).gameObject, iteration + 1);
             }
         }
         private void Server_WaitingForPlayers()

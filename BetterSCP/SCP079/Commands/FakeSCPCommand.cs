@@ -3,11 +3,7 @@ using Exiled.API.Features;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
@@ -45,7 +41,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                 {
                     if (IsReady)
                     {
-                        if(args.Length == 0 || !int.TryParse(args[0], out int reason) || reason < 1 || reason > 5)
+                        if (args.Length == 0 || !int.TryParse(args[0], out int reason) || reason < 1 || reason > 5)
                         {
                             return new string[] { ".fakescp [przyczyna] [scp]", "Podaj przyczynę śmierci:", "1. Tesla", "2. CI", "3. Klasa D", "4. Nieznany", "5. Zrekontaminowany" };
                         }
@@ -77,7 +73,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                                     catch { }
                                 }
                             }
-                            switch(reason)
+                            switch (reason)
                             {
                                 case 1:
                                     Cassie.Message("SCP " + processedtonumber + " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM");
@@ -94,7 +90,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                                 case 5:
                                     Cassie.Message("SCP 1 0 6 RECONTAINED SUCCESSFULLY");
                                     break;
-                            } 
+                            }
 
                             SCP079Handler.GainXP(player, Cost);
                             Lastuse = DateTime.Now;

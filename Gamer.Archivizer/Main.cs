@@ -4,20 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 
 namespace Gamer.Archivizer
 {
+    /// <inheritdoc/>
     public class PluginHandler : Plugin<Config>
     {
+        /// <inheritdoc/>
         public override string Author => "Gamer";
+        /// <inheritdoc/>
         public override string Name => "Archivizer";
+        /// <inheritdoc/>
         public override void OnEnabled()
         {
             Exiled.Events.Handlers.Server.RestartingRound += Server_RestartingRound;
             base.OnEnabled();
         }
-
+        /// <inheritdoc/>
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= Server_RestartingRound;
@@ -54,7 +57,7 @@ namespace Gamer.Archivizer
                 foreach (var item in filesToDates)
                 {
                     string dirPath = Path.Combine(path, item.Key);
-                    if(!Directory.Exists(dirPath))
+                    if (!Directory.Exists(dirPath))
                         Directory.CreateDirectory(dirPath);
                     foreach (var file in item.Value)
                     {
@@ -67,7 +70,7 @@ namespace Gamer.Archivizer
                     }
                     Compress(dirPath);
                 }
-            }); 
+            });
         }
 
         private static void Compress(string path)

@@ -1,14 +1,14 @@
 ﻿#pragma warning disable
 
-using System;
-using RemoteAdmin;
-using System.Collections.Generic;
-using Mirror;
 using Exiled.API.Features;
 using Gamer.Utilities;
 using HarmonyLib;
+using Mirror;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared.API;
+using RemoteAdmin;
+using System;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
@@ -30,7 +30,7 @@ namespace Gamer.Mistaken.Systems.Patches
                 return;
             }
             string result = "";
-            if(Responses.ContainsKey(conn))
+            if (Responses.ContainsKey(conn))
             {
                 result = Responses[conn];
                 Responses.Remove(conn);

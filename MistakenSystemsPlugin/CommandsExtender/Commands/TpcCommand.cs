@@ -1,22 +1,15 @@
-﻿
-
-
-using CommandSystem;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using System.Linq;
 using UnityEngine;
-
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class TpcCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class TpcCommand : IBetterCommand, IPermissionLocked
     {
-       
-
         public string Permission => "tpc";
 
-        public override string Description =>
-         "TPC";
+        public override string Description => "TPC";
 
         public string PluginName => PluginHandler.PluginName;
 
@@ -37,24 +30,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     if (float.TryParse(args[2].Replace("~", ""), out float z))
                     {
                         if (args[0].Contains("~"))
-                        {
                             x += player.Position.x;
-                        }
                         if (args[1].Contains("~"))
-                        {
                             y += player.Position.y;
-                        }
                         if (args[2].Contains("~"))
-                        {
                             z += player.Position.z;
-                        }
-                        var target = new Vector3(x, y, z);
-                        if (args.Length > 2 && bool.TryParse(args[3], out bool portal) && portal)
-                        {
-                            player.Do106Teleport(target);
-                        }
-                        else
-                            player.Position = target;
+                        player.Position = new Vector3(x, y, z);
                         success = true;
                         return new string[] { "Done" };
                     }
@@ -65,7 +46,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public string GetUsage()
         {
-            return "TPC [X] [Y] [Z] (Portal true/false (default false))";
+            return "TPC [X] [Y] [Z]";
         }
     }
 }

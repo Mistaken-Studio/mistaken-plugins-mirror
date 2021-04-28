@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using MEC;
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace Gamer.EventManager.Events
 {
-    internal class Blackout : 
+    internal class Blackout :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent
     {
@@ -71,7 +68,7 @@ namespace Gamer.EventManager.Events
         {
             if (Map.ActivatedGenerators > 4)
             {
-                Timing.CallDelayed(70, () => 
+                Timing.CallDelayed(70, () =>
                 {
                     Mistaken.Systems.Utilities.API.Map.Blackout.Enabled = false;
                 });

@@ -1,17 +1,14 @@
-﻿
-
-using System.Linq;
-using UnityEngine;
-
+﻿using CommandSystem;
+using Exiled.API.Features;
+using Gamer.Utilities;
 using Mirror;
 using System.Collections.Generic;
-using Gamer.Utilities;
-using CommandSystem;
-using Exiled.API.Features;
+using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class SpawnDummyCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class SpawnDummyCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "spawndummy";
 

@@ -1,12 +1,11 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Gamer.EventManager.Events
 {
-    internal class Hide : 
+    internal class Hide :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent
     {

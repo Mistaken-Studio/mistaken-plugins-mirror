@@ -1,17 +1,16 @@
 ﻿#pragma warning disable IDE0079
 #pragma warning disable IDE0060
 
-using System.Collections.Generic;
-using UnityEngine;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.BetterRP.Ambients;
+using Gamer.Utilities;
 using MEC;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Gamer.Mistaken.BetterRP.Ambients;
-using Exiled.API.Features;
-using Exiled.API.Extensions;
-using Mirror;
-using Gamer.Utilities;
-using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.BetterRP
 {
@@ -141,14 +140,14 @@ namespace Gamer.Mistaken.BetterRP
                 var pec = ev.Player.ReferenceHub.playerEffectsController;
                 pec.DisableEffect<CustomPlayerEffects.Poisoned>();
                 pec.DisableEffect<CustomPlayerEffects.Bleeding>();
-                if (AdrenalineNotReady.Contains(ev.Player.Id)) 
+                if (AdrenalineNotReady.Contains(ev.Player.Id))
                     AdrenalineNotReady.Remove(ev.Player.Id);
             }
-            else if(ev.Item == ItemType.Painkillers)
+            else if (ev.Item == ItemType.Painkillers)
             {
                 UsedPills.Add(ev.Player.Id);
                 Timing.CallDelayed(30, () => UsedPills.Remove(ev.Player.Id));
-                if(UsedPills.Where(i => i == ev.Player.Id).Count() > 3)
+                if (UsedPills.Where(i => i == ev.Player.Id).Count() > 3)
                     ev.Player.EnableEffect<CustomPlayerEffects.Poisoned>(30);
             }
         }
@@ -162,7 +161,7 @@ namespace Gamer.Mistaken.BetterRP
                 if (ev.DamageType == DamageTypes.Scp0492)
                 {
                     //CustomAchievements.RoundEventHandler.AddProggress("Plague", ev.Attacker);
-                    if(ev.Amount < ev.Target.Health + ev.Target.ArtificialHealth)
+                    if (ev.Amount < ev.Target.Health + ev.Target.ArtificialHealth)
                         ev.Target.EnableEffect<CustomPlayerEffects.Poisoned>();
                 }
             }
@@ -170,18 +169,18 @@ namespace Gamer.Mistaken.BetterRP
                 ev.Amount *= 0.45f;
             if (ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth)
                 return;
-            if (!PluginHandler.Config.IsRP()) 
+            if (!PluginHandler.Config.IsRP())
                 return;
             if (
-                ev.DamageType == DamageTypes.Com15            ||
+                ev.DamageType == DamageTypes.Com15 ||
                 ev.DamageType == DamageTypes.E11StandardRifle ||
-                ev.DamageType == DamageTypes.Grenade          ||
-                ev.DamageType == DamageTypes.Logicer          ||
-                ev.DamageType == DamageTypes.MicroHid         ||
-                ev.DamageType == DamageTypes.Mp7              ||
-                ev.DamageType == DamageTypes.P90              ||
-                ev.DamageType == DamageTypes.Scp0492          ||
-                ev.DamageType == DamageTypes.Scp939           ||
+                ev.DamageType == DamageTypes.Grenade ||
+                ev.DamageType == DamageTypes.Logicer ||
+                ev.DamageType == DamageTypes.MicroHid ||
+                ev.DamageType == DamageTypes.Mp7 ||
+                ev.DamageType == DamageTypes.P90 ||
+                ev.DamageType == DamageTypes.Scp0492 ||
+                ev.DamageType == DamageTypes.Scp939 ||
                 ev.DamageType == DamageTypes.Usp
             )
             {
@@ -189,7 +188,7 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     Timing.CallDelayed(0.1f, () =>
                     {
-                        Base.GUI.PseudoGUIHandler.Set(ev.Target, "adrenalin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, "You feel <color=yellow>adrenaline</color> hitting", 5);
+                        ev.Target.SetGUI("adrenalin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, "You feel <color=yellow>adrenaline</color> hitting", 5);
                         var pec = ev.Target.ReferenceHub.playerEffectsController;
                         var invigorated = pec.GetEffect<CustomPlayerEffects.Invigorated>();
                         var oldInvigoratedIntensityValue = invigorated.Intensity;
@@ -202,10 +201,11 @@ namespace Gamer.Mistaken.BetterRP
                         ev.Target.ArtificialHealth += 7;
                         if (cola.Intensity < 1)
                             cola.Intensity = 1;
-                        MEC.Timing.CallDelayed(6, () => {
+                        MEC.Timing.CallDelayed(6, () =>
+                        {
                             if (!ev.Target.IsConnected)
                                 return;
-                            if(oldInvigoratedIntensityValue > 0)
+                            if (oldInvigoratedIntensityValue > 0)
                             {
                                 ev.Target.EnableEffect<CustomPlayerEffects.Invigorated>(oldInvigoratedDurationValue);
                                 pec.ChangeEffectIntensity<CustomPlayerEffects.Invigorated>(oldInvigoratedIntensityValue);
@@ -219,12 +219,13 @@ namespace Gamer.Mistaken.BetterRP
 
                     });
                     AdrenalineNotReady.Add(ev.Target.Id);
-                    Timing.CallDelayed(90, () => {
+                    Timing.CallDelayed(90, () =>
+                    {
                         AdrenalineNotReady.Remove(ev.Target.Id);
                     });
-                }          
+                }
             }
-            if(
+            if (
                 ev.DamageType == DamageTypes.Com15 ||
                 ev.DamageType == DamageTypes.E11StandardRifle ||
                 ev.DamageType == DamageTypes.Grenade ||
@@ -238,7 +239,7 @@ namespace Gamer.Mistaken.BetterRP
                 if (UnityEngine.Random.Range(0, 101) < ev.Amount / 5)
                     ev.Target.EnableEffect<CustomPlayerEffects.Bleeding>();
             }
-            else if(ev.DamageType == DamageTypes.Falldown)
+            else if (ev.DamageType == DamageTypes.Falldown)
             {
                 var pec = ev.Target.ReferenceHub.playerEffectsController;
                 var rand = UnityEngine.Random.Range(0, 101);
@@ -246,7 +247,7 @@ namespace Gamer.Mistaken.BetterRP
                 {
                     ev.Target.EnableEffect<CustomPlayerEffects.Bleeding>();
                     ev.Target.EnableEffect<CustomPlayerEffects.Ensnared>();
-                    Base.GUI.PseudoGUIHandler.Set(ev.Target, "broken_legs", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Złamałeś obie nogi i <color=yellow>nie</color> możesz chodzić", 5);
+                    ev.Target.SetGUI("broken_legs", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Złamałeś obie nogi i <color=yellow>nie</color> możesz chodzić", 5);
                 }
                 else if (rand < ev.Amount / 5)
                 {
@@ -262,7 +263,7 @@ namespace Gamer.Mistaken.BetterRP
         private IEnumerator<float> DoHeathEffects()
         {
             yield return Timing.WaitForSeconds(1);
-            while(Round.IsStarted)
+            while (Round.IsStarted)
             {
                 foreach (var player in RealPlayers.List.ToArray())
                 {
@@ -285,7 +286,7 @@ namespace Gamer.Mistaken.BetterRP
                                     player.ReferenceHub.playerEffectsController.DisableEffect<CustomPlayerEffects.Blinded>();
                                     break;
                                 default:
-                                    Log.Debug("Unknown Effect | "+effect);
+                                    Log.Debug("Unknown Effect | " + effect);
                                     continue;
                             }
                             HealthEffects[player.Id].Remove(effect);
@@ -293,7 +294,7 @@ namespace Gamer.Mistaken.BetterRP
                     }
                     else
                         HealthEffects.Add(player.Id, new List<string>());
-                    if (!player.IsHuman || !player.IsConnected) 
+                    if (!player.IsHuman || !player.IsConnected)
                         continue;
                     if (player.Health < 20)
                     {
@@ -326,9 +327,9 @@ namespace Gamer.Mistaken.BetterRP
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if (ev.Player == null) 
+            if (ev.Player == null)
                 return;
-            if (!PluginHandler.Config.IsRP()) 
+            if (!PluginHandler.Config.IsRP())
                 return;
             if (ev.NewRole == RoleType.ChaosInsurgency && !ev.Items.Contains(ItemType.Disarmer))
             {
@@ -339,7 +340,8 @@ namespace Gamer.Mistaken.BetterRP
             }
             else if (ev.NewRole == RoleType.Spectator)
             {
-                MEC.Timing.CallDelayed(0.2f, () => {
+                MEC.Timing.CallDelayed(0.2f, () =>
+                {
                     var effectsManager = ev.Player.ReferenceHub.playerEffectsController;
                     foreach (var item in effectsManager.AllEffects)
                     {
@@ -380,7 +382,7 @@ namespace Gamer.Mistaken.BetterRP
 
         private void Server_RoundEnded(Exiled.Events.EventArgs.RoundEndedEventArgs ev)
         {
-            if (!PluginHandler.Config.IsRP()) 
+            if (!PluginHandler.Config.IsRP())
                 return;
             foreach (var item in Pickup.Instances.ToArray())
                 item.Delete();
@@ -503,7 +505,7 @@ namespace Gamer.Mistaken.BetterRP
         {
             UsedAmbients.Clear();
             yield return Timing.WaitForSeconds(5);
-            while(Round.IsStarted)
+            while (Round.IsStarted)
             {
                 if (UnityEngine.Random.Range(1, 101) <= Chance && !AmbientLock)
                 {
@@ -518,8 +520,8 @@ namespace Gamer.Mistaken.BetterRP
                             Cassie.Message(msg, false, false);
                     }
                     Chance -= 5;
-                } 
-                else 
+                }
+                else
                     Chance = DefaultChance;
                 yield return Timing.WaitForSeconds(UnityEngine.Random.Range(120, 300));
             }
@@ -535,7 +537,7 @@ namespace Gamer.Mistaken.BetterRP
             jammed = true;
             if (overflowId > 100) return "CASSIE CRITICAL ERROR DETECTED";
             Ambient ambient = null;
-            if(id == -1)
+            if (id == -1)
             {
                 int random = UnityEngine.Random.Range(0, Ambients.Length);
                 ambient = Ambients[random];
@@ -545,11 +547,11 @@ namespace Gamer.Mistaken.BetterRP
                 ambient = Ambients.First(item => item.Id == id);
                 if (ambient == null) return GetAmbient(overflowId + 1, out jammed);
             }
-            
+
             if (UsedAmbients.Contains(ambient.Id)) return GetAmbient(overflowId + 1, out jammed);
             if (!ambient.CanPlay()) return GetAmbient(overflowId + 1, out jammed);
             //else if (id == 100) return null;
-            if(!ambient.IsReusable) UsedAmbients.Add(ambient.Id);
+            if (!ambient.IsReusable) UsedAmbients.Add(ambient.Id);
             jammed = ambient.IsJammed;
             return ambient.Message
                 .Replace("$classd", RealPlayers.List.Where(p => p.Team == Team.CDP).Count().ToString())

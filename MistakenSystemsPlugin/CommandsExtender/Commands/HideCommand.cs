@@ -1,15 +1,9 @@
 ﻿using CommandSystem;
-using Exiled.API.Features;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class HideCommand : IBetterCommand, IPermissionLocked
     {
         public override string Command => "hide";
@@ -21,7 +15,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
             var player = sender.GetPlayer();
-            if(!LOFH.LOFH.Hidden.Contains(player.UserId)) 
+            if (!LOFH.LOFH.Hidden.Contains(player.UserId))
                 LOFH.LOFH.Hidden.Add(player.UserId);
             else
                 LOFH.LOFH.Hidden.Remove(player.UserId);

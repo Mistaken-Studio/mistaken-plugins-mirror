@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
-using MEC;
 using PlayableScps;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.Global
@@ -56,7 +54,7 @@ namespace Gamer.Mistaken.BetterSCP.Global
                     player.EnableEffect<CustomPlayerEffects.Invigorated>(5, true);
                     if (!player.GetEffectActive<CustomPlayerEffects.Panic>())
                         player.EnableEffect<CustomPlayerEffects.Panic>(15, true);
-                    Base.GUI.PseudoGUIHandler.Set(player, "panic", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Zaczynasz <color=yellow>panikować</color>", 3);
+                    player.SetGUI("panic", Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Zaczynasz <color=yellow>panikować</color>", 3);
                     LastSeeTime[player.UserId] = DateTime.Now;
                 }
             }
@@ -81,9 +79,9 @@ namespace Gamer.Mistaken.BetterSCP.Global
                 return;
             DmgMultiplayer = true;
             player1.EnableEffect<CustomPlayerEffects.Concussed>();
-            Base.GUI.PseudoGUIHandler.Set(player1, "antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś za blisko <color=yellow>{(player2.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń");
+            player1.SetGUI("antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś za blisko <color=yellow>{(player2.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń");
             player2.EnableEffect<CustomPlayerEffects.Concussed>();
-            Base.GUI.PseudoGUIHandler.Set(player2, "antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś za blisko <color=yellow>{(player1.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń"); 
+            player2.SetGUI("antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś za blisko <color=yellow>{(player1.Role == RoleType.Scp173 ? "SCP 173" : "SCP 096")}</color>, z tego powodu będziesz dostawał <color=yellow>150</color>% obrażeń");
         };
         private static readonly Func<Player, Action<Player>> OnExit = (player1) => (player2) =>
         {
@@ -96,8 +94,8 @@ namespace Gamer.Mistaken.BetterSCP.Global
             DmgMultiplayer = false;
             player1.DisableEffect<CustomPlayerEffects.Concussed>();
             player2.DisableEffect<CustomPlayerEffects.Concussed>();
-            Base.GUI.PseudoGUIHandler.Set(player1, "antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
-            Base.GUI.PseudoGUIHandler.Set(player2, "antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+            player1.SetGUI("antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+            player2.SetGUI("antyDuo", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
 
         };
 

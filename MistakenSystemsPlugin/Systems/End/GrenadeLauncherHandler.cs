@@ -1,18 +1,13 @@
 ﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Utilities;
+using Gamer.API.CustomItem;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Grenades;
-using MEC;
 using Mirror;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
-using Gamer.Diagnostics;
-using Gamer.API.CustomItem;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -37,7 +32,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            
+
         }
 
         private class GrenadeLauncher : CustomItem
@@ -54,19 +49,19 @@ namespace Gamer.Mistaken.Systems.End
                 var dur = this.GetInternalDurability(item);
                 if (dur != 0)
                 {
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz przeładować nie mając pustego magazynka", 3);
+                    player.SetGUI("grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz przeładować nie mając pustego magazynka", 3);
                     return false;
                 }
 
-                if(!player.Inventory.items.Any(i => i.id == ItemType.GrenadeFrag))
+                if (!player.Inventory.items.Any(i => i.id == ItemType.GrenadeFrag))
                 {
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie masz amunicji(Granat Odłamkowy)", 3);
+                    player.SetGUI("grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie masz amunicji(Granat Odłamkowy)", 3);
                     return false;
                 }
 
                 this.SetInternalDurability(player, item, MagSize + 1);
                 player.RemoveItem(player.Inventory.items.First(i => i.id == ItemType.GrenadeFrag));
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Przeładowano", 3);
+                player.SetGUI("grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Przeładowano", 3);
                 return false;
             }
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject _, Vector3 position)
@@ -75,7 +70,7 @@ namespace Gamer.Mistaken.Systems.End
                 Log.Debug($"Ammo: {dur} | {item.durability}");
                 if (dur == 0)
                 {
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz strzelać z pustym magazynkiem", 3);
+                    player.SetGUI("grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz strzelać z pustym magazynkiem", 3);
                     player.ReferenceHub.weaponManager.RpcEmptyClip();
                     return false;
                 }
@@ -93,14 +88,14 @@ namespace Gamer.Mistaken.Systems.End
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
                 base.OnStartHolding(player, item);
 
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "grenadeLauncher", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>{this.ItemName}</color>");
+                player.SetGUI("grenadeLauncher", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>{this.ItemName}</color>");
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
                 player.Ammo[(int)AmmoType.Nato9]--;
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "grenadeLauncher", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                player.SetGUI("grenadeLauncher", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 base.OnStopHolding(player, item);
             }
         }

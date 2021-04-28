@@ -1,15 +1,11 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class RespawnCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class RespawnCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "respawn";
 
@@ -30,7 +26,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
             _s = false;
-            if (args.Length == 0 || !int.TryParse(args[0], out int value)) 
+            if (args.Length == 0 || !int.TryParse(args[0], out int value))
                 return new string[] { GetUsage() };
             Respawning.RespawnManager.Singleton._timeForNextSequence = (float)Respawning.RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + value;
             _s = true;

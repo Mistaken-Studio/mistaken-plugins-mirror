@@ -1,16 +1,9 @@
 ﻿using CommandSystem;
-using Exiled.API.Features;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class TestCommand : IBetterCommand, IPermissionLocked
     {
         public override string Command => "test";

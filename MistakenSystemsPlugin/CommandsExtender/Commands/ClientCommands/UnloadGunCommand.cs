@@ -1,17 +1,13 @@
 ﻿using CommandSystem;
-using Exiled.API.Enums;
 using Exiled.API.Extensions;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using System.Collections.Generic;
-using System.Linq;
 using Gamer.Mistaken.Base.CustomItems;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class UnloadGunCommand : IBetterCommand
-    {       
+    {
         public override string Description => "Unload all ammo";
         public override string Command => "unload";
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)

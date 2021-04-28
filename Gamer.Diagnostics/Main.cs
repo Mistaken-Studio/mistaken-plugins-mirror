@@ -4,14 +4,27 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.IO.Compression;
+using System.Linq;
 
 namespace Gamer.Diagnostics
 {
+    /// <summary>
+    /// Master module handler
+    /// </summary>
     public static class MasterHandler
     {
+        /// <summary>
+        /// Handlers bound to Module
+        /// </summary>
         public static readonly Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler>> Handlers = new Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler>>();
+        /// <summary>
+        /// Handles event and mesures time that took to handle
+        /// </summary>
+        /// <param name="module">Modue</param>
+        /// <param name="action">Handler</param>
+        /// <param name="Name">Handler Name</param>
+        /// <returns>Event Handler</returns>
         public static Exiled.Events.Events.CustomEventHandler Handle(this Module module, Action action, string Name)
         {
             if (!Handlers.ContainsKey(module))
@@ -45,8 +58,15 @@ namespace Gamer.Diagnostics
             Handlers[module][Name] = tor;
             return tor;
         }
+        /// <summary>
+        /// Handles event and mesures time that took to handle
+        /// </summary>
+        /// <typeparam name="T">Event Args Type</typeparam>
+        /// <param name="module">Modue</param>
+        /// <param name="action">Handler</param>
+        /// <returns>Event Handler</returns>
         public static Exiled.Events.Events.CustomEventHandler<T> Handle<T>(this Module module, Action<T> action) where T : EventArgs => Generic<T>.Handle(module, action);
-        public static class Generic<T> where T : EventArgs
+        private static class Generic<T> where T : EventArgs
         {
             public static readonly Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler<T>>> TypedHandlers = new Dictionary<Module, Dictionary<string, Exiled.Events.Events.CustomEventHandler<T>>>();
 
@@ -91,7 +111,13 @@ namespace Gamer.Diagnostics
             }
         }
 
-
+        /// <summary>
+        /// Logs Time
+        /// </summary>
+        /// <param name="moduleName">Module Name</param>
+        /// <param name="name">Handler Name</param>
+        /// <param name="start">Handling start time</param>
+        /// <param name="end">Handling end time</param>
         public static void LogTime(string moduleName, string name, DateTime start, DateTime end) =>
             Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{moduleName}: {name}] {(end - start).TotalMilliseconds}");
 
@@ -108,10 +134,7 @@ namespace Gamer.Diagnostics
             Timing.RunCoroutine(SaveLoop());
             Initiated = true;
             RoundLoggerSystem.RoundLogger.IniIfNotAlready();
-            RoundLoggerSystem.RoundLogger.RegisterTypes("ERROR");
-            RoundLoggerSystem.RoundLogger.RegisterModules("DIAGNOSTICS");
         }
-
         private static IEnumerator<float> SaveLoop()
         {
             Log.Debug($"Starting Loop");
@@ -158,7 +181,6 @@ namespace Gamer.Diagnostics
                 yield return MEC.Timing.WaitForSeconds(1);
             }
         }
-
         private static void Compress(string day)
         {
             try
@@ -173,7 +195,6 @@ namespace Gamer.Diagnostics
                 Log.Error(ex.StackTrace);
             }
         }
-
         internal static void AnalizeContent(string file)
         {
             if (!File.Exists(file))
@@ -182,7 +203,6 @@ namespace Gamer.Diagnostics
             File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".analized.log"), Newtonsoft.Json.JsonConvert.SerializeObject(result));
             File.Delete(file);
         }
-
         private static Dictionary<string, Data> AnalizeContent(string[] lines, DateTime dateTime)
         {
             Dictionary<string, List<(float Took, DateTime Time)>> times = new Dictionary<string, List<(float Took, DateTime Time)>>();
@@ -231,7 +251,7 @@ namespace Gamer.Diagnostics
             return ProccesedData;
         }
 
-        public class Data
+        internal class Data
         {
             public float Avg;
             public int Calls;
@@ -251,16 +271,36 @@ namespace Gamer.Diagnostics
         }
     }
 
+    /// <summary>
+    /// Diagnostics module
+    /// </summary>
     public abstract class Module
     {
         internal static readonly Dictionary<IPlugin<IConfig>, List<Module>> Modules = new Dictionary<IPlugin<IConfig>, List<Module>>();
+        /// <summary>
+        /// Module Name
+        /// </summary>
         public abstract string Name { get; }
+        /// <summary>
+        /// If module should be enabled
+        /// </summary>
         public virtual bool Enabled { get; protected set; } = true;
+        /// <summary>
+        /// Plugin that this module belong to
+        /// </summary>
         public readonly IPlugin<IConfig> plugin;
+        /// <summary>
+        /// If is requied for basic functions
+        /// </summary>
         public virtual bool IsBasic { get; } = false;
-
+        /// <summary>
+        /// Used to use special logging method
+        /// </summary>
         protected __Log Log => new __Log(Name);
-
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="plugin">Plugin creating module</param>
         public Module(IPlugin<IConfig> plugin)
         {
             this.plugin = plugin;
@@ -269,7 +309,10 @@ namespace Gamer.Diagnostics
             Modules[plugin].RemoveAll(i => i.Name == this.Name);
             Modules[plugin].Add(this);
         }
-
+        /// <summary>
+        /// Enables all modules that has <see cref="Module.Enabled"/> set to <see langword="true"/> from specific plugin
+        /// </summary>
+        /// <param name="plugin">Plugin</param>
         public static void OnEnable(IPlugin<IConfig> plugin)
         {
             foreach (var item in Modules[plugin].Where(i => i.Enabled))
@@ -280,6 +323,10 @@ namespace Gamer.Diagnostics
                 Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
+        /// <summary>
+        /// Disables all modules that has <see cref="Module.Enabled"/> set to <see langword="true"/> from specific plugin
+        /// </summary>
+        /// <param name="plugin">Plugin</param>
         public static void OnDisable(IPlugin<IConfig> plugin)
         {
             foreach (var item in Modules[plugin].Where(i => i.Enabled))
@@ -290,7 +337,10 @@ namespace Gamer.Diagnostics
                 Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
-
+        /// <summary>
+        /// Enables all modules that has <see cref="Module.Enabled"/> set to <see langword="true"/> and <see cref="Module.IsBasic"/> set to <see langword="false"/> except from <paramref name="plugin"/>
+        /// </summary>
+        /// <param name="plugin">Plugin</param>
         public static void EnableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
@@ -304,7 +354,10 @@ namespace Gamer.Diagnostics
                 }
             }
         }
-
+        /// <summary>
+        /// Disables all modules that has <see cref="Module.Enabled"/> set to <see langword="true"/> and <see cref="Module.IsBasic"/> set to <see langword="false"/> except from <paramref name="plugin"/>
+        /// </summary>
+        /// <param name="plugin">Plugin</param>
         public static void DisableAllExcept(IPlugin<IConfig> plugin)
         {
             foreach (var module in Modules.Where(p => p.Key != plugin))
@@ -318,18 +371,32 @@ namespace Gamer.Diagnostics
                 }
             }
         }
-
+        /// <summary>
+        /// Called when enabling
+        /// </summary>
         public abstract void OnEnable();
+        /// <summary>
+        /// Called when disabling
+        /// </summary>
         public abstract void OnDisable();
     }
-
+    /// <summary>
+    /// Used to Log with prefix
+    /// </summary>
     public class __Log
     {
         private string module;
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public __Log(string module) => this.module = module;
+        /// <inheritdoc cref="Log.Debug(object, bool)"/>
         public void Debug(object message, bool canBeSant = true) => Log.Debug($"[{module}] {message}", canBeSant);
+        /// <inheritdoc cref="Log.Info(object)"/>
         public void Info(object message) => Log.Info($"[{module}] {message}");
+        /// <inheritdoc cref="Log.Warn(object)"/>
         public void Warn(object message) => Log.Warn($"[{module}] {message}");
+        /// <inheritdoc cref="Log.Error(object)"/>
         public void Error(object message) => Log.Error($"[{module}] {message}");
     }
 }

@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.API;
-using Gamer.Mistaken.Systems.Patches.Vars;
-using Gamer.Utilities;
 
 namespace Gamer.CustomClasses
 {
+    /// <inheritdoc/>
     public class PluginHandler : Plugin<Config>
     {
+        /// <inheritdoc/>
         public override string Author => "Gamer";
+        /// <inheritdoc/>
         public override string Name => "CustomClasses";
+        /// <inheritdoc/>
         public override string Prefix => "cc";
+        /// <inheritdoc/>
         public static string PluginName => Instance.Name;
-
+        /// <summary>
+        /// PluginHandler Instance
+        /// </summary>
         public static PluginHandler Instance { get; private set; }
+        /// <inheritdoc/>
         public override void OnEnabled()
         {
             new CustomClassesHandler(this);
@@ -27,7 +27,7 @@ namespace Gamer.CustomClasses
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }
-
+        /// <inheritdoc/>
         public override void OnDisabled()
         {
             Diagnostics.Module.OnDisable(this);

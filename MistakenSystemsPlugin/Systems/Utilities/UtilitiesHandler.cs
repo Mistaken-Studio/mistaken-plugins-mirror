@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MEC;
-using Mirror;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using UnityEngine;
-using Gamer.Diagnostics;
+﻿using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.Systems.Utilities
 {
@@ -47,13 +40,13 @@ namespace Gamer.Mistaken.Systems.Utilities
 
         private void Player_TriggeringTesla(Exiled.Events.EventArgs.TriggeringTeslaEventArgs ev)
         {
-            if (API.Map.TeslaMode == API.TeslaMode.DISABLED || API.Map.TeslaMode == API.TeslaMode.DISABLED_FOR_ALL) 
+            if (API.Map.TeslaMode == API.TeslaMode.DISABLED || API.Map.TeslaMode == API.TeslaMode.DISABLED_FOR_ALL)
                 ev.IsTriggerable = false;
         }
 
         private void Scp079_InteractingTesla(Exiled.Events.EventArgs.InteractingTeslaEventArgs ev)
         {
-            if (API.Map.TeslaMode == API.TeslaMode.DISABLED_FOR_079 || API.Map.TeslaMode == API.TeslaMode.DISABLED_FOR_ALL) 
+            if (API.Map.TeslaMode == API.TeslaMode.DISABLED_FOR_079 || API.Map.TeslaMode == API.TeslaMode.DISABLED_FOR_ALL)
                 ev.IsAllowed = false;
         }
 

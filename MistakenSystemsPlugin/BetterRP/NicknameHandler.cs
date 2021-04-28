@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using MEC;
-using System;
-using System.Linq;
-using Exiled.API.Features;
-using Exiled.API.Extensions;
-using Mirror;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using MEC;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.BetterRP
 {
@@ -14,7 +9,7 @@ namespace Gamer.Mistaken.BetterRP
     {
         public NicknameHandler(PluginHandler plugin) : base(plugin)
         {
-            
+
         }
         public override string Name => "BetterRP.Nickname";
         public override void OnEnable()
@@ -36,12 +31,13 @@ namespace Gamer.Mistaken.BetterRP
         {
             if (PluginHandler.Config.Type != MSP_ServerType.HARD_RP)
                 return;
-            MEC.Timing.CallDelayed(1, () => {
+            MEC.Timing.CallDelayed(1, () =>
+            {
                 ev.Player.DisplayNickname = NicknameManager.GenerateNickname(ev.NewRole, "OMEGA", ev.Player.Id.ToString());
                 if (ev.Player.DisplayNickname == "default")
                     ev.Player.DisplayNickname = null;
                 ev.Player.ClearBroadcasts();
-                if(ev.Player.DisplayNickname != null) 
+                if (ev.Player.DisplayNickname != null)
                     ev.Player.Broadcast(10, $"Nazywasz się: {ev.Player.DisplayNickname}");
             });
         }
@@ -50,7 +46,8 @@ namespace Gamer.Mistaken.BetterRP
         {
             if (PluginHandler.Config.Type != MSP_ServerType.HARD_RP)
                 return;
-            MEC.Timing.CallDelayed(1, () => {
+            MEC.Timing.CallDelayed(1, () =>
+            {
                 ev.Target.DisplayNickname = null;
             });
         }
@@ -126,7 +123,7 @@ namespace Gamer.Mistaken.BetterRP
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null) return;
-            if (!PluginHandler.Config.IsHardRP()) 
+            if (!PluginHandler.Config.IsHardRP())
                 return;
             if (ev.NewRole != RoleType.NtfCommander && ev.NewRole != RoleType.NtfLieutenant && ev.NewRole != RoleType.NtfCadet && ev.NewRole != RoleType.ChaosInsurgency)
             {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Gamer.Mistaken.Systems.Bans
 {
@@ -10,15 +8,15 @@ namespace Gamer.Mistaken.Systems.Bans
     {
         public static readonly Dictionary<BanCategory, string[]> CategoryDefiners = new Dictionary<BanCategory, string[]>()
         {
-            { 
-                BanCategory.TK, 
-                new string[] 
+            {
+                BanCategory.TK,
+                new string[]
                 {
                     "TK",
                     "TeamKill",
                     "Team Kill",
                     "TKill",
-                } 
+                }
             },
             {
                 BanCategory.TEAMING,
@@ -100,7 +98,7 @@ namespace Gamer.Mistaken.Systems.Bans
         public static int GetMaxDur((string AdminId, string Reason, int Duration, DateTime Time)[] bans) => bans.Max(i => i.Duration / 60);
         public static DurationCategory GetDurationCategory(int duration)
         {
-            switch(duration)
+            switch (duration)
             {
                 case 0:
                     return DurationCategory.KICK;
@@ -138,7 +136,7 @@ namespace Gamer.Mistaken.Systems.Bans
             }
             if (!CategorizedBans.ContainsKey(banCategory))
             {
-                switch(banCategory)
+                switch (banCategory)
                 {
                     case BanCategory.TEAMING:
                         return 30;

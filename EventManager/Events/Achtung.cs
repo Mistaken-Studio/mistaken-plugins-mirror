@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Utilities;
 using MEC;
-using Interactables.Interobjects.DoorUtils;
+using System.Collections.Generic;
 
 namespace Gamer.EventManager.Events
 {
-    internal class Achtung : 
+    internal class Achtung :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent,
         EventCreator.IWinOnLastAlive,
@@ -61,12 +56,12 @@ namespace Gamer.EventManager.Events
 
         private void SpawnGrenades(float time)
         {
-            if (!Active) 
+            if (!Active)
                 return;
             WaitAndExecute(time, () =>
             {
                 time--;
-                if (time < 2) 
+                if (time < 2)
                     time = 2;
                 SpawnGrenades(time);
                 if (!Active)

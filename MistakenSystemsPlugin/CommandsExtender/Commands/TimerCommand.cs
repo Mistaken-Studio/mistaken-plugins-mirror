@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Gamer.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Features;
-using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
@@ -35,16 +34,16 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         private IEnumerator<float> DoTimer(Player player, float time, string message)
         {
             yield return MEC.Timing.WaitForSeconds(time);
-            if(message.Trim().StartsWith("-c") && player.RemoteAdminAccess)
+            if (message.Trim().StartsWith("-c") && player.RemoteAdminAccess)
             {
                 foreach (var item in message.Substring(2).Split(';'))
-                    RemoteAdmin.CommandProcessor.ProcessQuery(item, player.Sender);         
+                    RemoteAdmin.CommandProcessor.ProcessQuery(item, player.Sender);
             }
             else
             {
                 player.ClearBroadcasts();
                 player.Broadcast("Timer", 10, message);
-            }      
+            }
         }
     }
 }

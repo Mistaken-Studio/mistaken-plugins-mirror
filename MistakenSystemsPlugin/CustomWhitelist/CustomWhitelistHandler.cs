@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Diagnostics;
-using Gamer.Mistaken.Systems.Staff;
+﻿using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
-using Gamer.Mistaken.Utilities.APILib;
 using LiteNetLib.Utils;
 using MEC;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.API;
-using Newtonsoft.Json;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Gamer.Mistaken.CustomWhitelist
 {
     public class Handler : Module
     {
         public override bool IsBasic => true;
-        public static ReadOnlyCollection<string> PublicWhitelist => 
+        public static ReadOnlyCollection<string> PublicWhitelist =>
             new ReadOnlyCollection<string>(Whitelist.ToArray());
-             
+
         internal static HashSet<string> Whitelist = new HashSet<string>();
 
         public Handler(PluginHandler plugin) : base(plugin)
@@ -165,12 +158,12 @@ namespace Gamer.Mistaken.CustomWhitelist
 
         private readonly HashSet<string> ConnectedPrioritySlots = new HashSet<string>();
         private readonly HashSet<string> ConnectedReservedSlots = new HashSet<string>();
-        public int RealSlots => 
+        public int RealSlots =>
             CustomNetworkManager.slots + ConnectedPrioritySlots.Count;
-            
+
         internal static void ReloadData()
         {
-            if (!PluginHandler.Config.WhitelistEnabled) 
+            if (!PluginHandler.Config.WhitelistEnabled)
                 return;
             Timing.CallDelayed(5, () =>
             {
@@ -181,7 +174,7 @@ namespace Gamer.Mistaken.CustomWhitelist
                     var data = (string[])result.Payload.Deserialize(0, 0, out _, false, typeof(string[]));
                     Whitelist = data.ToHashSet() ?? new HashSet<string>();
                 });
-            });   
+            });
         }
     }
 }

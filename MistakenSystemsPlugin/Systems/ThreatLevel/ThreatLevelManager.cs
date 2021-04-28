@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
+﻿using Exiled.API.Features;
 using Newtonsoft.Json;
-using Gamer.Utilities;
-using Exiled.API.Features;
-using Newtonsoft.Json.Linq;
-using Gamer.Mistaken.Utilities.APILib;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace Gamer.Mistaken.Systems.ThreatLevel
 {
@@ -31,10 +26,10 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
             int level = 0;
             List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
 
-            if(warningFlag)
+            if (warningFlag)
             {
                 tor.Add($"<color=black>Active Warning Flag: {warningFlagReason}</color>");
-                if (level < 4) 
+                if (level < 4)
                     level = 4;
                 num++;
             }
@@ -99,7 +94,7 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                     }
                 }
                 var bans = Bans.BansManager.GetBans(UserId);
-                if(bans.Length > 20)
+                if (bans.Length > 20)
                 {
                     tor.Add($"<color=red>Has more than 20 bans</color>");
                     if (level < 3) level = 3;
@@ -130,7 +125,7 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                 CallBack.Invoke(null);
                 return;
             }
-            if (!Gamer.Mistaken.Utilities.APILib.API.GetSteamAPIKey(out string steamKey)) 
+            if (!Gamer.Mistaken.Utilities.APILib.API.GetSteamAPIKey(out string steamKey))
                 return;
             using (var client = new WebClient())
             {
@@ -225,7 +220,7 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                     lvl = 2;
                     num++;
                 }
-                if (lvl != 0 && DaysSinceLastBan > 100) 
+                if (lvl != 0 && DaysSinceLastBan > 100)
                     lvl = 2;
                 if (lvl != 0) return true;
                 else return false;
@@ -241,7 +236,7 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
 
             public void AddInfo(DataType type, string data)
             {
-                switch(type)
+                switch (type)
                 {
                     case DataType.NORMAL:
                         {

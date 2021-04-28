@@ -1,17 +1,13 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
 using LightContainmentZoneDecontamination;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class DLCZCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class DLCZCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "dlcz";
 
@@ -22,7 +18,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string Command => "dlcz";
 
-        public override string[] Aliases => new string[] { }; 
+        public override string[] Aliases => new string[] { };
 
         public string GetUsage()
         {
@@ -32,23 +28,23 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;
-            if (args.Length == 0) 
+            if (args.Length == 0)
                 return new string[] { GetUsage() };
 
             var dlcz = LightContainmentZoneDecontamination.DecontaminationController.Singleton;
-            if (dlcz == null) 
+            if (dlcz == null)
                 return new string[] { "DecontaminationLCZ not found" };
 
             switch (args[0].ToLower())
             {
                 case "g":
                 case "get":
-                        return new string[] { "Current Id: " + (dlcz._nextPhase - 1) };
+                    return new string[] { "Current Id: " + (dlcz._nextPhase - 1) };
 
                 case "st":
                 case "settime":
                     {
-                        if (args.Length == 1) 
+                        if (args.Length == 1)
                             return new string[] { GetUsage() };
                         if (float.TryParse(args[1], out float time))
                         {
@@ -57,7 +53,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             DecontaminationController.Singleton.DecontaminationPhases.First(i =>
                             i.Function == DecontaminationController.DecontaminationPhase.PhaseFunction.Final).TimeTrigger +
                             time;
-                            if(toSet <= 0)
+                            if (toSet <= 0)
                             {
                                 success = false;
                                 return new string[] { $"NetworkRoundStartTime can't be negative | it whould be {toSet}" };
@@ -66,21 +62,21 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             success = true;
                             return new string[] { $"Time set to {time}, it was {last}" };
                         }
-                        else 
+                        else
                             return new string[] { GetUsage() };
                     }
                 case "ss":
                 case "setstatus":
                     {
-                        if (args.Length == 1) 
+                        if (args.Length == 1)
                             return new string[] { "LCZ Decontamination Status: " + dlcz.enabled };
-                        if (!bool.TryParse(args[1], out bool value)) 
+                        if (!bool.TryParse(args[1], out bool value))
                             return new string[] { GetUsage() };
                         dlcz.disableDecontamination = value;
                         success = true;
-                        if (value) 
+                        if (value)
                             return new string[] { $"Resumed Decontamination" };
-                        else 
+                        else
                             return new string[] { $"Paused Decontamination" };
                     }
                 default:

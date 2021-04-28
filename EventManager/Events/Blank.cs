@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Gamer.EventManager.Events
 {
-    internal class Blank : 
+    internal class Blank :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent
     {

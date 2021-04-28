@@ -1,18 +1,14 @@
-﻿using Grenades;
-using Mirror;
-using UnityEngine;
-using System.Collections.Generic;
-
-using System.Linq;
-using Gamer.Utilities;
+﻿
 using CommandSystem;
-using Exiled.API.Features;
+using Gamer.Utilities;
+using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class GrenadeCmd : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class GrenadeCmd : IBetterCommand, IPermissionLocked
     {
-        
+
 
         public string Permission => "grenade";
 
@@ -54,7 +50,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             return "GRENADE [PLAYER ID] (AMOUNT)";
         }
 
-        public void DropUnder(int[] pids,int times)
+        public void DropUnder(int[] pids, int times)
         {
             foreach (var item in pids)
             {

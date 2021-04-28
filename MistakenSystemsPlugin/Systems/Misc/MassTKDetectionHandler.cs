@@ -1,18 +1,12 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
-using MEC;
-using Mirror;
 using NPCS;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
@@ -56,7 +50,7 @@ namespace Gamer.Mistaken.Systems.Misc
             string userId = null;
             string name = null;
             string nick = null;
-            if(frag.thrower == null)
+            if (frag.thrower == null)
             {
                 try
                 {
@@ -64,7 +58,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     name = frag._throwerName;
                     nick = frag._throwerName.Split('(')[0];
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
@@ -84,9 +78,9 @@ namespace Gamer.Mistaken.Systems.Misc
                 userId = ev.Thrower.UserId;
                 name = ev.Thrower.PlayerToString();
                 nick = ev.Thrower.GetDisplayName();
-            }          
+            }
             foreach (var item in ev.TargetToDamages.Where(i => i.Key.IsNPC()).ToArray())
-                ev.TargetToDamages.Remove(item.Key);           
+                ev.TargetToDamages.Remove(item.Key);
             if (ev.TargetToDamages.Count == 0 || (ev.TargetToDamages.Count == 1 && ev.Thrower != null && ev.TargetToDamages.ContainsKey(ev.Thrower)))
             {
                 Log.Debug("MTKD Skip Code: 4", Debug);

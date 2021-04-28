@@ -1,27 +1,16 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
+using Gamer.Diagnostics;
 using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
 using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.SocketAdmin;
+using MistakenSocket.Shared;
+using MistakenSocket.Shared.API;
+using MistakenSocket.Shared.ClientToCentral;
 using Octokit;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Text;
-using UnityEngine;
-using Gamer.Diagnostics;
-using MistakenSocket.Shared.CentralToSL;
-using MistakenSocket.Shared.API;
-using MistakenSocket.Shared.ClientToCentral;
-using MistakenSocket.Shared;
-using UnityEngine.Assertions.Must;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -72,7 +61,7 @@ namespace Gamer.Mistaken.Systems.End
             MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName})", Broadcast.BroadcastFlags.AdminChat);
             foreach (var item in release.Assets)
             {
-                if(item.Name == "plugins.tar.gz")
+                if (item.Name == "plugins.tar.gz")
                 {
                     var responseRaw = await github.Connection.Get<Byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
@@ -80,7 +69,7 @@ namespace Gamer.Mistaken.Systems.End
                 }
             }
         }
-        
+
         private static void UpdateLate(Release release)
         {
             string sourceDirectory = Paths.Plugins + "/Extracted";

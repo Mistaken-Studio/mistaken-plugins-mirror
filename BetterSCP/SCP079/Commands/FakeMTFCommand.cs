@@ -2,13 +2,8 @@
 using Exiled.API.Features;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
-using Respawning.NamingRules;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {

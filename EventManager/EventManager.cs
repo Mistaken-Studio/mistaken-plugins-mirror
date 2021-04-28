@@ -1,25 +1,18 @@
 ﻿#pragma warning disable CS0618 // Typ lub składowa jest przestarzała
 
-using System.Linq;
-using System.IO;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-using System.Threading;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Gamer.EventManager.EventCreator;
+using Gamer.Utilities;
 using Gamer.Utilities.TranslationManagerSystem;
 using MEC;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using Gamer.EventManager.EventCreator;
-using EventManager.Events;
-using Gamer.Utilities;
-using Exiled.API.Features;
-using Exiled.Permissions.Extensions;
-using Exiled.API.Extensions;
-using Exiled.API.Enums;
+using UnityEngine;
 
 namespace Gamer.EventManager
 {
@@ -108,7 +101,7 @@ namespace Gamer.EventManager
                 //ev.SetPlugin(this);
                 ev.Register();
                 Gamer.Utilities.Logger.Info("EVENT_LOADER", "Event loaded: " + ev.Id);
-            }     
+            }
         }
 
         public void LoadExternalEvents()
@@ -116,7 +109,7 @@ namespace Gamer.EventManager
             try
             {
                 Gamer.Utilities.Logger.Info("EVENT_LOADER", "Loading External Plugins Started");
-                string @string =  Paths.Plugins + "/Events";
+                string @string = Paths.Plugins + "/Events";
                 if (!Directory.Exists(@string))
                     Directory.CreateDirectory(@string);
                 foreach (string path in Directory.GetFiles(@string))
@@ -201,7 +194,7 @@ namespace Gamer.EventManager
             yield return Timing.WaitForSeconds(1);
             player.Role = role;
             yield return Timing.WaitForSeconds(1);
-            if (pos != default) 
+            if (pos != default)
                 player.Position = pos;
         }
     }
@@ -306,7 +299,7 @@ namespace Gamer.EventManager
                 EventManager.ActiveEvent = this;
                 Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_Start} <color=#6B9ADF>{this.Name}</color>");
                 OnIni();
-                if(this is ISpawnRandomItems)
+                if (this is ISpawnRandomItems)
                 {
                     foreach (var item in Map.Rooms)
                     {
@@ -379,7 +372,7 @@ namespace Gamer.EventManager
 
             protected void WaitAndExecuteLoop(float time, Action action)
             {
-                Timing.RunCoroutine(IEWaitAndExecute(time, () => 
+                Timing.RunCoroutine(IEWaitAndExecute(time, () =>
                 {
                     action?.Invoke();
                     WaitAndExecuteLoop(time, action);

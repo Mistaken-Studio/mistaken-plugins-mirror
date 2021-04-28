@@ -1,8 +1,6 @@
 ﻿using Exiled.API.Features;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Gamer.EventManager
 {
@@ -37,7 +35,7 @@ namespace Gamer.EventManager
                 {
                     eventClass.Initiate();
                 }
-                catch(Exception eeee)
+                catch (Exception eeee)
                 {
                     Log.Debug(eeee);
                 }
@@ -68,7 +66,7 @@ namespace Gamer.EventManager
 
         private void Server_EndingRound(Exiled.Events.EventArgs.EndingRoundEventArgs ev)
         {
-            if(EventManager.ForceEnd)
+            if (EventManager.ForceEnd)
             {
                 ev.IsAllowed = true;
                 ev.IsRoundEnded = true;
@@ -92,7 +90,7 @@ namespace Gamer.EventManager
 
         private void Server_RestartingRound()
         {
-            if (EventManager.ActiveEvent?.Active ?? false) 
+            if (EventManager.ActiveEvent?.Active ?? false)
                 EventManager.ActiveEvent.DeInitiate();
         }
     }

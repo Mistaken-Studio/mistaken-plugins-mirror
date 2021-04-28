@@ -1,18 +1,15 @@
-﻿using System;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.Events.EventArgs;
+using Interactables.Interobjects.DoorUtils;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Exiled.API.Features;
-using MEC;
-using Exiled.API.Extensions;
-using Exiled.Events.EventArgs;
-using System.ComponentModel.Design;
-using Interactables.Interobjects.DoorUtils;
-using Exiled.API.Enums;
 
 namespace Gamer.EventManager.Events
 {
-    internal class Search : 
+    internal class Search :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent,
         EventCreator.ISpawnRandomItems,

@@ -1,14 +1,16 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Utilities.RoomSystemAPI
 {
+    /// <summary>
+    /// Room System
+    /// </summary>
     public static class RoomSystem
     {
-        public static RoomType NearestRoom(this Player player)
+        internal static RoomType NearestRoom(this Player player)
         {
             try
             {
@@ -38,8 +40,7 @@ namespace Gamer.Utilities.RoomSystemAPI
                 return RoomType.UNKNOWN;
             }
         }
-
-        public static RoomType CheckNear(this Player player)
+        private static RoomType CheckNear(this Player player)
         {
             if (player == null)
                 return RoomType.UNKNOWN;
@@ -60,8 +61,12 @@ namespace Gamer.Utilities.RoomSystemAPI
             }
         }
 
+        /// <summary>
+        /// Zone types
+        /// </summary>
         public enum RoomType
         {
+#pragma warning disable CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
             UNKNOWN = 0,
             SURFACE = 1,
             EZ = 2,
@@ -70,19 +75,47 @@ namespace Gamer.Utilities.RoomSystemAPI
             NUKE = 5,
             CCH049 = 6,
             POCKET = 7,
+#pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }
     }
-
+    /// <summary>
+    /// Scan output
+    /// </summary>
     public class ScanOutput
     {
+        /// <summary>
+        /// Amount of players in EZ
+        /// </summary>
         public int EZ = 0;
+        /// <summary>
+        /// Amount of players in HCZ
+        /// </summary>
         public int HCZ = 0;
+        /// <summary>
+        /// Amount of players in LCZ
+        /// </summary>
         public int LCZ = 0;
+        /// <summary>
+        /// Amount of players on Surface
+        /// </summary>
         public int SURFACE = 0;
+        /// <summary>
+        /// Amount of players in Nuke
+        /// </summary>
         public int NUKE = 0;
+        /// <summary>
+        /// Amount of players in SCP 049 Containment Chamber
+        /// </summary>
         public int CCH049 = 0;
+        /// <summary>
+        /// Amount of players in Pocket Dimmension
+        /// </summary>
         public int POCKET = 0;
 
+        /// <summary>
+        /// Scans
+        /// </summary>
+        /// <param name="team">Looked team</param>
         public ScanOutput(Team team = Team.RIP)
         {
             foreach (var player in team == Team.RIP ? RealPlayers.List.Where(p => p.Team != Team.RIP) : RealPlayers.List.Where(p => p.Team == team))

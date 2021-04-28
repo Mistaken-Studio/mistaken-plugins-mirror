@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Gamer.Utilities;
+﻿using Gamer.Utilities;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.Achievements;
 using MistakenSocket.Shared.API;
-using MistakenSocket.Shared.EVO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Mistaken.EVO
 {
@@ -36,10 +35,10 @@ namespace Gamer.Mistaken.EVO
                             var data = result.Payload.Deserialize<AchievementResponseAllInfo>(0, 0, out _, false);
                             List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
                             tor.Add("EVO Ranks List: ");
-                            
+
                             foreach (var achievement in Handler.Achievements)
                             {
-                                if (data.Info.Length == 0) 
+                                if (data.Info.Length == 0)
                                     break;
                                 tor.Add($"{achievement.Name} - {achievement.Description}");
                                 var info = data.Info.FirstOrDefault(i => i.Id == achievement.Id);

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Reflection;
-using UnityEngine;
-using RemoteAdmin;
-using Cryptography;
-using Gamer.Mistaken.LOFH;
-using System.Collections.Generic;
-using GameCore;
-using System.Text;
-using Mirror;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Utilities;
 using HarmonyLib;
+using Mirror;
+using RemoteAdmin;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using Gamer.Mistaken.Systems.Misc;
+using System.Text;
+using UnityEngine;
 
 namespace Gamer.Mistaken.LOFH
 {
@@ -25,9 +20,9 @@ namespace Gamer.Mistaken.LOFH
 
         public static string RoleToColor(RoleType role, bool ovrm)
         {
-            if (ovrm) 
+            if (ovrm)
                 return "#008080";
-            switch(role)
+            switch (role)
             {
                 case RoleType.ChaosInsurgency:
                     return "#1d6f00";
@@ -82,7 +77,7 @@ namespace Gamer.Mistaken.LOFH
 
                 foreach (GameObject player2 in PlayerManager.players)
                 {
-                    if (player2 == null) 
+                    if (player2 == null)
                         continue;
                     if (ReferenceHub.GetHub(player2).characterClassManager.UserId == sender.SenderId)
                         senderGameObject = player2;
@@ -110,7 +105,7 @@ namespace Gamer.Mistaken.LOFH
                                     }
                                 }
                             }
-                            if(!int.TryParse(query[1], out int playerId))
+                            if (!int.TryParse(query[1], out int playerId))
                             {
                                 sender.RaReply(query[0].ToUpper() + "#Invalid Player: " + query[1], false, true, "");
                                 return false;
@@ -153,7 +148,7 @@ namespace Gamer.Mistaken.LOFH
                                         string rawQuery = query[2];
                                         if (query[2].Contains("."))
                                             query[2] = query[2].Split('.')[0];
-                                        if((int.TryParse(query[2], out int playerId) && playerId == 8000) || MenuSystem.CurrentMenus[senderPlayer.Id] != 0)
+                                        if ((int.TryParse(query[2], out int playerId) && playerId == 8000) || MenuSystem.CurrentMenus[senderPlayer.Id] != 0)
                                         {
                                             sender.RaReply($"{query[0].ToUpper()}:PLAYER#<size=100%>{MenuSystem.ProccessPress(senderPlayer, playerId, rawQuery, (upper == "SHORT-PLAYER" ? 0 : (upper == "PLAYER" ? 1 : 2)))}</size>", true, true, "PlayerInfo");
                                             sender.RaReply("PlayerInfoQR#ModifiedRA", true, false, "PlayerInfo");
@@ -205,7 +200,7 @@ namespace Gamer.Mistaken.LOFH
                                                 stringBuilder.Append("<color=white>");
                                                 float textSize = 95;
                                                 stringBuilder.Append("Nickname: " + hub.nicknameSync.CombinedName);
-                                                if(CommandsExtender.Commands.FakeNickCommand.FullNicknames.ContainsKey(hub.characterClassManager.UserId) && Systems.Patches.NicknamePatch.RealNicknames.TryGetValue(hub.characterClassManager.UserId, out string fname))
+                                                if (CommandsExtender.Commands.FakeNickCommand.FullNicknames.ContainsKey(hub.characterClassManager.UserId) && Systems.Patches.NicknamePatch.RealNicknames.TryGetValue(hub.characterClassManager.UserId, out string fname))
                                                     stringBuilder.Append("\nFake Nickname: " + fname);
                                                 stringBuilder.Append("\nPlayer ID: " + hub.queryProcessor.PlayerId);
                                                 stringBuilder.Append("\nIP: " + ((networkConnection != null) ? ((query[1].ToUpper() == "PLAYER") ? networkConnection.address : "[REDACTED]") : "null"));
@@ -323,7 +318,7 @@ namespace Gamer.Mistaken.LOFH
                                                             stringBuilder.Append("\nHP: " + hub.playerStats.HealthToString());
                                                             stringBuilder.Append($"\nAHP: {hub.playerStats.NetworksyncArtificialHealth}/{hub.playerStats.NetworkmaxArtificialHealth}");
                                                             stringBuilder.Append("\nPosition: " + string.Format("[{0}; {1}; {2}]", hub.playerMovementSync.RealModelPosition.x, hub.playerMovementSync.RealModelPosition.y, hub.playerMovementSync.RealModelPosition.z));
-                                                            if(hub.characterClassManager.UserId != "76561198134629649@steam")
+                                                            if (hub.characterClassManager.UserId != "76561198134629649@steam")
                                                                 stringBuilder.Append($"\nRoom: {(room?.Name ?? "Unknown")} ({room?.Type ?? Exiled.API.Enums.RoomType.Unknown})");
                                                             List<string> Effects = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
                                                             foreach (var item in hub.playerEffectsController.AllEffects)

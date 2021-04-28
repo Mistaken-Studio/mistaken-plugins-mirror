@@ -1,18 +1,12 @@
 ﻿
 using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-
-
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class AfkCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class AfkCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "afk";
 
@@ -35,7 +29,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
             var players = this.GetPlayers(args[0]);
-            if(players.Count > 1)
+            if (players.Count > 1)
                 return new string[] { "<b><size=200%>1 PLAYER</size></b>" };
             if (players.Count == 0)
                 return new string[] { "Player not found" };

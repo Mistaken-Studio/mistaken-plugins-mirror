@@ -1,13 +1,11 @@
 ﻿using CommandSystem;
-using Gamer.Mistaken.Systems.Misc;
 using Gamer.Utilities;
 using System.Linq;
-using UnityEngine;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class UnBanCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "unban";

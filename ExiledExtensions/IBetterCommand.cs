@@ -1,20 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Utilities
 {
+    /// <summary>
+    /// Command Handler
+    /// </summary>
     public abstract class IBetterCommand : ICommand
     {
+        /// <summary>
+        /// Command that is handled
+        /// </summary>
         public abstract string Command { get; }
+        /// <summary>
+        /// Command alliases
+        /// </summary>
 
         public virtual string[] Aliases { get; } = new string[0];
 
+        /// <summary>
+        /// Command Descryption
+        /// </summary>
         public virtual string Description { get; } = "";
 
+        /// <summary>
+        /// Full permission name
+        /// </summary>
         public string FullPermission
         {
             get
@@ -26,6 +41,13 @@ namespace Gamer.Utilities
         }
 
         private DateTime _start;
+        /// <summary>
+        /// Executes command
+        /// </summary>
+        /// <param name="arguments">Arguments</param>
+        /// <param name="sender">Command sender</param>
+        /// <param name="response">Command response</param>
+        /// <returns>If command was successful</returns>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             _start = DateTime.Now;
@@ -205,13 +227,80 @@ namespace Gamer.Utilities
 
 
             response = string.Join("\n", Execute(sender, newQuery.Split(' ').Skip(1).ToArray(), out bool successfull));
-            if(bc)
+            if (bc)
                 sender.GetPlayer().Broadcast(Command, 10, string.Join("\n", response));
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(args);
             Diagnostics.MasterHandler.LogTime("Command", this.Command, _start, DateTime.Now);
             return successfull;
         }
-
+        /// <summary>
+        /// Executes command
+        /// </summary>
+        /// <param name="args">Arguments</param>
+        /// <param name="sender">Command sender</param>
+        /// <param name="success">If command was successful</param>
+        /// <returns>Command response</returns>
         public abstract string[] Execute(ICommandSender sender, string[] args, out bool success);
+
+        #region Extensions
+        /// <summary>
+        /// Returns player list with ids
+        /// </summary>
+        /// <param name="arg">Ids</param>
+        /// <param name="allowPets">If pets can be included</param>
+        /// <returns></returns>
+        public List<Player> GetPlayers(string arg, bool allowPets = false)
+        {
+            List<Player> tor = new List<Player>();
+            foreach (var item in arg.Split('.'))
+            {
+                if (int.TryParse(item, out int pid))
+                {
+                    var p = allowPets ? Player.Get(pid) : RealPlayers.Get(pid);
+                    if (p != null)
+                        tor.Add(p);
+                }
+            }
+            return tor;
+        }
+        /// <summary>
+        /// Runs <paramref name="toExecute"/> on every matching player
+        /// </summary>
+        /// <param name="arg">Ids</param>
+        /// <param name="toExecute">Action</param>
+        /// <param name="allowPets">If pets can be included</param>
+        /// <returns>If found any player</returns>
+        public bool ForeachPlayer(string arg, Action<Player> toExecute, bool allowPets = false)
+        {
+            var players = GetPlayers(arg, allowPets).ToArray();
+            if (players.Length == 0)
+                return false;
+            foreach (var item in players)
+                toExecute?.Invoke(item);
+            return true;
+        }
+        /// <summary>
+        /// Runs <paramref name="toExecute"/> on every matching player
+        /// </summary>
+        /// <param name="arg">Ids</param>
+        /// <param name="toExecute">Func</param>
+        /// <param name="allowPets">If pets can be included</param>
+        /// <param name="success">If found any player</param>
+        /// <returns>Joined results of all <paramref name="toExecute"/></returns>
+        public string[] ForeachPlayer(string arg, out bool success, Func<Player, string[]> toExecute, bool allowPets = false)
+        {
+            List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
+            var players = GetPlayers(arg, allowPets).ToArray();
+            if (players.Length == 0)
+                success = false;
+            else
+                success = true;
+            foreach (var item in players)
+                tor.AddRange(toExecute?.Invoke(item).Select(i => $"{item.Nickname} | {i}"));
+            var torArray = tor.ToArray();
+            NorthwoodLib.Pools.ListPool<string>.Shared.Rent(tor);
+            return torArray;
+        }
+        #endregion
     }
 }

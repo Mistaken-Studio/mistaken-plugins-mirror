@@ -1,20 +1,12 @@
-﻿
-using Newtonsoft.Json.Linq;
-
-
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
-
-using Gamer.Utilities;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Utilities;
+using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class C106Command : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class C106Command : IBetterCommand, IPermissionLocked
     {
         public string Permission => "c106";
 

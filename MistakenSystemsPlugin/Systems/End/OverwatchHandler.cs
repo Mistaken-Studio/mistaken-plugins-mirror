@@ -1,21 +1,14 @@
 ﻿#pragma warning disable IDE0079
 #pragma warning disable IDE0060
 
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using MEC;
-using Mirror;
-using MistakenSocket.Client.SL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
-using Gamer.Diagnostics;
-using MistakenSocket.Shared.CentralToSL;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -93,7 +86,7 @@ namespace Gamer.Mistaken.Systems.End
         private static IEnumerator<float> DoRoundLoop()
         {
             yield return Timing.WaitForSeconds(1);
-            while(Round.IsStarted)
+            while (Round.IsStarted)
             {
                 foreach (var player in Player.List.Where(p => p.CheckPermissions(PlayerPermissions.Overwatch)))
                 {
@@ -102,7 +95,7 @@ namespace Gamer.Mistaken.Systems.End
                         InOverwatch.Remove(player.UserId);
                         InLongOverwatch.Remove(player.UserId);
                         player.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, false);
-                        Base.GUI.PseudoGUIHandler.Set(player, "long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, null);
+                        player.SetGUI("long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, null);
                         AnnonymousEvents.Call("LONG_OVERWATCH", (player, false));
                         continue;
                     }
@@ -118,11 +111,11 @@ namespace Gamer.Mistaken.Systems.End
                             InOverwatch.Remove(player.UserId);
                             InLongOverwatch.Add(player.UserId);
                             player.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, true);
-                            Base.GUI.PseudoGUIHandler.Set(player, "long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, "Active: <color=red>Long Overwatch</color>");
+                            player.SetGUI("long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, "Active: <color=red>Long Overwatch</color>");
                             AnnonymousEvents.Call("LONG_OVERWATCH", (player, true));
                         }
                     }
-                    else if(!InLongOverwatch.Contains(player.UserId))
+                    else if (!InLongOverwatch.Contains(player.UserId))
                     {
                         if (player.IsOverwatchEnabled)
                             InOverwatch.Add(player.UserId, DateTime.Now);

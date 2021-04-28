@@ -1,15 +1,11 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Utilities;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Gamer.Mistaken.BetterSCP;
-using HarmonyLib;
-using MEC;
 using UnityEngine;
-using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.BetterSCP.SCP049
 {
@@ -40,7 +36,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            if(ev.Killer?.Role == RoleType.Scp0492)
+            if (ev.Killer?.Role == RoleType.Scp0492)
             {
                 ev.Killer.Health += 100;
                 if (ev.Killer.MaxHealth < ev.Killer.Health)
@@ -62,7 +58,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
         private IEnumerator<float> UpdateInfo()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 try
@@ -99,9 +95,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                             }
                         }
                         if (message.Count != 0)
-                            Base.GUI.PseudoGUIHandler.Set(player, "scp049", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Potential zombies:<br><br>{string.Join("<br>", message)}");
+                            player.SetGUI("scp049", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Potential zombies:<br><br>{string.Join("<br>", message)}");
                         else
-                            Base.GUI.PseudoGUIHandler.Set(player, "scp049", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                            player.SetGUI("scp049", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                         NorthwoodLib.Pools.ListPool<string>.Shared.Return(message);
                     }
                     NorthwoodLib.Pools.ListPool<Player>.Shared.Return(zombieInRange);
@@ -129,7 +125,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
             }
             while (player?.Role == RoleType.Scp049)
             {
-                if (player == null) 
+                if (player == null)
                     break;
                 try
                 {
@@ -139,16 +135,16 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                         if (Vector3.Distance(player.Position, zombie.Position) <= 10)
                         {
                             shield += 100;
-                            if(zombie.MaxHealth > zombie.Health)
+                            if (zombie.MaxHealth > zombie.Health)
                                 zombie.Health += 0.5f;
                         }
                     }
-                    if(Systems.Shield.ShieldedManager.Shieldeds.Any(i => i.player.Id == player.Id))
+                    if (Systems.Shield.ShieldedManager.Shieldeds.Any(i => i.player.Id == player.Id))
                         Systems.Shield.ShieldedManager.Get(player).MaxShield = shield;
                     else
                         Systems.Shield.ShieldedManager.Add(new Systems.Shield.Shielded(player, 60, 20, 15, 0, 1));
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);

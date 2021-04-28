@@ -1,12 +1,10 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class LastVictimCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "last_attacker";
@@ -22,7 +20,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) => {
+            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            {
                 CommandsHandler.LastVictims.TryGetValue(player.UserId, out (Player, Player) info);
                 string[] tor = new string[3];
                 tor[0] = $"Data for {player.UserId}";
@@ -30,7 +29,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 tor[2] = $"Killed: {info.Item2?.ToString(true) ?? "Not found"}";
                 return tor;
             });
-            if (!success) 
+            if (!success)
                 return new string[] { "Player not found", GetUsage() };
             _s = true;
             return output;

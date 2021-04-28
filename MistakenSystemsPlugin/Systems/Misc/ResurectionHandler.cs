@@ -1,16 +1,13 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
 using Mirror;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
@@ -43,12 +40,12 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
+            ev.Player.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
+            ev.Target.SetGUI("u500", PseudoGUIHandler.Position.TOP, null);
         }
 
         private void Server_RestartingRound()
@@ -70,7 +67,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Patches.RagdollManagerPatch.RagdollInfo nearest = null;
             foreach (var ragdoll in Patches.RagdollManagerPatch.Ragdolls.Where(p => (DateTime.Now - p.DeathTime).TotalSeconds < 20).ToArray())
             {
-                if (ragdoll.Team == Team.SCP || ragdoll.Team == Team.TUT) 
+                if (ragdoll.Team == Team.SCP || ragdoll.Team == Team.TUT)
                     continue;
                 var target = Player.Get(ragdoll.ragdoll.owner.PlayerId);
                 if (target == null || target.IsOverwatchEnabled || target.GameObject == null || !target.IsConnected)
@@ -87,29 +84,29 @@ namespace Gamer.Mistaken.Systems.Misc
                         nearestDistance = distance;
                     }
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error("Failed to get ragdoll distance");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
             }
-            if(nearestDistance != 999)
+            if (nearestDistance != 999)
             {
                 var target = Player.Get(nearest.ragdoll.owner.PlayerId);
                 if (Resurected.Contains(target.UserId))
                 {
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz może zostać wskrzeszony raz na rundę", 5);
+                    target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz może zostać wskrzeszony raz na rundę", 5);
                     return false;
                 }
                 if (Resurections.Where(i => i == target.UserId).Count() > 3)
                 {
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Możesz wskrzesić 3 osoby na rundę", 5);
+                    target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Możesz wskrzesić 3 osoby na rundę", 5);
                     return false;
                 }
                 player.EnableEffect<CustomPlayerEffects.Amnesia>(15);
                 player.EnableEffect<CustomPlayerEffects.Ensnared>(11);
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Używam <color=yellow>SCP 500</color> na {target.Nickname}", 9);
+                target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Używam <color=yellow>SCP 500</color> na {target.Nickname}", 9);
                 Timing.CallDelayed(10, () =>
                 {
                     if (player.Role == originalRole)
@@ -117,17 +114,17 @@ namespace Gamer.Mistaken.Systems.Misc
                         target = Player.Get(nearest.ragdoll.owner.PlayerId);
                         if (target == null || target.GameObject == null || !target.IsConnected)
                         {
-                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracza nie ma na serwerze", 5);
+                            target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracza nie ma na serwerze", 5);
                             return;
                         }
                         if (target.IsOverwatchEnabled)
                         {
-                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz chyba nie chce być wskrzeszony", 5);
+                            target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Gracz chyba nie chce być wskrzeszony", 5);
                             return;
                         }
                         if (target.IsAlive)
                         {
-                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Jesteś pewien że ten gracz jest martwy?", 5);
+                            target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Nie udało się wskrzesić gracza | Jesteś pewien że ten gracz jest martwy?", 5);
                             return;
                         }
                         Vector3 pos = nearest.ragdoll.transform.position;
@@ -150,7 +147,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         {
                             Misc.SpawnProtectHandler.SpawnKillProtected.RemoveAll(i => i.Key == target.Id);
                             target.Position = pos + Vector3.up;
-                            Mistaken.Base.GUI.PseudoGUIHandler.Set(target, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Zostałeś <color=yellow>wskrzeszony</color> przez {player.Nickname}", 5);
+                            target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Zostałeś <color=yellow>wskrzeszony</color> przez {player.Nickname}", 5);
                             target.Health = 5;
                             target.ArtificialHealth = 75;
                             target.EnableEffect<CustomPlayerEffects.Blinded>(10);
@@ -178,14 +175,14 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_ChangingItem(Exiled.Events.EventArgs.ChangingItemEventArgs ev)
         {
-            if(ev.NewItem.id == ItemType.SCP500) 
-                Timing.RunCoroutine(Interface(ev.Player));   
+            if (ev.NewItem.id == ItemType.SCP500)
+                Timing.RunCoroutine(Interface(ev.Player));
         }
 
         private IEnumerator<float> Interface(Player player)
         {
             yield return Timing.WaitForSeconds(1);
-            while(player?.CurrentItem.id == ItemType.SCP500)
+            while (player?.CurrentItem.id == ItemType.SCP500)
             {
                 float nearestDistance = 999;
                 Patches.RagdollManagerPatch.RagdollInfo nearest = null;
@@ -210,14 +207,14 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (nearestDistance != 999)
                     {
-                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, $"Wpisz '.u500' w konsoli(~) aby <color=yellow>wskrzesić</color> {target.Nickname} ({15 - Math.Floor((DateTime.Now - nearest.DeathTime).TotalSeconds)}s)");
+                        player.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, $"Wpisz '.u500' w konsoli(~) aby <color=yellow>wskrzesić</color> {target.Nickname} ({15 - Math.Floor((DateTime.Now - nearest.DeathTime).TotalSeconds)}s)");
                     }
                     else
-                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
+                        player.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
                 }
                 yield return Timing.WaitForSeconds(1);
             }
-            Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
+            player.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
     }
 }

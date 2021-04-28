@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using MEC;
-using UnityEngine;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
+using MEC;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.AntiAFK
 {
@@ -15,7 +13,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
     {
         public override bool IsBasic => true;
         public Handler(PluginHandler p) : base(p)
-        {  
+        {
         }
         public override string Name => "AntiAFK";
         public override void OnEnable()
@@ -44,7 +42,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
         private static IEnumerator<float> AfkDetector()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 CheckForAfk();

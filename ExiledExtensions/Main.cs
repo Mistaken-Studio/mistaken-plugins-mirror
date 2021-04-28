@@ -1,31 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Features;
 using Mirror;
-using UnityEngine;
-using MEC;
-using System.Security.Cryptography;
-using Exiled.API.Extensions;
 using NPCS;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Utilities
 {
+    /// <summary>
+    /// Announymous Events
+    /// </summary>
     public static class AnnonymousEvents
     {
         private static readonly Dictionary<string, List<Action<object>>> Subscribers = new Dictionary<string, List<Action<object>>>();
 
+        /// <summary>
+        /// Calls Event
+        /// </summary>
+        /// <param name="name">Event Name</param>
+        /// <param name="arg">Event args</param>
         public static void Call(string name, object arg)
         {
             Log.Debug("Running " + name);
-            if(Subscribers.TryGetValue(name, out List<Action<object>> handlers))
+            if (Subscribers.TryGetValue(name, out List<Action<object>> handlers))
             {
                 foreach (var item in handlers)
                     item(arg);
             }
         }
+        /// <summary>
+        /// Subscribes to event
+        /// </summary>
+        /// <param name="name">Event name</param>
+        /// <param name="handler">Event handler</param>
         public static void Subscribe(string name, Action<object> handler)
         {
             Log.Debug("Subscribing to " + name);
@@ -33,6 +43,11 @@ namespace Gamer.Utilities
                 Subscribers[name] = new List<Action<object>>();
             Subscribers[name].Add(handler);
         }
+        /// <summary>
+        /// UnSubscribes to event
+        /// </summary>
+        /// <param name="name">Event name</param>
+        /// <param name="handler">Event handler</param>
         public static void UnSubscribe(string name, Action<object> handler)
         {
             Log.Debug("UnSubscribing to " + name);
@@ -40,10 +55,21 @@ namespace Gamer.Utilities
                 Subscribers[name].Remove(handler);
         }
     }
-
+    /// <summary>
+    /// Main Utils
+    /// </summary>
     public static class Main
     {
+        /// <summary>
+        /// List of staff that allowed to ignore DNT
+        /// </summary>
         public static string[] IgnoredUIDs = new string[] { };
+        /// <summary>
+        /// Returns room offseted position
+        /// </summary>
+        /// <param name="me">Room</param>
+        /// <param name="offset">Offset</param>
+        /// <returns>Position</returns>
         public static Vector3 GetByRoomOffset(this Room me, Vector3 offset)
         {
             var basePos = me.Position;
@@ -51,22 +77,38 @@ namespace Gamer.Utilities
             basePos += offset;
             return basePos;
         }
+        /// <inheritdoc cref="MapPlus.Broadcast(string, ushort, string, global::Broadcast.BroadcastFlags)"/>
         public static void Broadcast(this Player me, string tag, ushort duration, string message, Broadcast.BroadcastFlags flags = global::Broadcast.BroadcastFlags.Normal)
         {
             me.Broadcast(duration, $"<color=orange>[<color=green>{tag}</color>]</color> {message}", flags);
         }
 
+        /// <summary>
+        /// Checks if player has base game permission
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <param name="perms">Permission</param>
+        /// <returns>If has permission</returns>
         public static bool CheckPermissions(this Player me, PlayerPermissions perms)
         {
             return PermissionsHandler.IsPermitted(me.ReferenceHub.serverRoles.Permissions, perms);
         }
+        /// <summary>
+        /// If player is Dev
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <returns>Is Dev</returns>
         public static bool IsDev(this Player me)
         {
             if (me == null)
                 return false;
             return me.UserId.IsDevUserId();
         }
-
+        /// <summary>
+        /// Returns if UserId is Dev's userId
+        /// </summary>
+        /// <param name="me">UserId</param>
+        /// <returns>If belongs to dev</returns>
         public static bool IsDevUserId(this string me)
         {
             if (me == null)
@@ -86,30 +128,53 @@ namespace Gamer.Utilities
                 //Hyper
                 case "76561198215262787":
                 case "365499281215586326":
-                //Lambda
-                //case "76561198796704471":
-                //case "450669501952819200":
                     return true;
                 default:
                     return false;
             }
         }
-
+        /// <summary>
+        /// Returns player
+        /// </summary>
+        /// <param name="me">Potentialy player</param>
+        /// <returns>Player</returns>
         public static Player GetPlayer(this CommandSender me) => Player.Get(me.SenderId);
+        /// <summary>
+        /// Returns player
+        /// </summary>
+        /// <param name="me">Potentialy player</param>
+        /// <returns>Player</returns>
         public static Player GetPlayer(this ICommandSender me) => Player.Get(((CommandSender)me).SenderId);
-
+        /// <summary>
+        /// Returns if <paramref name="me"/> is Player or Server
+        /// </summary>
+        /// <param name="me">To Check</param>
+        /// <returns>Result</returns>
         public static bool IsPlayer(this CommandSender me) => GetPlayer(me) != null;
+        /// <summary>
+        /// Returns if <paramref name="me"/> is Player or Server
+        /// </summary>
+        /// <param name="me">To Check</param>
+        /// <returns>Result</returns>
         public static bool IsPlayer(this ICommandSender me) => GetPlayer(me) != null;
 
+        /// <summary>
+        /// If player has DNT and if it should be effective
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <returns>if has DNT</returns>
         public static bool IsDNT(this Player me)
         {
             if (IgnoredUIDs.Contains(me.UserId))
                 return false;
             return me.DoNotTrack;
         }
-
+        /// <summary>
+        /// Session Vars
+        /// </summary>
         public enum SessionVarType
         {
+#pragma warning disable CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
             TALK,
             ITEM_LESS_CLSSS_CHANGE,
             HIDDEN,
@@ -123,8 +188,25 @@ namespace Gamer.Utilities
             CI_SNAV,
             CI_IMPACT,
             CC_GUARD_COMMANDER
+#pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }
+        /// <summary>
+        /// Returns SessionVarValue or <paramref name="defaultValue"/> if was not found
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="me">Player</param>
+        /// <param name="type">Session Var</param>
+        /// <param name="defaultValue">Default Value</param>
+        /// <returns>Value</returns>
         public static T GetSessionVar<T>(this Player me, SessionVarType type, T defaultValue = default) => me.GetSessionVar<T>(type.ToString(), defaultValue);
+        /// <summary>
+        /// Returns SessionVarValue or <paramref name="defaultValue"/> if was not found
+        /// </summary>
+        /// <typeparam name="T">Type</typeparam>
+        /// <param name="me">Player</param>
+        /// <param name="name">Session Var</param>
+        /// <param name="defaultValue">Default Value</param>
+        /// <returns>Value</returns>
         public static T GetSessionVar<T>(this Player me, string name, T defaultValue = default)
         {
             if (me.SessionVariables.TryGetValue(name, out object value))
@@ -137,12 +219,35 @@ namespace Gamer.Utilities
             else
                 return defaultValue;
         }
+        /// <summary>
+        /// Sets SessionVarValue
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <param name="type">Session Var</param>
+        /// <param name="value">Value</param>
         public static void SetSessionVar(this Player me, SessionVarType type, object value) => me.SetSessionVar(type.ToString(), value);
+        /// <summary>
+        /// Sets SessionVarValue
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <param name="name">Session Var</param>
+        /// <param name="value">Value</param>
         public static void SetSessionVar(this Player me, string name, object value) => me.SessionVariables[name] = value;
-        
 
-        public static bool CheckPermission(this ICommandSender me, string permission) => CheckPermission(me as CommandSender, permission);      
+
+        /// <summary>
+        /// Returns if player has permission
+        /// </summary>
+        /// <param name="cs">Player</param>
+        /// <param name="permission">Permission</param>
+        /// <returns>If has permisison</returns>
         public static bool CheckPermission(this CommandSender cs, string permission) => CheckPermission(cs.GetPlayer(), permission);
+        /// <summary>
+        /// Returns if player has permission
+        /// </summary>
+        /// <param name="player">Player</param>
+        /// <param name="permission">Permission</param>
+        /// <returns>If has permisison</returns>
         public static bool CheckPermission(this Player player, string permission)
         {
             if (player.IsDev())
@@ -185,7 +290,7 @@ namespace Gamer.Utilities
             }
             return false;
         }
-        public static bool CheckPermission(this string userId, string permission)
+        internal static bool CheckPermission(this string userId, string permission)
         {
             if (userId.IsDevUserId())
                 return true;
@@ -223,6 +328,11 @@ namespace Gamer.Utilities
             return false;
         }
 
+        /// <summary>
+        /// Returns <see cref="Player.DisplayNickname"/> or <see cref="Player.Nickname"/> if first is null or "NULL" if player is null
+        /// </summary>
+        /// <param name="player">Player</param>
+        /// <returns>Name</returns>
         public static string GetDisplayName(this Player player) => player == null ? "NULL" : player.DisplayNickname ?? player.Nickname;
 
         private static bool HasGroupInheritancePermission(Group group, string permission)
@@ -244,7 +354,6 @@ namespace Gamer.Utilities
             }
             return false;
         }
-
         private static bool HasGroupPermission(Group group, string permission)
         {
             if (permission.Contains("."))
@@ -260,58 +369,12 @@ namespace Gamer.Utilities
                 return false;
         }
 
-        public static List<Player> GetPlayers(this IBetterCommand _, string arg, bool allowPets = false)
-        {
-            List<Player> tor = new List<Player>();
-            foreach (var item in arg.Split('.'))
-            {
-                if (int.TryParse(item, out int pid))
-                {
-                    var p = allowPets ? Player.Get(pid) : RealPlayers.Get(pid);
-                    if (p != null)
-                        tor.Add(p);
-                }
-            }
-            return tor;
-        }
-
-        public static bool ForeachPlayer(this IBetterCommand me, string arg, out Player[] players, Action<Player> toExecute, bool allowPets = false)
-        {
-            players = GetPlayers(me, arg, allowPets).ToArray();
-            if (players.Length == 0) return false;
-            foreach (var item in players)
-            {
-                toExecute?.Invoke(item);
-            }
-            return true;
-        }
-
-        public static bool ForeachPlayer(this IBetterCommand me, string arg, Action<Player> toExecute, bool allowPets = false)
-        {
-            return ForeachPlayer(me, arg, out Player[] _, toExecute, allowPets);
-        }
-
-        public static string[] ForeachPlayer(this IBetterCommand me, string arg, out Player[] players, out bool success, Func<Player, string[]> toExecute, bool allowPets = false)
-        {
-            List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
-            players = GetPlayers(me, arg, allowPets).ToArray();
-            if (players.Length == 0) success = false;
-            else success = true;
-            foreach (var item in players)
-            {
-                tor.AddRange(toExecute?.Invoke(item).Select(i => $"{item.Nickname} | {i}"));
-            }
-            var torArray = tor.ToArray();
-            NorthwoodLib.Pools.ListPool<string>.Shared.Rent(tor);
-            return torArray;
-        }
-
-        public static string[] ForeachPlayer(this IBetterCommand me, string arg, out bool success, Func<Player, string[]> toExecute, bool allowPets = false)
-        {
-            var tor = ForeachPlayer(me, arg, out Player[] _, out success, toExecute, allowPets);
-            return tor;
-        }
-
+        /// <summary>
+        /// Drops greneade under player
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <param name="grenadeType">Grenade type</param>
+        /// <param name="amount">Amount</param>
         public static void DropGrenadeUnder(this Player me, int grenadeType, int amount = 1)
         {
             var grenadeManager = me.GameObject.GetComponent<Grenades.GrenadeManager>();
@@ -323,77 +386,32 @@ namespace Gamer.Utilities
                 NetworkServer.Spawn(component.gameObject);
             }
         }
-
+        /// <summary>
+        /// Kills player with message
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <param name="reason">Kill reason</param>
         public static void Kill(this Player me, string reason)
         {
             me.ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(float.MaxValue, $"*{reason}", DamageTypes.None, -1), me.GameObject);
         }
-        [System.Obsolete("Use PseudoGUI", true)]
-        public static bool IsHintFree(this Player me) => !LockedHints.Contains(me.Id);
-        private readonly static HashSet<int> LockedHints = new HashSet<int>();
-        [System.Obsolete("Use PseudoGUI", true)]
-        public static void ShowHintPulsating(this Player me, string message, float duraiton = 3f, bool lockHints = false, bool overrideLock = false)
-        {
-            if (LockedHints.Contains(me.Id) && !overrideLock)
-                return;
-            message = message.Replace("\n", "<br>");
-            me.HintDisplay.Show(new Hints.TextHint(message, new Hints.HintParameter[]
-            {
-                new Hints.StringHintParameter(message)
-            }, new Hints.HintEffect[]
-            {
-                Hints.HintEffectPresets.TrailingPulseAlpha(0.5f, 1f, 0.5f, 2f, 0f, 3)
-            }, duraiton));
-            if (lockHints)
-            {
-                LockedHints.Add(me.Id);
-                MEC.Timing.CallDelayed(duraiton, () => {
-                    LockedHints.Remove(me.Id);
-                });
-            }
-        }
-        [System.Obsolete("Use PseudoGUI")]
-        public static void ShowHint(this Player me, string message, bool lockHints, float duraiton = 3f, bool overrideLock = false)
-        {
-            if (LockedHints.Contains(me.Id) && !overrideLock)
-                return;
-            message = message.Replace("\n", "<br>");
-            me.ShowHint(message, duraiton);
-            if (lockHints)
-            {
-                LockedHints.Add(me.Id);
-                MEC.Timing.CallDelayed(duraiton, () => {
-                    LockedHints.Remove(me.Id);
-                });
-            }
-        }
-
+        /// <summary>
+        /// Converts player to string
+        /// </summary>
+        /// <param name="me">Player</param>
+        /// <param name="userId">If userId should be shown</param>
+        /// <returns>String version of player</returns>
         public static string ToString(this Player me, bool userId)
         {
-            return me.ToString(userId, true);
-        }
-        public static string ToString(this Player me, bool userId, bool autoHideUserId = true)
-        {
-            if (autoHideUserId)
+            if (userId)
                 return $"({me.Id}) {me.GetDisplayName()}";
-            return $"({me.Id}) {me.GetDisplayName()}" + (userId ? $" | {me.UserId}" : "");
+            return $"({me.Id}) {me.GetDisplayName()} | {me.UserId}";
         }
-
-        public static bool IsLCZDecontaminated(this LightContainmentZoneDecontamination.DecontaminationController _, float minTimeLeft = 0)
-        {
-            return MapPlus.IsLCZDecontaminated(minTimeLeft);
-        }
-
-        public static void Do106Teleport(this Player me, Vector3 target)
-        {
-            me.ReferenceHub.scp106PlayerScript.NetworkportalPosition = target;
-            Timing.RunCoroutine(me.ReferenceHub.scp106PlayerScript._DoTeleportAnimation(), 0);
-
-            Timing.CallDelayed(5f, () => {
-                me.ReferenceHub.scp106PlayerScript.NetworkportalPosition = new Vector3(0, 6000, 0);
-            });
-        }
-
+        /// <summary>
+        /// Returns if player is real, ready player
+        /// </summary>
+        /// <param name="me">Playet to check</param>
+        /// <returns>If player is ready, real player</returns>
         public static bool IsReadyPlayer(this Player me) => me.IsConnected && me.IsVerified && !me.IsNPC() && me.UserId != null;
     }
 }

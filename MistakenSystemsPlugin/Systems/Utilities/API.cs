@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Gamer.Utilities;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MEC;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Systems.Utilities.API
 {
@@ -25,7 +22,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
             set
             {
                 _rl = value;
-                if(_roundLimit.HasValue) Timing.KillCoroutines(_roundLimit.Value);
+                if (_roundLimit.HasValue) Timing.KillCoroutines(_roundLimit.Value);
                 if (_rl != 0) _roundLimit = Timing.RunCoroutine(ExecuteRoundLimit());
             }
         }
@@ -35,8 +32,8 @@ namespace Gamer.Mistaken.Systems.Utilities.API
             private static MEC.CoroutineHandle? Handle;
 
             private static bool _enabled = false;
-            public static bool Enabled 
-            { 
+            public static bool Enabled
+            {
                 get
                 {
                     return _enabled;
@@ -72,7 +69,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
                     {
                         Generator079.mainGenerator.ServerOvercharge(Map.Blackout.Length, Map.Blackout.OnlyHCZ);
                     }
-                    catch(System.Exception ex)
+                    catch (System.Exception ex)
                     {
                         Log.Error(ex.Message);
                         Log.Error(ex.StackTrace);
@@ -407,9 +404,9 @@ namespace Gamer.Mistaken.Systems.Utilities.API
         private static IEnumerator<float> ExecuteRoundLimit()
         {
             yield return Timing.WaitForSeconds(1);
-            while(Round.IsStarted)
+            while (Round.IsStarted)
             {
-                if(Round.ElapsedTime.TotalSeconds > _rl && _rl != 0)
+                if (Round.ElapsedTime.TotalSeconds > _rl && _rl != 0)
                 {
                     StartWarheadLock(WarheadLockType.SEC30);
                     break;
@@ -425,7 +422,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
 
         private static IEnumerator<float> IRestartTeslaGates(bool loud)
         {
-            if(loud)
+            if (loud)
             {
                 while (Cassie.IsSpeaking)
                     yield return Timing.WaitForOneFrame;
@@ -541,7 +538,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
         DISABLED_FOR_079,
         DISABLED_FOR_ALL,
     }
-    
+
     public enum WarheadLockType
     {
         MIN10 = 0,

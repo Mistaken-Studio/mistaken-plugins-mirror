@@ -1,17 +1,12 @@
 ﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
+using MEC;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -57,7 +52,7 @@ namespace Gamer.Mistaken.Systems.End
         private void Server_WaitingForPlayers()
         {
             var startRound = GameObject.Find("StartRound");
-            if(startRound == null)
+            if (startRound == null)
             {
                 Log.Error("StartRound is NULL");
                 return;

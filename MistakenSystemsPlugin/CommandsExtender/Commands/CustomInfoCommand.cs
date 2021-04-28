@@ -1,15 +1,10 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class CustomInfoCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "custominfo";
@@ -18,7 +13,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string Command => "custominfo";
 
-        public override string[] Aliases => new string[] { "cinfo" }; 
+        public override string[] Aliases => new string[] { "cinfo" };
 
         public string GetUsage()
         {
@@ -37,7 +32,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     p.ReferenceHub.nicknameSync.Network_customPlayerInfoString = null;
                 return new string[] { "Done" };
             });
-            if (!success) 
+            if (!success)
                 return new string[] { "Player not found" };
             _s = true;
             return result;

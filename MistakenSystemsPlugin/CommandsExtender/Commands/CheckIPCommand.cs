@@ -5,19 +5,13 @@ using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared.ClientToCentral;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
     [CommandSystem.CommandHandler(typeof(CommandSystem.GameConsoleCommandHandler))]
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class CheckIPCommand : IBetterCommand, IPermissionLocked
     {
         public override string Description =>
@@ -44,7 +38,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 argument = UserId.Serialize(false)
             }).GetResponseDataCallback((data) =>
             {
-                if(data.Type != ResponseType.OK)
+                if (data.Type != ResponseType.OK)
                 {
                     Log.Error($"{(int)data.Type} {data.Type}: {data.Response}");
                     callBack(new string[0]);
@@ -71,14 +65,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         foreach (var item in data)
                             admin.SendConsoleMessage(item, "green");
                     });
-                    
+
                     success = true;
                     return new string[] { "Printed in console '~'" };
                 }
-                else 
+                else
                     return new string[] { "Player not found" };
             }
-            else if(args[0].Contains("@steam") || args[0].Contains("@discord"))
+            else if (args[0].Contains("@steam") || args[0].Contains("@discord"))
             {
                 GetIPs(args[0], (data) =>
                 {

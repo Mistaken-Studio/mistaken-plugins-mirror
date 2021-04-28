@@ -1,18 +1,6 @@
 ﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Utilities;
-using Gamer.Mistaken.Utilities.APILib;
-using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.ClientToCentral;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using Gamer.Diagnostics;
-using MistakenSocket.Shared.API;
-using MistakenSocket.Shared;
-using Gamer.Mistaken.Systems.Staff;
 using Gamer.Mistaken.Systems.Misc;
 
 namespace Gamer.Mistaken.Ranks
@@ -114,7 +102,8 @@ namespace Gamer.Mistaken.Ranks
                                 {
                                     ev.Items.Add(ItemType.GunProject90);
                                     ev.Items.Remove(ItemType.GunMP7);
-                                    MEC.Timing.CallDelayed(5, () => {
+                                    MEC.Timing.CallDelayed(5, () =>
+                                    {
                                         ev.Player.Ammo.amount[(int)Exiled.API.Enums.AmmoType.Nato9] = 50;
                                     });
                                 }
@@ -161,7 +150,8 @@ namespace Gamer.Mistaken.Ranks
                                 {
                                     ev.Items.Add(ItemType.GunE11SR);
                                     ev.Items.Remove(ItemType.GunMP7);
-                                    MEC.Timing.CallDelayed(5, () => {
+                                    MEC.Timing.CallDelayed(5, () =>
+                                    {
                                         ev.Player.Ammo.amount[(int)Exiled.API.Enums.AmmoType.Nato556] = 80;
                                     });
                                 }
@@ -169,7 +159,8 @@ namespace Gamer.Mistaken.Ranks
                                 {
                                     ev.Items.Add(ItemType.GunProject90);
                                     ev.Items.Remove(ItemType.GunMP7);
-                                    MEC.Timing.CallDelayed(5, () => {
+                                    MEC.Timing.CallDelayed(5, () =>
+                                    {
                                         ev.Player.Ammo.amount[(int)Exiled.API.Enums.AmmoType.Nato9] = 100;
                                     });
                                 }

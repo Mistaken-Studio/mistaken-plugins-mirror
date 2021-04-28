@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Gamer.Utilities;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Newtonsoft.Json;
 
 namespace Gamer.Mistaken.BetterMutes
 {
@@ -104,7 +102,7 @@ namespace Gamer.Mistaken.BetterMutes
                     Intercom = intercomMute
                 })
             });
-            if(!intercomMute && disconnect)
+            if (!intercomMute && disconnect)
                 player.Disconnect("Zostałeś wyciszony");
             return true;
         }
@@ -137,8 +135,8 @@ namespace Gamer.Mistaken.BetterMutes
                     continue;
                 success = true;
                 toWrite.Remove(line);
-                if(Intercom)
-                    global::MuteHandler.RevokePersistentMute($"ICOM-{mute.UserId}");          
+                if (Intercom)
+                    global::MuteHandler.RevokePersistentMute($"ICOM-{mute.UserId}");
                 else
                     global::MuteHandler.RevokePersistentMute(mute.UserId);
 

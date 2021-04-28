@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Exiled.API.Features;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Exiled.API.Features;
 
 namespace Gamer.EventManager.Events
 {
-    internal class Morbus : 
+    internal class Morbus :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent,
         EventCreator.ISpawnRandomItems
@@ -78,7 +76,7 @@ namespace Gamer.EventManager.Events
 
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
         {
-            if (Map.ActivatedGenerators > 4) 
+            if (Map.ActivatedGenerators > 4)
                 OnEndMorbus();
         }
 

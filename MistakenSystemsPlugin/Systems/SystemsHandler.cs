@@ -1,30 +1,25 @@
 ﻿#pragma warning disable IDE0079
 #pragma warning disable IDE0060
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using CustomPlayerEffects;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.API;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.Staff;
+using Gamer.Mistaken.Systems.Logs;
 using Gamer.Utilities;
-using HarmonyLib;
+using Grenades;
 using MEC;
 using Mirror;
-using UnityEngine;
-using Gamer.Diagnostics;
-using Interactables.Interobjects;
-using Interactables.Interobjects.DoorUtils;
-using System.IO;
-using Gamer.Mistaken.Systems.Logs;
-using CustomPlayerEffects;
-using Gamer.Mistaken.Systems.Staff;
-using Grenades;
-using MistakenSocket.Shared.ClientToCentral;
-using MistakenSocket.Shared;
 using MistakenSocket.Client.SL;
-using Gamer.API;
+using MistakenSocket.Shared;
+using MistakenSocket.Shared.ClientToCentral;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Systems
 {
@@ -34,7 +29,7 @@ namespace Gamer.Mistaken.Systems
         internal static Dictionary<string, string> DisplayNameChangend { get; } = new Dictionary<string, string>();
 
         public Handler(PluginHandler plugin) : base(plugin)
-        { 
+        {
             Systems.Patches.SCPVoiceChatPatch.MimicedRoles.Add(RoleType.Scp049);
 
             if (Server.Port % 2 != 0)
@@ -49,7 +44,6 @@ namespace Gamer.Mistaken.Systems
             new InfoMessage.InfoMessageManager(plugin);
             new AntiAFK.Handler(plugin);
             new NicknameFixer.Handler(plugin);
-            new Staff.StaffHandler(plugin);
             new Pets.PetsHandler(plugin);
 
             new GUI.SpecInfoHandler(plugin);
@@ -85,7 +79,7 @@ namespace Gamer.Mistaken.Systems
 
             new Seasonal.EasterHandler(plugin);
             new Seasonal.PrimaAprilisHanlder(plugin);
-      
+
 
             /*MEC.Timing.CallDelayed(2, () =>
             {
@@ -175,7 +169,7 @@ namespace Gamer.Mistaken.Systems
                 argument = ev.UserId.Serialize(false)
             }).GetResponseDataCallback((data) =>
             {
-                if(data.Type == MistakenSocket.Shared.API.ResponseType.OK)
+                if (data.Type == MistakenSocket.Shared.API.ResponseType.OK)
                     PlayerPreferencesDict[ev.UserId] = data.Payload.Deserialize<PlayerPreferences>(false);
             });
         }
@@ -232,14 +226,14 @@ namespace Gamer.Mistaken.Systems
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {
             string nameLower = ev.Name.ToLower();
-            if(nameLower == "imute" || nameLower == "mute" || nameLower == "enrage")
+            if (nameLower == "imute" || nameLower == "mute" || nameLower == "enrage")
             {
                 if (ev.Sender.IsActiveDev())
                     return;
                 ev.IsAllowed = false;
                 ev.ReplyMessage = "Command Removed";
-            } 
-            else if(ev.Name.ToLower().StartsWith("cassie"))
+            }
+            else if (ev.Name.ToLower().StartsWith("cassie"))
             {
                 string cassie = string.Join(" ", ev.Arguments);
                 float dur = Cassie.CalculateDuration(cassie);
@@ -260,11 +254,11 @@ namespace Gamer.Mistaken.Systems
         private static bool IntercomInfoTimeout = false;
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
         {
-            if(ev.IsAllowed)
+            if (ev.IsAllowed)
                 LastIntercomUser = ev.Player;
             if (IntercomInfoTimeout)
                 return;
-            if(Round.IsStarted && Round.ElapsedTime.TotalSeconds > 5 && Intercom.host.IntercomState == Intercom.State.Ready)
+            if (Round.IsStarted && Round.ElapsedTime.TotalSeconds > 5 && Intercom.host.IntercomState == Intercom.State.Ready)
                 MapPlus.Broadcast("INTERCOM", 5, $"({ev.Player.Id}) {ev.Player.Nickname} started using intercom", Broadcast.BroadcastFlags.AdminChat);
             IntercomInfoTimeout = true;
             Timing.RunCoroutine(OffCooldown());
@@ -304,7 +298,7 @@ namespace Gamer.Mistaken.Systems
             Generators.Clear();
             Timing.RunCoroutine(InformCommanderDeath());
             Timing.RunCoroutine(NoVoidFailling());
-            if(Server.Port == 7791)
+            if (Server.Port == 7791)
                 Timing.RunCoroutine(DoRoundLoop());
             //System.IO.File.WriteAllLines(Paths.Configs + "/cassie_words.txt", NineTailedFoxAnnouncer.singleton.voiceLines.Select(i => $"\"{i.apiName}\","));
 
@@ -318,7 +312,7 @@ namespace Gamer.Mistaken.Systems
             {
                 foreach (var item in RealPlayers.List)
                 {
-                    if(item.Role != RoleType.Scp049)
+                    if (item.Role != RoleType.Scp049)
                     {
                         Base.CustomInfoHandler.Set(item, "cuff", null, false);
                         break;
@@ -336,16 +330,16 @@ namespace Gamer.Mistaken.Systems
         {
             yield return Timing.WaitForSeconds(1);
             bool wasAlive = false;
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
-                if(!wasAlive)
+                if (!wasAlive)
                     wasAlive = RealPlayers.Any(RoleType.NtfCommander);
                 else
                 {
                     var tmp = RealPlayers.Any(RoleType.NtfCommander);
                     if (!tmp)
-                        MEC.Timing.CallDelayed(60, () => 
+                        MEC.Timing.CallDelayed(60, () =>
                         {
                             if (rid == RoundPlus.RoundId)
                                 Cassie.GlitchyMessage("WARNING . . . NINETAILEDFOX COMMANDER IS DEAD", 0.3f, 0.15f);
@@ -359,7 +353,7 @@ namespace Gamer.Mistaken.Systems
         private IEnumerator<float> NoVoidFailling()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 var start = DateTime.Now;
@@ -368,11 +362,11 @@ namespace Gamer.Mistaken.Systems
                     if (player.Position.y < -2100)
                     {
                         bool hadGodMode = player.IsGodModeEnabled;
-                        if (!hadGodMode) 
+                        if (!hadGodMode)
                             player.IsGodModeEnabled = true;
                         player.Position = new Vector3(0, 1004, 0);
                         yield return Timing.WaitForSeconds(0.5f);
-                        if (!hadGodMode) 
+                        if (!hadGodMode)
                             player.IsGodModeEnabled = false;
                     }
                 }
@@ -385,9 +379,9 @@ namespace Gamer.Mistaken.Systems
         {
             if (UnityEngine.Random.Range(0, 2) == 1 && (ev.NewRole == RoleType.NtfCadet || ev.NewRole == RoleType.FacilityGuard))
                 ev.Items.Add(ItemType.GunUSP);
-            if(ev.NewRole == RoleType.Spectator && !(ev.Player.Team == Team.CHI || ev.Player.Team == Team.SCP || ev.Player.Team == Team.TUT || ev.Player.Team == Team.RIP || ev.Player.Role == RoleType.None))
+            if (ev.NewRole == RoleType.Spectator && !(ev.Player.Team == Team.CHI || ev.Player.Team == Team.SCP || ev.Player.Team == Team.TUT || ev.Player.Team == Team.RIP || ev.Player.Role == RoleType.None))
             {
-                if(RealPlayers.List.Where(p => p.Id != ev.Player.Id && p.IsHuman && p.Team != Team.CHI).Count() == 1)
+                if (RealPlayers.List.Where(p => p.Id != ev.Player.Id && p.IsHuman && p.Team != Team.CHI).Count() == 1)
                     Cassie.DelayedGlitchyMessage("Spotted only 1 alive . There could be ChaosInsurgency", 25, 0.5f, 0.1f);
             }
         }
@@ -416,7 +410,7 @@ namespace Gamer.Mistaken.Systems
                 ev.IsAllowed = false;
             if (!ev.IsAllowed)
                 return;
-            if(ev.DamageType == DamageTypes.Tesla)
+            if (ev.DamageType == DamageTypes.Tesla)
             {
                 if (ev.Target.Team == Team.SCP && ev.Amount < ev.Target.Health)
                 {
@@ -432,7 +426,7 @@ namespace Gamer.Mistaken.Systems
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
-            if (!ev.IsAllowed) 
+            if (!ev.IsAllowed)
                 return;
             if (ev.HitInformation.GetDamageType() == DamageTypes.Tesla)
             {
@@ -451,7 +445,7 @@ namespace Gamer.Mistaken.Systems
                 ev.Target.Role = ev.Target.Role;
             }
 
-            if(ev.Target.Side != ev.Killer?.Side)
+            if (ev.Target.Side != ev.Killer?.Side)
                 DropBallAndGrenades(ev.Target);
 
             if (ev.Target.Team == Team.SCP && ev.Target.Role != RoleType.Scp079)
@@ -609,16 +603,16 @@ namespace Gamer.Mistaken.Systems
             {
                 if (Logs.LogManager.DoorLogs.TryGetValue(ev.Door, out List<Logs.DoorLog> value))
                     Logs.Commands.DoorLogCommand.Execute(ev.Player, ev.Door, value);
-                else 
+                else
                     ev.Player.Broadcast("DOOR LOG", 10, "Door data not found");
                 ev.IsAllowed = false;
             }
-            if (!ev.IsAllowed) 
+            if (!ev.IsAllowed)
                 return;
             if (!Logs.LogManager.DoorLogs.ContainsKey(ev.Door))
                 Logs.LogManager.DoorLogs[ev.Door] = NorthwoodLib.Pools.ListPool<Logs.DoorLog>.Shared.Rent();
             Logs.LogManager.DoorLogs[ev.Door].Add(new Logs.DoorLog(ev));
-            if(ev.Door.Type() == DoorType.Scp079Second) 
+            if (ev.Door.Type() == DoorType.Scp079Second)
                 Timing.RunCoroutine(SpawnPainKillers());
         }
 

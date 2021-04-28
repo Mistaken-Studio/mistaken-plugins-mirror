@@ -1,14 +1,9 @@
-﻿using System.Linq;
-using UnityEngine;
-using Mirror;
-using System.Collections.Generic;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using CommandSystem;
-using Exiled.API.Features;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class PetCommand : IBetterCommand
     {
         public override string Command => "pet";
@@ -32,7 +27,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
             var player = sender.GetPlayer();
             bool enable = !Systems.Pets.PetsHandler.Pets.ContainsKey(player.UserId);
-            if (args.Length < /*2*/1 && enable) 
+            if (args.Length < /*2*/1 && enable)
                 return new string[] { GetUsage() };
             /*if(args[0] == "config-size")
             {

@@ -1,8 +1,6 @@
 ﻿using Exiled.API.Features;
 using MEC;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Gamer.EventManager.Events
 {
@@ -64,10 +62,10 @@ namespace Gamer.EventManager.Events
             int time = UnityEngine.Random.Range(180, 300);
             Map.TurnOffAllLights(time, false);
             Attack = true;
-            Timing.CallDelayed(time, () => 
+            Timing.CallDelayed(time, () =>
             {
                 Attack = false;
-                Timing.CallDelayed(60, () => 
+                Timing.CallDelayed(60, () =>
                 {
                     Scp575LigtsScript();
                 });

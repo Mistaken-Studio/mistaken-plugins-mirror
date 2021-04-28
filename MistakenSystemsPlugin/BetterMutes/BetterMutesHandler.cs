@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Diagnostics;
+﻿using Gamer.Diagnostics;
 using Gamer.Utilities;
 using MEC;
-using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.BetterMutes
 {
@@ -32,7 +28,7 @@ namespace Gamer.Mistaken.BetterMutes
 
         private IEnumerator<float> AutoMuteReload()
         {
-            while(true)
+            while (true)
             {
                 global::MuteHandler.Reload();
                 yield return Timing.WaitForSeconds(60);

@@ -1,15 +1,10 @@
 ﻿using Exiled.API.Features;
 using Gamer.Utilities;
-using MistakenSocket.Client;
 using MistakenSocket.Client.SL;
-using MistakenSocket.Shared;
 using MistakenSocket.Shared.AIRS;
 using MistakenSocket.Shared.API;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Log = Exiled.API.Features.Log;
 
 namespace Gamer.Mistaken.AIRS
@@ -139,7 +134,7 @@ namespace Gamer.Mistaken.AIRS
                         return;
                     }
                 });
-                
+
                 return true;
             }
             catch (System.Exception e)
@@ -182,17 +177,17 @@ namespace Gamer.Mistaken.AIRS
                         }
                     }
                 }
-                catch(System.Exception e)
+                catch (System.Exception e)
                 {
                     Log.Error("Failed to display report info to reporter");
                     Log.Error(e.Message);
                     Log.Error(e.StackTrace);
                 }
-                if((int)status != -10 && (int)status < 1 && (int)status < (int)Status)
+                if ((int)status != -10 && (int)status < 1 && (int)status < (int)Status)
                 {
                     Log.Warn("Tried to update status to older one");
                     return;
-                }    
+                }
                 Status = status;
             }
 

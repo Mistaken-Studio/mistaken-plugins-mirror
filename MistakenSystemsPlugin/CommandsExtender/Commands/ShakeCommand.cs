@@ -4,15 +4,14 @@
 using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using System.Linq;
-using UnityEngine;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class ShakeCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class ShakeCommand : IBetterCommand, IPermissionLocked
     {
-        
+
 
         public string Permission => "shake";
 

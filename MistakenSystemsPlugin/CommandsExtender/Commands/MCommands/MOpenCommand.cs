@@ -4,14 +4,14 @@
 using CommandSystem;
 using Gamer.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class MOpenCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class MOpenCommand : IBetterCommand, IPermissionLocked
     {
-        
+
 
         public string Permission => "m.open";
 
@@ -34,13 +34,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             success = true;
             var player = sender.GetPlayer();
-            if (!Active.Contains(player.Id)) 
+            if (!Active.Contains(player.Id))
                 Active.Add(player.Id);
-            else 
+            else
                 Active.Remove(player.Id);
-            if (Active.Contains(player.Id)) 
+            if (Active.Contains(player.Id))
                 return new string[] { "Activated" };
-            else 
+            else
                 return new string[] { "Deactivated" };
         }
     }

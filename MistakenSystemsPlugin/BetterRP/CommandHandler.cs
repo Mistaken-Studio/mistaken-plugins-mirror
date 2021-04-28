@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CommandSystem;
-using Gamer.Utilities;
+﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Utilities;
+using System;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.BetterRP
 {
@@ -67,7 +65,7 @@ namespace Gamer.Mistaken.BetterRP
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
-            if(!RoundModifiersManager.Instance.SetActiveEvents(int.Parse(args[0])))
+            if (!RoundModifiersManager.Instance.SetActiveEvents(int.Parse(args[0])))
             {
                 success = false;
                 return new string[] { "Failed to generate random events" };

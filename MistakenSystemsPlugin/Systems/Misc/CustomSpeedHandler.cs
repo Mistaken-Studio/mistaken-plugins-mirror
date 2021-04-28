@@ -1,17 +1,9 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
+using MEC;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
@@ -41,12 +33,12 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Server_RoundStarted()
         {
-            
+
         }
 
         private IEnumerator<float> AutoUpdate()
         {
-            while(true)
+            while (true)
             {
                 ForceUpdate();
                 yield return Timing.WaitForSeconds(5);
@@ -61,7 +53,7 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Server_RestartingRound()
         {
             Speeds.Clear();
-        } 
+        }
 
         public static void ForceUpdate()
         {

@@ -1,7 +1,6 @@
 ﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using LightContainmentZoneDecontamination;
 using MEC;
@@ -9,7 +8,6 @@ using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Gamer.Mistaken.BetterRP
@@ -71,7 +69,7 @@ namespace Gamer.Mistaken.BetterRP
         private const short RESetTries = 1000;
         public bool SetActiveEvents(int events = -1)
         {
-            if (events == -1) 
+            if (events == -1)
                 events = UnityEngine.Random.Range(1, 12);
             return SetActiveEvents(events, 0);
         }
@@ -101,16 +99,16 @@ namespace Gamer.Mistaken.BetterRP
                         break;
                     }
                 }
-                if (broken) 
+                if (broken)
                     break;
             }
-            if(check < (RESetTries ^ Mathf.RoundToInt(events/2)))
+            if (check < (RESetTries ^ Mathf.RoundToInt(events / 2)))
             {
                 if (!ValidateRandomEvents(_ae) || broken)
                     return SetActiveEvents(events, check);
                 else
                     return true;
-            }      
+            }
             else
             {
                 Log.Warn($"Failed to generate ActiveEvents in {RESetTries} tries !");
@@ -198,14 +196,16 @@ namespace Gamer.Mistaken.BetterRP
                             }
                         case RandomEvents.LCZ_DECONTAMINATION_REAL_10_MINUTES:
                             {
-                                Timing.CallDelayed(45, () => {
+                                Timing.CallDelayed(45, () =>
+                                {
                                     DecontaminationController.Singleton.NetworkRoundStartTime = GetNewLCZTime(600);
                                 });
                                 break;
                             }
                         case RandomEvents.LCZ_DECONTAMINATION_REAL_5_MINUTES:
                             {
-                                Timing.CallDelayed(45, () => {
+                                Timing.CallDelayed(45, () =>
+                                {
                                     DecontaminationController.Singleton.NetworkRoundStartTime = GetNewLCZTime(300);
                                 });
                                 break;
@@ -400,7 +400,7 @@ namespace Gamer.Mistaken.BetterRP
             string toWrite = "[RPE] Active: ";
             for (int i = 1; i <= ((uint[])Enum.GetValues(typeof(RandomEvents))).Max(); i *= 2)
             {
-                if(_ae.HasFlag((RandomEvents)i))
+                if (_ae.HasFlag((RandomEvents)i))
                 {
                     toWrite += $"\n- {(RandomEvents)i}";
                 }
@@ -413,7 +413,7 @@ namespace Gamer.Mistaken.BetterRP
         public IEnumerator<float> ToScan(float interval)
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(interval);

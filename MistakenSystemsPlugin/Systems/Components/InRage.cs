@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.Systems.Components
 
                 return component;
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);

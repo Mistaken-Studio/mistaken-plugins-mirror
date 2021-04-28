@@ -1,9 +1,6 @@
 ﻿using Exiled.API.Features;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Gamer.Utilities;
+using System.Linq;
 
 namespace Gamer.Mistaken.BetterRP.Ambients
 {
@@ -68,7 +65,8 @@ namespace Gamer.Mistaken.BetterRP.Ambients
             var tor = base.CanPlay();
             if (!tor) return tor;
             Handler.AmbientLock = true;
-            MEC.Timing.CallDelayed(120, () => {
+            MEC.Timing.CallDelayed(120, () =>
+            {
                 Cassie.Message(".G5 PITCH_0.84 .G2 PITCH_0.98 FACILITY MANAGER FOUND DEAD IN INTERSECTION C 2 .G4 PITCH_0.95 TACTICAL TEAM OMEGA 1 REPORT TO SECURITY CHECKPOINT 5 JAM_020_3 IMMEDIATELY", false, false);
                 Handler.AmbientLock = false;
             });
@@ -98,7 +96,8 @@ namespace Gamer.Mistaken.BetterRP.Ambients
             var tor = base.CanPlay();
             if (!tor) return tor;
             Handler.AmbientLock = true;
-            MEC.Timing.CallDelayed(120, () => {
+            MEC.Timing.CallDelayed(120, () =>
+            {
                 Cassie.Message("ATTENTION . SECURITY FORCE NATO_E 6 . SERPENTS HAND DETECTED . DOCTOR R J DESIGNATED FOR IMMEDIATE TERMINATION .G3 PITCH_0.1 .G3", false, false);
                 Handler.AmbientLock = false;
             });
@@ -156,7 +155,8 @@ namespace Gamer.Mistaken.BetterRP.Ambients
             if (!tor) return false;
             if (RealPlayers.List.Where(p => p.Team == Team.CHI).Count() <= RealPlayers.List.Where(p => p.Team == Team.MTF).Count()) return false;
             Handler.AmbientLock = true;
-            MEC.Timing.CallDelayed(120, () => {
+            MEC.Timing.CallDelayed(120, () =>
+            {
                 if (RealPlayers.List.Where(p => p.Team == Team.CHI).Count() < RealPlayers.List.Where(p => p.Team == Team.MTF).Count())
                     Cassie.Message("PITCH_0.2 .G4 PITCH_2 . PITCH_0.2 .G4 PITCH_0.8 ATTENTION . PITCH_0.7 .G6 PITCH_0.9 CASSIE JAM_018_5 SYSTEM .G6 . NOW . UNDER . FOUNDATION . COMMAND PITCH_0.1 .G3 PITCH_0.94 NEW OVERRIDE DETECTED .G6 ", false, false);
                 Handler.AmbientLock = false;
@@ -271,7 +271,7 @@ namespace Gamer.Mistaken.BetterRP.Ambients
 
         public override bool CanPlay()
         {
-            if (base.CanPlay() == false) 
+            if (base.CanPlay() == false)
                 return false;
             return RealPlayers.List.Where(p => p.Team == Team.MTF).Count() <= 2 && RealPlayers.List.Where(p => p.Team == Team.SCP).Count() + RealPlayers.List.Where(p => p.Team == Team.CHI).Count() > 10;
         }
@@ -319,9 +319,9 @@ namespace Gamer.Mistaken.BetterRP.Ambients
                         }
                     case 2:
                         {
-                            string[] items = new string[] 
-                            { 
-                                "pitch_0.1 SCP pitch_0.1 6 pitch_0.1 8 pitch_0.1 2", 
+                            string[] items = new string[]
+                            {
+                                "pitch_0.1 SCP pitch_0.1 6 pitch_0.1 8 pitch_0.1 2",
                                 "pitch_0.1 scpsubjects",
                                 "pitch_0.1 Camera",
                                 "pitch_0.1 Celsius",
@@ -342,7 +342,7 @@ namespace Gamer.Mistaken.BetterRP.Ambients
                         return "";
                 }
             }
-    }
+        }
 
         public override bool IsJammed => false;
 

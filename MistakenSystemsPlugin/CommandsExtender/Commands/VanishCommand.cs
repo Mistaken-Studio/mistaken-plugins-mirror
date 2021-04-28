@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using UnityEngine;
-using System.Collections.Generic;
-using Gamer.Utilities;
-using CommandSystem;
-using Exiled.API.Features;
+﻿using CommandSystem;
 using Gamer.Mistaken.Systems.End;
+using Gamer.Utilities;
+using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     public class VanisCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "vanish";

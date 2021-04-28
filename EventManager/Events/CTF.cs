@@ -1,12 +1,11 @@
-﻿using Exiled.API.Extensions;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
-using System;
+using Interactables.Interobjects.DoorUtils;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Enums;
-using Interactables.Interobjects.DoorUtils;
 using UnityEngine;
-using MEC;
 
 namespace Gamer.EventManager.Events
 {
@@ -64,7 +63,7 @@ namespace Gamer.EventManager.Events
             Exiled.Events.Handlers.Player.Died -= Player_Died;
             Exiled.Events.Handlers.Player.ItemDropped -= Player_ItemDropped;
         }
-        
+
         public override void Register()
         {
         }
@@ -77,8 +76,8 @@ namespace Gamer.EventManager.Events
             foreach (var e in Map.Lifts)
                 if (e.elevatorName.StartsWith("El") || e.elevatorName.StartsWith("SCP") || e.elevatorName == "") e.Network_locked = true;
             foreach (var door in Map.Doors)
-                if (door.Type() == DoorType.CheckpointEntrance) 
-                { 
+                if (door.Type() == DoorType.CheckpointEntrance)
+                {
                     door.ServerChangeLock(DoorLockReason.DecontEvacuate, true);
                     door.NetworkTargetState = true;
                 }
@@ -118,7 +117,7 @@ namespace Gamer.EventManager.Events
             ev.Target.Broadcast(5, "Za chwilę się odrodzisz!");
             Timing.CallDelayed(5f, () =>
             {
-                ev.Target.SlowChangeRole(role, (role == RoleType.ChaosInsurgency ? ciRoom.Position : mtfRoom.Position)+Vector3.up);
+                ev.Target.SlowChangeRole(role, (role == RoleType.ChaosInsurgency ? ciRoom.Position : mtfRoom.Position) + Vector3.up);
             });
         }
 

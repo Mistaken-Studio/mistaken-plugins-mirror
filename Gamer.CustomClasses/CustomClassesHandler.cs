@@ -1,41 +1,29 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using System.Threading;
-using System.Threading.Tasks;
-using Gamer.Diagnostics;
-using System.Collections.Generic;
-using Exiled.API.Enums;
-using Gamer.Mistaken.Systems.Misc;
-using Gamer.Mistaken.Systems;
-using Gamer.RoundLoggerSystem;
-using UnityEngine;
-using Exiled.API.Extensions;
+﻿using Gamer.Diagnostics;
 
 namespace Gamer.CustomClasses
 {
+    /// <inheritdoc/>
     public class CustomClassesHandler : Module
     {
+        /// <inheritdoc/>
         public CustomClassesHandler(PluginHandler plugin) : base(plugin)
         {
         }
-
+        /// <inheritdoc/>
         public override string Name => "CustomClasses";
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
 
-        
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
             foreach (var item in API.CustomClass.CustomClass.CustomClasses)

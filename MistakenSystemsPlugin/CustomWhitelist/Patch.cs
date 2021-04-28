@@ -1,7 +1,7 @@
 ﻿#pragma warning disable
 
-using System;
 using HarmonyLib;
+using System;
 
 namespace Gamer.Mistaken.CustomWhitelist
 {

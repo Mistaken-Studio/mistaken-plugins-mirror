@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using CommandSystem;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class OverheatCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "overheat";

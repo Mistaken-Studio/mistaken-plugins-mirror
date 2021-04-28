@@ -3,11 +3,6 @@ using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Gamer.Utilities.RoomSystemAPI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {

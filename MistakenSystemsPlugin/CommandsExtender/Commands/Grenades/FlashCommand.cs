@@ -1,19 +1,13 @@
-﻿using Grenades;
-using Mirror;
+﻿//
 
-using UnityEngine;
-//
-
-using System.Collections.Generic;
-
-using System.Linq;
-using Gamer.Utilities;
 using CommandSystem;
-using Exiled.API.Features;
+using Gamer.Utilities;
+using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class FlashCmd : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class FlashCmd : IBetterCommand, IPermissionLocked
     {
         public string Permission => "flash";
 
@@ -31,7 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             return "FLASH [PLAYER ID/'ALL'] (AMOUNT)";
         }
 
-        public void DropUnder(int[] pids,int times)
+        public void DropUnder(int[] pids, int times)
         {
             foreach (var item in pids)
             {

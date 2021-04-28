@@ -1,19 +1,12 @@
 ﻿#pragma warning disable IDE0079
 #pragma warning disable IDE0060
 
-using System;
+using Exiled.API.Features;
+using Gamer.Diagnostics;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Gamer.Mistaken.BetterSCP;
-using HarmonyLib;
-using MEC;
 using UnityEngine;
-using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.BetterSCP.SCP0492
 {
@@ -39,7 +32,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            
+
         }
 
         private void Server_RoundStarted()

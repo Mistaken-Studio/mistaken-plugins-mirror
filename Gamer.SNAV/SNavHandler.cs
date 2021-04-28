@@ -1,32 +1,39 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
+using Scp914;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Diagnostics;
-using Gamer.API.CustomItem;
-using Scp914;
 
 namespace Gamer.SNAV
 {
+    /// <inheritdoc/>
     public class SNavHandler : Module
     {
+        /// <summary>
+        /// Enables Expereimental Feature
+        /// </summary>
         public static readonly bool HideTablet = false;
+        /// <inheritdoc/>
         public class SNavClasicItem : API.CustomItem.CustomItem
         {
+            /// <inheritdoc/>
             public SNavClasicItem() => base.Register();
+            /// <inheritdoc/>
             public override string ItemName => "SNav-3000";
+            /// <inheritdoc/>
             public override ItemType Item => ItemType.WeaponManagerTablet;
+            /// <inheritdoc/>
             public override int Durability => 301;
+            /// <inheritdoc/>
             public override Vector3 Size => new Vector3(2.0f, .50f, .50f);
+            /// <inheritdoc/>
             public override Upgrade[] Upgrades => new Upgrade[]
             {
                 new Upgrade
@@ -37,6 +44,7 @@ namespace Gamer.SNAV
                     KnobSetting = Scp914Knob.OneToOne
                 }
             };
+            /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Ignore(player);
@@ -44,28 +52,35 @@ namespace Gamer.SNAV
                 UpdateInterface(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
+            /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
-#pragma warning disable CS0618
-                player.ShowHint("", false, 1, true); //Clear Hints
-#pragma warning restore CS0618
+                player.ShowHint("", 1); //Clear Hints
                 Gamer.Mistaken.Base.GUI.PseudoGUIHandler.StopIgnore(player);
                 UpdateVisibility(player, true);
             }
+            /// <inheritdoc/>
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {
-                if(setting == Scp914Knob.Fine || setting == Scp914Knob.VeryFine)
+                if (setting == Scp914Knob.Fine || setting == Scp914Knob.VeryFine)
                     pickup.durability = 1.401f;
                 return pickup;
             }
         }
+        /// <inheritdoc/>
         public class SNavUltimateItem : API.CustomItem.CustomItem
         {
+            /// <inheritdoc/>
             public SNavUltimateItem() => base.Register();
+            /// <inheritdoc/>
             public override string ItemName => "SNav-Ultimate";
+            /// <inheritdoc/>
             public override ItemType Item => ItemType.WeaponManagerTablet;
+            /// <inheritdoc/>
             public override int Durability => 401;
+            /// <inheritdoc/>
             public override Vector3 Size => new Vector3(2.5f, .75f, .75f);
+            /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Ignore(player);
@@ -73,22 +88,34 @@ namespace Gamer.SNAV
                 UpdateInterface(player);
                 Timing.RunCoroutine(IUpdateInterface(player));
             }
+            /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
-#pragma warning disable CS0618
-                player.ShowHint("", false, 1, true); //Clear Hints
-#pragma warning restore CS0618
+                player.ShowHint("", 1); //Clear Hints
                 Gamer.Mistaken.Base.GUI.PseudoGUIHandler.StopIgnore(player);
                 UpdateVisibility(player, true);
             }
         }
-
+        /// <summary>
+        /// Rooms in LCZ
+        /// </summary>
         public static Room[,] LCZRooms { get; private set; } = new Room[0, 0];
+        /// <summary>
+        /// Rooms in EZ and HCZ
+        /// </summary>
         public static Room[,] EZ_HCZRooms { get; private set; } = new Room[0, 0];
-
+        /// <summary>
+        /// ClassD room rotation
+        /// </summary>
         public static Rotation OffsetClassD = Rotation.UP;
+        /// <summary>
+        /// EZ Checkpoint rotation
+        /// </summary>
         public static Rotation OffsetCheckpoint = Rotation.UP;
 
+        /// <summary>
+        /// Rooms looks
+        /// </summary>
         public readonly static Dictionary<SNavRoomType, string[]> Presets = new Dictionary<SNavRoomType, string[]>()
         {
             {
@@ -452,18 +479,21 @@ namespace Gamer.SNAV
                 }
             },
         };
-
+        /// <summary>
+        /// Rooms where someone was on last scan
+        /// </summary>
         public readonly static HashSet<Room> LastScan = new HashSet<Room>();
-
+        /// <inheritdoc/>
         public override string Name => "SNavHandler";
         private new static __Log Log;
+        /// <inheritdoc/>
         public SNavHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;
             new SNavClasicItem();
             new SNavUltimateItem();
         }
-
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
@@ -472,7 +502,7 @@ namespace Gamer.SNAV
             Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
-
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
@@ -481,7 +511,12 @@ namespace Gamer.SNAV
             Exiled.Events.Handlers.Player.ActivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
-
+        /// <summary>
+        /// Spawns SNAV
+        /// </summary>
+        /// <param name="ultimate">If SNav should be ultimate</param>
+        /// <param name="pos">Where SNav should be spawned</param>
+        /// <returns>Spawned SNav</returns>
         public static Pickup SpawnSNAV(bool ultimate, Vector3 pos)
         {
             if (ultimate)
@@ -527,16 +562,16 @@ namespace Gamer.SNAV
         {
             if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
             {
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
+                ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
                 ev.IsAllowed = false;
             }
         }
 
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
-            if(ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
+            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
             {
-                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
+                ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
                 ev.IsAllowed = false;
             }
         }
@@ -553,7 +588,7 @@ namespace Gamer.SNAV
             foreach (var item in PluginHandler.Config.SNavUltimateSpawns)
             {
                 string[] data = item.Split(',');
-                if(data.Length < 4 || !float.TryParse(data[1], out float x) || !float.TryParse(data[2], out float y) || !float.TryParse(data[3], out float z))
+                if (data.Length < 4 || !float.TryParse(data[1], out float x) || !float.TryParse(data[2], out float y) || !float.TryParse(data[3], out float z))
                 {
                     Log.Error($"Config Error | \"{item}\" is not correct SNav Spawn Data");
                     continue;
@@ -576,7 +611,7 @@ namespace Gamer.SNAV
                     continue;
                 }
                 var door = Map.Doors.FirstOrDefault(i => i.Type().ToString() == data[0]);
-                if(door == null)
+                if (door == null)
                 {
                     Log.Warn($"Invalid Data, Unknown Door \"{data[0]}\"");
                     continue;
@@ -587,7 +622,7 @@ namespace Gamer.SNAV
 
             //yield return Timing.WaitForSeconds(300);
             int rid = RoundPlus.RoundId;
-            while(Round.IsStarted && rid == RoundPlus.RoundId)
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(15);
                 LastScan.Clear();
@@ -601,7 +636,7 @@ namespace Gamer.SNAV
                 {
                     if (player.CurrentRoom != null)
                         LastScan.Add(player.CurrentRoom);
-                    if(player.Position.y > 900 && player.Position.y < 1012)
+                    if (player.Position.y > 900 && player.Position.y < 1012)
                     {
                         //194 +900 -44 -> 147 +900 -44
                         if (player.Position.x <= 194 && player.Position.x >= 147)
@@ -611,7 +646,7 @@ namespace Gamer.SNAV
                                 Escape = true;
                                 continue;
                             }
-                            else if(player.Position.z <= -73)
+                            else if (player.Position.z <= -73)
                             {
                                 CassieRoom = true;
                                 continue;
@@ -663,15 +698,15 @@ namespace Gamer.SNAV
                     else
                     {
                         var room = MapPlus.Rooms.First(r => r.Type == RoomType.LczClassDSpawn);
-                        if(room == null)
+                        if (room == null)
                             Log.Error("Found ClassDSpwan Room but null");
-                        else if(room.gameObject == null)
+                        else if (room.gameObject == null)
                             Log.Error("Found ClassDSpwan Room but gameObject is null");
                         else
                             OffsetClassD = GetRotateion(room);
                     }
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error("CatchId: 1");
                     Log.Error(ex.Message);
@@ -905,7 +940,7 @@ namespace Gamer.SNAV
                 }
                 else
                     i++;
-                
+
                 yield return Timing.WaitForSeconds(0.5f);
             }
             UpdateVisibility(player, true);
@@ -1102,14 +1137,17 @@ __|  /‾‾‾‾|   '  |
             list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
             while (list.Count < 65)
                 list.Insert(0, "");
-#pragma warning disable CS0618
-            player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", true, 11, true);
-#pragma warning restore CS0618
+            player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", 11);
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(list);
         }
+        /// <summary>
+        /// Returns rooms based on <paramref name="pos"/>
+        /// </summary>
+        /// <param name="pos">Position</param>
+        /// <returns>Rooms</returns>
         public static Room[,] GetRooms(float pos)
         {
-            switch(pos)
+            switch (pos)
             {
                 case float x when x < -900 && x > -1100:
                     return EZ_HCZRooms;
@@ -1119,7 +1157,11 @@ __|  /‾‾‾‾|   '  |
                     return new Room[0, 0];
             }
         }
-
+        /// <summary>
+        /// Returns room rotation
+        /// </summary>
+        /// <param name="room">Room</param>
+        /// <returns>Rotation</returns>
         public static Rotation GetRotateion(Room room)
         {
             if (room.transform.localEulerAngles.y == 0)
@@ -1136,6 +1178,11 @@ __|  /‾‾‾‾|   '  |
                 return (Rotation)(-99);
             }
         }
+        /// <summary>
+        /// Returns room type
+        /// </summary>
+        /// <param name="room">Room</param>
+        /// <returns>Room type</returns>
         public static SNavRoomType GetRoomType(Room room)
         {
             switch (room?.Type)
@@ -1195,9 +1242,9 @@ __|  /‾‾‾‾|   '  |
                 case RoomType.LczTCross:
                     {
                         var tmp = (Rotation)((int)GetRotateion(room) + (room.Zone == ZoneType.Entrance ? (int)OffsetCheckpoint : (int)OffsetClassD));
-                        if ((int)tmp > 3) 
+                        if ((int)tmp > 3)
                             tmp -= 4;
-                        switch(tmp)
+                        switch (tmp)
                         {
                             case Rotation.UP:
                                 return SNavRoomType.IT_TB_R;
@@ -1378,11 +1425,19 @@ __|  /‾‾‾‾|   '  |
                     return SNavRoomType.NONE;
             }
         }
-
+        /// <summary>
+        /// Returns room preset
+        /// </summary>
+        /// <param name="type">Room Type</param>
+        /// <returns>Preset</returns>
         public static string[] GetRoomString(SNavRoomType type) => Presets[type];
 
+        /// <summary>
+        /// Room types
+        /// </summary>
         public enum SNavRoomType
         {
+#pragma warning disable CS1591
             ERROR,
             NONE,
             HS_TB,
@@ -1432,13 +1487,19 @@ __|  /‾‾‾‾|   '  |
 
             TESLA_TB,
             TESLA_RL,
+#pragma warning restore CS1591
         }
+        /// <summary>
+        /// Room rotation
+        /// </summary>
         public enum Rotation
         {
+#pragma warning disable CS1591
             UP,
             RIGHT,
             DOWN,
             LEFT
+#pragma warning restore CS1591
         }
     }
 }

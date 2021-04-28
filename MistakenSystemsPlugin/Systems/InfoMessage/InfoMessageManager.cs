@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Extensions;
+﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using MEC;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.InfoMessage
@@ -36,14 +35,14 @@ namespace Gamer.Mistaken.Systems.InfoMessage
         {
             if (ev.Player == null)
                 return;
-            if(ev.NewRole.GetSide() == Exiled.API.Enums.Side.Scp)
+            if (ev.NewRole.GetSide() == Exiled.API.Enums.Side.Scp)
                 Timing.RunCoroutine(UpdateSCPs(ev.Player));
             SpawnTimes[ev.Player] = DateTime.Now;
         }
 
         public readonly static Dictionary<Player, DateTime> SpawnTimes = new Dictionary<Player, DateTime>();
 
-        public static TimeSpan TimeSinceChangedRole(Player player) => 
+        public static TimeSpan TimeSinceChangedRole(Player player) =>
             SpawnTimes.ContainsKey(player) ? DateTime.Now - SpawnTimes[player] : default;
 
         private static IEnumerator<float> UpdateSCPs(Player p)
@@ -73,9 +72,7 @@ namespace Gamer.Mistaken.Systems.InfoMessage
             string fullmsg = string.Join("<br>", message);
             if (TimeSinceChangedRole(p).TotalSeconds < 30 && WelcomeMessages.TryGetValue(p.Role, out string roleMessage))
                 fullmsg = $"<size=40><voffset=20em>{roleMessage}<br><br><br><size=90%>{fullmsg}</size><br><br><br><br><br><br><br><br><br><br></voffset></size>";
-#pragma warning disable CS0618
-            p.ShowHint(fullmsg, true, 2, true);
-#pragma warning restore CS0618
+            p.ShowHint(fullmsg, 2);
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(message);
             Diagnostics.MasterHandler.LogTime("InfoMessageManager", "GetSCPS", start, DateTime.Now);
         }

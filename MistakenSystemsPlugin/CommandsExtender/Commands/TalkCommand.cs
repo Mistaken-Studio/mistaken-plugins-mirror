@@ -1,20 +1,17 @@
 ﻿using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
 using MEC;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class TalkCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "talk";
@@ -28,7 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             return "Talk [players]";
         }
 
-        public static readonly Queue<string> Warps = new Queue<string>(new string[] 
+        public static readonly Queue<string> Warps = new Queue<string>(new string[]
         {
             "jail1",
             //"jail2",
@@ -41,11 +38,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
-            if(Active.TryGetValue(player.UserId, out int[] players))
+            if (Active.TryGetValue(player.UserId, out int[] players))
             {
                 foreach (var playerId in players)
                 {
-                    if(SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
+                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
                     {
                         SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -59,12 +56,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         {
                             if (!p.IsConnected)
                                 return;
-                            if(!Warhead.IsDetonated)
+                            if (!Warhead.IsDetonated)
                             {
-                                if(!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
+                                if (!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
                                     p.Position = data.Pos;
                             }
-                            
+
                             p.Health = data.HP;
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
@@ -106,7 +103,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             });
                         }
                     });
-                    
+
                 }
                 Active.Add(player.UserId, targets);
                 Timing.RunCoroutine(ShowHint(player));
@@ -118,7 +115,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         private Vector3 GetPosByCounter(int counter)
         {
-            switch(counter)
+            switch (counter)
             {
                 case 0:
                     return new Vector3(0.5f, -0.2f, 0);
@@ -147,11 +144,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 yield break;
             Player[] players = playerIds.Select(pId => RealPlayers.Get(pId)).ToArray();
             foreach (var player in players)
-                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, $"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size>");
+                player.SetGUI("talk", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, $"<size=150%><color=#F00><b>Trwa przesłuchanie</b></color></size>");
             while (Active.ContainsKey(p.UserId))
                 yield return Timing.WaitForSeconds(1f);
             foreach (var player in players)
-                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "talk", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size>", 5);
+                player.SetGUI("talk", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "<size=150%><color=#F00><b>Przesłuchanie zakończone</b></color></size>", 5);
         }
     }
 }

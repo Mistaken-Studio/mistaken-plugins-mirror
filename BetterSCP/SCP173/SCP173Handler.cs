@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using MEC;
-using UnityEngine;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using MEC;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP173
 {
@@ -14,7 +10,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP173
     {
         public override string Name => nameof(SCP173Handler);
         public SCP173Handler(PluginHandler p) : base(p)
-        {  
+        {
         }
 
         public override void OnEnable()
@@ -27,11 +23,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP173
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-        } 
+        }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
-            if(Round.ElapsedTime.TotalSeconds < 25 && ev.Player.Role == RoleType.Scp173)
+            if (Round.ElapsedTime.TotalSeconds < 25 && ev.Player.Role == RoleType.Scp173)
                 ev.IsAllowed = false;
         }
 

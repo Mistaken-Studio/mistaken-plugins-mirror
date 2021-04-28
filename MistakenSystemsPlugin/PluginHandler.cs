@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.API;
 using Gamer.Mistaken.Systems.Patches.Vars;
-using Gamer.Utilities;
 using MistakenSocket.Client.SL;
-using MistakenSocket.Shared;
+using System;
+using System.Reflection;
 
 namespace Gamer.Mistaken
 {
@@ -39,7 +34,7 @@ namespace Gamer.Mistaken
         }
 
         public static PluginHandler Instance { get; private set; }
-        internal static HarmonyLib.Harmony Harmony {get; private set; }
+        internal static HarmonyLib.Harmony Harmony { get; private set; }
         public override void OnEnabled()
         {
             Instance = this;

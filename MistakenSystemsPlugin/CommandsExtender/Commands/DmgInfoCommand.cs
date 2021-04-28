@@ -1,18 +1,14 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class DmgInfoCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class DmgInfoCommand : IBetterCommand, IPermissionLocked
     {
-        
+
 
         public string Permission => "dmginfo";
 

@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using MEC;
@@ -6,8 +7,6 @@ using NPCS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Components
@@ -49,7 +48,7 @@ namespace Gamer.Mistaken.Systems.Components
 
                 return killer;
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
@@ -85,7 +84,7 @@ namespace Gamer.Mistaken.Systems.Components
                 yield return Timing.WaitForSeconds(1);
                 foreach (var item in hinted.Where(p => !InArea.Contains(p)))
                 {
-                    Base.GUI.PseudoGUIHandler.Set(item, "killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                    item.SetGUI("killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 }
                 foreach (var player in InArea.ToArray())
                 {
@@ -94,7 +93,7 @@ namespace Gamer.Mistaken.Systems.Components
                     if (player.IsGodModeEnabled || player.IsDead)
                         continue;
                     player.Hurt(this.Dmg, new DamageTypes.DamageType("*Anty Camper"), this.Message);
-                    Base.GUI.PseudoGUIHandler.Set(player, "killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
+                    player.SetGUI("killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
                     hinted.Add(player);
                     RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({this.Dmg}) with message \"{this.Message}\"");
                 }
@@ -113,7 +112,7 @@ namespace Gamer.Mistaken.Systems.Components
             ColliderInArea.Add(other.gameObject);
             if (!InArea.Contains(player))
                 InArea.Add(player);
-            if(InstaKill)
+            if (InstaKill)
             {
                 if (this.Selector(player) || player.Role == RoleType.Scp079)
                     return;

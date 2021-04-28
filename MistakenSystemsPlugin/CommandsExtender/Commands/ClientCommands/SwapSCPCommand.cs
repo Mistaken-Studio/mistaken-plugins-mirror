@@ -1,16 +1,15 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using MEC;
 using System.Collections.Generic;
 using System.Linq;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class SwapSCPCommand : IBetterCommand, IPermissionLocked
-    {       
+    {
         public string Permission => "swapscp";
 
         public override string Description => "Pozwala zmienić SCP";
@@ -36,14 +35,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
             _s = false;
-            if (args.Length == 0) 
+            if (args.Length == 0)
                 return new string[] { GetUsage() };
             var player = sender.GetPlayer();
-            if (player.Team != Team.SCP) 
+            if (player.Team != Team.SCP)
                 return new string[] { "Nie możesz zmienić SCP nie będąc SCP" };
-            if (player.Role == RoleType.Scp0492) 
+            if (player.Role == RoleType.Scp0492)
                 return new string[] { "Nie możesz zmienić SCP jako SCP 049-2" };
-            if(RoleRequests.Any(i => i.Value.Key == player.Id))
+            if (RoleRequests.Any(i => i.Value.Key == player.Id))
             {
                 var data = RoleRequests.First(i => i.Value.Key == player.Id);
                 var requester = RealPlayers.Get(data.Key);
@@ -52,7 +51,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     player.Role = requester.Role;
                     requester.Role = data.Value.Value;
                     AlreadyChanged.Add(requester.Id);
-                    if(!Ranks.RanksHandler.Vips.Contains(requester.UserId)) 
+                    if (!Ranks.RanksHandler.Vips.Contains(requester.UserId))
                         SwapCooldown.Add(requester.UserId, RoundsCooldown);
                     RoleRequests.Remove(data);
                     return new string[] { "Ok" };
@@ -66,7 +65,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 else
                     return new string[] { ".scpswap yes/no", $"'yes' aby zmienić SCP na {requester.Role}", $"'no' aby zostać jako {player.Role}" };
             }
-            else if(Round.ElapsedTime.TotalSeconds > 30)
+            else if (Round.ElapsedTime.TotalSeconds > 30)
                 return new string[] { "Za późno, możesz zmienić SCP tylko przez pierwsze 30 sekund rundy" };
             if (RoleRequests.Any(i => i.Key == player.Id)) return new string[] { "Już wysłałeś prośbę aby zamienić SCP" };
             if (AlreadyChanged.Contains(player.Id)) return new string[] { "Możesz zmienić SCP tylko raz na rundę" };
@@ -74,7 +73,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             var scp = args[0];
             scp = scp.ToLower().Replace("scp", "").Replace("-", "");
             var role = RoleType.Scp0492;
-            switch(scp)
+            switch (scp)
             {
                 case "173":
                     role = RoleType.Scp173;
@@ -104,14 +103,15 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 default:
                     return new string[] { "Nieznany SCP", GetUsage() };
             }
-            
-            if(RealPlayers.List.Any(p => p.Role == role))
+
+            if (RealPlayers.List.Any(p => p.Role == role))
             {
                 var target = RealPlayers.List.First(p => p.Role == role);
                 var data = new KeyValuePair<int, KeyValuePair<int, RoleType>>(player.Id, new KeyValuePair<int, RoleType>(target.Id, role));
                 RoleRequests.Add(data);
                 target.Broadcast("Swap SCP", 15, $"{player.Nickname} chcię się z tobą zamienić SCP, jeżeli się zgodzisz to zostaniesz <b>{player.Role}</b>\nWpisz \".swapscp yes\" lub \".swapscp no\" w konsoli(~) aby się zamienić lub aby tego nie robić");
-                MEC.Timing.CallDelayed(15, () => {
+                MEC.Timing.CallDelayed(15, () =>
+                {
                     if (RoleRequests.Contains(data))
                     {
                         player.Broadcast("Swap SCP", 5, "Czas minął");
@@ -123,7 +123,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             else
             {
                 AlreadyChanged.Add(player.Id);
-                if (!Ranks.RanksHandler.Vips.Contains(player.UserId)) 
+                if (!Ranks.RanksHandler.Vips.Contains(player.UserId))
                     SwapCooldown.Add(player.UserId, RoundsCooldown);
                 player.Role = role;
                 return new string[] { "Done" };

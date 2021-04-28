@@ -2,22 +2,20 @@
 #pragma warning disable IDE0042
 #pragma warning disable IDE0060
 
-using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Utilities;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Mistaken.Utilities.APILib;
+using Gamer.Utilities;
 using MistakenSocket.Client.SL;
+using MistakenSocket.Shared;
+using MistakenSocket.Shared.API;
 using MistakenSocket.Shared.ClientToCentral;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Gamer.Diagnostics;
-using MistakenSocket.Shared.API;
-using MistakenSocket.Shared;
-using Gamer.Mistaken.Systems.Staff;
-using Gamer.Mistaken.Systems.Misc;
 
 namespace Gamer.Mistaken.Ranks
 {
@@ -42,14 +40,14 @@ namespace Gamer.Mistaken.Ranks
         {
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            
+
             Exiled.Events.Handlers.Player.ChangingGroup += this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => Player_ChangingGroup(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            
+
             Exiled.Events.Handlers.Player.ChangingGroup -= this.Handle<Exiled.Events.EventArgs.ChangingGroupEventArgs>((ev) => Player_ChangingGroup(ev));
         }
 
@@ -70,7 +68,7 @@ namespace Gamer.Mistaken.Ranks
             }
             Log.Debug($"Changing User Group for {ev.Player?.Nickname} to \"{ev.NewGroup?.BadgeText}\"");
         }
-        
+
         private void Server_WaitingForPlayers()
         {
             UpdateRoles();
@@ -115,8 +113,8 @@ namespace Gamer.Mistaken.Ranks
                 MessageIdentificator? slhoursMessageId = MessageIdentificator.Create(SSL.Client.MyType, ServerType.CENTRAL_SERVER);
                 SSL.Client.Send(MessageType.CMD_MULTI_MESSAGE, new MultiMessage
                 {
-                    Messages = new Message[] { 
-                        new Message 
+                    Messages = new Message[] {
+                        new Message
                         {
                             MsgType = MessageType.CMD_REQUEST_DATA,
                             MessageId = premiumMessageId ?? default,
@@ -340,7 +338,7 @@ namespace Gamer.Mistaken.Ranks
                             RoleType = RoleType.TOPDISCORD,
                             VipLevel = VipLevel.NONE
                         };
-                        if(!TopDscRolesList.ContainsKey(playerInfo.UserId)) 
+                        if (!TopDscRolesList.ContainsKey(playerInfo.UserId))
                             TopDscRolesList.Add(playerInfo.UserId, playerInfo);
                     }
                 }
@@ -395,10 +393,10 @@ namespace Gamer.Mistaken.Ranks
             if (HasReservedSlot(VipList["76561198134629649@steam"].VipLevel))
                 ReservedSlots.Add("76561198134629649@steam");*/
         }
-        
+
         private static bool HasReservedSlot(VipLevel level)
         {
-            switch(level)
+            switch (level)
             {
                 case VipLevel.SAFE:
                 case VipLevel.KETER:

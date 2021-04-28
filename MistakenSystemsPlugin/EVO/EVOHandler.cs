@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
-using MEC;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.Achievements;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared.EVO;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Mistaken.EVO
@@ -58,7 +53,7 @@ namespace Gamer.Mistaken.EVO
         private readonly Dictionary<Generator079, string> GeneratorActivators = new Dictionary<Generator079, string>();
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
         {
-            if(GeneratorActivators.TryGetValue(ev.Generator, out string userId))
+            if (GeneratorActivators.TryGetValue(ev.Generator, out string userId))
                 AddProgress(1009, userId);
         }
 
@@ -75,7 +70,8 @@ namespace Gamer.Mistaken.EVO
             SSL.Client.Send(MessageType.EVO_REQUEST_RANK, new EVORequestRankData
             {
                 UserId = UserId
-            }).GetResponseDataCallback((result) => {
+            }).GetResponseDataCallback((result) =>
+            {
                 if (result.Type != MistakenSocket.Shared.API.ResponseType.OK)
                     return;
                 var data = result.Payload.Deserialize<EVOResponseRankData>(0, 0, out _, false);
@@ -148,9 +144,9 @@ namespace Gamer.Mistaken.EVO
         private static void SSL_OnAchievementInfoResponse(uint Id, string UserId, uint Progress, uint Level)
         {
             var achiev = Achievements.Find(a => a.Id == Id);
-            if (achiev == null) 
+            if (achiev == null)
                 return;
-            if (Level >= 3) 
+            if (Level >= 3)
                 return;
             var nextLevel = achiev.Levels[Level];
             if (nextLevel.Progress <= Progress)
@@ -174,7 +170,7 @@ namespace Gamer.Mistaken.EVO
         {
             if (ev.IsAllowed && ev.ButtonPresser != null && GameObject.FindObjectOfType<LureSubjectContainer>().NetworkallowContain && !OneOhSixContainer.used)
             {
-                if (ev.ButtonPresser.IsDNT()) 
+                if (ev.ButtonPresser.IsDNT())
                     return;
                 AddProgress(1007, ev.ButtonPresser.UserId);
             }
@@ -210,7 +206,7 @@ namespace Gamer.Mistaken.EVO
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if (ev.Player.IsDNT()) 
+            if (ev.Player.IsDNT())
                 return;
             if (ev.NewRole == RoleType.NtfCommander)
                 AddProgress(1005, ev.Player.UserId);
@@ -218,7 +214,7 @@ namespace Gamer.Mistaken.EVO
                 AddProgress(1008, ev.Player.UserId);
             else if (ev.NewRole.GetTeam() == Team.SCP && ev.NewRole != RoleType.Scp0492)
                 AddProgress(1011, ev.Player.UserId);
-            else  if (ev.NewRole == RoleType.ClassD)
+            else if (ev.NewRole == RoleType.ClassD)
                 AddProgress(1012, ev.Player.UserId);
             else if (ev.NewRole == RoleType.Scientist)
                 AddProgress(1013, ev.Player.UserId);
@@ -257,7 +253,7 @@ namespace Gamer.Mistaken.EVO
                     var data = result.Payload.Deserialize<AchievementResponseProggres>(0, 0, out _, false);
                     SSL_OnAchievementInfoResponse(data.Id, data.UserId, data.Proggres, data.CurrentLevel);
                 });
-            });       
+            });
         }
     }
 }

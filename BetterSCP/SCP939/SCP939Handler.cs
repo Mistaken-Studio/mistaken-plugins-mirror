@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Gamer.Mistaken.BetterSCP;
-using HarmonyLib;
-using MEC;
-using UnityEngine;
-using Gamer.Diagnostics;
+﻿using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.BetterSCP.SCP939
 {
@@ -39,7 +27,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP939
         private static float Ratio;
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if(ev.NewRole.Is939())
+            if (ev.NewRole.Is939())
             {
                 Decay = ev.Player.ReferenceHub.playerStats.artificialHpDecay;
                 ev.Player.ReferenceHub.playerStats.artificialHpDecay = 0;
@@ -55,7 +43,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP939
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            if(ev.Killer?.Role.Is939() ?? false)
+            if (ev.Killer?.Role.Is939() ?? false)
                 ev.Killer.Health += UnityEngine.Random.Range(30, 50);
         }
 

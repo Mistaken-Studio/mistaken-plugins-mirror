@@ -1,8 +1,7 @@
 ﻿using CommandSystem;
-using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
 using Mirror;
@@ -13,9 +12,9 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class DevTestCommand : IBetterCommand
-    {       
+    {
         public override string Description => "DEV STUFF";
         public override string Command => "test";
         internal static Dictionary<Player, Pickup> keycard = new Dictionary<Player, Pickup>();
@@ -91,7 +90,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         default:
                             return new string[] { "Avaiable items:", "Taser", "Impact", "Armor", "SNav-3000", "SNav-Ultimate", "SCP-1499" };
                     }
-                    if(player.Inventory.items.Count > 7)
+                    if (player.Inventory.items.Count > 7)
                         info.Spawn(player.Position);
                     else
                         player.AddItem(info);

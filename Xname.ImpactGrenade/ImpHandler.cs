@@ -2,16 +2,17 @@
 #pragma warning disable IDE0060
 #pragma warning disable IDE0051
 
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Exiled.API.Interfaces;
+using Gamer.API.CustomItem;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.RoundLoggerSystem;
+using Grenades;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Interfaces;
-using Gamer.Diagnostics;
-using Gamer.API.CustomItem;
 using UnityEngine;
-using Exiled.API.Features;
-using Grenades;
-using Exiled.API.Extensions;
-using Gamer.RoundLoggerSystem;
 
 namespace Xname.ImpactGrenade
 {
@@ -70,17 +71,17 @@ namespace Xname.ImpactGrenade
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>Granat Uderzeniowy</color>");
+                player.SetGUI("impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>Granat Uderzeniowy</color>");
             }
             /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                player.SetGUI("impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <inheritdoc/>
             public override void OnForceclass(Player player)
             {
-                Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                player.SetGUI("impact", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <summary>
             /// Gives Impact Grenade to <paramref name="player"/>
@@ -119,14 +120,14 @@ namespace Xname.ImpactGrenade
         private GrenadeManager lastImpactThrower;
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            if (!grenades.Contains(ev.Grenade)) 
+            if (!grenades.Contains(ev.Grenade))
                 return;
             RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
             var tmp = (ev.Grenade.GetComponent<FragGrenade>()).thrower;
             lastImpactThrower = tmp;
             MEC.Timing.CallDelayed(1, () =>
             {
-                if (lastImpactThrower == tmp) 
+                if (lastImpactThrower == tmp)
                     lastImpactThrower = null;
             });
             foreach (Player player in ev.TargetToDamages.Keys.ToArray())

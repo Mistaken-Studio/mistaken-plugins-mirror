@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Interactables.Interobjects.DoorUtils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Exiled.API.Features;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Interactables.Interobjects.DoorUtils;
 
 namespace Gamer.EventManager.Events
 {
@@ -122,7 +121,7 @@ namespace Gamer.EventManager.Events
                     }), 1);
                 }
             }
-            WaitAndExecute(1, () => 
+            WaitAndExecute(1, () =>
             {
                 Stats();
             });

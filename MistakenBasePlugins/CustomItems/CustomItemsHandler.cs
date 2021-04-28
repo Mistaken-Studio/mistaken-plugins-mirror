@@ -1,30 +1,28 @@
-﻿using Exiled.API.Enums;
+﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.API.CustomItem;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Diagnostics;
-using Gamer.API.CustomItem;
 
 namespace Gamer.Mistaken.Base.CustomItems
 {
+    /// <inheritdoc/>
     public class CustomItemsHandler : Module
     {
+        /// <inheritdoc/>
         public CustomItemsHandler(PluginHandler p) : base(p)
         {
             /*if (Server.Port != 7791)
                 this.Enabled = false;*/
         }
-
+        /// <inheritdoc/>
         public override string Name => "CustomItems";
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
@@ -42,6 +40,7 @@ namespace Gamer.Mistaken.Base.CustomItems
             Exiled.Events.Handlers.Player.Handcuffing += this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
             Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
@@ -76,7 +75,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                 if (customItem == null)
                     continue;
                 customItem.OnDrop(ev.Target, item);
-            } 
+            }
         }
 
         private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
@@ -87,7 +86,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                 {
                     foreach (var upgrade in customItem.Upgrades)
                     {
-                        if(upgrade.KnobSetting == ev.KnobSetting)
+                        if (upgrade.KnobSetting == ev.KnobSetting)
                         {
                             if (item.ItemId == upgrade.Input && (upgrade.Durability == null || item.durability == upgrade.Durability))
                             {
@@ -107,7 +106,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                     continue;
                 var result = thisCustomItem.OnUpgrade(item, ev.KnobSetting);
                 var custimItem = GetCustomItem(result);
-                if(custimItem != null)
+                if (custimItem != null)
                     custimItem.Spawn(ev.Scp914.output.position, custimItem.GetInternalDurability(result.durability));
                 else
                     result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
@@ -132,7 +131,7 @@ namespace Gamer.Mistaken.Base.CustomItems
             var customItem = GetCustomItem(ev.Pickup);
             if (customItem == null)
                 return;
-            GUI.PseudoGUIHandler.Set(ev.Player, "citem_pickup", GUI.PseudoGUIHandler.Position.BOTTOM, $"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3);
+            ev.Player.SetGUI("citem_pickup", GUI.PseudoGUIHandler.Position.BOTTOM, $"Podnosisz <color=yellow>{customItem.ItemName}</color>", 3);
             customItem.OnPrePickup(ev.Player, ev.Pickup);
         }
 
@@ -181,7 +180,7 @@ namespace Gamer.Mistaken.Base.CustomItems
             if (customItem == null)
                 return;
             ev.IsAllowed = customItem.OnDrop(ev.Player, ev.Item);
-            if(ev.IsAllowed)
+            if (ev.IsAllowed)
             {
                 if (ev.Player.CurrentItem == ev.Item)
                     customItem.OnStopHolding(ev.Player, ev.Item);
@@ -257,7 +256,11 @@ namespace Gamer.Mistaken.Base.CustomItems
                 yield return Timing.WaitForSeconds(5);
             }
         }
-
+        /// <summary>
+        /// Returns custom item
+        /// </summary>
+        /// <param name="item">Pickup</param>
+        /// <returns>CustomItem</returns>
         public static CustomItem GetCustomItem(Pickup item)
         {
             if (!CustomItem.CustomItemsFastCheckCache.Contains(item.ItemId))
@@ -270,6 +273,11 @@ namespace Gamer.Mistaken.Base.CustomItems
             }
             return null;
         }
+        /// <summary>
+        /// If player has custom item
+        /// </summary>
+        /// <param name="player">Player</param>
+        /// <returns>If has custom item</returns>
         public static bool HasCustomItem(Player player)
         {
             foreach (var item in player.Inventory.items)
@@ -284,6 +292,11 @@ namespace Gamer.Mistaken.Base.CustomItems
             }
             return false;
         }
+        /// <summary>
+        /// Returns custom item
+        /// </summary>
+        /// <param name="item">Item</param>
+        /// <returns>CustomItem</returns>
         public static CustomItem GetCustomItem(Inventory.SyncItemInfo item)
         {
             if (!CustomItem.CustomItemsFastCheckCache.Contains(item.id))

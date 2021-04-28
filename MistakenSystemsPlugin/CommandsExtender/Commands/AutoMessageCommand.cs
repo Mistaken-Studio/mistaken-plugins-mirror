@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
-using Gamer.Utilities;
 using Gamer.Mistaken.Systems.End;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
@@ -30,7 +28,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (args.Length == 0)
                 return new string[] { GetUsage() };
             string message;
-            switch(args[0].ToLower())
+            switch (args[0].ToLower())
             {
                 case "discord":
                     {
@@ -72,7 +70,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (message == "")
                 return new string[] { "Unknown Error" };
             success = true;
-            Map.Broadcast(20,message);
+            Map.Broadcast(20, message);
             return new string[] { "Done" };
         }
     }

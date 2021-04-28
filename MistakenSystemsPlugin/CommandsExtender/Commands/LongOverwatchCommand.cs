@@ -1,14 +1,10 @@
 ﻿using CommandSystem;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class LongOverwatchCommand : IBetterCommand
     {
         public override string Description =>
@@ -20,18 +16,18 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = true;
             var senderPlayer = sender.GetPlayer();
-            if(!sender.CheckPermission(PlayerPermissions.Overwatch))
+            if (!sender.CheckPermission(PlayerPermissions.Overwatch))
             {
                 _s = false;
                 return new string[] { "Access Denied" };
             }
             bool value = Systems.End.OverwatchHandler.InLongOverwatch.Contains(senderPlayer.UserId);
-            if(value)
+            if (value)
             {
                 Systems.End.OverwatchHandler.InLongOverwatch.Remove(senderPlayer.UserId);
                 senderPlayer.IsOverwatchEnabled = false;
                 senderPlayer.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, false);
-                Base.GUI.PseudoGUIHandler.Set(senderPlayer, "long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, null);
+                senderPlayer.SetGUI("long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, null);
                 AnnonymousEvents.Call("LONG_OVERWATCH", (senderPlayer, false));
                 return new string[] { "Disabled" };
             }
@@ -41,7 +37,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Systems.End.OverwatchHandler.InLongOverwatch.Add(senderPlayer.UserId);
                 senderPlayer.IsOverwatchEnabled = true;
                 senderPlayer.SetSessionVar(Main.SessionVarType.LONG_OVERWATCH, true);
-                Base.GUI.PseudoGUIHandler.Set(senderPlayer, "long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, "Active: <color=red>Long Overwatch</color>");
+                senderPlayer.SetGUI("long_overwatch", Base.GUI.PseudoGUIHandler.Position.TOP, "Active: <color=red>Long Overwatch</color>");
                 AnnonymousEvents.Call("LONG_OVERWATCH", (senderPlayer, true));
                 return new string[] { "Enabled" };
             }

@@ -1,18 +1,11 @@
-﻿using Assets._Scripts.Dissonance;
-using CommandSystem;
-using Exiled.API.Features;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class SpecRoleCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class SpecRoleCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "specrole";
 

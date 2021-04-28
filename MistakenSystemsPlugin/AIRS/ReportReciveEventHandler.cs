@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using MistakenSocket.Client;
+﻿using Gamer.Utilities;
 using MistakenSocket.Client.SL;
-using MistakenSocket.Shared;
 using MistakenSocket.Shared.AIRS;
 using MistakenSocket.Shared.API;
 using MistakenSocket.Shared.Events;
@@ -27,7 +20,7 @@ namespace Gamer.Mistaken.AIRS
 
         public static string GetColorByStatus(ReportStatusType status)
         {
-            switch(status)
+            switch (status)
             {
                 case ReportStatusType.FAILED:
                     return "red";

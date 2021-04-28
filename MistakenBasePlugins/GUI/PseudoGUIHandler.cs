@@ -1,63 +1,65 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 
 namespace Gamer.Mistaken.Base.GUI
 {
+    /// <inheritdoc/>
     public class PseudoGUIHandler : Module
     {
+        /// <inheritdoc/>
         public override bool IsBasic => true;
         //public override bool Enabled => false;
+        /// <inheritdoc/>
         public PseudoGUIHandler(PluginHandler p) : base(p)
         {
             Timing.RunCoroutine(DoLoop());
         }
-
+        /// <inheritdoc/>
         public override string Name => "PseudoGUI";
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Run = true;
         }
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Run = false;
         }
-
+        /// <summary>
+        /// Content position
+        /// </summary>
         public enum Position
         {
+#pragma warning disable CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
             TOP,
             MIDDLE,
             BOTTOM
+#pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }
+        /// <summary>
+        /// Stops updating GUI
+        /// </summary>
+        /// <param name="p">player to ignore</param>
         public static void Ignore(Player p) => ToIgnore.Add(p);
+        /// <summary>
+        /// Starts updating GUI
+        /// </summary>
+        /// <param name="p">player to stop ignoring</param>
         public static void StopIgnore(Player p)
         {
             ToIgnore.Remove(p);
             ToUpdate.Add(p);
         }
-        public static void ClearAll(string key)
-        {
-            foreach (var item in CustomInfo.Where(i => i.Value.ContainsKey(key)))
-            {
-                CustomInfo[item.Key].Remove(key);
-                ToUpdate.Add(item.Key);
-            }
-        }
         private static readonly Dictionary<string, uint> SetIds = new Dictionary<string, uint>();
         private static uint SetId = 0;
-        public static void Set(Player player, string key, Position type, string content, float duration)
+        internal static void Set(Player player, string key, Position type, string content, float duration)
         {
             uint localId = SetId++;
             SetIds[key] = localId;
@@ -65,13 +67,13 @@ namespace Gamer.Mistaken.Base.GUI
             Timing.CallDelayed(duration, () =>
             {
                 //if (localId == SetIds[key])
-                    Set(player, key, type, null);
+                Set(player, key, type, null);
             });
         }
-        public static void Set(Player player, string key, Position type, string content)
+        internal static void Set(Player player, string key, Position type, string content)
         {
             bool remove = string.IsNullOrWhiteSpace(content);
-            if(remove)
+            if (remove)
             {
                 if (!CustomInfo.TryGetValue(player, out Dictionary<string, (string, Position)> value) || !value.ContainsKey(key))
                     return;
@@ -109,7 +111,7 @@ namespace Gamer.Mistaken.Base.GUI
             {
                 yield return Timing.WaitForSeconds(.25f);
                 i += 1;
-                if(i >= 40)
+                if (i >= 40)
                 {
                     start = DateTime.Now;
                     foreach (var item in RealPlayers.List)
@@ -220,13 +222,29 @@ namespace Gamer.Mistaken.Base.GUI
             //Log.Debug($"Updating {player.Id} with {toWrite}");
         }
     }
-
+    /// <summary>
+    /// Extensions
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Sets GUI Element
+        /// </summary>
+        /// <param name="player">target</param>
+        /// <param name="key">key</param>
+        /// <param name="type">position</param>
+        /// <param name="content">content</param>
+        /// <param name="duration">duration</param>
         public static void SetGUI(this Player player, string key, PseudoGUIHandler.Position type, string content, float duration) =>
             PseudoGUIHandler.Set(player, key, type, content, duration);
-        public static void SetGUI(this Player player, string key, PseudoGUIHandler.Position type, string content) => 
+        /// <summary>
+        /// Sets GUI Element
+        /// </summary>
+        /// <param name="player">target</param>
+        /// <param name="key">key</param>
+        /// <param name="type">position</param>
+        /// <param name="content">content</param>
+        public static void SetGUI(this Player player, string key, PseudoGUIHandler.Position type, string content) =>
             PseudoGUIHandler.Set(player, key, type, content);
-        
     }
 }

@@ -1,21 +1,14 @@
-﻿using System;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Utilities.APILib;
+using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
+using Grenades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Gamer.Mistaken.Utilities.APILib;
-using Gamer.Diagnostics;
-using MEC;
-using Gamer.RoundLoggerSystem;
-using UnityEngine;
-using Grenades;
-using Exiled.API.Extensions;
-using UnityEngine.Assertions.Must;
 
 namespace Gamer.Mistaken.ATK
 {
@@ -148,7 +141,7 @@ namespace Gamer.Mistaken.ATK
             Exiled.Events.Handlers.Player.Dying += this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => Player_Dying(ev));
             Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
-        
+
             Server_RestartingRound();
         }
 
@@ -299,9 +292,9 @@ namespace Gamer.Mistaken.ATK
 
         public static bool IsTeamkill(Player killer, Player victim)
         {
-            if (!Round.IsStarted) 
+            if (!Round.IsStarted)
                 return false;
-            if (killer == null) 
+            if (killer == null)
                 return false;
             if (killer.UserId == victim.UserId)
                 return false;
@@ -334,7 +327,7 @@ namespace Gamer.Mistaken.ATK
 
             var tks = TeamKillsCounter[killerUserId];
             var killer = Player.Get(killerUserId);
-            if(killer != null)
+            if (killer != null)
             {
                 killer.Broadcast(5, $"<color=red>You have teamKilled {victim} using {type.name}\n - Total TeamKills: {tks}\n <b>This will not be tolerated</b></color>");
                 victim.Broadcast(5, $"<color=red>You have been teamKilled by {killer.Nickname} using {type.name}</color>");
@@ -363,8 +356,8 @@ namespace Gamer.Mistaken.ATK
                     $"\n- Server: {Server.Port}",
                     "red");
             }
-            
-            
+
+
 
             if (!Punishing.Contains(killerUserId))
             {
@@ -412,7 +405,7 @@ namespace Gamer.Mistaken.ATK
                     Log.Info("Player " + userId + " has been banned for " + 43200 + " minutes after teamkilling " + tks + " players.");
                     Ban(userId, 43200, "TK: Zostałeś automatycznie zbanowany na 1 miesiąc za zabicie za dużej ilości Sojuszników");
                     break;
-            }    
+            }
         }
 
         private void OnTeamAttack(string attackerUserId, Player victim, DamageTypes.DamageType type, float amount)
@@ -427,8 +420,8 @@ namespace Gamer.Mistaken.ATK
 
                 victim.SendConsoleMessage(
                     $"You have been team attacked:" +
-                    $"\n- TeamAttacker: {attacker.ToString(true)}" +
-                    $"\n- You: {victim.ToString(true)}" +
+                    $"\n- TeamAttacker: {attacker.ToString(false)}" +
+                    $"\n- You: {victim.ToString(false)}" +
                     $"\n- Tool: {type.name}" +
                     $"\n- Amount: {amount}" +
                     $"\n- Server: {Server.Port}",
@@ -437,13 +430,13 @@ namespace Gamer.Mistaken.ATK
             else
             {
                 victim.Broadcast(2, $"<color=yellow>You have been attacked by team mate [<color=red>PLAYER LEFT</color>] using {type.name} and he done {amount} damage</color>");
-                
+
                 RoundLogger.Log("TK", "DAMAGE", $"{attackerUserId} teamattacked {victim.PlayerToString()} using {type.name} and done {amount} damage but was not found");
 
                 victim.SendConsoleMessage(
                     $"You have been team attacked:" +
                     $"\n- TeamAttacker: [PLAYER LEFT (Ask admin to check round logs)]" +
-                    $"\n- You: {victim.ToString(true)}" +
+                    $"\n- You: {victim.ToString(false)}" +
                     $"\n- Tool: {type.name}" +
                     $"\n- Amount: {amount}" +
                     $"\n- Server: {Server.Port}",

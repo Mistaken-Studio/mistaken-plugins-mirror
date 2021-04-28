@@ -1,28 +1,9 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.SocketAdmin;
-using Octokit;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
-using MistakenSocket.Shared.CentralToSL;
-using MistakenSocket.Shared.API;
-using MistakenSocket.Shared.ClientToCentral;
-using MistakenSocket.Shared;
-
 using Gamer.RoundLoggerSystem;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -156,7 +137,7 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Server_SendingConsoleCommand(Exiled.Events.EventArgs.SendingConsoleCommandEventArgs ev)
         {
-            RoundLogger.Log("GAME EVENT", "CONSOLE", $"{PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ",ev.Arguments)}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
+            RoundLogger.Log("GAME EVENT", "CONSOLE", $"{PTS(ev.Player)} run {ev.Name} with args ({string.Join(", ", ev.Arguments)}) with result: {(ev.IsAllowed ? "Allowed" : "Disallowed")}");
         }
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {
@@ -270,7 +251,7 @@ namespace Gamer.Mistaken.Systems.End
         {
             if (ev.Target.IsDead)
                 return;
-            if(ev.DamageType == DamageTypes.Scp207)
+            if (ev.DamageType == DamageTypes.Scp207)
                 RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} was damaged by SCP-207 ({ev.Target.GetEffectIntensity<CustomPlayerEffects.Scp207>()})");
             else if (ev.Target.Id == ev.Attacker?.Id)
                 RoundLogger.Log("GAME EVENT", "DAMAGE", $"{PTS(ev.Target)} hurt himself using {ev.DamageType.name}, done {ev.Amount} damage");

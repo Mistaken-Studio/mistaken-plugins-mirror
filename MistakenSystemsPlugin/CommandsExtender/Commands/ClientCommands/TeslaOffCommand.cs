@@ -1,16 +1,12 @@
 ﻿using CommandSystem;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Utilities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class TeslaOffCommand : IBetterCommand
-    {       
+    {
         public override string Description => "Disabled all tesla gates";
         public override string Command => "teslaOff";
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)

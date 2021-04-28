@@ -1,23 +1,13 @@
-﻿using Exiled.API.Enums;
+﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.Diagnostics;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
+using NPCS;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Mistaken.Utilities.APILib;
-using Gamer.Diagnostics;
-using RemoteAdmin;
-using NPCS;
-using NPCS.Talking;
-using NPCS.Events;
-using Gamer.Mistaken.CommandsExtender.Commands;
 
 namespace Gamer.Mistaken.Systems.Pets
 {
@@ -39,7 +29,7 @@ namespace Gamer.Mistaken.Systems.Pets
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.TriggeringTesla += this.Handle<Exiled.Events.EventArgs.TriggeringTeslaEventArgs>((ev) => Player_TriggeringTesla(ev));
-            if(Server.Port % 2 == 1)
+            if (Server.Port % 2 == 1)
                 Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
 
@@ -95,7 +85,7 @@ namespace Gamer.Mistaken.Systems.Pets
         };
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            if(ev.Player.IsReadyPlayer())
+            if (ev.Player.IsReadyPlayer())
                 Components.InRageBall.Spawn(ev.Player.GameObject.transform, Vector3.zero, 2, 4, OnEnter(ev.Player), OnExit(ev.Player)).AllowNPCs = true;
         }
 
@@ -150,13 +140,13 @@ namespace Gamer.Mistaken.Systems.Pets
                     value.Kill(false);
                     AlivePets.Remove(player.UserId);
                 }
-            });   
+            });
         }
 
         private static IEnumerator<float> SyncSCP173Speed(Player player, NPCS.Npc pet)
         {
             yield return Timing.WaitForSeconds(1);
-            while(player.Role == RoleType.Scp173 && AlivePets.Any(i => i.Key == player.UserId && i.Value.NPCPlayer.Id == pet.NPCPlayer.Id))
+            while (player.Role == RoleType.Scp173 && AlivePets.Any(i => i.Key == player.UserId && i.Value.NPCPlayer.Id == pet.NPCPlayer.Id))
             {
                 pet.MovementSpeed = player.ReferenceHub.characterClassManager.Scp173.boost_speed.Evaluate(player.ReferenceHub.playerStats.GetHealthPercent()) * 1.1f;
                 yield return Timing.WaitForSeconds(1);
@@ -172,7 +162,7 @@ namespace Gamer.Mistaken.Systems.Pets
         public static NPCS.Npc CreateFolowingNPC(Player player, RoleType role, string name)
         {
             //if(!player.IsDev())
-                role = player.Role;
+            role = player.Role;
             var npc = NPCS.Methods.CreateNPC(player.Position, Vector2.zero, PetSize, role, ItemType.None, name ?? "(NULL)");
             //npc.VisibleForPlayers = new HashSet<Player>();
             npc.VisibleForRoles = new HashSet<RoleType>();
@@ -256,18 +246,18 @@ namespace Gamer.Mistaken.Systems.Pets
                     if (player.Role == RoleType.Scp173)
                         Timing.RunCoroutine(SyncSCP173Speed(player, npc));
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
-            });    
+            });
             return npc;
         }
 
         private static IEnumerator<float> ForceAnim(NPCS.Npc npc)
         {
-            while(npc.NPCPlayer?.IsAlive ?? false)
+            while (npc.NPCPlayer?.IsAlive ?? false)
             {
                 yield return Timing.WaitForSeconds(0.5f);
                 npc.NPCPlayer.ReferenceHub.animationController.Network_curMoveState = 1;

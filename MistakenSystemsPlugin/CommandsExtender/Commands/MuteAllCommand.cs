@@ -1,12 +1,14 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class MuteAllCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class MuteAllCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "muteall";
 
@@ -43,12 +45,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         IEnumerator<float> InformGlobalMute(Player player)
         {
-            while(GlobalMuteActive)
+            while (GlobalMuteActive)
             {
-                Base.GUI.PseudoGUIHandler.Set(player, "globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
+                player.SetGUI("globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, "<color=green>[<color=orange>GLOBAL MUTE</color>]</color> Everyone except admins are muted");
                 yield return MEC.Timing.WaitForSeconds(1);
             }
-            Base.GUI.PseudoGUIHandler.Set(player, "globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, null);
+            player.SetGUI("globalMute", Base.GUI.PseudoGUIHandler.Position.TOP, null);
         }
     }
 }

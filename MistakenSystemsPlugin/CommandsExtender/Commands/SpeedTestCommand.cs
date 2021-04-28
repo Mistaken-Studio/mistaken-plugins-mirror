@@ -1,15 +1,10 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class SpeedTestCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "speed";
@@ -31,7 +26,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
             _s = false;
-            if (args.Length < 3) 
+            if (args.Length < 3)
                 return new string[] { GetUsage() };
             if (!float.TryParse(args[1], out float walkSpeed))
             {

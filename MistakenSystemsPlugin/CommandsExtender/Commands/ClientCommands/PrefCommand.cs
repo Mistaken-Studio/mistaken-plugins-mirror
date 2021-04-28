@@ -1,17 +1,12 @@
-﻿using System.Linq;
-using UnityEngine;
-using Mirror;
-using System.Collections.Generic;
+﻿using CommandSystem;
 using Gamer.Utilities;
-using CommandSystem;
-using Exiled.API.Features;
 using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.SLToCentral;
 using MistakenSocket.Shared.API;
+using MistakenSocket.Shared.SLToCentral;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     class PrefCommand : IBetterCommand
     {
         public override string Command => "pref";
@@ -28,7 +23,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             _s = true;
             var player = sender.GetPlayer();
             var prefs = Systems.Handler.PlayerPreferencesDict[player.UserId];
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 return new string[]
                 {
@@ -38,7 +33,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     $"Transkcrypt (transkcrypt): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT) ? "<color=red>Disabled</color>" : "<color=green>Enabled</color>")}"
                 };
             }
-            switch(args[0].ToLower())
+            switch (args[0].ToLower())
             {
                 case "trans":
                 case "transkcrypt":

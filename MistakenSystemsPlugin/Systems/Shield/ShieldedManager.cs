@@ -1,11 +1,8 @@
-﻿using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using MEC;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 
@@ -40,7 +37,7 @@ namespace Gamer.Mistaken.Systems.Shield
         public static void Remove(Player player)
         {
             foreach (var item in Shieldeds.Where(p => p.player == player).ToArray())
-                item.Disable(); 
+                item.Disable();
         }
         public static bool Has(Player player) => Shieldeds.Any(p => p.player.Id == player.Id);
         public static Shielded Get(Player player) => Shieldeds.Find(p => p.player.Id == player.Id);
@@ -83,7 +80,7 @@ namespace Gamer.Mistaken.Systems.Shield
             }
             set
             {
-                if(player != null)
+                if (player != null)
                     player.MaxArtificialHealth += (value - _maxShield);
                 _maxShield = value;
             }
@@ -128,7 +125,7 @@ namespace Gamer.Mistaken.Systems.Shield
             safeTimer = new Timer(SafeTime * 1000);
             safeTimer.Elapsed += (_, __) =>
             {
-                IsSafe = true; 
+                IsSafe = true;
                 safeTimer.Stop();
             };
 
@@ -141,7 +138,7 @@ namespace Gamer.Mistaken.Systems.Shield
             originalShieldEffectivnes = ps.artificialNormalRatio;
             if (ShieldDecay != -1)
                 ps.artificialHpDecay = ShieldDecay;
-            if(ShieldEffectivnes != -1)
+            if (ShieldEffectivnes != -1)
                 ps.artificialNormalRatio = ShieldEffectivnes;
         }
 
@@ -152,7 +149,7 @@ namespace Gamer.Mistaken.Systems.Shield
         }
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
         {
-            if(ev.Player.Id == player.Id)
+            if (ev.Player.Id == player.Id)
                 this.Disable();
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)

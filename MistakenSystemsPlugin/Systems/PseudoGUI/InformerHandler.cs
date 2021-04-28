@@ -1,22 +1,17 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Utilities.APILib;
 using Gamer.Utilities;
-using Grenades;
 using MEC;
-using Mirror;
+using MistakenSocket.Client.SL;
+using MistakenSocket.Shared;
+using MistakenSocket.Shared.API;
+using MistakenSocket.Shared.ClientToCentral;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Mistaken.Utilities.APILib;
-using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.ClientToCentral;
-using MistakenSocket.Shared;
-using Gamer.Diagnostics;
-using MistakenSocket.Shared.API;
 
 namespace Gamer.Mistaken.Systems.GUI
 {
@@ -61,7 +56,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 Timing.RunCoroutine(EscapeMessage(ev.Player, ev.NewRole == RoleType.ChaosInsurgency, ev.NewRole == RoleType.NtfScientist));
         }
 
-        private readonly static string[] CIMessage = new string[] 
+        private readonly static string[] CIMessage = new string[]
         {
             "Przeprowadzacie atak na placówkę Fundacji. Nie zmieściłeś się jednak w pierwszym aucie wysłanym tu, więc przyjechałeś później.",
             "Dowództwo Delta zdecydowało o przysłaniu dodatkowych jednostek do tej placówki w celu przeprowadzenia ataku.",
@@ -69,7 +64,7 @@ namespace Gamer.Mistaken.Systems.GUI
             "Nie planowano twojego przyjazdu do placówki, jednak Dowództwo Delta zdecydowało o spontanicznej ofensywie na placówkę Fundacji.",
             "Otrzymaliście informacje o wyłomie w placówce Fundacji. Postanawiacie to wykorzystać i zdobyć informacje oraz obiekty SCP.",
         };
-        private readonly static string[] MTFMessage = new string[] 
+        private readonly static string[] MTFMessage = new string[]
         {
             "Dyrektor [REDACTED] otrzymał niepokojące informacje o sytuacji w placówce. Zostałeś więc przysłany jako wsparcie dla jednostki $team.",
             "Zaspałeś i przegapiłeś wezwanie na operację. Przywieziono cię drugim helikopterem lecącym do placówki.",
@@ -83,18 +78,18 @@ namespace Gamer.Mistaken.Systems.GUI
         {
             yield return Timing.WaitForSeconds(2);
             string message = ci ? CIMessage[UnityEngine.Random.Range(0, CIMessage.Length)] : MTFMessage[UnityEngine.Random.Range(0, MTFMessage.Length)].Replace("$team", "");
-            if (sci && UnityEngine.Random.Range(0, 5) == 0) 
+            if (sci && UnityEngine.Random.Range(0, 5) == 0)
                 message = "Ochrona placówki zgłosiła, że potrzebna jest osoba z wyższymi uprawnieniami do wykonania pewnych zadań. Przysłano więc Ciebie.";
             player.SendConsoleMessage(message, "grey");
-            Base.GUI.PseudoGUIHandler.Set(player, "escape", Base.GUI.PseudoGUIHandler.Position.MIDDLE, message, 15);
+            player.SetGUI("escape", Base.GUI.PseudoGUIHandler.Position.MIDDLE, message, 15);
         }
 
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
         {
-            if(ev.Player.Team == Team.SCP)
+            if (ev.Player.Team == Team.SCP)
             {
                 ev.IsAllowed = false;
-                Base.GUI.PseudoGUIHandler.Set(ev.Player, "warhead", Base.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_WarheadDenied"), 10);
+                ev.Player.SetGUI("warhead", Base.GUI.PseudoGUIHandler.Position.MIDDLE, plugin.ReadTranslation("Info_WarheadDenied"), 10);
             }
         }
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
@@ -109,11 +104,11 @@ namespace Gamer.Mistaken.Systems.GUI
         IEnumerator<float> InformSpeaker(Player player)
         {
             string message = plugin.ReadTranslation("Info_Intercom");
-            Base.GUI.PseudoGUIHandler.Set(player, "intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, message);
+            player.SetGUI("intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, message);
             yield return Timing.WaitForSeconds(1);
-            while(Intercom.host?.speaker != null)
+            while (Intercom.host?.speaker != null)
                 yield return Timing.WaitForSeconds(1);
-            Base.GUI.PseudoGUIHandler.Set(player, "intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            player.SetGUI("intercom", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
         }
 
         private void CustomEvents_OnFirstTimeJoined(Exiled.Events.EventArgs.FirstTimeJoinedEventArgs ev)
@@ -123,7 +118,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 Log.Warn("Joined player is null");
                 return;
             }
-            Base.GUI.PseudoGUIHandler.Set(ev.Player, "welcome", Base.GUI.PseudoGUIHandler.Position.BOTTOM, WelcomeMessage.Replace("{nickname}", ev.Player.Nickname), 20);
+            ev.Player.SetGUI("welcome", Base.GUI.PseudoGUIHandler.Position.BOTTOM, WelcomeMessage.Replace("{nickname}", ev.Player.Nickname), 20);
         }
 
         private void Server_WaitingForPlayers()
@@ -141,7 +136,7 @@ namespace Gamer.Mistaken.Systems.GUI
         IEnumerator<float> Update()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 yield return Timing.WaitForSeconds(5);
@@ -175,7 +170,7 @@ namespace Gamer.Mistaken.Systems.GUI
                         customInfoMessage += $" Vanish ({vanishLevel})";
                         infoMessage += $"<br>Vanish: <color=yellow>Active ({vanishLevel})</color>";
                     }
-                    Base.GUI.PseudoGUIHandler.Set(player, "admin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=50%>{infoMessage}</size>");
+                    player.SetGUI("admin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=50%>{infoMessage}</size>");
 
                     Base.CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>", false);
                 }
@@ -185,7 +180,7 @@ namespace Gamer.Mistaken.Systems.GUI
         IEnumerator<float> Update268()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; 
+            int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 var start = DateTime.Now;
@@ -193,9 +188,9 @@ namespace Gamer.Mistaken.Systems.GUI
                 {
                     var effect = player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp268>();
                     if (effect.Intensity > 0)
-                        Base.GUI.PseudoGUIHandler.Set(player, "268", Base.GUI.PseudoGUIHandler.Position.BOTTOM, plugin.ReadTranslation("Info_268", Mathf.RoundToInt(CustomPlayerEffects.Scp268.maxTime - effect.curTime)));
+                        player.SetGUI("268", Base.GUI.PseudoGUIHandler.Position.BOTTOM, plugin.ReadTranslation("Info_268", Mathf.RoundToInt(CustomPlayerEffects.Scp268.maxTime - effect.curTime)));
                     else
-                        Base.GUI.PseudoGUIHandler.Set(player, "268", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                        player.SetGUI("268", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 }
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update268", start, DateTime.Now);
                 yield return Timing.WaitForSeconds(1);
@@ -243,7 +238,7 @@ namespace Gamer.Mistaken.Systems.GUI
         }
         private void OnDataDownloadCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            if(e.Error != null)
+            if (e.Error != null)
             {
                 Log.Error("Failed to get Auto Message");
                 if (e.Error is WebException ex)

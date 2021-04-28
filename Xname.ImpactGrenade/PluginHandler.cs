@@ -1,9 +1,5 @@
 ﻿using Exiled.API.Features;
 using Gamer.API;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Xname.ImpactGrenade
 {

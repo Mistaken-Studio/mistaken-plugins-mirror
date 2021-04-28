@@ -2,12 +2,12 @@
 using Exiled.API.Features;
 using Gamer.Utilities;
 using Mirror;
-using System.Linq;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class WorkstationCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class WorkstationCommand : IBetterCommand, IPermissionLocked
     {
 
         public string Permission => "workstation";

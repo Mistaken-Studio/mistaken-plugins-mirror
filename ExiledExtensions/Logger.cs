@@ -1,9 +1,10 @@
-﻿using System;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
+using System;
 
 namespace Gamer.Utilities
 {
     [System.Obsolete("Use Module Logger")]
+#pragma warning disable CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
     public static class Logger
     {
         public static void Debug(string tag, string message)
@@ -36,4 +37,5 @@ namespace Gamer.Utilities
             Log.SendRaw(message, color);
         }
     }
+#pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
 }

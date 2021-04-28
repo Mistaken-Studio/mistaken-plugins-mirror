@@ -1,17 +1,15 @@
-﻿using Gamer.Mistaken.CommandsExtender.Commands;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Gamer.Utilities;
-using Exiled.API.Features;
-using UnityEngine;
-using System.Linq;
-using MEC;
-using Gamer.Mistaken.Systems.End;
-using Gamer.Diagnostics;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.CommandsExtender.Commands;
+using Gamer.Mistaken.Systems.End;
+using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
+using MEC;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender
 {
@@ -19,7 +17,7 @@ namespace Gamer.Mistaken.CommandsExtender
     {
         public CommandsHandler(PluginHandler plugin) : base(plugin)
         {
-            
+
         }
 
         public override string Name => "CommandsExtender";
@@ -77,7 +75,7 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            if (ev.Player == null) 
+            if (ev.Player == null)
                 return;
             try
             {
@@ -122,7 +120,7 @@ namespace Gamer.Mistaken.CommandsExtender
                 ev.Player.IsMuted = false;
                 MuteAllCommand.Muted.Remove(ev.Player.UserId);
             }
-            if(TalkCommand.Active.TryGetValue(ev.Player.UserId, out int[] players))
+            if (TalkCommand.Active.TryGetValue(ev.Player.UserId, out int[] players))
             {
                 foreach (var playerId in players)
                 {
@@ -157,7 +155,7 @@ namespace Gamer.Mistaken.CommandsExtender
         public static readonly Dictionary<string, (Player, Player)> LastVictims = new Dictionary<string, (Player, Player)>();
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if(!ev.Target.IsReadyPlayer())
+            if (!ev.Target.IsReadyPlayer())
                 return;
             if (DmgInfoCommand.Active.Contains(ev.Target.Id))
                 ev.Target.Broadcast("DMG INFO", 10, $"({ev.Attacker.Id}) {ev.Attacker.Nickname} | {ev.Attacker.UserId}\n{ev.DamageType.name} | {ev.Amount}");
@@ -177,7 +175,7 @@ namespace Gamer.Mistaken.CommandsExtender
         {
             if (!ev.Target.IsReadyPlayer())
                 return;
-            if(ev.Target.Role == RoleType.NtfCommander)
+            if (ev.Target.Role == RoleType.NtfCommander)
                 TeslaOnCommand.AlreadyUsed.Remove(ev.Target.UserId);
             if (!LastAttackers.TryGetValue(ev.Target.UserId, out (Player, Player) attackers))
                 LastAttackers[ev.Target.UserId] = (ev.Killer, null);
@@ -193,19 +191,19 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
-            if (MDestroyCommand.Active.Contains(ev.Player.Id)) 
+            if (MDestroyCommand.Active.Contains(ev.Player.Id))
                 ev.Door.BreakDoor();
             MDestroyCommand.Active.Remove(ev.Player.Id);
-            if (MOpenCommand.Active.Contains(ev.Player.Id)) 
+            if (MOpenCommand.Active.Contains(ev.Player.Id))
                 ev.Door.NetworkTargetState = true;
             MOpenCommand.Active.Remove(ev.Player.Id);
-            if (MCloseCommand.Active.Contains(ev.Player.Id)) 
+            if (MCloseCommand.Active.Contains(ev.Player.Id))
                 ev.Door.NetworkTargetState = false;
             MCloseCommand.Active.Remove(ev.Player.Id);
             if (MLockCommand.Active.Contains(ev.Player.Id))
                 ev.Door.NetworkActiveLocks |= (byte)DoorLockReason.AdminCommand;
             MLockCommand.Active.Remove(ev.Player.Id);
-            if (MUnlockCommand.Active.Contains(ev.Player.Id)) 
+            if (MUnlockCommand.Active.Contains(ev.Player.Id))
                 ev.Door.NetworkActiveLocks = (byte)(ev.Door.NetworkActiveLocks & ~((byte)DoorLockReason.AdminCommand));
             MUnlockCommand.Active.Remove(ev.Player.Id);
         }

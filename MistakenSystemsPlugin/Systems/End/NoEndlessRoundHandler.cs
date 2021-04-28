@@ -1,19 +1,14 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Utilities;
+using MEC;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -53,7 +48,7 @@ namespace Gamer.Mistaken.Systems.End
                 Respawning.RespawnManager.Singleton._timeForNextSequence = (float)Respawning.RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + 30;
                 MEC.Timing.CallDelayed(30 + 17, () =>
                 {
-                    if (startRoundId == RoundPlus.RoundId) 
+                    if (startRoundId == RoundPlus.RoundId)
                         SpawnAsSamsara();
                 });
             }
@@ -74,7 +69,7 @@ namespace Gamer.Mistaken.Systems.End
         public static void SpawnAsSamsara(List<Player> toSpawn = null)
         {
             var players = RealPlayers.Get(RoleType.Spectator).ToArray().Shuffle();
-            if(toSpawn == null)
+            if (toSpawn == null)
                 toSpawn = new List<Player>();
             foreach (var player in players)
             {
@@ -108,7 +103,7 @@ namespace Gamer.Mistaken.Systems.End
                 var items = player.Inventory.items;
                 for (int i = 0; i < items.Count; i++)
                 {
-                    if(items[i].id.IsKeycard())
+                    if (items[i].id.IsKeycard())
                         items.RemoveAt(i);
                 }
                 player.AddItem(ItemType.KeycardO5);
@@ -125,7 +120,7 @@ namespace Gamer.Mistaken.Systems.End
                     Systems.Shield.ShieldedManager.Add(new Shield.Shielded(player, 50, 0.25f, 30, 0, -1));
                     MEC.Timing.CallDelayed(8f, () =>
                     {
-                        Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "tau-5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", 10);
+                        player.SetGUI("tau-5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", 10);
                     });
                 });
             });

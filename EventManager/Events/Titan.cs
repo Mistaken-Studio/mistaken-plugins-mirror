@@ -1,6 +1,4 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using System;
+﻿using Exiled.API.Features;
 using System.Collections.Generic;
 using System.Linq;
 

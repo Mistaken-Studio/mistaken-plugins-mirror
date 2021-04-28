@@ -1,17 +1,14 @@
-﻿
-
-using System.Linq;
-using UnityEngine;
-using Assets._Scripts.Dissonance;
-using Gamer.Utilities;
+﻿using Assets._Scripts.Dissonance;
 using CommandSystem;
 using Exiled.API.Features;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class IntercomCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class IntercomCommand : IBetterCommand, IPermissionLocked
     {
-        
+
         public string Permission => "intercom";
 
         public override string Description =>

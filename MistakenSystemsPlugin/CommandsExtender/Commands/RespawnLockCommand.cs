@@ -1,17 +1,13 @@
 ﻿
-
-using System.Linq;
-using UnityEngine;
-
-using Gamer.Utilities;
 using CommandSystem;
-using Exiled.API.Features;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class RespawnLockCommand : IBetterCommand
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class RespawnLockCommand : IBetterCommand
     {
-       
+
         public override string Description =>
       "RESPAWNLOCK";
 

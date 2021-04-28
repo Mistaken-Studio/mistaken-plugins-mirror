@@ -1,17 +1,9 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Gamer.Utilities;
-using Grenades;
+using Gamer.Mistaken.Base.GUI;
 using MEC;
-using Mirror;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
@@ -77,20 +69,20 @@ namespace Gamer.Mistaken.Systems.Misc
                             if (ev.Pickup.Networkdurability != tmp)
                             {
                                 ev.Pickup.Networkdurability = tmp;
-                                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
+                                ev.Player.SetGUI("reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.Networkdurability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
                             }
                             else
                             {
                                 string name = item.Type.ToString();
                                 if (!name.EndsWith("s"))
                                     name += "s";
-                                Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2);
+                                ev.Player.SetGUI("reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<b>Already</b> reached the limit of <color=yellow>{name}</color> (<color=yellow>{item.MaxItems} {name}</color>)", 2);
                             }
                         }
                         ev.IsAllowed = false;
                         return;
                     }
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(ev.Player, "reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
+                    ev.Player.SetGUI("reusablePickup", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{ev.Pickup.durability}</color>/<color=yellow>{item.Uses}</color> uses left", 2);
                     break;
                 }
             }
@@ -121,7 +113,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     foreach (var item in ReusableItems)
                     {
-                        if(item.Type == pickup.ItemId)
+                        if (item.Type == pickup.ItemId)
                             pickup.Networkdurability = item.Uses;
                     }
                 }
@@ -175,11 +167,11 @@ namespace Gamer.Mistaken.Systems.Misc
             yield return Timing.WaitForSeconds(.1f);
             ItemType itemType = p.CurrentItem.id;
             var reusable = ReusableItems.First(i => i.Type == itemType);
-            Mistaken.Base.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left");
+            p.SetGUI("reusable", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<color=yellow>{p.CurrentItem.durability}</color>/<color=yellow>{reusable.Uses}</color> uses left");
             yield return Timing.WaitForSeconds(1f);
             while (p.CurrentItem.id == itemType)
                 yield return Timing.WaitForSeconds(1);
-            Mistaken.Base.GUI.PseudoGUIHandler.Set(p, "reusable", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            p.SetGUI("reusable", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
         }
 
         private void Player_UsingMedicalItem(Exiled.Events.EventArgs.UsingMedicalItemEventArgs ev)
@@ -193,7 +185,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private readonly Dictionary<Player, (ItemType Item, float Durability)> UsingMedical = new Dictionary<Player, (ItemType Item, float Durability)>();
         private void Player_StoppingMedicalItem(Exiled.Events.EventArgs.StoppingMedicalItemEventArgs ev) => UsingMedical.Remove(ev.Player);
-        
+
         private void Player_MedicalItemDequipped(Exiled.Events.EventArgs.DequippedMedicalItemEventArgs ev)
         {
             if (ev.Player == null)

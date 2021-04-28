@@ -1,17 +1,11 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-
-using Newtonsoft.Json.Linq;
-using System;
 using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class HintCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "hint";
@@ -23,7 +17,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string Command => "hint";
 
-        public override string[] Aliases => new string[] { }; 
+        public override string[] Aliases => new string[] { };
 
         public string GetUsage()
         {

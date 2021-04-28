@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Gamer.EventManager.EventCreator;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Features;
-using Exiled.API.Enums;
-using UnityEngine;
-using System.Reflection;
-using MEC;
-using Gamer.EventManager.EventCreator;
 
 namespace Gamer.EventManager.Events
 {
@@ -64,7 +60,7 @@ namespace Gamer.EventManager.Events
                     });
                     isscp = true;
                 }
-                else 
+                else
                     player.SlowChangeRole(RoleType.ClassD, Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.Scp106));
             }
         }
@@ -75,7 +71,7 @@ namespace Gamer.EventManager.Events
             {
                 Timing.CallDelayed(0.1f, () =>
                 {
-                    ev.Target.SetRole(RoleType.Scp173,true);
+                    ev.Target.SetRole(RoleType.Scp173, true);
                     ev.Target.ReferenceHub.playerStats.SetHPAmount(10);
                 });
             }

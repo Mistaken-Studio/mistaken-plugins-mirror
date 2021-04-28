@@ -1,14 +1,17 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using Exiled.API.Features;
+using System.Linq;
 
 namespace Gamer.Utilities.TranslationManagerSystem
 {
+    /// <summary>
+    /// Translation Manager
+    /// </summary>
     public static class TranslationManager
     {
-        public static bool Initiated
+        internal static bool Initiated
         {
             get
             {
@@ -16,12 +19,15 @@ namespace Gamer.Utilities.TranslationManagerSystem
             }
         }
         private static string BasePath = null;
+        /// <summary>
+        /// Selected translation Language
+        /// </summary>
         public static string Language = "EN";
-        public const bool SHOW_DEBUG = false;
+        private const bool SHOW_DEBUG = false;
 
         private static void Initiate()
         {
-            if (Initiated) 
+            if (Initiated)
                 return;
             BasePath = $"{Paths.Configs}/Translations";
             string configPath = $"{Paths.Configs}/lang.txt";
@@ -57,12 +63,20 @@ namespace Gamer.Utilities.TranslationManagerSystem
         }
 
         private static readonly Dictionary<string, string> CachedTranslations = new Dictionary<string, string>();
+        /// <summary>
+        /// Refreshes Translations
+        /// </summary>
         public static void RefreshTranslations()
         {
             foreach (var item in Translations.ToArray())
                 ReadTranslationToCache(item.Plugin, item.ID);
         }
-
+        /// <summary>
+        /// Registeres translation
+        /// </summary>
+        /// <param name="key">Translation name</param>
+        /// <param name="PluginName">Plugin Name</param>
+        /// <param name="defaultValue">Default name</param>
         public static void RegisterTranslation(string key, string PluginName, string defaultValue)
         {
             Initiate();
@@ -93,11 +107,16 @@ namespace Gamer.Utilities.TranslationManagerSystem
             Translations.Add(new Translation(key, PluginName));
             Log.Debug($"Registered {PluginName}.{key}", SHOW_DEBUG);
         }
-
+        /// <summary>
+        /// Read translation
+        /// </summary>
+        /// <param name="key">Translation name</param>
+        /// <param name="PluginName">Plugin Name</param>
+        /// <returns></returns>
         public static string ReadTranslation(string key, string PluginName)
         {
             Initiate();
-            if(CachedTranslations.TryGetValue($"{PluginName}.{key}", out string content))
+            if (CachedTranslations.TryGetValue($"{PluginName}.{key}", out string content))
                 return content.Replace("|_n", "\n");
             ReadTranslationToCache(PluginName, key);
             if (CachedTranslations.TryGetValue($"{PluginName}.{key}", out content))
@@ -121,8 +140,8 @@ namespace Gamer.Utilities.TranslationManagerSystem
             CachedTranslations[$"{PluginName}.{key}"] = "REGISTER FIRST";
         }
 
-        public static List<Translation> Translations = new List<Translation>();
-        public class Translation
+        private static List<Translation> Translations = new List<Translation>();
+        private class Translation
         {
             public string ID;
             public string Content;
@@ -138,11 +157,11 @@ namespace Gamer.Utilities.TranslationManagerSystem
 
             public Translation(string ID, string PluginName)
             {
-                if (ID == "") 
+                if (ID == "")
                     throw new ArgumentNullException("ID", "ID can't be empty string");
-                if (PluginName == "") 
+                if (PluginName == "")
                     throw new ArgumentNullException("PluginName", "PluginName can't be empty string");
-                if (Language == "") 
+                if (Language == "")
                     throw new NullReferenceException("Language can't be empty string. Initiate first");
                 this.ID = ID;
                 this.Plugin = PluginName;
@@ -150,7 +169,7 @@ namespace Gamer.Utilities.TranslationManagerSystem
                     File.Create(Path).Close();
                 Update();
             }
-            
+
             public void Update()
             {
                 string[] Content = File.ReadAllLines(Path);
@@ -161,7 +180,7 @@ namespace Gamer.Utilities.TranslationManagerSystem
                     string[] array = item.Split(':');
                     for (int i = 1; i < array.Length; i++)
                         value += array[i] + ":";
-                    if (value.Length > 1) 
+                    if (value.Length > 1)
                         value = value.Substring(0, value.Length - 1);
                     if (key == ID)
                         this.Content = value;

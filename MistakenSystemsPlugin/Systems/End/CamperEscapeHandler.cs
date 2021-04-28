@@ -1,18 +1,11 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
 using Gamer.Diagnostics;
 using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
+using System.Linq;
+using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.End
 {
@@ -45,14 +38,14 @@ namespace Gamer.Mistaken.Systems.End
             {
                 if (item.IsWeapon(false))
                 {
-                    if (weapons > 2) 
+                    if (weapons > 2)
                         ev.Items.Remove(item);
-                    else 
+                    else
                         weapons++;
                 }
-                else if(hasFacilityManager)
+                else if (hasFacilityManager)
                 {
-                    if(item == ItemType.KeycardChaosInsurgency || item == ItemType.KeycardNTFCommander || item == ItemType.KeycardNTFLieutenant)
+                    if (item == ItemType.KeycardChaosInsurgency || item == ItemType.KeycardNTFCommander || item == ItemType.KeycardNTFLieutenant)
                     {
                         ev.Items.Remove(item);
                         ev.Items.Remove(ItemType.KeycardFacilityManager);

@@ -1,17 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Collections.Generic;
-using UnityEngine;
-using RemoteAdmin;
-using System.IO;
-using UnityEngine.Networking;
-using Gamer.EventManager.Events;
-using MEC;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Features;
 using Gamer.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.EventManager
 {
@@ -26,7 +18,7 @@ namespace Gamer.EventManager
 
         public override string Description => "Event Manager :)";
 
-        private Dictionary<string, Func<Player, string[], (bool isSuccess,string[] message)>> subcommands = new Dictionary<string, Func<Player, string[], (bool,string[])>>()
+        private Dictionary<string, Func<Player, string[], (bool isSuccess, string[] message)>> subcommands = new Dictionary<string, Func<Player, string[], (bool, string[])>>()
         {
             {"q", (ply,args) => QueueCommand(ply, args) },
             {"queue", (ply,args) => QueueCommand(ply, args) },
@@ -51,7 +43,7 @@ namespace Gamer.EventManager
                 return new string[] { GetUsage() };
             }
             string cmd = args[0].ToLower();
-            if(subcommands.TryGetValue(cmd, out var commandHandler))
+            if (subcommands.TryGetValue(cmd, out var commandHandler))
             {
                 var retuned = commandHandler.Invoke(admin, args.Skip(1).ToArray());
                 success = retuned.isSuccess;
@@ -157,7 +149,7 @@ namespace Gamer.EventManager
         }
         public static (bool, string[]) ForceEndCommand(Player admin, string[] args)
         {
-            if (!admin.CheckPermission(EventManager.singleton.Name + ".forceend")) return (false,new string[] { "You can't use this command. No permission!" });
+            if (!admin.CheckPermission(EventManager.singleton.Name + ".forceend")) return (false, new string[] { "You can't use this command. No permission!" });
             if (EventManager.ActiveEvent == null) return (false, new string[] { "No event is on going" });
             EventManager.ActiveEvent.OnEnd($"Anulowano event: <color=#6B9ADF>{EventManager.ActiveEvent.Name}</color>", true);
             EventManager.ActiveEvent = null;
@@ -165,11 +157,11 @@ namespace Gamer.EventManager
             Round.IsLocked = false;
             RoundSummary.singleton.ForceEnd();
             ////todsc.ForceEnd(plugin, admin, cevent);
-            return (true,new string[] { "Done" });
+            return (true, new string[] { "Done" });
         }
-        public static (bool,string[]) ForceCommand(Player admin, string[] args)
+        public static (bool, string[]) ForceCommand(Player admin, string[] args)
         {
-            if (!admin.CheckPermission(EventManager.singleton.Name + ".force")) return (false,new string[] { "You can't use this command. No permission!" });
+            if (!admin.CheckPermission(EventManager.singleton.Name + ".force")) return (false, new string[] { "You can't use this command. No permission!" });
             else if (Gamer.Utilities.RealPlayers.List.Count() < 4 && !EventManager.DNPN) return (false, new string[] { "You can't use this command. Not enough players!" });
             else if (EventManager.ActiveEvent != null) return (false, new string[] { "You can't forcestack events" });
             var name = string.Join(" ", args).ToLower();
@@ -179,14 +171,14 @@ namespace Gamer.EventManager
                 if (item.Value.Name.ToLower() == name || item.Value.Id.ToLower() == name)
                 {
                     item.Value.Initiate();
-                    
-                    return (true,new string[] { $"<color=green>Activated</color> {item.Value.Name}", item.Value.Description });
+
+                    return (true, new string[] { $"<color=green>Activated</color> {item.Value.Name}", item.Value.Description });
                 }
             }
 
             return (false, new string[] { "Event not found" });
         }
-        public static (bool,string[]) ListCommand(Player admin, string[] args)
+        public static (bool, string[]) ListCommand(Player admin, string[] args)
         {
             List<string> tor = new List<string>
                 {
@@ -196,16 +188,16 @@ namespace Gamer.EventManager
             foreach (var item in EventManager.Events.ToArray())
                 tor.Add($"<color=green>{item.Value.Id}</color>: <color=yellow>{item.Value.Name}</color> <color=red>|</color> {item.Value.Description}");
 
-            
-            return (true,tor.ToArray());
+
+            return (true, tor.ToArray());
         }
-        public static (bool,string[]) QueueCommand(Player admin, string[] args)
+        public static (bool, string[]) QueueCommand(Player admin, string[] args)
         {
             if (!admin.CheckPermission(EventManager.singleton.Name + ".force")) return (false, new string[] { "You can't use this command. No permission!" });
             if (args.Length == 0)
             {
                 var t = new List<string>();
-                foreach(var ev in EventManager.singleton.EventQueue)
+                foreach (var ev in EventManager.singleton.EventQueue)
                 {
                     t.Add(ev.Name);
                 }

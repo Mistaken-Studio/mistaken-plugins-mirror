@@ -1,18 +1,12 @@
 ﻿
 using CommandSystem;
 using Gamer.Utilities;
-using Newtonsoft.Json.Linq;
-
-
-using System;
 using System.Linq;
-using System.Net;
-using System.Text;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class TutorialMeCommand : IBetterCommand, IPermissionLocked
     {
         public string Permission => "tutorial";
@@ -34,7 +28,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
-            if(player.Role != RoleType.Tutorial)
+            if (player.Role != RoleType.Tutorial)
             {
                 player.IsOverwatchEnabled = false;
                 player.Role = RoleType.Tutorial;

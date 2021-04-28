@@ -1,13 +1,11 @@
-﻿using Mirror;
-using UnityEngine;
+﻿using CommandSystem;
+using Gamer.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using Gamer.Utilities;
-using CommandSystem;
 
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
-    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] 
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     class PlayerLogCommand : IBetterCommand
     {
         public override string Description =>
@@ -42,7 +40,7 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
             {
                 if (int.TryParse(args[0], out int id))
                 {
-                    if (!LogManager.PlayerLogs.ContainsKey(id)) 
+                    if (!LogManager.PlayerLogs.ContainsKey(id))
                         return new string[] { "PlayerLog from that round not found" };
                     List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
                     tor.Add("PlayerLog for round with id " + id);

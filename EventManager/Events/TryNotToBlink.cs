@@ -1,14 +1,13 @@
-﻿using Exiled.API.Features;
-using System;
+﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
+using Interactables.Interobjects.DoorUtils;
 using System.Collections.Generic;
 using System.Linq;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Interactables.Interobjects.DoorUtils;
 
 namespace Gamer.EventManager.Events
 {
-    internal class TryNotToBlink : 
+    internal class TryNotToBlink :
         EventCreator.IEMEventClass,
         EventCreator.InternalEvent
     {
@@ -62,7 +61,7 @@ namespace Gamer.EventManager.Events
                 if (player.Side != Side.Scp) player.SlowChangeRole(RoleType.ClassD);
                 else player.SlowChangeRole(RoleType.Scp173);
             }
-                
+
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)

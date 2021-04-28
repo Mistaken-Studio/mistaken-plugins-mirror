@@ -1,16 +1,11 @@
-﻿using System;
+﻿using Exiled.API.Features;
+using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Utilities;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Gamer.Mistaken.BetterSCP;
-using HarmonyLib;
-using MEC;
 using UnityEngine;
-using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.BetterSCP.SCP096
 {
@@ -79,18 +74,18 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
                         foreach (var item in scp096script._targets.ToArray())
                         {
                             var p = Player.Get(item);
-                            Mistaken.Base.GUI.PseudoGUIHandler.Set(p, "scp096", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, targetMessage);
+                            p.SetGUI("scp096", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, targetMessage);
                             added.Add(p);
                         }
                         var time = Mathf.RoundToInt(scp096script.EnrageTimeLeft).ToString();
                         if (time == "0")
                             time = "[REDACTED]";
-                        Mistaken.Base.GUI.PseudoGUIHandler.Set(scp096, "scp096", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, plugin.ReadTranslation("Info_096", scp096script._targets.Count, scp096script._targets.Count == 1 ? "" : "s", time));
+                        scp096.SetGUI("scp096", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, plugin.ReadTranslation("Info_096", scp096script._targets.Count, scp096script._targets.Count == 1 ? "" : "s", time));
                         added.Add(scp096);
                     }
                 }
                 foreach (var player in lastAdded.Where(i => !added.Contains(i)))
-                    Mistaken.Base.GUI.PseudoGUIHandler.Set(player, "scp096", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
+                    player.SetGUI("scp096", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, null);
 
                 yield return Timing.WaitForSeconds(1f);
             }

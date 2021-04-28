@@ -1,17 +1,4 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
-using Gamer.Utilities;
-using Grenades;
-using MEC;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Diagnostics;
+﻿using Gamer.Diagnostics;
 
 namespace Gamer.Mistaken.Systems.Misc
 {

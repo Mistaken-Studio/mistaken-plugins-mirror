@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
+﻿using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.Utilities;
+using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Systems.Logs.Commands
 {
@@ -22,7 +21,7 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
         {
             Active.Remove(p.Id);
             string toWrite = $"ElevatorLog for elevator {d}";
-            if(data != null)
+            if (data != null)
             {
                 foreach (var item in data)
                 {
@@ -30,7 +29,7 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
                 }
             }
 
-            p.Broadcast("ElevatorLog" ,5, "Printed in console (~)",  Broadcast.BroadcastFlags.AdminChat);
+            p.Broadcast("ElevatorLog", 5, "Printed in console (~)", Broadcast.BroadcastFlags.AdminChat);
             Systems.Patches.RAPatch.LogCommand(p.Sender, $"elog {d}", toWrite);
             p.SendConsoleMessage(toWrite, "green");
         }
@@ -41,11 +40,11 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
             var player = sender.GetPlayer();
             if (!Active.Contains(player.Id))
                 Active.Add(player.Id);
-            else 
+            else
                 Active.Remove(player.Id);
-            if (Active.Contains(player.Id)) 
+            if (Active.Contains(player.Id))
                 return new string[] { "Activated" };
-            else 
+            else
                 return new string[] { "Deactivated" };
         }
     }

@@ -1,12 +1,12 @@
 ﻿using CommandSystem;
 using Gamer.Utilities;
-using System.Linq;
 
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class DropAllCommand : IBetterCommand, IPermissionLocked
-    {       
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class DropAllCommand : IBetterCommand, IPermissionLocked
+    {
         public string Permission => "dropall";
 
         public override string Description =>
@@ -27,7 +27,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) => {
+            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            {
                 player.ReferenceHub.inventory.ServerDropAll();
 
                 return new string[] { "Done" };

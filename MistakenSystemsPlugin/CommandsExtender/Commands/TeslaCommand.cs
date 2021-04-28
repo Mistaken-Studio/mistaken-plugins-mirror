@@ -1,23 +1,18 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Net;
-using System.Text;
-using UnityEngine;
-using Gamer.Utilities;
-using CommandSystem;
+﻿using CommandSystem;
 using Gamer.Mistaken.Systems.Utilities.API;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
 {
-        [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))] class TeslaCommand : IBetterCommand, IPermissionLocked
+    [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
+    class TeslaCommand : IBetterCommand, IPermissionLocked
     {
-        
+
 
         public string Permission => "tesla";
 
         public override string Description =>
-        
+
             "Manipulate Facility Tesla System";
 
         public string PluginName => PluginHandler.PluginName;
