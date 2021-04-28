@@ -24,8 +24,10 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
-                    prefab.layer = Layer;
+                    prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider))
+                    {
+                        layer = Layer
+                    };
                     var collider = prefab.GetComponent<BoxCollider>();
                     collider.isTrigger = true;
                 }
@@ -62,7 +64,9 @@ namespace Gamer.Mistaken.Systems.Components
 
             Timing.RunCoroutine(DoDamage(), gameObject);
         }
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnDestroy()
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             Exiled.Events.Handlers.Player.Died -= Player_Died;
             destroyed = true;
@@ -102,7 +106,9 @@ namespace Gamer.Mistaken.Systems.Components
 
         private readonly List<Player> InArea = new List<Player>();
         private readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnTriggerEnter(Collider other)
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             if (!other.GetComponent<CharacterClassManager>())
                 return;
@@ -123,7 +129,9 @@ namespace Gamer.Mistaken.Systems.Components
             }
         }
 
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnTriggerExit(Collider other)
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             if (!ColliderInArea.Contains(other.gameObject))
                 return;

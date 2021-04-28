@@ -10,7 +10,7 @@ namespace Gamer.EventManager.Events
 {
     internal class DBoiBattleRoyal :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.IAnnouncPlayersAlive,
         EventCreator.ISpawnRandomItems,
         EventCreator.IWinOnLastAlive

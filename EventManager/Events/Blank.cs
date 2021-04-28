@@ -4,7 +4,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Blank :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "blank";
 

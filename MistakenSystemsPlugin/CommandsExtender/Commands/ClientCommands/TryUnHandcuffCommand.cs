@@ -15,7 +15,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string[] Aliases => new string[] { };
 
-        internal readonly static HashSet<string> Tried = new HashSet<string>();
+        internal static readonly HashSet<string> Tried = new HashSet<string>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = false;

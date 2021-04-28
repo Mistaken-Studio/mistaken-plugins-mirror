@@ -18,7 +18,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
     public class SCP1499Handler : Module
     {
         private static PluginHandler StaticPlugin;
-        private new static __Log Log;
+        private static new __Log Log;
         /// <inheritdoc/>
         public SCP1499Handler(PluginHandler plugin) : base(plugin)
         {

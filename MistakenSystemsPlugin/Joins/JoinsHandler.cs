@@ -16,9 +16,9 @@ namespace Gamer.Mistaken.Joins
     {
         public override bool IsBasic => true;
         public static WantedData[] Wanteds = new WantedData[0];
-        public readonly static HashSet<string> WantedUserIds = new HashSet<string>();
+        public static readonly HashSet<string> WantedUserIds = new HashSet<string>();
 
-        private new static __Log Log;
+        private static new __Log Log;
         public JoinsHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
             Log = base.Log;

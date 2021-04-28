@@ -56,7 +56,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 Timing.RunCoroutine(EscapeMessage(ev.Player, ev.NewRole == RoleType.ChaosInsurgency, ev.NewRole == RoleType.NtfScientist));
         }
 
-        private readonly static string[] CIMessage = new string[]
+        private static readonly string[] CIMessage = new string[]
         {
             "Przeprowadzacie atak na placówkę Fundacji. Nie zmieściłeś się jednak w pierwszym aucie wysłanym tu, więc przyjechałeś później.",
             "Dowództwo Delta zdecydowało o przysłaniu dodatkowych jednostek do tej placówki w celu przeprowadzenia ataku.",
@@ -64,7 +64,7 @@ namespace Gamer.Mistaken.Systems.GUI
             "Nie planowano twojego przyjazdu do placówki, jednak Dowództwo Delta zdecydowało o spontanicznej ofensywie na placówkę Fundacji.",
             "Otrzymaliście informacje o wyłomie w placówce Fundacji. Postanawiacie to wykorzystać i zdobyć informacje oraz obiekty SCP.",
         };
-        private readonly static string[] MTFMessage = new string[]
+        private static readonly string[] MTFMessage = new string[]
         {
             "Dyrektor [REDACTED] otrzymał niepokojące informacje o sytuacji w placówce. Zostałeś więc przysłany jako wsparcie dla jednostki $team.",
             "Zaspałeś i przegapiłeś wezwanie na operację. Przywieziono cię drugim helikopterem lecącym do placówki.",

@@ -5,7 +5,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Fight173 :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "f173";
 

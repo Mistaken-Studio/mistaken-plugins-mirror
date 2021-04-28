@@ -63,7 +63,6 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
                 yield return Timing.WaitForSeconds(1);
             }
             AlreadyRunning = false;
-            Vector3 oldPos = scp049.Position;
             scp049.SetRole(recontainer.Role == RoleType.ChaosInsurgency ? RoleType.ChaosInsurgency : RoleType.NtfScientist, true);
             scp049.SetGUI("contain049", Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<color=red><size=150%>Recontainment successfull</size></color>", 5);
             string recontainerName;

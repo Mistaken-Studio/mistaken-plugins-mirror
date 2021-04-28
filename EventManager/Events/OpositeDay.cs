@@ -10,7 +10,7 @@ namespace Gamer.EventManager.Events
 {
     internal class OpositeDay :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "oday";
 

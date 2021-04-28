@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.Ranks
 
         public static readonly HashSet<string> ReservedSlots = new HashSet<string>();
         public override bool IsBasic => true;
-        private new static __Log Log;
+        private static new __Log Log;
         internal RanksHandler(PluginHandler plugin) : base(plugin)
         {
             Log = base.Log;
@@ -79,7 +79,7 @@ namespace Gamer.Mistaken.Ranks
             ApplyRoles(ev.Player);
         }
 
-        static public void UpdateRoles(bool forceOld = false)
+        public static void UpdateRoles(bool forceOld = false)
         {
             if (PluginHandler.IsSSLSleepMode || forceOld)
             {

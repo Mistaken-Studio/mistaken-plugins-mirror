@@ -654,7 +654,7 @@ namespace EventManager.Events
                         else
                         {
                             int a = pb[sender.Id];
-                            a = a - 2;
+                            a -= 2;
                             pb[sender.Id] = a;
                             return "You have locked 914 and 012 for 10 seconds";
                         }
@@ -723,7 +723,7 @@ namespace EventManager.Events
                             if ((Gamer.EventManager.EventManager.ActiveEvent as TSL).ATTD.Contains(sender.Id))
                                 return "you already bought that item";
                             int a = (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id];
-                            a = a - 2;
+                            a -= 2;
                             (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id] = a;
                             (Gamer.EventManager.EventManager.ActiveEvent as TSL).ATTD.Add(sender.Id);
                             return "You have bought ATTD";
@@ -739,7 +739,7 @@ namespace EventManager.Events
                             if ((Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "harmor" || (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "armor")
                                 return "You already bought that item";
                         int a = (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id];
-                        a = a - 1;
+                        a--;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id] = a;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor.Add(sender.Id, "armor");
                         return "You have bought Armor";
@@ -753,7 +753,7 @@ namespace EventManager.Events
                             if ((Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "harmor" || (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "armor")
                                 return "You already bought that item";
                         int a = (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id];
-                        a = a - 3;
+                        a -= 3;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id] = a;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor.Add(sender.Id, "harmor");
                         return "You have bought Harmor";

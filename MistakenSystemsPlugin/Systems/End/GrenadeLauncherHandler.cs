@@ -13,7 +13,7 @@ namespace Gamer.Mistaken.Systems.End
 {
     internal class GrenadeLauncherHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public GrenadeLauncherHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;

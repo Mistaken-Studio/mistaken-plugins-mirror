@@ -10,7 +10,7 @@ namespace Gamer.Mistaken.BetterSCP
         /// <summary>
         /// Config
         /// </summary>
-        public new static BSConfig Config;
+        public static new BSConfig Config;
         /// <inheritdoc/>
         public override string Author => "Gamer";
         /// <inheritdoc/>

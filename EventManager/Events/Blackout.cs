@@ -6,7 +6,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Blackout :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "blackout";
 

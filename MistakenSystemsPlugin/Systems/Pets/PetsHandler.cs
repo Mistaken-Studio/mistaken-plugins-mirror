@@ -13,7 +13,7 @@ namespace Gamer.Mistaken.Systems.Pets
 {
     internal class PetsHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public PetsHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;

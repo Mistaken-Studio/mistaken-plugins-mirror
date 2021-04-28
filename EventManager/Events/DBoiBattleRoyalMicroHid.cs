@@ -11,7 +11,7 @@ namespace Gamer.EventManager.Events
 {
     internal class DBoiBattleRoyalMicroHid :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.IAnnouncPlayersAlive,
         EventCreator.IWinOnLastAlive
     {

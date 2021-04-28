@@ -11,7 +11,7 @@ namespace Gamer.EventManager.Events
 {
     internal class DeathmatchTag :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "dmt";
 

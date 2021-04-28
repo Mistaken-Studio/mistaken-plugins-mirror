@@ -31,9 +31,9 @@ namespace Gamer.Mistaken.Systems.Misc
 
         public const bool Debug = false;
 
-        public readonly static Dictionary<string, Player[]> GreneadedPlayers = new Dictionary<string, Player[]>();
-        public readonly static Dictionary<string, int> GreneadedDeadPlayers = new Dictionary<string, int>();
-        public readonly static Dictionary<Player, (RoleType, Vector3)> DeathInfo = new Dictionary<Player, (RoleType, Vector3)>();
+        public static readonly Dictionary<string, Player[]> GreneadedPlayers = new Dictionary<string, Player[]>();
+        public static readonly Dictionary<string, int> GreneadedDeadPlayers = new Dictionary<string, int>();
+        public static readonly Dictionary<Player, (RoleType, Vector3)> DeathInfo = new Dictionary<Player, (RoleType, Vector3)>();
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
             if (!ev.IsAllowed)

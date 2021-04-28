@@ -44,6 +44,6 @@ namespace Gamer.Mistaken.Systems.Patches
             public Team Team;
             public DateTime DeathTime;
         }
-        public readonly static List<RagdollInfo> Ragdolls = new List<RagdollInfo>();
+        public static readonly List<RagdollInfo> Ragdolls = new List<RagdollInfo>();
     }
 }

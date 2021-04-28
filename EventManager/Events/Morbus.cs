@@ -6,7 +6,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Morbus :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.ISpawnRandomItems
     {
         public override string Id => "morbus";

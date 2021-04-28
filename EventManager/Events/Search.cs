@@ -11,7 +11,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Search :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.ISpawnRandomItems,
         EventCreator.IWinOnLastAlive
     {

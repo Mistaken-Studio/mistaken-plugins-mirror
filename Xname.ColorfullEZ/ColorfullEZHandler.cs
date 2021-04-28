@@ -16,7 +16,7 @@ namespace Xname.ColorfullEZ
     {
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
-        private new static __Log Log;
+        private static new __Log Log;
         /// <inheritdoc/>
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
@@ -100,8 +100,8 @@ namespace Xname.ColorfullEZ
         /// Removes all old generated keycards if present. Generates Colorfull Entrance Zone.
         /// </summary>
         /// <param name="card">Card Type</param>
-        public static void Generate(ItemType card) => Timing.RunCoroutine(_generate(card));
-        private static IEnumerator<float> _generate(ItemType card)
+        public static void Generate(ItemType card) => Timing.RunCoroutine(generate(card));
+        private static IEnumerator<float> generate(ItemType card)
         {
             int a = 0;
             Clear();

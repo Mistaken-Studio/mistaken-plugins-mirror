@@ -115,7 +115,7 @@ namespace Gamer.Mistaken.PStats
             catch { }
         }
 
-        private void Server_RoundEnded(RoundEndedEventArgs ev)
+        private void Server_RoundEnded(RoundEndedEventArgs _)
         {
             try
             {

@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.Systems.End
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
 
-        private readonly static string VersionPath = Paths.Configs + "/PluginsVersion.txt";
+        private static readonly string VersionPath = Paths.Configs + "/PluginsVersion.txt";
         private async void Server_RestartingRound()
         {
             if (!Gamer.Mistaken.Utilities.APILib.API.GetGithubKey(out string githubKey))

@@ -245,7 +245,7 @@ namespace Gamer.EventManager
             /// </summary>
             string Description { get; }
         }
-        internal interface InternalEvent
+        internal interface IInternalEvent
         {
         }
         /// <inheritdoc/>
@@ -267,11 +267,11 @@ namespace Gamer.EventManager
             /// <param name="customWinText">if winner is text</param>
             public void OnEnd(string winner = null, bool customWinText = false)
             {
-                if (winner == null) 
+                if (winner == null)
                     Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_NO_WIN}");
-                else if (!customWinText) 
+                else if (!customWinText)
                     Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_WIN.Replace("$player", winner)}");
-                else 
+                else
                     Map.Broadcast(10, $"{EventManager.EMLB} {winner}");
                 DeInitiate();
                 Round.IsLocked = false;
@@ -284,7 +284,7 @@ namespace Gamer.EventManager
             public void EndOnOneAliveOf(RoleType role = RoleType.ClassD)
             {
                 var players = RealPlayers.List.Where(x => x.Role == role).ToArray();
-                if (players.Length == 1) 
+                if (players.Length == 1)
                     OnEnd(players[0].Nickname);
             }
             /// <summary>

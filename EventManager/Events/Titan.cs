@@ -6,7 +6,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Titan :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "titan";
 

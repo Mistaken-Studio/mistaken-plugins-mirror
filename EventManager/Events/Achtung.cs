@@ -7,7 +7,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Achtung :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.IWinOnLastAlive,
         EventCreator.IAnnouncPlayersAlive
     {

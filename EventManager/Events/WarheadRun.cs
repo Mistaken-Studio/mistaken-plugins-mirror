@@ -11,7 +11,7 @@ namespace Gamer.EventManager.Events
         EventCreator.IEMEventClass,
         EventCreator.IEndOnNoAlive,
         EventCreator.IWinOnEscape,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "whr";
 

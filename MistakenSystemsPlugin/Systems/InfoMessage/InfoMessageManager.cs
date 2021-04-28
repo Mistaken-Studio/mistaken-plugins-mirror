@@ -12,7 +12,7 @@ namespace Gamer.Mistaken.Systems.InfoMessage
 {
     public class InfoMessageManager : Module
     {
-        public readonly static Dictionary<RoleType, string> WelcomeMessages = new Dictionary<RoleType, string>();
+        public static readonly Dictionary<RoleType, string> WelcomeMessages = new Dictionary<RoleType, string>();
 
         public InfoMessageManager(PluginHandler p) : base(p)
         {
@@ -40,7 +40,7 @@ namespace Gamer.Mistaken.Systems.InfoMessage
             SpawnTimes[ev.Player] = DateTime.Now;
         }
 
-        public readonly static Dictionary<Player, DateTime> SpawnTimes = new Dictionary<Player, DateTime>();
+        public static readonly Dictionary<Player, DateTime> SpawnTimes = new Dictionary<Player, DateTime>();
 
         public static TimeSpan TimeSinceChangedRole(Player player) =>
             SpawnTimes.ContainsKey(player) ? DateTime.Now - SpawnTimes[player] : default;

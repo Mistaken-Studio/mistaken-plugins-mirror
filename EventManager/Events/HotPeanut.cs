@@ -8,7 +8,7 @@ namespace Gamer.EventManager.Events
 {
     internal class HotPeanut :
         IEMEventClass,
-        InternalEvent
+        IInternalEvent
     {
         public override string Id => "hp";
 

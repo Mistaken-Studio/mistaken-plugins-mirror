@@ -12,7 +12,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
 {
     internal class EasterHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public EasterHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;

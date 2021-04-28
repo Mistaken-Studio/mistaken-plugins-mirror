@@ -34,7 +34,7 @@ namespace Gamer.Diagnostics
             DateTime start;
             DateTime end;
             TimeSpan diff;
-            Exiled.Events.Events.CustomEventHandler tor = () =>
+            void tor()
             {
                 start = DateTime.Now;
                 try
@@ -43,18 +43,18 @@ namespace Gamer.Diagnostics
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Error($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {Name}] Caused Exception");
+                    Log.Error($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] Caused Exception");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
-                    ErrorBacklog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {Name}] Caused Exception");
+                    ErrorBacklog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] Caused Exception");
                     ErrorBacklog.Add(ex.Message);
                     ErrorBacklog.Add(ex.StackTrace);
                     RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {Name}] Caused Exception | {ex.Message}");
                 }
                 end = DateTime.Now;
                 diff = end - start;
-                Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {Name}] {diff.TotalMilliseconds}");
-            };
+                Backlog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] {diff.TotalMilliseconds}");
+            }
             Handlers[module][Name] = tor;
             return tor;
         }
@@ -80,7 +80,7 @@ namespace Gamer.Diagnostics
                 DateTime start;
                 DateTime end;
                 TimeSpan diff;
-                Exiled.Events.Events.CustomEventHandler<T> tor = (ev) =>
+                void tor(T ev)
                 {
                     /*if(ev is Exiled.Events.EventArgs.InteractingDoorEventArgs)
                     {
@@ -97,15 +97,15 @@ namespace Gamer.Diagnostics
                         Log.Error($"[{module.Name}: {ev.GetType().Name}] Caused Exception");
                         Log.Error(ex.Message);
                         Log.Error(ex.StackTrace);
-                        ErrorBacklog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
+                        ErrorBacklog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
                         ErrorBacklog.Add(ex.Message);
                         ErrorBacklog.Add(ex.StackTrace);
                         RoundLoggerSystem.RoundLogger.Log("DIAGNOSTICS", "ERROR", $"[{module.Name}: {ev.GetType().Name}] Caused Exception | {ex.Message}");
                     }
                     end = DateTime.Now;
                     diff = end - start;
-                    Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{module.Name}: {ev.GetType().Name}] {diff.TotalMilliseconds}");
-                };
+                    Backlog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {ev.GetType().Name}] {diff.TotalMilliseconds}");
+                }
                 TypedHandlers[module][name] = tor;
                 return tor;
             }
@@ -119,13 +119,13 @@ namespace Gamer.Diagnostics
         /// <param name="start">Handling start time</param>
         /// <param name="end">Handling end time</param>
         public static void LogTime(string moduleName, string name, DateTime start, DateTime end) =>
-            Backlog.Add($"[{DateTime.Now.ToString("HH:mm:ss.fff")}] [{moduleName}: {name}] {(end - start).TotalMilliseconds}");
+            Backlog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{moduleName}: {name}] {(end - start).TotalMilliseconds}");
 
 
         private static bool Initiated = false;
 
-        private readonly static List<string> Backlog = new List<string>();
-        private readonly static List<string> ErrorBacklog = new List<string>();
+        private static readonly List<string> Backlog = new List<string>();
+        private static readonly List<string> ErrorBacklog = new List<string>();
         internal static void Ini()
         {
             Log.Debug($"Called Ini");
@@ -165,9 +165,9 @@ namespace Gamer.Diagnostics
                         Log.Debug($"Created {Paths.Configs}/{Server.Port}/{day}/");
                     }
                     //Log.Debug($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.ToString("yyyy-MM-dd_HH")}.log");
-                    string path = $"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.ToString("yyyy-MM-dd_HH")}.log";
+                    string path = $"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now:HH:mm:ss.fff}.log";
                     if (!File.Exists(path))
-                        AnalizeContent($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.AddHours(-1).ToString("yyyy-MM-dd_HH")}.log");
+                        AnalizeContent($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.AddHours(-1):yyyy-MM-dd_HH}.log");
                     File.AppendAllLines(path, Backlog);
                     Backlog.Clear();
                     File.AppendAllLines($"{Paths.Configs}/{Server.Port}/{day}/error.log", ErrorBacklog);
@@ -227,14 +227,14 @@ namespace Gamer.Diagnostics
                 float max = 0;
                 float avg = 0;
                 Dictionary<string, int> calls = new Dictionary<string, int>();
-                foreach (var item in time.Value)
+                foreach (var (Took, Time) in time.Value)
                 {
-                    avg += item.Took;
-                    if (max < item.Took)
-                        max = item.Took;
-                    if (min > item.Took)
-                        min = item.Took;
-                    string stringTime = item.Time.ToString("yyyy-MM-dd HH-mm");
+                    avg += Took;
+                    if (max < Took)
+                        max = Took;
+                    if (min > Took)
+                        min = Took;
+                    string stringTime = Time.ToString("yyyy-MM-dd HH-mm");
                     if (!calls.ContainsKey(stringTime))
                         calls.Add(stringTime, 0);
                     calls[stringTime]++;
@@ -383,7 +383,9 @@ namespace Gamer.Diagnostics
     /// <summary>
     /// Used to Log with prefix
     /// </summary>
+#pragma warning disable IDE1006 // Style nazewnictwa
     public class __Log
+#pragma warning restore IDE1006 // Style nazewnictwa
     {
         private readonly string module;
         /// <summary>

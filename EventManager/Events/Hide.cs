@@ -7,7 +7,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Hide :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "hide";
 

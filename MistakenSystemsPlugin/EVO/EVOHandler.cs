@@ -15,7 +15,7 @@ namespace Gamer.Mistaken.EVO
     public partial class Handler : Module
     {
         public override bool IsBasic => true;
-        private new static __Log Log;
+        private static new __Log Log;
         public Handler(PluginHandler p) : base(p)
         {
             Log = base.Log;

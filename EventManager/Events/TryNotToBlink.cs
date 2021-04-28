@@ -9,7 +9,7 @@ namespace Gamer.EventManager.Events
 {
     internal class TryNotToBlink :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "trynottoblink";
 
