@@ -20,7 +20,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 CommandsHandler.LastAttackers.TryGetValue(player.UserId, out (Player, Player) info);
                 string[] tor = new string[3];

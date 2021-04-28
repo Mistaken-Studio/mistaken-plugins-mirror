@@ -24,8 +24,8 @@ namespace Gamer.EventManager.Events
         };
 
         private Player Mother;
-        private List<int> MorbusesFirst = new List<int>();
-        private List<int> MorbusesSecond = new List<int>();
+        private readonly List<int> MorbusesFirst = new List<int>();
+        private readonly List<int> MorbusesSecond = new List<int>();
 
         public override void OnIni()
         {

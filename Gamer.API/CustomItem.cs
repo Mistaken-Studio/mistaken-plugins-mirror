@@ -65,7 +65,7 @@ namespace Gamer.API
             /// <returns>If shoud be allowed</returns>
             public virtual bool OnPickup(Player player, Pickup pickup)
             {
-                player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", true);
+                player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", true);
                 return true;
             }
             /// <summary>
@@ -76,7 +76,7 @@ namespace Gamer.API
             /// <returns>If should be allowed</returns>
             public virtual bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
-                player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", false);
+                player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", false);
                 return true;
             }
             /// <summary>
@@ -116,14 +116,14 @@ namespace Gamer.API
             /// <returns>If should be allowed</returns>
             public virtual bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
             {
-                player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", false);
+                player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", false);
                 return true;
             }
             /// <summary>
             /// Called when player is forceclassed with item in inventory
             /// </summary>
             /// <param name="player">Forceclassed player</param>
-            public virtual void OnForceclass(Player player) => player.SetSessionVar($"CI_{this.ItemName.ToUpper().Replace(' ', '_')}", false);
+            public virtual void OnForceclass(Player player) => player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", false);
             /// <summary>
             /// Called on round restart
             /// </summary>
@@ -144,9 +144,9 @@ namespace Gamer.API
             {
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
-                    id = this.Item,
-                    durability = 1f + (this.Durability / 1000f) + (innerDurability / 1000000),
-                }, position, Quaternion.identity, this.Size);
+                    id = Item,
+                    durability = 1f + (Durability / 1000f) + (innerDurability / 1000000),
+                }, position, Quaternion.identity, Size);
             }
             /// <summary>
             /// Returns internal durability
@@ -173,7 +173,7 @@ namespace Gamer.API
             /// <param name="value">Internal durability</param>
             public void SetInternalDurability(Player player, Inventory.SyncItemInfo item, float value)
             {
-                float fullValue = 1 + (this.Durability + (value / 1000)) / 1000;
+                float fullValue = 1 + (Durability + (value / 1000)) / 1000;
                 int index = player.Inventory.items.IndexOf(item);
                 var info = player.Inventory.items[index];
                 info.durability = fullValue;

@@ -151,7 +151,7 @@ namespace Xname.ColorfullEZ
             Log.Debug($"Spawned {a} keycards");
         }
 
-        private static string reeeeee = "                                                                    ";
+        private static readonly string reeeeee = "                                                                    ";
         private static void PrintComponents(GameObject go, int iteration)
         {
             foreach (var c in go.GetComponents<Component>())

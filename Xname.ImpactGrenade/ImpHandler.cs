@@ -174,7 +174,7 @@ namespace Xname.ImpactGrenade
         private void OnCollisionEnter(Collision collision)
         {
             if (!used)
-                this.GetComponent<FragGrenade>().NetworkfuseTime = 0.01f;
+                GetComponent<FragGrenade>().NetworkfuseTime = 0.01f;
             used = true;
         }
     }

@@ -33,7 +33,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (ushort.TryParse(args[1], out ushort duration))
             {
                 var msg = string.Join(" ", args.Skip(2));
-                var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+                var output = ForeachPlayer(args[0], out bool success, (player) =>
                 {
                     player.Broadcast(duration, msg);
                     return new string[] { "Done" };

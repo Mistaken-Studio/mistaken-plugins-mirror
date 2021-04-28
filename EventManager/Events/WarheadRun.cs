@@ -63,7 +63,7 @@ namespace Gamer.EventManager.Events
                 player.SlowChangeRole(RoleType.ClassD);
             Map.Broadcast(10, EventManager.EMLB + Translations["D"]);
             Cassie.Message("nato_a warhead will be initiated in t minus 1 minute", false, true);
-            this.WaitAndExecute(68, () =>
+            WaitAndExecute(68, () =>
             {
                 if (!Active)
                     return;

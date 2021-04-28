@@ -23,9 +23,9 @@ namespace Gamer.Mistaken.Systems.Logs
 
         public ElevatorLog(Exiled.Events.EventArgs.InteractingElevatorEventArgs ev)
         {
-            this.Player = ev.Player;
-            this.Time = DateTime.Now;
-            this.Status = ev.Status;
+            Player = ev.Player;
+            Time = DateTime.Now;
+            Status = ev.Status;
         }
     }
     public struct DoorLog
@@ -36,9 +36,9 @@ namespace Gamer.Mistaken.Systems.Logs
 
         public DoorLog(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
-            this.Player = ev.Player;
-            this.Time = DateTime.Now;
-            this.Open = !ev.Door.NetworkTargetState;
+            Player = ev.Player;
+            Time = DateTime.Now;
+            Open = !ev.Door.NetworkTargetState;
         }
     }
     public struct PlayerInfo
@@ -52,12 +52,12 @@ namespace Gamer.Mistaken.Systems.Logs
 
         public PlayerInfo(Player p)
         {
-            this.ID = p.Id;
-            this.UserId = p.UserId;
-            this.IP = p.IPAddress;
-            this.IMute = p.IsIntercomMuted;
-            this.Mute = p.IsMuted;
-            this.Name = p.Nickname;
+            ID = p.Id;
+            UserId = p.UserId;
+            IP = p.IPAddress;
+            IMute = p.IsIntercomMuted;
+            Mute = p.IsMuted;
+            Name = p.Nickname;
         }
     }
 
@@ -71,11 +71,11 @@ namespace Gamer.Mistaken.Systems.Logs
 
         public SCP914Log(Player p, SCP914Action action)
         {
-            this.ID = p.Id;
-            this.UserId = p.UserId;
-            this.Name = p.Nickname;
-            this.Action = action;
-            this.Time = DateTime.Now;
+            ID = p.Id;
+            UserId = p.UserId;
+            Name = p.Nickname;
+            Action = action;
+            Time = DateTime.Now;
         }
     }
     public enum SCP914Action

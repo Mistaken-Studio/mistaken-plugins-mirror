@@ -140,7 +140,7 @@ namespace Gamer.Utilities.TranslationManagerSystem
             CachedTranslations[$"{PluginName}.{key}"] = "REGISTER FIRST";
         }
 
-        private static List<Translation> Translations = new List<Translation>();
+        private static readonly List<Translation> Translations = new List<Translation>();
         private class Translation
         {
             public string ID;
@@ -151,7 +151,7 @@ namespace Gamer.Utilities.TranslationManagerSystem
             {
                 get
                 {
-                    return $"{BasePath}/{this.Plugin}.txt";
+                    return $"{BasePath}/{Plugin}.txt";
                 }
             }
 
@@ -164,7 +164,7 @@ namespace Gamer.Utilities.TranslationManagerSystem
                 if (Language == "")
                     throw new NullReferenceException("Language can't be empty string. Initiate first");
                 this.ID = ID;
-                this.Plugin = PluginName;
+                Plugin = PluginName;
                 if (!File.Exists(Path))
                     File.Create(Path).Close();
                 Update();

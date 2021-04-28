@@ -31,7 +31,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (args.Length < 3) return new string[] { GetUsage() };
             string color = args[1].ToLower();
             string txt = string.Join(" ", args.Skip(2));
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 player.RankColor = color;
                 player.RankName = txt;

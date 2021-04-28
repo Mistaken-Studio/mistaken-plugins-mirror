@@ -18,7 +18,7 @@ namespace Gamer.EventManager
 
         public override string Description => "Event Manager :)";
 
-        private Dictionary<string, Func<Player, string[], (bool isSuccess, string[] message)>> subcommands = new Dictionary<string, Func<Player, string[], (bool, string[])>>()
+        private readonly Dictionary<string, Func<Player, string[], (bool isSuccess, string[] message)>> subcommands = new Dictionary<string, Func<Player, string[], (bool, string[])>>()
         {
             {"q", (ply,args) => QueueCommand(ply, args) },
             {"queue", (ply,args) => QueueCommand(ply, args) },

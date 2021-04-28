@@ -306,7 +306,7 @@ namespace Gamer.Diagnostics
             this.plugin = plugin;
             if (!Modules.ContainsKey(plugin))
                 Modules.Add(plugin, new List<Module>());
-            Modules[plugin].RemoveAll(i => i.Name == this.Name);
+            Modules[plugin].RemoveAll(i => i.Name == Name);
             Modules[plugin].Add(this);
         }
         /// <summary>
@@ -385,7 +385,7 @@ namespace Gamer.Diagnostics
     /// </summary>
     public class __Log
     {
-        private string module;
+        private readonly string module;
         /// <summary>
         /// Constructor
         /// </summary>

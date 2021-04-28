@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.Systems.Components
         {
             Exiled.Events.Handlers.Player.Died += Player_Died;
 
-            Timing.RunCoroutine(DoDamage(), this.gameObject);
+            Timing.RunCoroutine(DoDamage(), gameObject);
         }
         private void OnDestroy()
         {
@@ -88,14 +88,14 @@ namespace Gamer.Mistaken.Systems.Components
                 }
                 foreach (var player in InArea.ToArray())
                 {
-                    if (this.Selector(player) || player.Role == RoleType.Scp079)
+                    if (Selector(player) || player.Role == RoleType.Scp079)
                         continue;
                     if (player.IsGodModeEnabled || player.IsDead)
                         continue;
-                    player.Hurt(this.Dmg, new DamageTypes.DamageType("*Anty Camper"), this.Message);
-                    player.SetGUI("killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
+                    player.Hurt(Dmg, new DamageTypes.DamageType("*Anty Camper"), Message);
+                    player.SetGUI("killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, Message);
                     hinted.Add(player);
-                    RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({this.Dmg}) with message \"{this.Message}\"");
+                    RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({Dmg}) with message \"{Message}\"");
                 }
             }
         }
@@ -114,12 +114,12 @@ namespace Gamer.Mistaken.Systems.Components
                 InArea.Add(player);
             if (InstaKill)
             {
-                if (this.Selector(player) || player.Role == RoleType.Scp079)
+                if (Selector(player) || player.Role == RoleType.Scp079)
                     return;
                 if (player.IsGodModeEnabled || player.IsDead)
                     return;
-                player.Kill(this.Message);
-                RoundLogger.Log("KILLER", "KILL", $"{player.PlayerToString()} was killed with message \"{this.Message}\"");
+                player.Kill(Message);
+                RoundLogger.Log("KILLER", "KILL", $"{player.PlayerToString()} was killed with message \"{Message}\"");
             }
         }
 

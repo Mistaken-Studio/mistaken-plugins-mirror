@@ -201,18 +201,18 @@ namespace Gamer.Mistaken.Ban2
 
             public BanData(CommandSender admin, string reason, Player target, int duration, int baseDur, string textTime, bool loud = false)
             {
-                this.Admin = admin;
-                this.Reason = reason;
-                this.Target = target;
-                this.Duration = duration;
-                this.BaseDur = baseDur;
-                this.TextTime = textTime;
-                this.isLoud = loud;
+                Admin = admin;
+                Reason = reason;
+                Target = target;
+                Duration = duration;
+                BaseDur = baseDur;
+                TextTime = textTime;
+                isLoud = loud;
             }
 
             public void Execute()
             {
-                CompleteBan(this.Admin, this.Reason, this.Target, this.Duration, this.TextTime, this.isLoud);
+                CompleteBan(Admin, Reason, Target, Duration, TextTime, isLoud);
                 AwaitingBans.Remove(this);
             }
         }

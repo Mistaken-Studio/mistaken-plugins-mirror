@@ -32,7 +32,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     if (!int.TryParse(args[1], out amount))
                         return new string[] { GetUsage() };
                 }
-                var pids = this.GetPlayers(args[0]).Select(p => p.Id).ToArray();
+                var pids = GetPlayers(args[0]).Select(p => p.Id).ToArray();
                 if (pids.Length == 0)
                     return new string[] { "Player not found", GetUsage() };
                 DropUnder(pids, amount);

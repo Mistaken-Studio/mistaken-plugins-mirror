@@ -212,9 +212,9 @@ namespace Gamer.EventManager
 
             public Version(int major, int minor, int patch)
             {
-                this.Major = major;
-                this.Minor = minor;
-                this.Patch = patch;
+                Major = major;
+                Minor = minor;
+                Patch = patch;
             }
 
             public Version(string txt)
@@ -222,9 +222,9 @@ namespace Gamer.EventManager
                 var data = txt.Split('.');
                 try
                 {
-                    this.Major = int.Parse(data[0]);
-                    this.Minor = int.Parse(data[1]);
-                    this.Patch = int.Parse(data[2]);
+                    Major = int.Parse(data[0]);
+                    Minor = int.Parse(data[1]);
+                    Patch = int.Parse(data[2]);
                 }
                 catch (System.Exception)
                 {
@@ -232,7 +232,7 @@ namespace Gamer.EventManager
                 }
             }
 
-            public bool Compatible(Version v) => this.Major == v.Major && this.Minor == v.Minor;
+            public bool Compatible(Version v) => Major == v.Major && Minor == v.Minor;
 
             public override string ToString()
             {
@@ -251,7 +251,7 @@ namespace Gamer.EventManager
         public abstract class IEMEventClass : IEMEvent
         {
             protected bool Running = false;
-            public bool Active => EventManager.ActiveEvent?.Id == this.Id;
+            public bool Active => EventManager.ActiveEvent?.Id == Id;
 
             //protected Plugin plugin;
 
@@ -300,7 +300,7 @@ namespace Gamer.EventManager
                 Running = true;
                 //plugin = p;
                 EventManager.ActiveEvent = this;
-                Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_Start} <color=#6B9ADF>{this.Name}</color>");
+                Map.Broadcast(10, $"{EventManager.EMLB} {EventManager.T_Event_Start} <color=#6B9ADF>{Name}</color>");
                 OnIni();
                 if (this is ISpawnRandomItems)
                 {

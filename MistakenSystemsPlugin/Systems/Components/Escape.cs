@@ -51,7 +51,7 @@ namespace Gamer.Mistaken.Systems.Components
             var player = Player.Get(other.gameObject);
             if (player?.IsNPC() ?? true || player.IsDead)
                 return;
-            this.OnTrigger(player);
+            OnTrigger(player);
         }
     }
 }

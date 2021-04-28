@@ -92,7 +92,7 @@ namespace Gamer.Taser
             /// <inheritdoc/>
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject target, Vector3 position)
             {
-                int dur = (int)this.GetInternalDurability(item);
+                int dur = (int)GetInternalDurability(item);
                 if (!Cooldowns.TryGetValue(dur, out DateTime time))
                     Cooldowns.Add(dur, DateTime.Now);
                 if (DateTime.Now < time)
@@ -166,7 +166,7 @@ namespace Gamer.Taser
                 {
                     if (!(player.CurrentItem.durability >= 1.501 && player.CurrentItem.durability <= 1.5011))
                         break;
-                    int dur = (int)this.GetInternalDurability(player.CurrentItem);
+                    int dur = (int)GetInternalDurability(player.CurrentItem);
                     if (!Cooldowns.TryGetValue(dur, out DateTime time))
                     {
                         Cooldowns.Add(dur, DateTime.Now);

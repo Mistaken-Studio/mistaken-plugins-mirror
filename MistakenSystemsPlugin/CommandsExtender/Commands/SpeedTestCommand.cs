@@ -42,7 +42,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 else
                     return new string[] { "Wrong run speed", GetUsage() };
             }
-            var success = this.ForeachPlayer(args[0], (p) =>
+            var success = ForeachPlayer(args[0], (p) =>
             {
                 p.SetSpeed(walkSpeed, runSpeed);
                 //Systems.Misc.CustomSpeedHandler.SetSpeeds(p, walkSpeed, runSpeed);

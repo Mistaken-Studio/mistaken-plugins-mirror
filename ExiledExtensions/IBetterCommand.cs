@@ -53,10 +53,10 @@ namespace Gamer.Utilities
             _start = DateTime.Now;
             if (sender.IsPlayer())
             {
-                if (this is IPermissionLocked && !((CommandSender)sender).SenderId.CheckPermission(this.FullPermission))
+                if (this is IPermissionLocked && !((CommandSender)sender).SenderId.CheckPermission(FullPermission))
                 {
-                    response = $"<b>Access Denied</b>\nMissing {this.FullPermission}";
-                    Diagnostics.MasterHandler.LogTime("Command", this.Command, _start, DateTime.Now);
+                    response = $"<b>Access Denied</b>\nMissing {FullPermission}";
+                    Diagnostics.MasterHandler.LogTime("Command", Command, _start, DateTime.Now);
                     return false;
                 }
             }
@@ -230,7 +230,7 @@ namespace Gamer.Utilities
             if (bc)
                 sender.GetPlayer().Broadcast(Command, 10, string.Join("\n", response));
             NorthwoodLib.Pools.ListPool<string>.Shared.Return(args);
-            Diagnostics.MasterHandler.LogTime("Command", this.Command, _start, DateTime.Now);
+            Diagnostics.MasterHandler.LogTime("Command", Command, _start, DateTime.Now);
             return successfull;
         }
         /// <summary>

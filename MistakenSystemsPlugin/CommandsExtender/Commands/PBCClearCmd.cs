@@ -27,7 +27,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 player.ClearBroadcasts();
                 return new string[] { "Done" };

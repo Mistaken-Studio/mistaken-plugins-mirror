@@ -28,7 +28,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             _s = false;
             if (args.Length < 3) return new string[] { GetUsage() };
             if (!byte.TryParse(args[2], out byte value)) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 switch (args[1].ToLower())
                 {

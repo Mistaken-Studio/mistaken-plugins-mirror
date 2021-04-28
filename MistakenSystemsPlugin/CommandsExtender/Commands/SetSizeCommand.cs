@@ -31,7 +31,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         if (float.TryParse(args[3], out float z))
                         {
-                            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+                            var output = ForeachPlayer(args[0], out bool success, (player) =>
                             {
                                 player.Scale = new Vector3(x, y, z);
                                 return new string[] { "Done" };

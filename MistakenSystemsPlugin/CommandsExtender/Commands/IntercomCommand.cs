@@ -24,7 +24,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length < 1) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (Player player) =>
+            var output = ForeachPlayer(args[0], out bool success, (Player player) =>
             {
                 if (player.Team == Team.SCP || player.Team == Team.RIP) return new string[] { "You have to be player" };
                 DissonanceUserSetup dus = player.ReferenceHub.GetComponent<DissonanceUserSetup>();

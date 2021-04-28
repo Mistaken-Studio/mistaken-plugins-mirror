@@ -115,7 +115,7 @@ namespace Gamer.Mistaken.Systems.GUI
             });
         }
         private static bool Is106 = false;
-        private Dictionary<int, (Player Player, RoleType Role)> spawnQueue = new Dictionary<int, (Player Player, RoleType Role)>();
+        private readonly Dictionary<int, (Player Player, RoleType Role)> spawnQueue = new Dictionary<int, (Player Player, RoleType Role)>();
         private static readonly Dictionary<int, string> DeathMessages = new Dictionary<int, string>();
         public static void AddDeathMessage(Player player, string message)
         {
