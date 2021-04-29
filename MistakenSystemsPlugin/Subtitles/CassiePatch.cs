@@ -51,6 +51,8 @@ namespace Gamer.Mistaken.Subtitles
                     speed = 1f;
                     yield return Timing.WaitForOneFrame;
                     __instance.Free = true;
+                    CassiePatch.Messages.Clear();
+                    Subtitles.SubtitlesHandler.UpdateAll();
                 }
                 else
                 {
@@ -62,7 +64,6 @@ namespace Gamer.Mistaken.Subtitles
                         Index = -1;
                         __instance.speakerSource.pitch = 1f;
                         yield return Timing.WaitForSeconds(4f);
-                        Exiled.API.Features.Log.Debug("END_OF_MESSAGE");
                         CassiePatch.Messages.Dequeue();
                         Subtitles.SubtitlesHandler.UpdateAll();
                     }
@@ -91,7 +92,6 @@ namespace Gamer.Mistaken.Subtitles
                                 if (!line.apiName.StartsWith(".g", StringComparison.OrdinalIgnoreCase))
                                 {
                                     Index++;
-                                    Exiled.API.Features.Log.Debug(line.apiName + $"({Index})");
                                     Subtitles.SubtitlesHandler.UpdateAll();
                                 }
                                 __instance.speakerSource.Stop();
@@ -116,7 +116,6 @@ namespace Gamer.Mistaken.Subtitles
                                 if (!line.apiName.StartsWith(".g", StringComparison.OrdinalIgnoreCase))
                                 {
                                     Index++;
-                                    Exiled.API.Features.Log.Debug(line.apiName + $"({Index})");
                                     Subtitles.SubtitlesHandler.UpdateAll();
                                 }
                                 __instance.speakerSource.PlayOneShot(line.clip);
