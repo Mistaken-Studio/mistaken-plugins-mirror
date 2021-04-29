@@ -73,9 +73,6 @@ namespace Gamer.Mistaken.Subtitles
                         bool flag2 = line.apiName.StartsWith("SUFFIX_");
                         float absoluteTimeAddition = 0f;
                         float relativeTimeAddition = 0f;
-                        float num2;
-                        int num3;
-                        int num4;
                         if (line.clip != null)
                         {
                             if (flag)
@@ -121,12 +118,12 @@ namespace Gamer.Mistaken.Subtitles
                                 __instance.speakerSource.PlayOneShot(line.clip);
                             }
                         }
-                        else if (global::NineTailedFoxAnnouncer.VoiceLine.IsPitch(line.apiName, out num2))
+                        else if (global::NineTailedFoxAnnouncer.VoiceLine.IsPitch(line.apiName, out float num2))
                         {
                             speed = num2;
                             __instance.speakerSource.pitch = speed;
                         }
-                        else if (global::NineTailedFoxAnnouncer.VoiceLine.IsJam(line.apiName, out num3, out num4))
+                        else if (global::NineTailedFoxAnnouncer.VoiceLine.IsJam(line.apiName, out int num3, out int num4))
                         {
                             jammed = num3;
                             jamSize = num4;
@@ -137,8 +134,7 @@ namespace Gamer.Mistaken.Subtitles
                             int num6 = 0;
                             while (num6 < __instance.queue.Count && !global::NineTailedFoxAnnouncer.VoiceLine.IsRegular(__instance.queue[num6].apiName))
                             {
-                                float num7;
-                                if (global::NineTailedFoxAnnouncer.VoiceLine.IsYield(__instance.queue[num6].apiName, out num7))
+                                if (global::NineTailedFoxAnnouncer.VoiceLine.IsYield(__instance.queue[num6].apiName, out float num7))
                                 {
                                     num5 = num7;
                                     break;
@@ -158,7 +154,6 @@ namespace Gamer.Mistaken.Subtitles
                                 }
                             }
                         }
-                        line = null;
                     }
                 }
             }
