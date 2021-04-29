@@ -7,15 +7,13 @@ namespace Gamer.EventManager.Events
 {
     internal class Hide :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "hide";
 
         public override string Description { get; set; } = "Hide event";
 
         public override string Name { get; set; } = "Hide";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

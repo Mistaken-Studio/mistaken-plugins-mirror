@@ -145,12 +145,12 @@ namespace Gamer.Mistaken.Systems.Shield
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player.Id == player.Id)
-                this.Disable();
+                Disable();
         }
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
         {
             if (ev.Player.Id == player.Id)
-                this.Disable();
+                Disable();
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {

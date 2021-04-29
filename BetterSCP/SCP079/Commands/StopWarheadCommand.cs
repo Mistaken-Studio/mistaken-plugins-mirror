@@ -6,28 +6,30 @@ using System;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
+    /// <inheritdoc/>
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     public class StopWarheadCommand : IBetterCommand
     {
+        /// <inheritdoc/>
         public override string Command => "stop";
-
+        /// <inheritdoc/>
         public override string[] Aliases => new string[] { "warheadstop", "stopwarhead", "stopwh", "swarhead" };
-
+        /// <inheritdoc/>
         public override string Description => "Stop Warhead";
-
+        /// <inheritdoc/>
         public string GetUsage()
         {
             return ".stop";
         }
 
         private static DateTime Lastuse = new DateTime();
-        public static float Cooldown => PluginHandler.Config.cooldownStopWarhead;
-        public static float Cost => PluginHandler.Config.apcostStopWarhead;
-        public static float ReqLvl => PluginHandler.Config.requiedlvlStopWarhead;
+        internal static float Cooldown => PluginHandler.Config.cooldownStopWarhead;
+        internal static float Cost => PluginHandler.Config.apcostStopWarhead;
+        internal static float ReqLvl => PluginHandler.Config.requiedlvlStopWarhead;
 
-        public static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
-        public static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
-
+        internal static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
+        internal static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();

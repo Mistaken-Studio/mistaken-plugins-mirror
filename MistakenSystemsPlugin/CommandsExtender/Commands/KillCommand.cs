@@ -27,7 +27,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             string reason = "";
             if (args.Length > 1)
                 reason = string.Join(" ", args.Skip(1)).Trim();
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 player.Kill(new DamageTypes.DamageType("Can not define what killed him"));
                 player.Broadcast(5, $"<color=red>You have been killed by admin " + (reason != "" ? $"with reason {reason}" : "") + "</color>");

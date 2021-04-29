@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
 
         private readonly string WelcomeMessage;
 
-        private void Player_EnteringFemurBreaker(Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs ev)
+        private void Player_EnteringFemurBreaker(Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs _)
         {
             MEC.Timing.CallDelayed(10, () =>
             {
@@ -107,7 +107,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 s106.CallCmdUsePortal();
             }
         }
-        private void Scp106_Containing(Exiled.Events.EventArgs.ContainingEventArgs ev)
+        private void Scp106_Containing(Exiled.Events.EventArgs.ContainingEventArgs _)
         {
             Vector3 newTarget = Map.Doors.FirstOrDefault(d => d.Type() == DoorType.Scp106Primary)?.transform.position ?? default;
             if (newTarget == default)
@@ -127,7 +127,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 TeleportOldMan(player, newTarget, true);
             }
         }
-        private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
+        private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs _)
         {
             foreach (var player in RealPlayers.Get(RoleType.Scp106).ToArray())
             {

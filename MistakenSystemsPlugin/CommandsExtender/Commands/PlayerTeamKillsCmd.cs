@@ -28,7 +28,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
                 if (args.Length > 1 && args[1].ToLower() == "vic")

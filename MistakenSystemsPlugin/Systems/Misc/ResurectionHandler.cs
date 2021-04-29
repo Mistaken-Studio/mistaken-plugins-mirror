@@ -14,7 +14,7 @@ namespace Gamer.Mistaken.Systems.Misc
 {
     internal class ResurectionHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public ResurectionHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;

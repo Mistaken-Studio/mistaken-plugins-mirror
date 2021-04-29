@@ -6,15 +6,13 @@ namespace Gamer.EventManager.Events
 {
     internal class SCP575 :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "575";
 
         public override string Description { get; set; } = "SCP-575 breach";
 
         public override string Name { get; set; } = "SCP-575";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

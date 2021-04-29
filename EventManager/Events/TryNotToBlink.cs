@@ -9,15 +9,13 @@ namespace Gamer.EventManager.Events
 {
     internal class TryNotToBlink :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "trynottoblink";
 
         public override string Description { get; set; } = "The name explains it all :)";
 
         public override string Name { get; set; } = "TryNotToBlink";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

@@ -13,7 +13,7 @@ namespace Gamer.Mistaken.Systems.Pets
 {
     internal class PetsHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public PetsHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;
@@ -65,7 +65,7 @@ namespace Gamer.Mistaken.Systems.Pets
             PetsIds.Clear();
         }
 
-        private static Func<Player, Action<Player>> OnEnter = (player1) => (player2) =>
+        private static readonly Func<Player, Action<Player>> OnEnter = (player1) => (player2) =>
         {
             if (!player1.IsAlive)
                 return;
@@ -76,7 +76,7 @@ namespace Gamer.Mistaken.Systems.Pets
             player1.TargetGhostsHashSet.Add(player2.Id);
             //player2.DisplayNickname = "Hidden";
         };
-        private static Func<Player, Action<Player>> OnExit = (player1) => (player2) =>
+        private static readonly Func<Player, Action<Player>> OnExit = (player1) => (player2) =>
         {
             if (!player2.IsNPC())
                 return;

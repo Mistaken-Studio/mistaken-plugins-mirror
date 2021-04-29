@@ -215,7 +215,7 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                     lvl = 2;
                     num++;
                 }
-                if (this.CommunityBanned)
+                if (CommunityBanned)
                 {
                     lvl = 2;
                     num++;
@@ -260,12 +260,12 @@ namespace Gamer.Mistaken.Systems.ThreatLevel
                             var tmp = JsonConvert.DeserializeObject<BansInfo>(data);
                             if (tmp.players.Length == 0)
                                 break;
-                            this.CommunityBanned = tmp.players[0].CommunityBanned;
-                            this.VACBanned = tmp.players[0].VACBanned;
-                            this.EconomyBan = tmp.players[0].EconomyBan;
-                            this.NumberOfGameBans = tmp.players[0].NumberOfGameBans;
-                            this.NumberOfVACBans = tmp.players[0].NumberOfVACBans;
-                            this.DaysSinceLastBan = tmp.players[0].DaysSinceLastBan;
+                            CommunityBanned = tmp.players[0].CommunityBanned;
+                            VACBanned = tmp.players[0].VACBanned;
+                            EconomyBan = tmp.players[0].EconomyBan;
+                            NumberOfGameBans = tmp.players[0].NumberOfGameBans;
+                            NumberOfVACBans = tmp.players[0].NumberOfVACBans;
+                            DaysSinceLastBan = tmp.players[0].DaysSinceLastBan;
                             break;
                         }
                 }

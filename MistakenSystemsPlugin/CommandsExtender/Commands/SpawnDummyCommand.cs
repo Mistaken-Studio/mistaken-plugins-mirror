@@ -88,7 +88,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
                 case "TARGET":
                     {
-                        this.ForeachPlayer(args[1], out bool success, (Player player) =>
+                        ForeachPlayer(args[1], out bool success, (Player player) =>
                         {
                             string name = player.Nickname;
                             if (args.Length > 2 && args[2] != "default")

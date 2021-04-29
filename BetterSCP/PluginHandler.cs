@@ -4,16 +4,27 @@ using Gamer.API;
 
 namespace Gamer.Mistaken.BetterSCP
 {
+    /// <inheritdoc/>
     public class PluginHandler : Plugin<BSConfig>
     {
-        public new static BSConfig Config;
+        /// <summary>
+        /// Config
+        /// </summary>
+        public static new BSConfig Config;
+        /// <inheritdoc/>
         public override string Author => "Gamer";
+        /// <inheritdoc/>
         public override string Name => "Better SCP";
+        /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Highest - 3;
+        /// <inheritdoc/>
         public override string Prefix => "bscp";
 
+        /// <summary>
+        /// AntyDuo Trigger distance
+        /// </summary>
         public const float Anty173_096DuoDistance = 20;
-
+        /// <inheritdoc/>
         public override void OnEnabled()
         {
             Config = base.Config;
@@ -34,16 +45,17 @@ namespace Gamer.Mistaken.BetterSCP
 
             base.OnEnabled();
         }
-
+        /// <inheritdoc/>
         public override void OnDisabled()
         {
             Diagnostics.Module.OnDisable(this);
             base.OnDisabled();
         }
     }
-
+    /// <inheritdoc/>
     public class BSConfig : Config
     {
+#pragma warning disable CS1591
 #pragma warning disable IDE1006
         #region SCP079
         public int requiedlvl { get; set; } = 3;

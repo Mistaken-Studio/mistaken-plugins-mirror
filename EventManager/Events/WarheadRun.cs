@@ -11,15 +11,13 @@ namespace Gamer.EventManager.Events
         EventCreator.IEMEventClass,
         EventCreator.IEndOnNoAlive,
         EventCreator.IWinOnEscape,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "whr";
 
         public override string Description { get; set; } = "WarheadRun";
 
         public override string Name { get; set; } = "WarheadRun";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
@@ -63,7 +61,7 @@ namespace Gamer.EventManager.Events
                 player.SlowChangeRole(RoleType.ClassD);
             Map.Broadcast(10, EventManager.EMLB + Translations["D"]);
             Cassie.Message("nato_a warhead will be initiated in t minus 1 minute", false, true);
-            this.WaitAndExecute(68, () =>
+            WaitAndExecute(68, () =>
             {
                 if (!Active)
                     return;

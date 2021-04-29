@@ -10,7 +10,7 @@ namespace Gamer.Mistaken
 {
     public class PluginHandler : Plugin<MSConfig>
     {
-        public new static MSConfig Config;
+        public static new MSConfig Config;
         public override string Author => "Gamer";
         public override string Name => "MistakenSystemsPlugin";
         public override string Prefix => "msp";

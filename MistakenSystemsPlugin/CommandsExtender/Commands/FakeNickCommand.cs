@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length < 2) return new string[] { GetUsage() };
-            var players = this.GetPlayers(args[0]);
+            var players = GetPlayers(args[0]);
             if (players.Count > 1)
                 return new string[] { "<b><size=200%>1 PLAYER</size></b>" };
             if (players.Count == 0)

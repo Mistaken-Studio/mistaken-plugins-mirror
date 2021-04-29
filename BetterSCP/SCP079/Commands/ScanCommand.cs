@@ -6,28 +6,30 @@ using System;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
+    /// <inheritdoc/>
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     public class ScanCommand : IBetterCommand
     {
+        /// <inheritdoc/>
         public override string Command => "scan";
-
+        /// <inheritdoc/>
         public override string[] Aliases => new string[] { };
-
+        /// <inheritdoc/>
         public override string Description => "Scanning";
-
+        /// <inheritdoc/>
         public string GetUsage()
         {
             return ".scan";
         }
 
         private static DateTime Lastuse = new DateTime();
-        public static float Cooldown => PluginHandler.Config.cooldownScan;
-        public static float Cost => PluginHandler.Config.apcostScan;
-        public static float ReqLvl => PluginHandler.Config.requiedlvlScan;
+        internal static float Cooldown => PluginHandler.Config.cooldownScan;
+        internal static float Cost => PluginHandler.Config.apcostScan;
+        internal static float ReqLvl => PluginHandler.Config.requiedlvlScan;
 
-        public static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
-        public static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
-
+        internal static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
+        internal static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();

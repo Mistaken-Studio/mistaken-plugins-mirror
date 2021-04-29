@@ -116,7 +116,7 @@ namespace Gamer.SNAV
         /// <summary>
         /// Rooms looks
         /// </summary>
-        public readonly static Dictionary<SNavRoomType, string[]> Presets = new Dictionary<SNavRoomType, string[]>()
+        public static readonly Dictionary<SNavRoomType, string[]> Presets = new Dictionary<SNavRoomType, string[]>()
         {
             {
                 SNavRoomType.ERROR,
@@ -482,10 +482,10 @@ namespace Gamer.SNAV
         /// <summary>
         /// Rooms where someone was on last scan
         /// </summary>
-        public readonly static HashSet<Room> LastScan = new HashSet<Room>();
+        public static readonly HashSet<Room> LastScan = new HashSet<Room>();
         /// <inheritdoc/>
         public override string Name => "SNavHandler";
-        private new static __Log Log;
+        private static new __Log Log;
         /// <inheritdoc/>
         public SNavHandler(PluginHandler p) : base(p)
         {

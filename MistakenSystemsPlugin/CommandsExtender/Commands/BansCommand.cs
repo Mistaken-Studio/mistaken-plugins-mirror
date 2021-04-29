@@ -36,9 +36,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             message += $"\n<color=red>Bans: {bans.Length}</color>";
             message += $"\n<color=red></color>";
             int i = 1;
-            foreach (var item in bans)
+            foreach (var (AdminId, Reason, Duration, Time) in bans)
             {
-                int dur = item.Duration;
+                int dur = Duration;
                 string type = "s";
                 string fulldur = "KICK";
                 if (dur != 0)
@@ -76,7 +76,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     fulldur = dur + type;
                 }
 
-                string adminUid = item.AdminId;
+                string adminUid = AdminId;
                 if (!adminUid.Contains("@"))
                     adminUid += "@steam";
                 if (adminUid == Admin.UserId)
@@ -84,13 +84,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 if (adminUid == "0@steam")
                 {
                     adminUid = "Console";
-                    if (item.Reason.StartsWith("TK:"))
+                    if (Reason.StartsWith("TK:"))
                         adminUid = "Anty Team Kill System";
-                    if (item.Reason.StartsWith("R:"))
+                    if (Reason.StartsWith("R:"))
                         adminUid = "Remote Ban System";
-                    if (item.Reason.StartsWith("W:"))
+                    if (Reason.StartsWith("W:"))
                         adminUid = "Wanted System";
-                    if (item.Reason.StartsWith("AutoBan:"))
+                    if (Reason.StartsWith("AutoBan:"))
                         adminUid = "AutoBan System";
                 }
                 if (adminUid == "@steam")
@@ -98,8 +98,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 var admin = Base.Staff.StaffHandler.Staff.FirstOrDefault(_item => _item.steamid + "@steam" == adminUid || _item.discordid + "@discord" == adminUid);
                 if (admin != null)
                     adminUid = $"{admin.nick} ({adminUid})";
-                message += $"\n<color=blue>#{i}|{adminUid}|<color=red>{fulldur}</color>|{item.Time}|Reason:</color>";
-                message += $"\n<color=green>{item.Reason.Trim()}</color>";
+                message += $"\n<color=blue>#{i}|{adminUid}|<color=red>{fulldur}</color>|{Time}|Reason:</color>";
+                message += $"\n<color=green>{Reason.Trim()}</color>";
                 i++;
             }
 

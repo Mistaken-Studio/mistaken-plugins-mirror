@@ -9,7 +9,7 @@ namespace Gamer.SNAV
         /// <summary>
         /// Config
         /// </summary>
-        public new static SNAVConfig Config;
+        public static new SNAVConfig Config;
         /// <inheritdoc/>
         public override string Author => "Gamer";
         /// <inheritdoc/>

@@ -11,7 +11,7 @@ namespace Gamer.EventManager.Events
 {
     internal class DBoiBattleRoyalMicroHid :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.IAnnouncPlayersAlive,
         EventCreator.IWinOnLastAlive
     {
@@ -20,8 +20,6 @@ namespace Gamer.EventManager.Events
         public override string Description { get; set; } = "D Boi Battle Royal Micro Hid";
 
         public override string Name { get; set; } = "DBoiBattleRoyalMicroHid";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

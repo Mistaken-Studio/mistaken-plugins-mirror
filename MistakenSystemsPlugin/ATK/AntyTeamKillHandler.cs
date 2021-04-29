@@ -47,7 +47,7 @@ namespace Gamer.Mistaken.ATK
 
                 try
                 {
-                    Instance.OnTeamKill(killerUserId ?? Killer.UserId, Victim, Info.GetDamageType(), Info.Amount);
+                    Instance.OnTeamKill(killerUserId ?? Killer.UserId, Victim, Info.GetDamageType());
                 }
                 catch (System.Exception ex)
                 {
@@ -128,7 +128,7 @@ namespace Gamer.Mistaken.ATK
         private static AntyTeamKillHandler Instance;
 
         public override string Name => nameof(AntyTeamKillHandler);
-        private new static __Log Log;
+        private static new __Log Log;
         public AntyTeamKillHandler(PluginHandler p) : base(p)
         {
             Instance = this;
@@ -154,7 +154,7 @@ namespace Gamer.Mistaken.ATK
         }
         public const bool Debug = true;
 
-        public readonly static Dictionary<string, Player[]> TKGreneadedPlayers = new Dictionary<string, Player[]>();
+        public static readonly Dictionary<string, Player[]> TKGreneadedPlayers = new Dictionary<string, Player[]>();
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
             if (!ev.IsAllowed)
@@ -316,9 +316,9 @@ namespace Gamer.Mistaken.ATK
             return false;
         }
 
-        private readonly static HashSet<string> Punishing = new HashSet<string>();
+        private static readonly HashSet<string> Punishing = new HashSet<string>();
 
-        private void OnTeamKill(string killerUserId, Player victim, DamageTypes.DamageType type, float amount)
+        private void OnTeamKill(string killerUserId, Player victim, DamageTypes.DamageType type)
         {
             if (!TeamKillsCounter.ContainsKey(killerUserId))
                 TeamKillsCounter.Add(killerUserId, 1);

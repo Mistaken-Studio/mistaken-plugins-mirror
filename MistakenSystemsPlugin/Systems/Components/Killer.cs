@@ -24,8 +24,10 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider));
-                    prefab.layer = Layer;
+                    prefab = new GameObject("Killer", typeof(Killer), typeof(BoxCollider))
+                    {
+                        layer = Layer
+                    };
                     var collider = prefab.GetComponent<BoxCollider>();
                     collider.isTrigger = true;
                 }
@@ -60,9 +62,11 @@ namespace Gamer.Mistaken.Systems.Components
         {
             Exiled.Events.Handlers.Player.Died += Player_Died;
 
-            Timing.RunCoroutine(DoDamage(), this.gameObject);
+            Timing.RunCoroutine(DoDamage(), gameObject);
         }
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnDestroy()
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             Exiled.Events.Handlers.Player.Died -= Player_Died;
             destroyed = true;
@@ -88,21 +92,23 @@ namespace Gamer.Mistaken.Systems.Components
                 }
                 foreach (var player in InArea.ToArray())
                 {
-                    if (this.Selector(player) || player.Role == RoleType.Scp079)
+                    if (Selector(player) || player.Role == RoleType.Scp079)
                         continue;
                     if (player.IsGodModeEnabled || player.IsDead)
                         continue;
-                    player.Hurt(this.Dmg, new DamageTypes.DamageType("*Anty Camper"), this.Message);
-                    player.SetGUI("killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, this.Message);
+                    player.Hurt(Dmg, new DamageTypes.DamageType("*Anty Camper"), Message);
+                    player.SetGUI("killer", Base.GUI.PseudoGUIHandler.Position.MIDDLE, Message);
                     hinted.Add(player);
-                    RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({this.Dmg}) with message \"{this.Message}\"");
+                    RoundLogger.Log("KILLER", "DAMAGE", $"{player.PlayerToString()} was damaged({Dmg}) with message \"{Message}\"");
                 }
             }
         }
 
         private readonly List<Player> InArea = new List<Player>();
         private readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnTriggerEnter(Collider other)
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             if (!other.GetComponent<CharacterClassManager>())
                 return;
@@ -114,16 +120,18 @@ namespace Gamer.Mistaken.Systems.Components
                 InArea.Add(player);
             if (InstaKill)
             {
-                if (this.Selector(player) || player.Role == RoleType.Scp079)
+                if (Selector(player) || player.Role == RoleType.Scp079)
                     return;
                 if (player.IsGodModeEnabled || player.IsDead)
                     return;
-                player.Kill(this.Message);
-                RoundLogger.Log("KILLER", "KILL", $"{player.PlayerToString()} was killed with message \"{this.Message}\"");
+                player.Kill(Message);
+                RoundLogger.Log("KILLER", "KILL", $"{player.PlayerToString()} was killed with message \"{Message}\"");
             }
         }
 
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnTriggerExit(Collider other)
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             if (!ColliderInArea.Contains(other.gameObject))
                 return;

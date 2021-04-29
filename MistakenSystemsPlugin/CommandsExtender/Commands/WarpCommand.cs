@@ -18,7 +18,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             success = false;
             if (args.Length == 0) return new string[] { GetUsage() };
-            var res = this.ForeachPlayer(args.Length > 1 ? args[1] : sender.GetPlayer().Id.ToString(), out bool _s, (player) =>
+            var res = ForeachPlayer(args.Length > 1 ? args[1] : sender.GetPlayer().Id.ToString(), out bool _s, (player) =>
             {
                 return ExecuteWarp(player, args[0].ToLower());
             });

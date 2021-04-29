@@ -21,7 +21,6 @@ namespace EventManager.Events
         public override string Id => "tsl";
 
         public override string Description { get; set; } = "Trouble in Secret Laboratory";
-        public override Gamer.EventManager.EventCreator.Version Version => new Gamer.EventManager.EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>
         {
@@ -655,7 +654,7 @@ namespace EventManager.Events
                         else
                         {
                             int a = pb[sender.Id];
-                            a = a - 2;
+                            a -= 2;
                             pb[sender.Id] = a;
                             return "You have locked 914 and 012 for 10 seconds";
                         }
@@ -700,7 +699,7 @@ namespace EventManager.Events
     }
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
-    public class ShopCommandHandler : IBetterCommand
+    internal class ShopCommandHandler : IBetterCommand
     {
         public override string Command => "traitorShop";
 
@@ -724,7 +723,7 @@ namespace EventManager.Events
                             if ((Gamer.EventManager.EventManager.ActiveEvent as TSL).ATTD.Contains(sender.Id))
                                 return "you already bought that item";
                             int a = (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id];
-                            a = a - 2;
+                            a -= 2;
                             (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id] = a;
                             (Gamer.EventManager.EventManager.ActiveEvent as TSL).ATTD.Add(sender.Id);
                             return "You have bought ATTD";
@@ -740,7 +739,7 @@ namespace EventManager.Events
                             if ((Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "harmor" || (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "armor")
                                 return "You already bought that item";
                         int a = (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id];
-                        a = a - 1;
+                        a--;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id] = a;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor.Add(sender.Id, "armor");
                         return "You have bought Armor";
@@ -754,7 +753,7 @@ namespace EventManager.Events
                             if ((Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "harmor" || (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor[sender.Id] == "armor")
                                 return "You already bought that item";
                         int a = (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id];
-                        a = a - 3;
+                        a -= 3;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).pb[sender.Id] = a;
                         (Gamer.EventManager.EventManager.ActiveEvent as TSL).armor.Add(sender.Id, "harmor");
                         return "You have bought Harmor";

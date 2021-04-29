@@ -6,28 +6,30 @@ using System;
 
 namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
 {
+    /// <inheritdoc/>
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     public class FakeCICommand : IBetterCommand
     {
+        /// <inheritdoc/>
         public override string Command => "fakeci";
-
+        /// <inheritdoc/>
         public override string[] Aliases => new string[] { };
-
+        /// <inheritdoc/>
         public override string Description => "Fake CI";
-
+        /// <inheritdoc/>
         public string GetUsage()
         {
             return ".fakeci";
         }
 
         private static DateTime Lastuse = new DateTime();
-        public static float Cooldown => PluginHandler.Config.cooldown;
-        public static float Cost => PluginHandler.Config.apcost;
-        public static float ReqLvl => PluginHandler.Config.requiedlvl;
+        internal static float Cooldown => PluginHandler.Config.cooldown;
+        internal static float Cost => PluginHandler.Config.apcost;
+        internal static float ReqLvl => PluginHandler.Config.requiedlvl;
 
-        public static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
-        public static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
-
+        internal static bool IsReady => Lastuse.AddSeconds(Cooldown).Ticks <= DateTime.Now.Ticks;
+        internal static long TimeLeft => Lastuse.AddSeconds(Cooldown).Ticks - DateTime.Now.Ticks;
+        /// <inheritdoc/>
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();

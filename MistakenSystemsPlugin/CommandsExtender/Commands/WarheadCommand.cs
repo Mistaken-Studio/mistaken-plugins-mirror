@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 case "start":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.Start();
                         BetterWarheadHandler.Warhead.CountingDown = true;
                         success = true;
@@ -44,7 +44,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "on":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.LeverStatus = true;
                         BetterWarheadHandler.Warhead.Enabled = true;
                         success = true;
@@ -52,7 +52,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "off":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.LeverStatus = false;
                         BetterWarheadHandler.Warhead.Enabled = false;
                         success = true;
@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "open":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.IsKeycardActivated = true;
                         BetterWarheadHandler.Warhead.ButtonOpen = true;
                         success = true;
@@ -68,7 +68,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "close":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.IsKeycardActivated = false;
                         BetterWarheadHandler.Warhead.ButtonOpen = false;
                         success = true;
@@ -76,7 +76,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "lockstart":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockstart true/false" };
                         if (args[1] == "true")
                         {
@@ -97,7 +97,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "lockstop":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockstop true/false" };
                         if (args[1] == "true")
                         {
@@ -120,7 +120,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "lockbutton":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockbutton true/false" };
                         if (args[1] == "true")
                         {
@@ -141,7 +141,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "locklever":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.lock")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead locklever true/false" };
                         if (args[1] == "true")
                         {
@@ -162,7 +162,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "getlast":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.data")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.data")) return new string[] { "No Permissions." };
                         success = true;
                         return new string[] {
                             "Last Warhead Start User: " + (BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({BetterWarheadHandler.Warhead.LastStartUser.Id}) | {BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
@@ -170,7 +170,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     }
                 case "stats":
                     {
-                        if (!admin.CheckPermission($"{this.PluginName}.data")) return new string[] { "No Permissions." };
+                        if (!admin.CheckPermission($"{PluginName}.data")) return new string[] { "No Permissions." };
                         success = true;
                         return new string[] { "Alpha Warhead stats:",
                             "Detonated: " +Warhead.IsDetonated,

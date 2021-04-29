@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             _s = false;
             if (args.Length == 0) return new string[] { GetUsage() };
 
-            var result = this.ForeachPlayer(args[0], out bool success, p =>
+            var result = ForeachPlayer(args[0], out bool success, p =>
             {
                 p.ReferenceHub.nicknameSync.Network_customPlayerInfoString = string.Join(" ", args.Skip(1));
                 if (p.ReferenceHub.nicknameSync.Network_customPlayerInfoString == "")

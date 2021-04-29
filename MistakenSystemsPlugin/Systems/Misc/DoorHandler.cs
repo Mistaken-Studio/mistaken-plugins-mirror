@@ -47,7 +47,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
         }
 
-        public readonly static Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
+        public static readonly Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
         private void Server_WaitingForPlayers()
         {
             Log.Debug("[DOOR] Starting");

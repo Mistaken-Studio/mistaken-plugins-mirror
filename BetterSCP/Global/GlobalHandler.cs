@@ -11,19 +11,23 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.Global
 {
+    /// <inheritdoc/>
     public class GlobalHandler : Module
     {
+        /// <inheritdoc/>
         public GlobalHandler(PluginHandler p) : base(p)
         {
         }
-
+        /// <inheritdoc/>
         public override string Name => nameof(GlobalHandler);
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
             Exiled.Events.Handlers.Server.SendingConsoleCommand += this.Handle<Exiled.Events.EventArgs.SendingConsoleCommandEventArgs>((ev) => Server_SendingConsoleCommand(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));

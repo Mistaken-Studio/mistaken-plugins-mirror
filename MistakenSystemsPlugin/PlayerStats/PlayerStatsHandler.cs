@@ -108,14 +108,14 @@ namespace Gamer.Mistaken.PStats
         {
             try
             {
-                Stats[ev.Player.UserId].Leavetime = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                Stats[ev.Player.UserId].Leavetime = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 if (ev.Player.Role != RoleType.Spectator)
                     Stats[ev.Player.UserId].Deaths++;
             }
             catch { }
         }
 
-        private void Server_RoundEnded(RoundEndedEventArgs ev)
+        private void Server_RoundEnded(RoundEndedEventArgs _)
         {
             try
             {
@@ -143,8 +143,8 @@ namespace Gamer.Mistaken.PStats
                         else
                         {
                             if (stat.Leavetime == null)
-                                stat.Leavetime = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                            SendStats(stat.UserId, stat.Kills, stat.Deaths, (Int32)(stat.Leavetime - stat.Jointime), stat.Tk_kills, stat.Tk_deaths, stat.Escapes);
+                                stat.Leavetime = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                            SendStats(stat.UserId, stat.Kills, stat.Deaths, (int)(stat.Leavetime - stat.Jointime), stat.Tk_kills, stat.Tk_deaths, stat.Escapes);
                         }
                     }
                     catch (Exception e)
@@ -170,7 +170,7 @@ namespace Gamer.Mistaken.PStats
                 {
                     Nickname = ev.Player.Nickname,
                     Ip = ev.Player.IPAddress,
-                    Jointime = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
+                    Jointime = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds,
                     UserId = ev.Player.UserId,
                     Deaths = 0,
                     Kills = 0,
@@ -237,7 +237,7 @@ namespace Gamer.Mistaken.PStats
             Log.Debug($"{ev.Target.Nickname} ({ev.Target.Role}) was killed by {ev.Killer?.Nickname ?? "WORLD"} ({ev.Killer?.Role.ToString() ?? "WORLD"}) using {ev.HitInformation.GetDamageName()}");
         }
 
-        public void SendStats(string userid, uint kills, uint deaths, Int32 time, uint tk_kills, uint tk_deaths, uint escapes)
+        public void SendStats(string userid, uint kills, uint deaths, int time, uint tk_kills, uint tk_deaths, uint escapes)
         {
             if (time > 60 * 60 * 2)
             {
@@ -289,8 +289,8 @@ namespace Gamer.Mistaken.PStats
             public string Nickname { get; set; }
             public string UserId { get; set; }
             public string Ip { get; set; }
-            public Int32? Jointime { get; set; }
-            public Int32? Leavetime { get; set; }
+            public int? Jointime { get; set; }
+            public int? Leavetime { get; set; }
             public uint Kills { get; set; }
             public uint Deaths { get; set; }
             public uint Tk_kills { get; set; }

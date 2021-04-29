@@ -12,7 +12,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
 {
     internal class PocketHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public PocketHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;

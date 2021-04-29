@@ -81,7 +81,7 @@ namespace Gamer.Mistaken.Systems.Components
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            this.OnExit?.Invoke(ev.Target);
+            OnExit?.Invoke(ev.Target);
             ColliderInArea.Remove(ev.Target.GameObject);
         }
 
@@ -96,7 +96,7 @@ namespace Gamer.Mistaken.Systems.Components
             if (player.IsNPC() && !AllowNPCs)
                 return;
             ColliderInArea.Add(other.gameObject);
-            this.OnEnter?.Invoke(player);
+            OnEnter?.Invoke(player);
         }
 
         private void OnTriggerExit(Collider other)
@@ -105,7 +105,7 @@ namespace Gamer.Mistaken.Systems.Components
                 return;
             ColliderInArea.Remove(other.gameObject);
             var player = Player.Get(other.gameObject);
-            this.OnExit?.Invoke(player);
+            OnExit?.Invoke(player);
         }
     }
 }

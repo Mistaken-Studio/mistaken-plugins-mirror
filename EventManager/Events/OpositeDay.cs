@@ -10,15 +10,13 @@ namespace Gamer.EventManager.Events
 {
     internal class OpositeDay :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "oday";
 
         public override string Description { get; set; } = "OpositeDay event";
 
         public override string Name { get; set; } = "OpositeDay";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

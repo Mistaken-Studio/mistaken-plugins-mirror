@@ -655,17 +655,17 @@ namespace Gamer.Mistaken.LOFH
 
             public Menu(int id, string name, bool generatePlayerList, int parent, params (int, string)[] options)
             {
-                this.Id = id;
-                this.Name = name;
-                this.GeneratePlayerList = generatePlayerList;
-                this.Options = options;
-                this.Parent = parent;
+                Id = id;
+                Name = name;
+                GeneratePlayerList = generatePlayerList;
+                Options = options;
+                Parent = parent;
             }
 
             public string Get(out bool GeneratePlayerList)
             {
                 GeneratePlayerList = this.GeneratePlayerList;
-                if (this.Id == 0)
+                if (Id == 0)
                     return $"{Generate("                      MENU", 8000)}{string.Concat(Options.Select(i => Generate(i.Item2, i.Item1)))}";
                 else
                     return $"<color=red>[<color=green><size=1><color=#00000000>({-1})</color></size>{Name}</color>]</color>\n{Generate("                      BACK", 8000)}{string.Concat(Options.Select(i => Generate(i.Item2, i.Item1)))}";

@@ -13,7 +13,7 @@ namespace Gamer.Mistaken.Systems.End
 {
     internal class GrenadeLauncherHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public GrenadeLauncherHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;
@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.Systems.End
 
             public override bool OnReload(Player player, Inventory.SyncItemInfo item)
             {
-                var dur = this.GetInternalDurability(item);
+                var dur = GetInternalDurability(item);
                 if (dur != 0)
                 {
                     player.SetGUI("grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Nie możesz przeładować nie mając pustego magazynka", 3);
@@ -59,14 +59,14 @@ namespace Gamer.Mistaken.Systems.End
                     return false;
                 }
 
-                this.SetInternalDurability(player, item, MagSize + 1);
+                SetInternalDurability(player, item, MagSize + 1);
                 player.RemoveItem(player.Inventory.items.First(i => i.id == ItemType.GrenadeFrag));
                 player.SetGUI("grenadeLauncherWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Przeładowano", 3);
                 return false;
             }
             public override bool OnShoot(Player player, Inventory.SyncItemInfo item, GameObject _, Vector3 position)
             {
-                int dur = (int)Math.Floor(this.GetInternalDurability(item));
+                int dur = (int)Math.Floor(GetInternalDurability(item));
                 Log.Debug($"Ammo: {dur} | {item.durability}");
                 if (dur == 0)
                 {
@@ -78,7 +78,7 @@ namespace Gamer.Mistaken.Systems.End
                 Grenade component = UnityEngine.Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
                 component.InitData(player.GrenadeManager, player.ReferenceHub.playerMovementSync.PlayerVelocity, player.CameraTransform.forward, 2.5f);
                 NetworkServer.Spawn(component.gameObject);
-                this.SetInternalDurability(player, item, dur - 1);
+                SetInternalDurability(player, item, dur - 1);
                 return false;
             }
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
@@ -88,7 +88,7 @@ namespace Gamer.Mistaken.Systems.End
                 Log.Debug(player.Ammo[(int)AmmoType.Nato9]);
                 base.OnStartHolding(player, item);
 
-                player.SetGUI("grenadeLauncher", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>{this.ItemName}</color>");
+                player.SetGUI("grenadeLauncher", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Trzymasz <color=yellow>{ItemName}</color>");
             }
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
             {

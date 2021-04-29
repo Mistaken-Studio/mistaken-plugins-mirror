@@ -27,7 +27,7 @@ namespace Gamer.Archivizer
             base.OnDisabled();
         }
 
-        private DateTime lastDate = DateTime.Now;
+        private readonly DateTime lastDate = DateTime.Now;
         private void Server_RestartingRound()
         {
             if (lastDate.ToString("yyyy:MM:dd") == DateTime.Now.ToString("yyyy:MM:dd"))

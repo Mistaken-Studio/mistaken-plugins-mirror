@@ -11,15 +11,13 @@ namespace Gamer.EventManager.Events
 {
     internal class BlackDeath :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "bdeath";
 
         public override string Description { get; set; } = "BlackDeath event";
 
         public override string Name { get; set; } = "BlackDeath";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

@@ -11,7 +11,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Search :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.ISpawnRandomItems,
         EventCreator.IWinOnLastAlive
     {
@@ -20,8 +20,6 @@ namespace Gamer.EventManager.Events
         public override string Description { get; set; } = "Search event";
 
         public override string Name { get; set; } = "Search";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

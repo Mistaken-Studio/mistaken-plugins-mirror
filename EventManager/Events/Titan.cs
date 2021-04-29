@@ -6,15 +6,13 @@ namespace Gamer.EventManager.Events
 {
     internal class Titan :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent
+        EventCreator.IInternalEvent
     {
         public override string Id => "titan";
 
         public override string Description { get; set; } = "Kill the powerfull titan";
 
         public override string Name { get; set; } = "Titan";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

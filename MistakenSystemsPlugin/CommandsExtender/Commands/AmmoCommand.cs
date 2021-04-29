@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         {
             _s = false;
             if (args.Length < 4) return new string[] { GetUsage() };
-            var output = this.ForeachPlayer(args[0], out bool success, (player) =>
+            var output = ForeachPlayer(args[0], out bool success, (player) =>
             {
                 if (!uint.TryParse(args[3], out uint amount)) return new string[] { GetUsage() };
                 bool all = false;

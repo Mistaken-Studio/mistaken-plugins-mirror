@@ -140,7 +140,7 @@ namespace Exiled.Events
             /// </summary>
             public FirstTimeJoinedEventArgs(Player player)
             {
-                this.Player = player;
+                Player = player;
             }
         }
     }

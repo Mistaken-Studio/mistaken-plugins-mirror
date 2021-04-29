@@ -115,7 +115,7 @@ namespace Gamer.Mistaken.Systems.GUI
             });
         }
         private static bool Is106 = false;
-        private Dictionary<int, (Player Player, RoleType Role)> spawnQueue = new Dictionary<int, (Player Player, RoleType Role)>();
+        private readonly Dictionary<int, (Player Player, RoleType Role)> spawnQueue = new Dictionary<int, (Player Player, RoleType Role)>();
         private static readonly Dictionary<int, string> DeathMessages = new Dictionary<int, string>();
         public static void AddDeathMessage(Player player, string message)
         {
@@ -132,8 +132,8 @@ namespace Gamer.Mistaken.Systems.GUI
 
         public static Generator079 cache_nearestGenerator;
 
-        public static int dynamic_maxRespawnCI => Math.Min(cache_maxCI, cache_ticketsCI == 0 ? 5 : cache_ticketsCI);
-        public static int dynamic_maxRespawnMTF => Math.Min(cache_maxMTF, cache_ticketsMTF);
+        public static int Dynamic_maxRespawnCI => Math.Min(cache_maxCI, cache_ticketsCI == 0 ? 5 : cache_ticketsCI);
+        public static int Dynamic_maxRespawnMTF => Math.Min(cache_maxMTF, cache_ticketsMTF);
 
         private IEnumerator<float> UpdateCache()
         {
@@ -173,10 +173,10 @@ namespace Gamer.Mistaken.Systems.GUI
 
                     var toRespawn = RealPlayers.List.Where(p => p.IsDead && !p.IsOverwatchEnabled).Count();
 
-                    var respawningCI = Math.Min(dynamic_maxRespawnCI, toRespawn);
+                    var respawningCI = Math.Min(Dynamic_maxRespawnCI, toRespawn);
                     var notrespawningCI = toRespawn - respawningCI;
 
-                    var respawningMTF = Math.Min(dynamic_maxRespawnMTF, toRespawn);
+                    var respawningMTF = Math.Min(Dynamic_maxRespawnMTF, toRespawn);
                     var notrespawningMTF = toRespawn - respawningMTF;
 
 
@@ -190,7 +190,7 @@ namespace Gamer.Mistaken.Systems.GUI
                         if (Respawning.RespawnWaveGenerator.SpawnableTeams.TryGetValue(respawnManager.NextKnownTeam, out Respawning.SpawnableTeam spawnableTeam))
                         {
                             List<Player> list = NorthwoodLib.Pools.ListPool<Player>.Shared.Rent(RealPlayers.List.Where(p => p.IsDead && !p.IsOverwatchEnabled).OrderBy(rh => rh.ReferenceHub.characterClassManager.DeathTime));
-                            int maxRespawnablePlayers = respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency ? dynamic_maxRespawnCI : dynamic_maxRespawnMTF;
+                            int maxRespawnablePlayers = respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency ? Dynamic_maxRespawnCI : Dynamic_maxRespawnMTF;
                             while (list.Count > maxRespawnablePlayers)
                                 list.RemoveAt(list.Count - 1);
                             if (RespawnQueueSeed == -1)
@@ -319,7 +319,7 @@ namespace Gamer.Mistaken.Systems.GUI
         private string InformRespawnSamsara(float ttr, int respawningSamsara, int notrespawningSamsara, bool willRespawn)
         {
             string roleString = willRespawn ? "<color=yellow>Przylecisz</color> jako <color=#1200ff>Jednostka Samsary</color>" : "<color=yellow><b>Nie</b> przylecisz</color>";
-            return $"<color=#0096ff><size=200%><b>Helikoper Samsary łąduje</b></color> <br>za <color=yellow>{(ttr % 60).ToString("00")}</color>s</size><br><color=yellow>{respawningSamsara}</color> jednostek Samsary przyleci<br><size=50%><color=yellow>{notrespawningSamsara}</color> graczy nie przyleci</size><br>{roleString}";
+            return $"<color=#0096ff><size=200%><b>Helikoper Samsary łąduje</b></color> <br>za <color=yellow>{(ttr % 60):00}</color>s</size><br><color=yellow>{respawningSamsara}</color> jednostek Samsary przyleci<br><size=50%><color=yellow>{notrespawningSamsara}</color> graczy nie przyleci</size><br>{roleString}";
         }
         private string InformRespawnMTF(float ttr, int respawningMTF, int notrespawningMTF, RoleType expectedRole, string Commander)
         {

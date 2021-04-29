@@ -8,15 +8,13 @@ namespace Gamer.EventManager.Events
 {
     internal class HotPeanut :
         IEMEventClass,
-        InternalEvent
+        IInternalEvent
     {
         public override string Id => "hp";
 
         public override string Description { get; set; } = "Fight between SCP 173 and Class D";
 
         public override string Name { get; set; } = "Hot Peanut";
-
-        public override Gamer.EventManager.EventCreator.Version Version => new Gamer.EventManager.EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

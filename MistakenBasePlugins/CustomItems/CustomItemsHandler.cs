@@ -105,14 +105,17 @@ namespace Gamer.Mistaken.Base.CustomItems
                 if (thisCustomItem == null)
                     continue;
                 var result = thisCustomItem.OnUpgrade(item, ev.KnobSetting);
-                var custimItem = GetCustomItem(result);
-                if (custimItem != null)
-                    custimItem.Spawn(ev.Scp914.output.position, custimItem.GetInternalDurability(result.durability));
-                else
-                    result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
+                if (result != null)
+                {
+                    var custimItem = GetCustomItem(result);
+                    if (custimItem != null)
+                        custimItem.Spawn(ev.Scp914.output.position, custimItem.GetInternalDurability(result.durability));
+                    else
+                        result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
+                }      
                 ev.Items.Remove(item);
                 item.Delete();
-            foreach_end:;
+                foreach_end:;
             }
         }
 
@@ -263,6 +266,8 @@ namespace Gamer.Mistaken.Base.CustomItems
         /// <returns>CustomItem</returns>
         public static CustomItem GetCustomItem(Pickup item)
         {
+            if (item == null)
+                return null;
             if (!CustomItem.CustomItemsFastCheckCache.Contains(item.ItemId))
                 return null;
             foreach (var customItem in CustomItem.CustomItemTypes)

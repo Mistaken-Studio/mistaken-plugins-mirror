@@ -14,10 +14,12 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.BetterSCP.SCP1499
 {
+    /// <inheritdoc/>
     public class SCP1499Handler : Module
     {
         private static PluginHandler StaticPlugin;
-        private new static __Log Log;
+        private static new __Log Log;
+        /// <inheritdoc/>
         public SCP1499Handler(PluginHandler plugin) : base(plugin)
         {
             Log = base.Log;
@@ -33,9 +35,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             plugin.RegisterTranslation("Info_012_Denied", "<b><color=red>Access Denied</color></b><br>This door <color=yellow>require</color> <b>Containment Level 3</b> access");
 
         }
-
+        /// <inheritdoc/>
         public override string Name => nameof(SCP1499Handler);
-
+        /// <inheritdoc/>
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
@@ -46,7 +48,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Scp079.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Scp079_InteractingDoor(ev));
         }
-
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
@@ -78,17 +80,22 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             if (ev.Effect.GetType() == typeof(CustomPlayerEffects.Flashed) && ev.Player.IsScp)
                 ev.IsAllowed = false;
         }
-
+        /// <inheritdoc/>
         public class SCP1499CustomItem : CustomItem
         {
+            /// <inheritdoc/>
             public SCP1499CustomItem() => base.Register();
-
+            /// <inheritdoc/>
             public override string ItemName => "SCP-1499";
+            /// <inheritdoc/>
             public override ItemType Item => ItemType.GrenadeFlash;
+            /// <inheritdoc/>
             public override int Durability => 149;
+            /// <inheritdoc/>
             public override Vector3 Size => new Vector3(1.5f, 0.5f, 1.5f);
-            public const float CooldownLength = 90;
 
+            internal const float CooldownLength = 90;
+            /// <inheritdoc/>
             public override bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
             {
                 if (Warhead.IsDetonated)
@@ -400,7 +407,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             }
         }
 
-        public static DateTime Cooldown = new DateTime();
+        private static DateTime Cooldown = new DateTime();
         private static readonly HashSet<RoomType> DisallowedRoomTypes = new HashSet<RoomType>
         {
             RoomType.EzShelter,

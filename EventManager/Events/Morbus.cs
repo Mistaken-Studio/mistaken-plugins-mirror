@@ -6,7 +6,7 @@ namespace Gamer.EventManager.Events
 {
     internal class Morbus :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.ISpawnRandomItems
     {
         public override string Id => "morbus";
@@ -15,8 +15,6 @@ namespace Gamer.EventManager.Events
 
         public override string Name { get; set; } = "Morbus";
 
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
-
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {
             { "Mother", "" },
@@ -24,8 +22,8 @@ namespace Gamer.EventManager.Events
         };
 
         private Player Mother;
-        private List<int> MorbusesFirst = new List<int>();
-        private List<int> MorbusesSecond = new List<int>();
+        private readonly List<int> MorbusesFirst = new List<int>();
+        private readonly List<int> MorbusesSecond = new List<int>();
 
         public override void OnIni()
         {

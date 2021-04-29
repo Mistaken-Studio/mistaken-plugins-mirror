@@ -31,7 +31,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
             if (float.TryParse(args[1], out float duration))
             {
-                var result = this.ForeachPlayer(args[0], out bool success, p =>
+                var result = ForeachPlayer(args[0], out bool success, p =>
                 {
                     p.ShowHint(string.Join(" ", args.Skip(2)), duration);
                     return new string[] { "Done" };

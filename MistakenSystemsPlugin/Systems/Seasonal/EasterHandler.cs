@@ -12,7 +12,7 @@ namespace Gamer.Mistaken.Systems.Seasonal
 {
     internal class EasterHandler : Module
     {
-        private new static __Log Log;
+        private static new __Log Log;
         public EasterHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;
@@ -96,9 +96,9 @@ namespace Gamer.Mistaken.Systems.Seasonal
 
             public Egg(byte id, RoomType room, Vector3 offset)
             {
-                this.Id = id;
-                this.Room = room;
-                this.Offset = offset;
+                Id = id;
+                Room = room;
+                Offset = offset;
                 AlreadyFound[Id] = new HashSet<string>();
                 EggsList.Add(this);
                 if (!File.Exists(MyPath))
@@ -107,10 +107,10 @@ namespace Gamer.Mistaken.Systems.Seasonal
             private static readonly Vector3 Size = new Vector3(1, 1, 1);
             public void Spawn()
             {
-                Log.Debug($"Spawning {this.Id}");
-                var room = Map.Rooms.First(r => r.Type == this.Room);
+                Log.Debug($"Spawning {Id}");
+                var room = Map.Rooms.First(r => r.Type == Room);
                 var basePos = room.Position;
-                var offset = this.Offset;
+                var offset = Offset;
                 offset = room.transform.forward * -offset.x + room.transform.right * -offset.z + Vector3.up * offset.y;
                 basePos += offset;
                 GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
@@ -125,20 +125,20 @@ namespace Gamer.Mistaken.Systems.Seasonal
                 pickup.SetupPickup(ItemType.SCP018, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), basePos, Quaternion.identity);
                 Eggs[pickup] = this;
             }
-            private string MyPath => Path.Combine(FilePath, $"{this.Id}.txt");
+            private string MyPath => Path.Combine(FilePath, $"{Id}.txt");
             public void OnPickup(Player player)
             {
-                if (AlreadyFound[this.Id].Contains(player.UserId))
-                    player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
+                if (AlreadyFound[Id].Contains(player.UserId))
+                    player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({Id})</color>, szukaj dalej :)", 5);
                 else
                 {
                     foreach (var line in File.ReadAllLines(MyPath))
-                        AlreadyFound[this.Id].Add(line);
-                    if (AlreadyFound[this.Id].Contains(player.UserId))
-                        player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({this.Id})</color>, szukaj dalej :)", 5);
+                        AlreadyFound[Id].Add(line);
+                    if (AlreadyFound[Id].Contains(player.UserId))
+                        player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Już znalazłeś to <color=yellow>jajko({Id})</color>, szukaj dalej :)", 5);
                     else
                     {
-                        player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Brawo, znalazłeś <color=yellow>jajko({this.Id})</color>", 5);
+                        player.SetGUI("egg", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Brawo, znalazłeś <color=yellow>jajko({Id})</color>", 5);
                         EVO.Handler.AddProgress(2000, player.UserId);
                         File.AppendAllText(MyPath, $"{player.UserId}\n");
                     }

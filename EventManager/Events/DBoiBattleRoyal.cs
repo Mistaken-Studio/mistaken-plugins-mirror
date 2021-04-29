@@ -10,7 +10,7 @@ namespace Gamer.EventManager.Events
 {
     internal class DBoiBattleRoyal :
         EventCreator.IEMEventClass,
-        EventCreator.InternalEvent,
+        EventCreator.IInternalEvent,
         EventCreator.IAnnouncPlayersAlive,
         EventCreator.ISpawnRandomItems,
         EventCreator.IWinOnLastAlive
@@ -20,8 +20,6 @@ namespace Gamer.EventManager.Events
         public override string Description { get; set; } = "D Boi Battle Royal";
 
         public override string Name { get; set; } = "DBoiBattleRoyal";
-
-        public override EventCreator.Version Version => new EventCreator.Version(4, 0, 0);
 
         public override Dictionary<string, string> Translations => new Dictionary<string, string>()
         {

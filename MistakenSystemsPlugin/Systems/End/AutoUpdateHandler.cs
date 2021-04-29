@@ -29,7 +29,7 @@ namespace Gamer.Mistaken.Systems.End
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
 
-        private readonly static string VersionPath = Paths.Configs + "/PluginsVersion.txt";
+        private static readonly string VersionPath = Paths.Configs + "/PluginsVersion.txt";
         private async void Server_RestartingRound()
         {
             if (!Gamer.Mistaken.Utilities.APILib.API.GetGithubKey(out string githubKey))
@@ -63,7 +63,7 @@ namespace Gamer.Mistaken.Systems.End
             {
                 if (item.Name == "plugins.tar.gz")
                 {
-                    var responseRaw = await github.Connection.Get<Byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
+                    var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate(release);
                 }
@@ -147,7 +147,7 @@ namespace Gamer.Mistaken.Systems.End
             {
                 stream.Read(buffer, 0, 100);
                 var name = Encoding.ASCII.GetString(buffer).Trim('\0');
-                if (System.String.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(name))
                     break;
                 stream.Seek(24, SeekOrigin.Current);
                 stream.Read(buffer, 0, 12);
