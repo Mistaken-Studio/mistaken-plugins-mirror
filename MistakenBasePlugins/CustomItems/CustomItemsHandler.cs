@@ -112,7 +112,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                         custimItem.Spawn(ev.Scp914.output.position, custimItem.GetInternalDurability(result.durability));
                     else
                         result?.ItemId.Spawn(result.durability, ev.Scp914.output.position);
-                }      
+                }
                 ev.Items.Remove(item);
                 item.Delete();
                 foreach_end:;
