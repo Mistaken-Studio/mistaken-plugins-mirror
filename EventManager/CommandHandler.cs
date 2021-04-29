@@ -10,7 +10,7 @@ namespace Gamer.EventManager
     [CommandSystem.CommandHandler(typeof(CommandSystem.RemoteAdminCommandHandler))]
     internal class CommandHandler : IBetterCommand
     {
-        public static CommandHandler singleton { get; set; }
+        public static CommandHandler Singleton { get; set; }
 
         public override string Command => "eventManager";
 
