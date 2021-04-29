@@ -1,8 +1,11 @@
 ﻿#pragma warning disable
 
+using Exiled.API.Features;
 using Grenades;
 using HarmonyLib;
 using Mirror;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Patches
@@ -36,6 +39,33 @@ namespace Gamer.Mistaken.Systems.Patches
             __instance.FullInitData(original.thrower, position, transform.rotation, linear, item.Rb.angularVelocity, original.TeamWhenThrown);
             __instance.currentChainLength = original.currentChainLength + 1;
             return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(Grenades.FragGrenade), nameof(Grenades.FragGrenade.ServersideExplosion))]
+    static class GrenadeFixPatch3
+    {
+        internal static readonly List<GameObject> disabledLookingList = new List<GameObject>();
+        public static bool Prefix(FragGrenade __instance)
+        {
+            foreach (var item in GameObject.FindObjectsOfType(typeof(GameObject)))
+            {
+                var go = item as GameObject;
+                if (item.name == "LookingTarget")
+                {
+                    if (!go.activeSelf)
+                        continue;
+                    disabledLookingList.Add(go);
+                    go.SetActive(false);
+                }
+            }
+            return true;
+        }
+
+        public static void Postfix(FragGrenade __instance)
+        {
+            foreach (var item in disabledLookingList)
+                item.SetActive(true);
         }
     }
 }
