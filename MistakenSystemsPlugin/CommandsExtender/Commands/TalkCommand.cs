@@ -82,13 +82,22 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 string pos = Warps.Dequeue();
                 int counter = 0;
                 Warps.Enqueue(pos);
-                foreach (var playerId in targets)
+                List<Player> talkPlayers = new List<Player>();
+                for (int i = 0; i < targets.Length; i++)
                 {
-                    var p = RealPlayers.Get(playerId);
+                    talkPlayers.Add(RealPlayers.Get(targets[i]));
+                }
+                if (talkPlayers.Any(x => x.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
+                {
+                    success = true;
+                    return new string[] { "You cannot use this command for the first 35 seconds of the round if one player is an SCP" };
+                }
+                foreach (var p in talkPlayers)
+                {
                     if (p == null || !p.IsConnected)
                         continue;
                     p.SetSessionVar(Main.SessionVarType.TALK, true);
-                    SavedInfo.Add(playerId, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
+                    SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
                     p.DisableAllEffects();
                     Timing.CallDelayed(0.5f, () =>
