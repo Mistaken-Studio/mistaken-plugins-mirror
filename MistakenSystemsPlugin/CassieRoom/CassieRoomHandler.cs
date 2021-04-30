@@ -19,6 +19,7 @@ namespace Gamer.Mistaken.CassieRoom
 {
     public class CassieRoomHandler : Module
     {
+        //public override bool Enabled => false;
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
         }
@@ -90,6 +91,7 @@ namespace Gamer.Mistaken.CassieRoom
 
         private void Server_WaitingForPlayers()
         {
+            networkIdentities.Clear();
             #region Lights
             {
                 SpawnItem(ItemType.Flashlight, new Vector3(179f, 992.75f, -68.2f), new Vector3(0, -90, 180), new Vector3(2, 2, 2));
