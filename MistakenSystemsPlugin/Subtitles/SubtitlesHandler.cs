@@ -6,6 +6,7 @@ using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
+using MEC;
 using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Subtitles
@@ -15,6 +16,18 @@ namespace Gamer.Mistaken.Subtitles
         public static readonly HashSet<string> IgnoredSubtitles = new HashSet<string>();
         internal SubtitlesHandler(PluginHandler plugin) : base(plugin)
         {
+            Timing.RunCoroutine(Loop());
+        }
+
+        private IEnumerator<float> Loop()
+        {
+            while(true)
+            {
+                if (!Cassie.IsSpeaking)
+                    CassiePatch.Messages.Clear();
+                UpdateAll();
+                yield return Timing.WaitForSeconds(10);
+            }
         }
 
         public override string Name => "Subtitles";
