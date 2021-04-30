@@ -54,7 +54,7 @@ namespace Gamer.Mistaken.Subtitles
 
         private static void Update(Player player)
         {
-            //return;
+            return;
             if ((Systems.Handler.PlayerPreferencesDict[player.UserId] & API.PlayerPreferences.DISABLE_TRANSCRYPT) != API.PlayerPreferences.NONE)
                 return;
             if (CassiePatch.Messages.Count == 0)
