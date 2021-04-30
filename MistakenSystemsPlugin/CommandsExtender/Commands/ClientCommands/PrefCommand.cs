@@ -36,7 +36,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             switch (args[0].ToLower())
             {
                 case "trans":
-                case "transkcrypt":
+                case "transkrypt":
+                case "transcrypt":
                     if (prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT))
                         prefs &= ~API.PlayerPreferences.DISABLE_TRANSCRYPT;
                     else
