@@ -66,10 +66,8 @@ namespace Gamer.Mistaken.Systems.Patches
             NineTailedFoxAnnouncer annc = NineTailedFoxAnnouncer.singleton;
             Log.Debug("Recontain 79: 2");
             Waiting = true;
-            while (!annc.Free || AlphaWarheadController.Host.inProgress)
-            {
+            while (/*!annc.Free*/annc.queue.Count != 0 || AlphaWarheadController.Host.inProgress)
                 yield return float.NegativeInfinity;
-            }
             Log.Debug("Recontain 79: 3");
             Waiting = false;
             if (!forced)
@@ -91,10 +89,8 @@ namespace Gamer.Mistaken.Systems.Patches
             }
             Log.Debug("Recontain 79: 5");
             Waiting = true;
-            while (!annc.Free || AlphaWarheadController.Host.inProgress)
-            {
+            while (/*!annc.Free*/annc.queue.Count != 0 || AlphaWarheadController.Host.inProgress)
                 yield return float.NegativeInfinity;
-            }
             Waiting = false;
             Log.Debug("Recontain 79: 6");
             RespawnEffectsController.PlayCassieAnnouncement(string.Concat(new object[]
