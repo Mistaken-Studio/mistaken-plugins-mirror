@@ -306,17 +306,17 @@ namespace Gamer.Mistaken.CassieRoom
             var pickup = gameObject.GetComponent<Pickup>();
             pickup.SetupPickup(type, 78253f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
             pickup.Locked = true;
-            //foreach (var c in pickup.model.GetComponents<Component>())
-            //    GameObject.Destroy(c.gameObject);
-            //networkIdentities.Add(pickup.netIdentity);
+            foreach (var c in pickup.model.GetComponents<Component>())
+                GameObject.Destroy(c.gameObject);
+            networkIdentities.Add(pickup.netIdentity);
             Pickup.Instances.Remove(pickup);
-            //GameObject.Destroy(pickup);
-            //foreach (var _item in gameObject.GetComponents<Collider>())
-            //    GameObject.Destroy(_item);
-            //foreach (var _item in gameObject.GetComponents<MeshRenderer>())
-            //    GameObject.Destroy(_item);
+            GameObject.Destroy(pickup);
+            foreach (var _item in gameObject.GetComponents<Collider>())
+                GameObject.Destroy(_item);
+            foreach (var _item in gameObject.GetComponents<MeshRenderer>())
+                GameObject.Destroy(_item);
             Mirror.NetworkServer.Spawn(gameObject);
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
 
         public static DoorVariant SpawnDoor(Vector3 pos, Vector3 rot, Vector3 size)
