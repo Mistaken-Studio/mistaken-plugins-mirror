@@ -23,19 +23,21 @@ namespace Gamer.CustomClasses
         public GuardCommanderHandler(PluginHandler plugin) : base(plugin)
         {
             new GuardCommanderKeycard();
-            _ = GuardCommander.Instance;
+            new GuardCommander();
         }
         /// <inheritdoc/>
         public override string Name => "GuardCommander";
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            if (Server.Port % 2 == 1 && Server.Port < 7790)
+            if (Server.Port % 2 == 1 && Server.Port < 7790 && false)
                 return;
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator += this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
+            Exiled.Events.Handlers.Map.Decontaminating += this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => Map_Decontaminating(ev)); ;
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -43,7 +45,12 @@ namespace Gamer.CustomClasses
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle< Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
+        }
+        private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
+        {
+            IsCommanderNow = true;
         }
         /// <inheritdoc/>
         public class GuardCommander : CustomClass
@@ -51,8 +58,12 @@ namespace Gamer.CustomClasses
             /// <summary>
             /// Instance
             /// </summary>
-            public static GuardCommander Instance = new GuardCommander();
+            public static GuardCommander Instance;
             /// <inheritdoc/>
+            public GuardCommander() : base()
+            {
+                Instance = this;
+            }
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_GUARD_COMMANDER;
             /// <inheritdoc/>
             public override string ClassName => "Dowódca Ochrony";
@@ -114,6 +125,8 @@ namespace Gamer.CustomClasses
             }
         }
         private bool HasCommanderEscorted = false;
+        private bool IsCommanderNow;
+
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (!ev.IsEscaped)
@@ -132,12 +145,26 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
+            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
-            if (!HasCommanderEscorted || !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
+            if(!HasCommanderEscorted && !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
                 ev.IsAllowed = false;
                 return;
+            }
+        }
+        private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
+        {
+            if (ev.KnobSetting == Scp914Knob.OneToOne)
+            {
+                foreach (var player in ev.Players)
+                {
+                    if (Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(player.CurrentItem)?.ItemName == "Karta Dowódcy Ochrony")
+                    {
+                        GuardCommanderKeycard.Instance.CurrentOwner = player;
+                        GuardCommanderKeycard.Instance.OnStartHolding(player, player.CurrentItem);
+                    }
+                }
             }
         }
 
@@ -145,9 +172,10 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard))
+            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
-            if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player))
+            Log.Debug(guardCommanderKeycard.CurrentOwner?.Id + " " + guardCommanderKeycard.CurrentOwner?.Nickname);
+            if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
                 ev.IsAllowed = false;
                 return;
@@ -160,7 +188,7 @@ namespace Gamer.CustomClasses
                 ev.IsAllowed = true;
                 return;
             }
-            else if (type == DoorType.NukeSurface && false)
+            else if(type == DoorType.NukeSurface)
             {
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF)))
                 {
@@ -171,9 +199,9 @@ namespace Gamer.CustomClasses
                     }
                 }
             }
-            else if ((type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom) && false)
+            else if ((type == DoorType.Scp106Primary || type == DoorType.Scp106Secondary || type == DoorType.Scp106Bottom))
             {
-                if (!Map.IsLCZDecontaminated)
+                if (!IsCommanderNow)
                     return;
                 bool tmp = false;
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role == RoleType.NtfCommander || p.Role == RoleType.NtfScientist)))
@@ -205,11 +233,20 @@ namespace Gamer.CustomClasses
                     }
                 }
             }
+            else if (type == DoorType.HID || type == DoorType.Scp079First || type == DoorType.Scp079Second)
+            {
+                if(IsCommanderNow)
+                {
+                    ev.IsAllowed = true;
+                    return;
+                }
+            }
         }
 
         private void Server_RoundStarted()
         {
             HasCommanderEscorted = false;
+            IsCommanderNow = false;
             MEC.Timing.CallDelayed(60 * 6, () =>
             {
                 if (!HasCommanderEscorted)
@@ -242,9 +279,11 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public class GuardCommanderKeycard : CustomItem
         {
+            public static GuardCommanderKeycard Instance;
             /// <inheritdoc/>
             public GuardCommanderKeycard()
             {
+                Instance = this;
                 base.Register();
             }
             /// <inheritdoc/>
@@ -253,11 +292,13 @@ namespace Gamer.CustomClasses
             public override ItemType Item => ItemType.KeycardSeniorGuard;
             /// <inheritdoc/>
             public override int Durability => 001;
+
+            public Player CurrentOwner;
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                if (GuardCommander.Instance.PlayingAsClass.Contains(player))
-                    player.SetGUI("GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
+                if(GuardCommander.Instance.PlayingAsClass.Contains(player) || player == CurrentOwner)
+                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
                 else
                     player.SetGUI("GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");
             }
@@ -267,11 +308,22 @@ namespace Gamer.CustomClasses
                 player.SetGUI("GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
             /// <inheritdoc/>
+            public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
+            {
+                CurrentOwner = null;
+                return true;
+            }
+            /// <inheritdoc/>
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {
                 if (setting == Scp914Knob.Coarse || setting == Scp914Knob.Rough)
                     return null;
                 return base.OnUpgrade(pickup, setting);
+            }
+            /// <inheritdoc/>
+            public override void OnRestart()
+            {
+                CurrentOwner = null;
             }
             /// <inheritdoc/>
             public override Vector3 Size => new Vector3(1, 5, 1);
