@@ -30,7 +30,7 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            if (Server.Port % 2 == 1 && Server.Port < 7790 && false)
+            if (Server.Port % 2 == 1 && Server.Port < 7790)
                 return;
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
