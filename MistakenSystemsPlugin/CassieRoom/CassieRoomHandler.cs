@@ -172,7 +172,7 @@ namespace Gamer.Mistaken.CassieRoom
                 collider.size = new Vector3(20, 2, 20);
             }
             #endregion
-
+            return;
             #region Functionality
             {
                 //Test Button
