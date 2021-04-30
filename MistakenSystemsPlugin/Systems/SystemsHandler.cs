@@ -114,28 +114,11 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined += this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-            Exiled.Events.Handlers.Scp049.FinishingRecall += Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
         }
 
-        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
-        {
-            if (!ev.IsAllowed)
-                return;
-            MEC.Timing.CallDelayed(1, () =>
-            {
-                if (!ev.Target.IsConnected)
-                    return;
-                if (ev.Target.Role != RoleType.Scp0492)
-                    return;
-                Exiled.Events.Handlers.Player.OnChangingRole(new Exiled.Events.EventArgs.ChangingRoleEventArgs(ev.Target, ev.Target.Role, new List<ItemType>(), true, false));
-            });
-        }
-
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle (() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
-        }  
-        
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
@@ -158,7 +141,8 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined -= this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-            Exiled.Events.Handlers.Scp049.FinishingRecall -= Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
         }
         public static readonly Dictionary<string, PlayerPreferences> PlayerPreferencesDict = new Dictionary<string, PlayerPreferences>();
@@ -176,8 +160,6 @@ namespace Gamer.Mistaken.Systems
                 if (data.Type == MistakenSocket.Shared.API.ResponseType.OK)
                     PlayerPreferencesDict[ev.UserId] = data.Payload.Deserialize<PlayerPreferences>(false);
             });
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle < Exiled.Events.EventArgs.FinishingRecallEventArgs >((ev) => Scp049_FinishingRecall(ev));
         }
 
         private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
