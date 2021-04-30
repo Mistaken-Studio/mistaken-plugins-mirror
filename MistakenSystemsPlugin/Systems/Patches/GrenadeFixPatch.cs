@@ -1,6 +1,7 @@
 ﻿#pragma warning disable
 
 using Exiled.API.Features;
+using Gamer.Mistaken.Base.Staff;
 using Grenades;
 using HarmonyLib;
 using Mirror;
@@ -58,6 +59,44 @@ namespace Gamer.Mistaken.Systems.Patches
                     disabledLookingList.Add(go);
                     go.SetActive(false);
                 }
+            }
+            try
+            {
+                Vector3 position = __instance.transform.position;
+                foreach (var keyValuePair in ReferenceHub.GetAllHubs())
+                {
+                    var player = Player.Get(keyValuePair.Value);
+                    try
+                    {
+                        if (!player.IsActiveDev())
+                            continue;
+                    }
+                    catch { continue; }
+                    if (ServerConsole.FriendlyFire || !(keyValuePair.Key != __instance.thrower.gameObject) || (keyValuePair.Value.weaponManager.GetShootPermission(__instance.throwerTeam, false) && keyValuePair.Value.weaponManager.GetShootPermission(__instance.TeamWhenThrown, false)))
+                    {
+                        PlayerStats playerStats = keyValuePair.Value.playerStats;
+                        if (playerStats != null && playerStats.ccm.InWorld)
+                        {
+                            float num2 = __instance.damageOverDistance.Evaluate(Vector3.Distance(position, playerStats.transform.position)) * (playerStats.ccm.IsHuman() ? GameCore.ConfigFile.ServerConfig.GetFloat("human_grenade_multiplier", 0.7f) : GameCore.ConfigFile.ServerConfig.GetFloat("scp_grenade_multiplier", 1f));
+                            if (num2 > __instance.absoluteDamageFalloff)
+                            {
+                                foreach (Transform transform in playerStats.grenadePoints)
+                                {
+                                    if (Physics.Linecast(position, transform.position, out var _hit, __instance.hurtLayerMask))
+                                    {
+                                        player.SendConsoleMessage($"[GRENADE] Blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})", "red");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch(System.Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
             }
             return true;
         }
