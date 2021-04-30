@@ -145,7 +145,7 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
+            if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
             if(!HasCommanderEscorted && !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
@@ -159,7 +159,7 @@ namespace Gamer.CustomClasses
             {
                 foreach (var player in ev.Players)
                 {
-                    if (Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(player.CurrentItem)?.ItemName == "Karta Dowódcy Ochrony")
+                    if (Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(player.CurrentItem)?.ItemName == "Karta Dowódcy Ochrony")
                     {
                         GuardCommanderKeycard.Instance.CurrentOwner = player;
                         GuardCommanderKeycard.Instance.OnStartHolding(player, player.CurrentItem);
@@ -172,7 +172,7 @@ namespace Gamer.CustomClasses
         {
             if (ev.Player.CurrentItem.id != ItemType.KeycardSeniorGuard)
                 return;
-            if (!(Mistaken.Systems.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
+            if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
             Log.Debug(guardCommanderKeycard.CurrentOwner?.Id + " " + guardCommanderKeycard.CurrentOwner?.Nickname);
             if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
@@ -298,7 +298,7 @@ namespace Gamer.CustomClasses
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
                 if(GuardCommander.Instance.PlayingAsClass.Contains(player) || player == CurrentOwner)
-                    PseudoGUIHandler.Set(player, "GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
+                    player.SetGUI("GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
                 else
                     player.SetGUI("GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");
             }
