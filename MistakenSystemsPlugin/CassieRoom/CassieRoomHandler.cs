@@ -39,7 +39,6 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
-       
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
@@ -243,8 +242,9 @@ namespace Gamer.Mistaken.CassieRoom
             });
             return door;
         }
-            
-        public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size)
+
+        private static readonly List<Mirror.NetworkIdentity> networkIdentities = new List<Mirror.NetworkIdentity>();
+        public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size, bool collide = false)
         {
             var gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = pos;
@@ -274,25 +274,6 @@ namespace Gamer.Mistaken.CassieRoom
 
         public static readonly List<(Vector3 Pos, Vector3 Size, Vector3 Rot)> Doors = new List<(Vector3 Pos, Vector3 Size, Vector3 Rot)>()
         {
-            (new Vector3(183.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(185f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(195f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(194.3f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(188f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-            (new Vector3(189f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-        }; 
-    }
-
-    public static class Extensions
-    {
-        public static void ServerChangeLock(this DoorVariant door, CassieRoomHandler.PluginDoorLockReason type, bool active)
-        {
-            door.ServerChangeLock((DoorLockReason)type, active);
-        }
-
-        public static readonly List<(Vector3 Pos, Vector3 Size, Vector3 Rot)> Doors = new List<(Vector3 Pos, Vector3 Size, Vector3 Rot)>()
-        {
-            //spawn 183.4 993.5 -73 0 0 90 1 1 1
             (new Vector3(183.4f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(185f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(195f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
