@@ -74,6 +74,40 @@ namespace Gamer.Mistaken.CassieRoom
             DoorUp = SpawnElevator(Offset);
             DoorUp.NetworkTargetState = true;
             Spawn1499ContainmentChamber();
+
+            //-26.65 1019.5 -46.5 80 90 90 1 1 1
+            GameObject gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -46.5f);
+            gameObject.transform.localScale = Vector3.one;
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(80, 90, 90));
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
+
+            gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -47f);
+            gameObject.transform.localScale = Vector3.one;
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(80, 90, 90));
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
+            
+            gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -47.5f);
+            gameObject.transform.localScale = Vector3.one;
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(80, 90, 90));
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
+
+            gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -48f);
+            gameObject.transform.localScale = Vector3.one;
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(80, 90, 90));
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
+
         }
 
         public static DoorVariant SpawnElevator(Vector3 offset)
