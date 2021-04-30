@@ -77,6 +77,7 @@ namespace Gamer.Utilities
         public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation, Vector3 size)
         {
             DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, Quaternion.Euler(rotation));
+            GameObject.Destroy(doorVariant.GetComponent<DoorEventOpenerExtension>());
             doorVariant.transform.localScale = size;
             if (doorVariant is BasicDoor door)
                 door._portalCode = 1;
