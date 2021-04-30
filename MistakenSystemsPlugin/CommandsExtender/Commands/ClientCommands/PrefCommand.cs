@@ -30,14 +30,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     ".pref [name] to toggle",
                     "Preferences List:",
                     $"Colorful Entrance Zone (cez): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_COLORFUL_EZ) ? "<color=red>Disabled</color>" : "<color=green>Enabled</color>")}",
-                    $"Transkcrypt (transkcrypt): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT) ? "<color=red>Disabled</color>" : "<color=green>Enabled</color>")}"
+                    $"Transkrypt (transkrypt): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT) ? "<color=red>Disabled</color>" : "<color=green>Enabled</color>")}"
                 };
             }
             switch (args[0].ToLower())
             {
                 case "trans":
                 case "transkrypt":
-                case "transcrypt":
+                case "transcript":
                     if (prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT))
                         prefs &= ~API.PlayerPreferences.DISABLE_TRANSCRYPT;
                     else
@@ -58,7 +58,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         "Unknown arg, options: ",
                         "cez -> Colorful Entrance Zone",
-                        "transkcrypt -> Transkcrypt"
+                        "transkcrypt -> Transkrypt"
                     };
             }
             SSL.Client.Send(MessageType.SL_SET_PLAYER_PREFERENCES, new SL_Player_Set_Preferences
