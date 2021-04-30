@@ -307,6 +307,7 @@
     <Compile Include="Systems\Misc\ClassDCellsDecontaminationHandler.cs" />
     <Compile Include="Systems\Misc\CustomMaxHealthHandler.cs" />
     <Compile Include="Systems\Misc\ResurectionHandler.cs" />
+    <Compile Include="Systems\Patches\DoorPatch.cs" />
     <Compile Include="Systems\Patches\NicknamePatch.cs" />
     <Compile Include="Systems\Patches\ACSmolPatch.cs" />
     <Compile Include="Systems\Patches\DisarmPatch.cs" />

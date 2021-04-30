@@ -16,8 +16,10 @@ namespace Gamer.Mistaken.CassieRoom
 {
     class Elevator : Module
     {
+        private new static __Log Log;
         public Elevator(PluginHandler plugin) : base(plugin)
         {
+            Log = base.Log;
         }
 
         public override string Name => "Elevator";

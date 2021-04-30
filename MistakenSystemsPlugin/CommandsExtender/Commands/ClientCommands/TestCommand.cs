@@ -16,6 +16,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
     [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
     internal class DevTestCommand : IBetterCommand
     {
+        public Pickup keycard;
+        public DoorVariant door;
         public override string Description => "DEV STUFF";
         public override string Command => "test";
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)

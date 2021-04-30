@@ -136,7 +136,7 @@ namespace Gamer.Mistaken.BetterSCP.Global
             }
             else if (ev.Name == "yeet")
             {
-                Gamer.Utilities.DoorUtils.SpawnDoor((DoorUtils.DoorType)int.Parse(ev.Arguments[0]), null, ev.Player.Position, ev.Player.Rotation);
+                Gamer.Utilities.DoorUtils.SpawnDoor((DoorUtils.DoorType)int.Parse(ev.Arguments[0]), null, ev.Player.Position, ev.Player.Rotation, Vector3.one);
                 ev.IsAllowed = true;
                 ev.ReturnMessage = "Done";
             }

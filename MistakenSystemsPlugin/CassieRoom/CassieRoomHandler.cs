@@ -13,6 +13,7 @@ using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using Gamer.Mistaken.Systems.GUI;
 using LightContainmentZoneDecontamination;
+using Gamer.Mistaken.Base.GUI;
 
 namespace Gamer.Mistaken.CassieRoom
 {
@@ -235,10 +236,10 @@ namespace Gamer.Mistaken.CassieRoom
             DoorCallbacks[door] = onCall;
             Systems.Components.InRage.Spawn(pos, Vector3.one * 2, (p) =>
             {
-                Systems.GUI.PseudoGUIHandler.Set(p, "cassie_room_display", PseudoGUIHandler.Position.MIDDLE, name);
+                p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, name);
             }, (p) => 
             {
-                Systems.GUI.PseudoGUIHandler.Set(p, "cassie_room_display", PseudoGUIHandler.Position.MIDDLE, null);
+                p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
             });
             return door;
         }

@@ -8,7 +8,7 @@ using UnityEngine;
 using Exiled.API.Features;
 using Gamer.Mistaken.Utilities.APILib;
 using Mirror;
-using Gamer.Mistaken.Systems.Staff;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
 
