@@ -321,10 +321,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (ev.Door.GetNametag() != "SCP1499Chamber")
-            {
-                Log.Debug(ev.Door.GetNametag());
                 return;
-            }
             if(ev.Door.NetworkTargetState)
             {
                 ev.IsAllowed = false;
