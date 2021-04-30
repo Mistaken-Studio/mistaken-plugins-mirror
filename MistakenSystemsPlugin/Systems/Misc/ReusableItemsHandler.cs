@@ -200,7 +200,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (data.Durability > 1)
                 {
-                    if (data.Durability % 2 == 0)
+                    if (data.Durability % 2 == 0 && data.Item == ItemType.SCP207)
                         Respawning.RespawnTickets.Singleton._tickets[Respawning.SpawnableTeamType.ChaosInsurgency]--;
                     ev.Player.AddItem(new Inventory.SyncItemInfo
                     {
