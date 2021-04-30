@@ -23,9 +23,15 @@ namespace Gamer.Mistaken.Subtitles
         {
             while(true)
             {
-                if (!Cassie.IsSpeaking)
-                    CassiePatch.Messages.Clear();
-                UpdateAll();
+                try
+                {
+                    if (NineTailedFoxAnnouncer.singleton?.Free ?? false)
+                    {
+                        CassiePatch.Messages.Clear();
+                        UpdateAll();
+                    }
+                }
+                catch { }
                 yield return Timing.WaitForSeconds(10);
             }
         }
@@ -48,6 +54,7 @@ namespace Gamer.Mistaken.Subtitles
 
         private static void Update(Player player)
         {
+            //return;
             if ((Systems.Handler.PlayerPreferencesDict[player.UserId] & API.PlayerPreferences.DISABLE_TRANSCRYPT) != API.PlayerPreferences.NONE)
                 return;
             if (CassiePatch.Messages.Count == 0)
