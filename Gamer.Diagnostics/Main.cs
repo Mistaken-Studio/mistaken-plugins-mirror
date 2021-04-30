@@ -165,7 +165,7 @@ namespace Gamer.Diagnostics
                         Log.Debug($"Created {Paths.Configs}/{Server.Port}/{day}/");
                     }
                     //Log.Debug($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.ToString("yyyy-MM-dd_HH")}.log");
-                    string path = $"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now:HH:mm:ss.fff}.log";
+                    string path = $"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now:yyyy-MM-dd_HH}.log";
                     if (!File.Exists(path))
                         AnalizeContent($"{Paths.Configs}/{Server.Port}/{day}/{DateTime.Now.AddHours(-1):yyyy-MM-dd_HH}.log");
                     File.AppendAllLines(path, Backlog);
