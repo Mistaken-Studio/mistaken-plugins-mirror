@@ -191,27 +191,12 @@ namespace Gamer.Mistaken.Systems.GUI
                         {
                             List<Player> list = NorthwoodLib.Pools.ListPool<Player>.Shared.Rent(RealPlayers.List.Where(p => p.IsDead && !p.IsOverwatchEnabled).OrderBy(rh => rh.ReferenceHub.characterClassManager.DeathTime));
                             int maxRespawnablePlayers = respawnManager.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency ? Dynamic_maxRespawnCI : Dynamic_maxRespawnMTF;
+                            maxRespawnablePlayers = Math.Max(maxRespawnablePlayers, 0);
                             while (list.Count > maxRespawnablePlayers)
                                 list.RemoveAt(list.Count - 1);
                             if (RespawnQueueSeed == -1)
                                 RespawnQueueSeed = UnityEngine.Random.Range(0, 10000);
                             list.Shuffle(RespawnQueueSeed);
-                            /*if(SpawnQueue.Count == 0)
-                                SpawnQueue.AddRange(list.Select(p => Player.Get(p)));
-                            else
-                            {
-                                foreach (var item in SpawnQueue.ToArray())
-                                {
-                                    if (!list.Contains(item.ReferenceHub))
-                                        SpawnQueue.Remove(item);
-                                }
-
-                                foreach (var item in list.ToArray())
-                                {
-                                    if (!SpawnQueue.Any(i => i.ReferenceHub == item))
-                                        SpawnQueue.Add(Player.Get(item));
-                                }
-                            }*/
                             RoleType classid;
                             foreach (var player in list)
                             {
