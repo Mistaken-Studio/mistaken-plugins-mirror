@@ -64,6 +64,7 @@ namespace Gamer.CustomClasses
             {
                 Instance = this;
             }
+            /// <inheritdoc/>
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_GUARD_COMMANDER;
             /// <inheritdoc/>
             public override string ClassName => "Dowódca Ochrony";
@@ -279,6 +280,9 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public class GuardCommanderKeycard : CustomItem
         {
+            /// <summary>
+            /// Instance
+            /// </summary>
             public static GuardCommanderKeycard Instance;
             /// <inheritdoc/>
             public GuardCommanderKeycard()
@@ -293,6 +297,9 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override int Durability => 001;
 
+            /// <summary>
+            /// Current Card Owner
+            /// </summary>
             public Player CurrentOwner;
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
