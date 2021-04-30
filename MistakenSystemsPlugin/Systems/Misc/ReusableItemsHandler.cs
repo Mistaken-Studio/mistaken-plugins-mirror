@@ -159,6 +159,12 @@ namespace Gamer.Mistaken.Systems.Misc
                 Type = ItemType.SCP500,
                 Uses = 2,
                 MaxItems = 1,
+            },
+            new ReusableItem
+            {
+                Type = ItemType.SCP207,
+                Uses = 4,
+                MaxItems = 1,
             }
         };
 
@@ -194,6 +200,8 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (data.Durability > 1)
                 {
+                    if (data.Durability % 2 == 0)
+                        Respawning.RespawnTickets.Singleton._tickets[Respawning.SpawnableTeamType.ChaosInsurgency]--;
                     ev.Player.AddItem(new Inventory.SyncItemInfo
                     {
                         id = data.Item,
