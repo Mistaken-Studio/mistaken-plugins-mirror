@@ -73,16 +73,32 @@ namespace Gamer.Mistaken.Systems.Components
         public void Start()
         {
             Exiled.Events.Handlers.Player.Died += Player_Died;
+            Exiled.Events.Handlers.Player.ChangingRole += Player_ChangingRole;
         }
+
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        {
+            if (ev.ShouldPreservePosition)
+                return;
+            if (!ColliderInArea.Contains(ev.Player.GameObject))
+                return;
+            this.OnExit?.Invoke(ev.Player);
+            ColliderInArea.Remove(ev.Player.GameObject);
+        }
+
         private void OnDestroy()
         {
             Exiled.Events.Handlers.Player.Died -= Player_Died;
+            Exiled.Events.Handlers.Player.ChangingRole -= Player_ChangingRole;
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
-            OnExit?.Invoke(ev.Target);
-            ColliderInArea.Remove(ev.Target.GameObject);
+            if (ColliderInArea.Contains(ev.Target.GameObject))
+            {
+                this.OnExit?.Invoke(ev.Target);
+                ColliderInArea.Remove(ev.Target.GameObject);
+            }
         }
 
         private readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
@@ -96,7 +112,7 @@ namespace Gamer.Mistaken.Systems.Components
             if (player.IsNPC() && !AllowNPCs)
                 return;
             ColliderInArea.Add(other.gameObject);
-            OnEnter?.Invoke(player);
+            this.OnEnter?.Invoke(player);
         }
 
         private void OnTriggerExit(Collider other)
@@ -105,7 +121,7 @@ namespace Gamer.Mistaken.Systems.Components
                 return;
             ColliderInArea.Remove(other.gameObject);
             var player = Player.Get(other.gameObject);
-            OnExit?.Invoke(player);
+            this.OnExit?.Invoke(player);
         }
     }
 }

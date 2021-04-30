@@ -114,22 +114,9 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined += this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-            Exiled.Events.Handlers.Scp049.FinishingRecall += Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
-        }
-
-        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
-        {
-            if (!ev.IsAllowed)
-                return;
-            MEC.Timing.CallDelayed(1, () =>
-            {
-                if (!ev.Target.IsConnected)
-                    return;
-                if (ev.Target.Role != RoleType.Scp0492)
-                    return;
-                Exiled.Events.Handlers.Player.OnChangingRole(new Exiled.Events.EventArgs.ChangingRoleEventArgs(ev.Target, ev.Target.Role, new List<ItemType>(), true, false));
-            });
         }
 
         public override void OnDisable()
@@ -154,7 +141,8 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.CustomEvents.OnFirstTimeJoined -= this.Handle<Exiled.Events.EventArgs.FirstTimeJoinedEventArgs>((ev) => CustomEvents_OnFirstTimeJoined(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= this.Handle<Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs>((ev) => Map_AnnouncingNtfEntrance(ev));
-            Exiled.Events.Handlers.Scp049.FinishingRecall -= Scp049_FinishingRecall;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
         }
         public static readonly Dictionary<string, PlayerPreferences> PlayerPreferencesDict = new Dictionary<string, PlayerPreferences>();
@@ -174,6 +162,52 @@ namespace Gamer.Mistaken.Systems
             });
         }
 
+        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            MEC.Timing.CallDelayed(1, () =>
+            {
+                if (!ev.Target.IsConnected)
+                    return;
+                if (ev.Target.Role != RoleType.Scp0492)
+                    return;
+                Exiled.Events.Handlers.Player.OnChangingRole(new Exiled.Events.EventArgs.ChangingRoleEventArgs(ev.Target, ev.Target.Role, new List<ItemType>(), true, false));
+            });
+        }
+
+        private void Server_WaitingForPlayers()
+        {
+            SpawnKeycard(ItemType.KeycardSeniorGuard, new Vector3(18, 40, 0.05f), new Vector3(90, 90, 0), new Vector3(181f, 992.460f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardSeniorGuard, new Vector3(30, 40, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.461f, -58.3f - 2f + 0.1f));
+            SpawnKeycard(ItemType.KeycardSeniorGuard, new Vector3(30, 40, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.461f, -58.3f + 2f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.45f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 45, 0), new Vector3(181f, 992.451f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 90, 0), new Vector3(181f, 992.452f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 135, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f));
+
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 90, 0), new Vector3(187.446f, 992.453f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 90, 0), new Vector3(174.56f, 992.453f, -58.3f + 0.1f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f - 6.45f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f + 6.45f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f + 4.5f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
+            SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f + 4.5f));
+
+        }
+        public void SpawnKeycard(ItemType keycardType, Vector3 size, Vector3 rotation, Vector3 position)
+        {
+            GameObject  gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            gameObject.transform.position = position;
+            gameObject.transform.localScale = size;
+            gameObject.transform.rotation = Quaternion.Euler(rotation);
+            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Mirror.NetworkServer.Spawn(gameObject);
+            var keycard = gameObject.GetComponent<Pickup>();
+            keycard.SetupPickup(keycardType, 200f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+            keycard.Locked = true;
+        }
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
         {
             Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");

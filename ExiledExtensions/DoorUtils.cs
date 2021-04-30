@@ -72,10 +72,12 @@ namespace Gamer.Utilities
         /// <param name="name">Door name or <see langword="null"/> if there should be no name</param>
         /// <param name="position">Door Position, if <see cref="Vector3.y"/> is smaller than 900 then door are automaticly locked to prevent crash</param>
         /// <param name="rotation">Door Rotation</param>
+        /// <param name="size">Door Size</param>
         /// <returns></returns>
-        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation)
+        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation, Vector3 size)
         {
             DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, Quaternion.Euler(rotation));
+            doorVariant.transform.localScale = size;
             if (doorVariant is BasicDoor door)
                 door._portalCode = 1;
             if (!string.IsNullOrEmpty(name))

@@ -59,6 +59,8 @@ namespace Gamer.Mistaken
             new Logger.LoggerHandler(this);
             new PStats.PlayerStatsHandler(this);
             new ATK.AntyTeamKillHandler(this);
+            new CassieRoom.CassieRoomHandler(this);
+            new CassieRoom.Elevator(this);
             if (Config.WhitelistEnabled)
                 Log.SendRaw("! Whitelist is enabled !", ConsoleColor.Red);
             else
