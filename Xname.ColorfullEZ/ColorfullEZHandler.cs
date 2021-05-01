@@ -1,9 +1,12 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using MEC;
 using Mirror;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +24,86 @@ namespace Xname.ColorfullEZ
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
             Log = base.Log;
+            Timing.RunCoroutine(Loop());
+        }
+
+        private IEnumerator<float> Loop()
+        {
+            List<NetworkIdentity> tmp = new List<NetworkIdentity>();
+            while(true)
+            {
+                try
+                {
+                    var start = DateTime.Now;
+                    foreach (var player in RealPlayers.List)
+                    {
+                        if (!SyncDynamicFor.Contains(player))
+                            continue;
+                        var currentRoom = player.CurrentRoom;
+                        if (LastRooms.TryGetValue(player, out var lastRoom) && lastRoom == currentRoom)
+                            continue;
+                        LastRooms[player] = currentRoom;
+                        if (!LoadedFor.TryGetValue(player, out var loadedFor))
+                        {
+                            loadedFor = new List<NetworkIdentity>();
+                            LoadedFor[player] = loadedFor;
+                        }
+                        tmp.Clear();
+
+                        if (currentRoom.Zone == ZoneType.Entrance || (currentRoom.Zone == ZoneType.HeavyContainment && HCZRooms.Contains(currentRoom)))
+                        {
+                            foreach (var item in Keycards)
+                            {
+                                if (Vector3.Distance(item.Key.Position, player.Position) < 40)
+                                    tmp.AddRange(item.Value);
+                            }
+                        }
+                        int i = 0;
+                        foreach (var netid in loadedFor.ToArray())
+                        {
+                            if (!tmp.Contains(netid))
+                            {
+                                i++;
+                                ObjectDestroyMessage msg = new ObjectDestroyMessage
+                                {
+                                    netId = netid.netId
+                                };
+                                NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                                if (netid.observers.ContainsKey(player.Connection.connectionId))
+                                {
+                                    netid.observers.Remove(player.Connection.connectionId);
+                                    removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
+                                }
+                                loadedFor.Remove(netid);
+                            }
+                        }
+                        //Log.Debug($"Unloaded {i} for {player.Nickname}");
+                        i = 0;
+                        foreach (var netid in tmp)
+                        {
+                            if (!loadedFor.Contains(netid))
+                            {
+                                i++;
+                                MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+                                sendSpawnMessage.Invoke(null, new object[]
+                                {
+                                netid,
+                                player.Connection
+                                });
+                                loadedFor.Add(netid);
+                            }
+                        }
+                        //Log.Debug($"Loaded {i} for {player.Nickname}");
+                    }
+                    Gamer.Diagnostics.MasterHandler.LogTime("ColorfullEZHandler", "Loop", start, DateTime.Now);
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+                yield return Timing.WaitForSeconds(1);
+            }
         }
 
         /// <inheritdoc/>
@@ -36,22 +119,51 @@ namespace Xname.ColorfullEZ
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
+        internal static readonly Dictionary<Player, List<NetworkIdentity>> LoadedFor = new Dictionary<Player, List<NetworkIdentity>>();
+        internal static readonly Dictionary<Player, Room> LastRooms = new Dictionary<Player, Room>();
+        internal static readonly HashSet<Player> SyncDynamicFor = new HashSet<Player>();
+        internal static readonly HashSet<Room> HCZRooms = new HashSet<Room>();
 
         private void Player_Verified(VerifiedEventArgs ev)
         {
             if ((Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] & Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ) != Gamer.API.PlayerPreferences.NONE)
                 return;
+            SyncFor(ev.Player);
+        }
+
+        internal static void SyncFor(Player player)
+        {
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
-                Log.Debug("Syncing cards");
+                Log.Debug($"Syncing cards for {player.Nickname}");
                 foreach (var netid in networkIdentities)
                 {
                     sendSpawnMessage.Invoke(null, new object[]
                     {
                         netid,
-                        ev.Player.Connection
+                        player.Connection
                     });
+                }
+            }
+        }
+        private static MethodInfo removeFromVisList = null;
+        internal static void DesyncFor(Player player)
+        {
+            if(removeFromVisList == null)
+                removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+            Log.Debug($"DeSyncing cards for {player.Nickname}");
+            foreach (var netid in networkIdentities)
+            {
+                ObjectDestroyMessage msg = new ObjectDestroyMessage
+                {
+                    netId = netid.netId
+                };
+                NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                if (netid.observers.ContainsKey(player.Connection.connectionId))
+                {
+                    netid.observers.Remove(player.Connection.connectionId);
+                    removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
                 }
             }
         }
@@ -94,7 +206,13 @@ namespace Xname.ColorfullEZ
                 NetworkServer.Destroy(item);
             KeycardsGameObjects.Clear();
             networkIdentities.Clear();
+            Keycards.Clear();
+            LastRooms.Clear();
+            SyncDynamicFor.Clear();
+            LoadedFor.Clear();
+            HCZRooms.Clear();
         }
+        private static readonly Dictionary<Room, List<NetworkIdentity>> Keycards = new Dictionary<Room, List<NetworkIdentity>>();
         private static readonly List<GameObject> KeycardsGameObjects = new List<GameObject>();
         private static readonly List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>();
         /// <summary>
@@ -104,12 +222,23 @@ namespace Xname.ColorfullEZ
         public static void Generate(ItemType card) => Timing.RunCoroutine(generate(card));
         private static IEnumerator<float> generate(ItemType card)
         {
+            var checkpoint = Map.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
+            HCZRooms.Add(checkpoint);
+            foreach (var room in Map.Rooms)
+            {
+                if (room.Zone != ZoneType.HeavyContainment)
+                    continue;
+                if (Vector3.Distance(checkpoint.Position, room.Position) < 30)
+                    HCZRooms.Add(room);
+            }
+
             int a = 0;
             Clear();
             foreach (var roomObject in ColorfullEZManager.keycardRooms)
             {
                 foreach (var room in Map.Rooms.Where(x => x.Type == roomObject.Key))
                 {
+                    Keycards[room] = new List<NetworkIdentity>();
                     Log.Debug($"Spawning {roomObject.Key}, {roomObject.Value.Count} keycards");
                     foreach (var item in roomObject.Value)
                     {
@@ -129,6 +258,7 @@ namespace Xname.ColorfullEZ
                         foreach (var c in keycard.model.GetComponents<Component>())
                             GameObject.Destroy(c.gameObject);
                         networkIdentities.Add(keycard.netIdentity);
+                        Keycards[room].Add(keycard.netIdentity);
                         Pickup.Instances.Remove(keycard);
                         GameObject.Destroy(keycard);
                         foreach (var _item in gameObject.GetComponents<Collider>())

@@ -24,13 +24,35 @@ namespace Xname.ColorfullEZ
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
-            if (args.Length == 0)
-                ColorfullEZHandler.Generate(ColorfullEZHandler.GetKeycard());
-            else if (args[0] == "none")
-                ColorfullEZHandler.Clear();
-            else
-                ColorfullEZHandler.Generate((ItemType)byte.Parse(args[0]));
             _s = true;
+            if (args.Length == 0)
+            {
+                ColorfullEZHandler.Generate(ColorfullEZHandler.GetKeycard());
+                return new string[] { "Done" };
+            }
+            switch(args[0])
+            {
+                case "none":
+                    ColorfullEZHandler.Clear();
+                    break;
+                case "true":
+                    ColorfullEZHandler.SyncFor(sender.GetPlayer());
+                    break;
+                case "false":
+                    ColorfullEZHandler.DesyncFor(sender.GetPlayer());
+                    break;
+                case "dynamic":
+                    ColorfullEZHandler.DesyncFor(sender.GetPlayer());
+                    ColorfullEZHandler.SyncDynamicFor.Add(sender.GetPlayer());
+                    break;
+                case "static":
+                    ColorfullEZHandler.SyncDynamicFor.Remove(sender.GetPlayer());
+                    ColorfullEZHandler.SyncFor(sender.GetPlayer());
+                    break;
+                default:
+                    ColorfullEZHandler.Generate((ItemType)byte.Parse(args[0]));
+                    break;
+            }
             return new string[] { "Done" };
         }
     }
