@@ -200,7 +200,7 @@ namespace Gamer.Diagnostics
             if (!File.Exists(file))
                 return;
             var result = AnalizeContent(File.ReadAllLines(file), DateTime.Now.AddHours(-1));
-            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".analized.log"), Newtonsoft.Json.JsonConvert.SerializeObject(result));
+            File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".analized.raw.log"), Newtonsoft.Json.JsonConvert.SerializeObject(result));
             File.Delete(file);
         }
         private static Dictionary<string, Data> AnalizeContent(string[] lines, DateTime dateTime)
