@@ -18,6 +18,8 @@ namespace Gamer.Mistaken.Systems.End
     {
         public AutoUpdateHandler(PluginHandler p) : base(p)
         {
+            if (Server.Port == 7790)
+                this.Enabled = false;
         }
         public override string Name => "AutoUpdate";
         public override void OnEnable()
