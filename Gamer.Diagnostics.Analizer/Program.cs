@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -38,104 +39,152 @@ namespace Gamer.Diagnostics.Analizer
             Console.WriteLine("Scanning Data");
             foreach (var dir in Directory.GetDirectories(path))
             {
-                string dirName = Path.GetFileNameWithoutExtension(dir);
-                Dictionary<string, (Data data, int num)> DirectoryProccesedData = new Dictionary<string, (Data data, int num)>();
-                if (File.Exists($"{pathAnalizezd}/{dirName}.analized.raw.log"))
+                try
                 {
-                    try
+                    string dirName = Path.GetFileNameWithoutExtension(dir);
+                    Dictionary<string, (Data data, int num)> DirectoryProccesedData = new Dictionary<string, (Data data, int num)>();
+                    if (File.Exists($"{pathAnalizezd}/{dirName}.analized.raw.log"))
                     {
-                        DirectoryProccesedData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, (Data data, int num)>>(File.ReadAllText($"{pathAnalizezd}/{dirName}.analized.raw.log"));
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Console.WriteLine($"Loading OldValues {dirName}");
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine(ex.StackTrace);
-                    }
-                }
-                if (!Directory.Exists(dir.Replace(path, pathAnalizezd)))
-                    Directory.CreateDirectory(dir.Replace(path, pathAnalizezd));
-                Console.WriteLine($"Found {dirName}, analizing...");
-                foreach (var file in Directory.GetFiles(dir))
-                {
-                    if (file.EndsWith(".log"))
-                    {
-                        string[] content = File.ReadAllLines(file);
-                        string name = Path.GetFileNameWithoutExtension(file);
-                        if (name.StartsWith("error"))
-                            continue;
-                        Console.WriteLine($"Analizing {name}...");
-                        string[] fileDate = name.Split('-');
-                        Dictionary<string, Data> ProccesedData;
                         try
                         {
-                            ProccesedData = AnalizeContent(content, fileDate);
+                            DirectoryProccesedData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, (Data data, int num)>>(File.ReadAllText($"{pathAnalizezd}/{dirName}.analized.raw.log"));
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Console.WriteLine($"Loading OldValues {dirName}");
+                            Console.WriteLine(ex.Message);
+                            Console.WriteLine(ex.StackTrace);
+                        }
+                    }
+                    if (!Directory.Exists(dir.Replace(path, pathAnalizezd)))
+                        Directory.CreateDirectory(dir.Replace(path, pathAnalizezd));
+                    Console.WriteLine($"Found {dirName}, analizing...");
+                    foreach (var file in Directory.GetFiles(dir))
+                    {
+                        try
+                        {
+                            if (file.EndsWith(".log"))
+                            {
+                                string[] content = File.ReadAllLines(file);
+                                string name = Path.GetFileNameWithoutExtension(file);
+                                if (name.StartsWith("error"))
+                                    continue;
+                                Console.WriteLine($"Analizing {name}...");
+                                string[] fileDate = name.Split('-');
+                                Dictionary<string, Data> ProccesedData;
+                                try
+                                {
+                                    ProccesedData = AnalizeContent(content, fileDate);
+                                }
+                                catch (System.Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                    Console.WriteLine(ex.StackTrace);
+                                    continue;
+                                }
+
+                                SumData(DirectoryProccesedData, ProccesedData);
+
+                                var sortedProccesedData = ProccesedData.OrderByDescending(i => i.Value.Max).OrderBy(i => i.Key.Split('.').Last());
+                                localFile = $"{pathAnalizezd}/{dirName}/{Path.GetFileNameWithoutExtension(file)}_{name}.analized.log";
+                                File.WriteAllLines(localFile, sortedProccesedData.Select(i => $"[{i.Key}] Avg: {i.Value.Avg} | Called: {i.Value.Calls} | AvgCalled {i.Value.AvgCallsPerMinute}/minute | AvgTime: {i.Value.AvgCallsPerMinute * i.Value.Avg}ms/minute | Min: {i.Value.Min} | Max: {i.Value.Max}".Replace(",", ".")));
+                                File.WriteAllText(localFile + ".raw.log", Newtonsoft.Json.JsonConvert.SerializeObject(ProccesedData));
+                                Console.WriteLine($"Analized {name}");
+                            }
+                            else if (file.EndsWith(".zip"))
+                            {
+                                var archive = ZipFile.OpenRead(file);
+                                foreach (var entry in archive.Entries)
+                                {
+                                    try
+                                    {
+                                        var stream = entry.Open();
+                                        byte[] buffer = new byte[int.MaxValue / 2];
+                                        string text = Encoding.UTF8.GetString(buffer, 0, stream.Read(buffer));
+                                        stream.Close();
+
+                                        string[] content = text.Split('\n');
+                                        string name = Path.GetFileNameWithoutExtension(entry.Name);
+
+                                        if (name.StartsWith("error"))
+                                            continue;
+                                        string[] fileDate = name.Split('-');
+                                        Dictionary<string, Data> ProccesedData;
+                                        bool analized = Path.GetFileName(name).EndsWith(".analized.raw.log") || Path.GetFileName(name).EndsWith(".analized.log");
+                                        if (analized)
+                                        {
+                                            Console.WriteLine($"Copping Data from {Path.GetFileNameWithoutExtension(file)}.{name}...");
+                                            try
+                                            {
+                                                ProccesedData = JsonConvert.DeserializeObject<Dictionary<string, Data>>(text);
+                                            }
+                                            catch (System.Exception ex)
+                                            {
+                                                Console.WriteLine(ex.Message);
+                                                Console.WriteLine(ex.StackTrace);
+                                                continue;
+                                            }
+
+                                            SumData(DirectoryProccesedData, ProccesedData);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"Analizing {Path.GetFileNameWithoutExtension(file)}.{name}...");
+                                            try
+                                            {
+                                                ProccesedData = AnalizeContent(content, fileDate);
+                                            }
+                                            catch (System.Exception ex)
+                                            {
+                                                Console.WriteLine(ex.Message);
+                                                Console.WriteLine(ex.StackTrace);
+                                                continue;
+                                            }
+
+                                            SumData(DirectoryProccesedData, ProccesedData);
+                                        }
+
+
+                                        var sortedProccesedData = ProccesedData.OrderByDescending(i => i.Value.Max).OrderBy(i => i.Key.Split('.').Last());
+                                        localFile = $"{pathAnalizezd}/{dirName}/{Path.GetFileNameWithoutExtension(file)}_{name}.analized";
+                                        File.WriteAllLines(localFile + ".log", sortedProccesedData.Select(i => $"[{i.Key}] Avg: {i.Value.Avg} | Called: {i.Value.Calls} | AvgCalled {i.Value.AvgCallsPerMinute}/minute | AvgTime: {i.Value.AvgCallsPerMinute * i.Value.Avg}ms/minute | Min: {i.Value.Min} | Max: {i.Value.Max}".Replace(",", ".")));
+                                        File.WriteAllText(localFile + ".raw.log", Newtonsoft.Json.JsonConvert.SerializeObject(ProccesedData));
+                                        if (analized)
+                                            Console.WriteLine($"Copped Data from {Path.GetFileNameWithoutExtension(file)}.{name}");
+                                        else
+                                            Console.WriteLine($"Analized {Path.GetFileNameWithoutExtension(file)}.{name}");
+                                    }
+                                    catch (System.Exception ex)
+                                    {
+                                        Console.WriteLine(ex.Message);
+                                        Console.WriteLine(ex.StackTrace);
+                                    }
+                                }
+                                archive.Dispose();
+                            }
+                            else
+                                continue;
                         }
                         catch (System.Exception ex)
                         {
                             Console.WriteLine(ex.Message);
                             Console.WriteLine(ex.StackTrace);
-                            continue;
                         }
-
-                        SumData(DirectoryProccesedData, ProccesedData);
-
-                        var sortedProccesedData = ProccesedData.OrderByDescending(i => i.Value.Max).OrderBy(i => i.Key.Split('.').Last());
-                        localFile = $"{pathAnalizezd}/{dirName}/{Path.GetFileNameWithoutExtension(file)}_{name}.analized.log";
-                        File.WriteAllLines(localFile, sortedProccesedData.Select(i => $"[{i.Key}] Avg: {i.Value.Avg} | Called: {i.Value.Calls} | AvgCalled {i.Value.AvgCallsPerMinute}/minute | AvgTime: {i.Value.AvgCallsPerMinute * i.Value.Avg}ms/minute | Min: {i.Value.Min} | Max: {i.Value.Max}".Replace(",", ".")));
-                        File.WriteAllText(localFile + ".raw.log", Newtonsoft.Json.JsonConvert.SerializeObject(ProccesedData));
-                        Console.WriteLine($"Analized {name}");
                     }
-                    else if (file.EndsWith(".zip"))
-                    {
-                        var archive = ZipFile.OpenRead(file);
-                        foreach (var entry in archive.Entries)
-                        {
-                            var stream = entry.Open();
-                            byte[] buffer = new byte[int.MaxValue / 2];
-                            string text = Encoding.UTF8.GetString(buffer, 0, stream.Read(buffer));
-                            stream.Close();
 
-                            string[] content = text.Split('\n');
-                            string name = Path.GetFileNameWithoutExtension(entry.Name);
+                    SumData(GlobalProccesedData, DirectoryProccesedData);
 
-                            if (name.StartsWith("error"))
-                                continue;
-                            Console.WriteLine($"Analizing {Path.GetFileNameWithoutExtension(file)}.{name}...");
-                            string[] fileDate = name.Split('-');
-                            Dictionary<string, Data> ProccesedData;
-                            try
-                            {
-                                ProccesedData = AnalizeContent(content, fileDate);
-                            }
-                            catch (System.Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                                Console.WriteLine(ex.StackTrace);
-                                continue;
-                            }
-
-                            SumData(DirectoryProccesedData, ProccesedData);
-
-                            var sortedProccesedData = ProccesedData.OrderByDescending(i => i.Value.Max).OrderBy(i => i.Key.Split('.').Last());
-                            localFile = $"{pathAnalizezd}/{dirName}/{Path.GetFileNameWithoutExtension(file)}_{name}.analized";
-                            File.WriteAllLines(localFile + ".log", sortedProccesedData.Select(i => $"[{i.Key}] Avg: {i.Value.Avg} | Called: {i.Value.Calls} | AvgCalled {i.Value.AvgCallsPerMinute}/minute | AvgTime: {i.Value.AvgCallsPerMinute * i.Value.Avg}ms/minute | Min: {i.Value.Min} | Max: {i.Value.Max}".Replace(",", ".")));
-                            File.WriteAllText(localFile + ".raw.log", Newtonsoft.Json.JsonConvert.SerializeObject(ProccesedData));
-                            Console.WriteLine($"Analized {Path.GetFileNameWithoutExtension(file)}.{name}");
-                        }
-                        archive.Dispose();
-                    }
-                    else
-                        continue;
+                    var sortedDirectoryProccesedData = DirectoryProccesedData.OrderByDescending(i => i.Value.data.Max).OrderBy(i => i.Key.Split('.').Last());
+                    localFile = $"{pathAnalizezd}/{dirName}.analized";
+                    File.WriteAllLines(localFile + ".log", sortedDirectoryProccesedData.Select(i => $"[{i.Key}] Avg: {i.Value.data.Avg / i.Value.num} | Called: {i.Value.data.Calls} | AvgCallsPerHour: {i.Value.data.Calls / i.Value.num} | AvgCalled {i.Value.data.AvgCallsPerMinute / i.Value.num}/minute | AvgTime: {(i.Value.data.AvgCallsPerMinute / i.Value.num) * (i.Value.data.Avg / i.Value.num)}ms/minute | Min: {i.Value.data.Min} | Max: {i.Value.data.Max}".Replace(",", ".")));
+                    File.WriteAllText(localFile + ".raw.log", Newtonsoft.Json.JsonConvert.SerializeObject(DirectoryProccesedData));
+                    Console.WriteLine($"Analized {dirName}");
                 }
-
-                SumData(GlobalProccesedData, DirectoryProccesedData);
-
-                var sortedDirectoryProccesedData = DirectoryProccesedData.OrderByDescending(i => i.Value.data.Max).OrderBy(i => i.Key.Split('.').Last());
-                localFile = $"{pathAnalizezd}/{dirName}.analized";
-                File.WriteAllLines(localFile + ".log", sortedDirectoryProccesedData.Select(i => $"[{i.Key}] Avg: {i.Value.data.Avg / i.Value.num} | Called: {i.Value.data.Calls} | AvgCallsPerHour: {i.Value.data.Calls / i.Value.num} | AvgCalled {i.Value.data.AvgCallsPerMinute / i.Value.num}/minute | AvgTime: {(i.Value.data.AvgCallsPerMinute / i.Value.num) * (i.Value.data.Avg / i.Value.num)}ms/minute | Min: {i.Value.data.Min} | Max: {i.Value.data.Max}".Replace(",", ".")));
-                File.WriteAllText(localFile + ".raw.log", Newtonsoft.Json.JsonConvert.SerializeObject(DirectoryProccesedData));
-                Console.WriteLine($"Analized {dirName}");
+                catch (System.Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
+                }
             }
             List<string> modules = new List<string>();
             List<string> handlers = new List<string>();
