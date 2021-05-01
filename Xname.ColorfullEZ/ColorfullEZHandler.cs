@@ -149,7 +149,7 @@ namespace Xname.ColorfullEZ
         {
             if(ExperimentalMode)
             {
-                ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, "<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br><size=33%>Trwają testy ColorfulEZ (Kolorowy EZ), z powodu testów nie da się go wyłączyć oraz może powodować problemy lub lagi serwera</size></size>");
+                ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br><size=33%>Trwają testy ColorfulEZ (Kolorowy EZ), z powodu testów nie da się go wyłączyć oraz może powodować problemy lub lagi serwera</size> | Wersja pluginów: {Assembly.GetExecutingAssembly().GetName().Version.ToString()}</size>");
                 SyncDynamicFor.Add(ev.Player);
                 return;
             }
