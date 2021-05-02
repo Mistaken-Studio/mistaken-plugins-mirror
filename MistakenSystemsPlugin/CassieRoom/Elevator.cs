@@ -163,7 +163,6 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 1, 4, 4), gameObject.transform.position, gameObject.transform.rotation);
-            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
             gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -47f);
@@ -172,7 +171,6 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 1, 4, 3), gameObject.transform.position, gameObject.transform.rotation);
-            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
             gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -47.5f);
@@ -181,7 +179,6 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
-            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
             gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -48f);
@@ -190,7 +187,6 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
-            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
         }
 
