@@ -29,7 +29,7 @@ jobs:
         run: |
           echo %GITHUB_WORKSPACE%
           echo %path%
-          msbuild %GITHUB_WORKSPACE%/Mistaken.Plugins.sln /p:Configuration=Release
+          devenv %GITHUB_WORKSPACE%/Mistaken.Plugins.sln /build Debug 
         shell: cmd
 
       # Runs a set of commands using the runners shell
