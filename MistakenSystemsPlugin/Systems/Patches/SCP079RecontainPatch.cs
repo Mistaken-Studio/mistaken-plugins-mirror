@@ -43,7 +43,7 @@ namespace Gamer.Mistaken.Systems.Patches
         {
             //Timing.RunCoroutine(SCP079RecontainPatch._Recontain(forced).CancelWith(Recontainer079.singleton.gameObject), Segment.FixedUpdate);
             SCP079RecontainInfoPatch.Prefix(forced);
-            return false;
+            return true;
         }
 
         public static void Restart()
