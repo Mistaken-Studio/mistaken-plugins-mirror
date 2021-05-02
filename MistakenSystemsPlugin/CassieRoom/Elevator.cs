@@ -277,7 +277,7 @@ namespace Gamer.Mistaken.CassieRoom
             var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, "SCP1499Chamber", new Vector3(-23.8f, 1018.6f, -43.5f), Vector3.up * 90, Vector3.one);
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree;
             (mainDoor as BreakableDoor)._brokenPrefab = null;
-            networkIdentities.Add(mainDoor.netIdentity);
+            //networkIdentities.Add(mainDoor.netIdentity);
             //Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
 
             //-23.7 1022.35 -43.5 0 90 0 10 110 1
