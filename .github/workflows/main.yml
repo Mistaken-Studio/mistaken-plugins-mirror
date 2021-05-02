@@ -26,7 +26,10 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: msbuild $GITHUB_WORKSPACE/Mistaken.Plugins.sln /p:Configuration=Release
+        run: |
+          echo $GITHUB_WORKSPACE
+          echo %path%
+          msbuild $GITHUB_WORKSPACE/Mistaken.Plugins.sln /p:Configuration=Release
         shell: cmd
 
       # Runs a set of commands using the runners shell
