@@ -193,6 +193,7 @@ namespace Xname.ColorfullEZ
                     removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
                 }
             }
+            LoadedFor[player].Clear();
         }
 
         /// <summary>
