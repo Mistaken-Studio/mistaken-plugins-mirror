@@ -68,6 +68,8 @@ namespace Gamer.Mistaken.CassieRoom
                 Log.Debug($"Syncing cards for {player.Nickname}");
                 foreach (var netid in networkIdentities)
                 {
+                    if(netid == null)
+                        continue;
                     sendSpawnMessage.Invoke(null, new object[]
                     {
                         netid,
