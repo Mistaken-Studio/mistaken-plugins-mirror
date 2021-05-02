@@ -204,7 +204,7 @@ namespace Gamer.Mistaken.CassieRoom
             //elevatorDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
             (elevatorDoor as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(elevatorDoor);
-            networkIdentities.Add(elevatorDoor.netIdentity);
+            //networkIdentities.Add(elevatorDoor.netIdentity);
 
             DoorVariant door;
             foreach (var item in ElevatorDoors)
