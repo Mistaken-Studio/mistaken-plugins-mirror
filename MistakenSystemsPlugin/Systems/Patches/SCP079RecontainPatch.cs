@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
-    [HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
+    //[HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
     public static class SCP079RecontainPatch
     {
         public static bool ErrorMode { get; private set; } = false;
@@ -42,8 +42,8 @@ namespace Gamer.Mistaken.Systems.Patches
         public static bool Prefix(bool forced)
         {
             //Timing.RunCoroutine(SCP079RecontainPatch._Recontain(forced).CancelWith(Recontainer079.singleton.gameObject), Segment.FixedUpdate);
-            SCP079RecontainInfoPatch.Prefix(forced);
-            return false;
+            SCP079RecontainInfoPatch.Postfix(forced);
+            return true;
         }
 
         public static void Restart()
@@ -149,15 +149,14 @@ namespace Gamer.Mistaken.Systems.Patches
             yield break;
         }
     }
-
+    [HarmonyPatch(typeof(Recontainer079), "BeginContainment")]
     public static class SCP079RecontainInfoPatch
     {
         public static bool Recontaining { get; private set; } = false;
 
-        public static bool Prefix(bool forced)
+        public static void Postfix(bool forced)
         {
             Recontaining = true;
-            return false;
         }
 
         public static void Restart()
