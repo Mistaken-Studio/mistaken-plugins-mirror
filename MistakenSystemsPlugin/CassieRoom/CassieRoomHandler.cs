@@ -14,14 +14,87 @@ using Interactables.Interobjects.DoorUtils;
 using Gamer.Mistaken.Systems.GUI;
 using LightContainmentZoneDecontamination;
 using Gamer.Mistaken.Base.GUI;
+using System.Reflection;
 
 namespace Gamer.Mistaken.CassieRoom
 {
-    public class CassieRoomHandler : Module
+    public class CassieRoomHandler : Diagnostics.Module
     {
         //public override bool Enabled => false;
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
+            Timing.RunCoroutine(Loop());
+        }
+
+        internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
+        private IEnumerator<float> Loop()
+        {
+            while (true)
+            {
+                try
+                {
+                    var start = DateTime.Now;
+                    foreach (var player in RealPlayers.List)
+                    {
+                        if (player.Position.y > 900 || player.Role == RoleType.Spectator || player.Role == RoleType.Scp079)
+                        {
+                            if (LoadedAll.Contains(player))
+                                continue;
+                            LoadedAll.Add(player);
+                            SyncFor(player);
+                        }
+                        else if (LoadedAll.Contains(player))
+                        {
+                            DesyncFor(player);
+                            LoadedAll.Remove(player);
+                        }
+                    }
+                    Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "Loop", start, DateTime.Now);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+                yield return Timing.WaitForSeconds(1);
+            }
+        }
+
+        internal void SyncFor(Player player)
+        {
+            MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+            if (sendSpawnMessage != null)
+            {
+                Log.Debug($"Syncing cards for {player.Nickname}");
+                foreach (var netid in networkIdentities)
+                {
+                    sendSpawnMessage.Invoke(null, new object[]
+                    {
+                        netid,
+                        player.Connection
+                    });
+                }
+            }
+        }
+        private static MethodInfo removeFromVisList = null;
+        internal void DesyncFor(Player player)
+        {
+            if (removeFromVisList == null)
+                removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+            Log.Debug($"DeSyncing cards for {player.Nickname}");
+            foreach (var netid in networkIdentities)
+            {
+                ObjectDestroyMessage msg = new ObjectDestroyMessage
+                {
+                    netId = netid.netId
+                };
+                NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                if (netid.observers.ContainsKey(player.Connection.connectionId))
+                {
+                    netid.observers.Remove(player.Connection.connectionId);
+                    removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
+                }
+            }
         }
 
         public override string Name => "CassieRoom";
@@ -29,21 +102,23 @@ namespace Gamer.Mistaken.CassieRoom
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
-            Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            //Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
+            //Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
-            Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            //Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
+            //Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
+            DesyncFor(ev.Player);
+            return;
             System.Reflection.MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
@@ -133,19 +208,11 @@ namespace Gamer.Mistaken.CassieRoom
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
+                networkIdentities.Add(mainDoor.netIdentity);
                 //UpperDoor
-                var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
-                door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
-                (door as BreakableDoor)._brokenPrefab = null;
-                Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
-                door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
-                door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
-                (door as BreakableDoor)._brokenPrefab = null;
-                Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
-                door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
-                door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
-                (door as BreakableDoor)._brokenPrefab = null;
-                Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+                SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
+                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
+                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
                 SpawnItem(keycardType, new Vector3(190f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
                 SpawnItem(keycardType, new Vector3(188f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(70, 500, 2));
                 SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
@@ -154,10 +221,7 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     Log.Debug("Spawning Door");
                     //Door
-                    door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, item.Pos, item.Rot, item.Size);
-                    door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
-                    (door as BreakableDoor)._brokenPrefab = null;
-                    Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+                    SpawnDoor(null, item.Pos, item.Rot, item.Size);
                     //Card
                     SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0), item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
                     Log.Debug("Spawned Door");
@@ -234,8 +298,10 @@ namespace Gamer.Mistaken.CassieRoom
         public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation, string name, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool> onCall)
         {
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, Vector3.one);
+            (door as BreakableDoor)._brokenPrefab = null;
             door.NetworkTargetState = true;
             DoorCallbacks[door] = onCall;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             Systems.Components.InRage.Spawn(pos, Vector3.one * 2, (p) =>
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, name);
@@ -243,6 +309,16 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
             });
+            networkIdentities.Add(door.netIdentity);
+            return door;
+        }
+        public static DoorVariant SpawnDoor(string name, Vector3 pos, Vector3 rotation, Vector3 size)
+        {
+            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, name, pos, rotation, size);
+            door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            (door as BreakableDoor)._brokenPrefab = null;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            networkIdentities.Add(door.netIdentity);
             return door;
         }
 
@@ -290,7 +366,7 @@ namespace Gamer.Mistaken.CassieRoom
     {
         public static void ServerChangeLock(this DoorVariant door, CassieRoomHandler.PluginDoorLockReason type, bool active)
         {
-            door.ServerChangeLock((DoorLockReason)type, active);
+            door?.ServerChangeLock((DoorLockReason)type, active);
         }
     }
 }

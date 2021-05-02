@@ -5,24 +5,97 @@ using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
+using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CassieRoom
 {
-    class Elevator : Module
+    class Elevator : Diagnostics.Module
     {
         //public override bool Enabled => false;
         private new static __Log Log;
         public Elevator(PluginHandler plugin) : base(plugin)
         {
             Log = base.Log;
+            Timing.RunCoroutine(Loop());
         }
 
+        internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
+        private IEnumerator<float> Loop()
+        {
+            while (true)
+            {
+                try
+                {
+                    var start = DateTime.Now;
+                    foreach (var player in RealPlayers.List)
+                    {
+                        if (player.Position.y > 900 || player.Role == RoleType.Spectator || player.Role == RoleType.Scp079)
+                        {
+                            if (LoadedAll.Contains(player))
+                                continue;
+                            LoadedAll.Add(player);
+                            SyncFor(player);
+                        }
+                        else if (LoadedAll.Contains(player))
+                        {
+                            DesyncFor(player);
+                            LoadedAll.Remove(player);
+                        }
+                    }
+                    Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "Loop", start, DateTime.Now);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+                yield return Timing.WaitForSeconds(1);
+            }
+        }
+
+        internal void SyncFor(Player player)
+        {
+            MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+            if (sendSpawnMessage != null)
+            {
+                Log.Debug($"Syncing cards for {player.Nickname}");
+                foreach (var netid in networkIdentities)
+                {
+                    sendSpawnMessage.Invoke(null, new object[]
+                    {
+                        netid,
+                        player.Connection
+                    });
+                }
+            }
+        }
+        private static MethodInfo removeFromVisList = null;
+        internal void DesyncFor(Player player)
+        {
+            if (removeFromVisList == null)
+                removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+            Log.Debug($"DeSyncing cards for {player.Nickname}");
+            foreach (var netid in networkIdentities)
+            {
+                ObjectDestroyMessage msg = new ObjectDestroyMessage
+                {
+                    netId = netid.netId
+                };
+                NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                if (netid.observers.ContainsKey(player.Connection.connectionId))
+                {
+                    netid.observers.Remove(player.Connection.connectionId);
+                    removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
+                }
+            }
+        }
         public override string Name => "Elevator";
 
         public override void OnDisable()
@@ -41,6 +114,8 @@ namespace Gamer.Mistaken.CassieRoom
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
+            DesyncFor(ev.Player);
+            return;
             System.Reflection.MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
@@ -88,6 +163,7 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 1, 4, 4), gameObject.transform.position, gameObject.transform.rotation);
+            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
             gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -47f);
@@ -96,7 +172,8 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 1, 4, 3), gameObject.transform.position, gameObject.transform.rotation);
-            
+            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
+
             gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -47.5f);
             gameObject.transform.localScale = Vector3.one;
@@ -104,6 +181,7 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
+            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
             gameObject = UnityEngine.Object.Instantiate(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = new Vector3(-26.65f, 1019.5f, -48f);
@@ -112,6 +190,7 @@ namespace Gamer.Mistaken.CassieRoom
             gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
+            networkIdentities.Add(gameObject.GetComponent<NetworkIdentity>());
 
         }
 
@@ -125,6 +204,8 @@ namespace Gamer.Mistaken.CassieRoom
             //elevatorDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
             (elevatorDoor as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(elevatorDoor);
+            networkIdentities.Add(elevatorDoor.netIdentity);
+
             DoorVariant door;
             foreach (var item in ElevatorDoors)
             {
@@ -134,6 +215,7 @@ namespace Gamer.Mistaken.CassieRoom
                 door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 (door as BreakableDoor)._brokenPrefab = null;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+                networkIdentities.Add(door.netIdentity);
                 //Card
                 SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0) + offset, item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
                 Log.Debug("Spawned Door");
@@ -149,11 +231,13 @@ namespace Gamer.Mistaken.CassieRoom
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            networkIdentities.Add(door.netIdentity);
             //-15 1001.9 -40 0 0 90 1.4 1 1
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15, 1001.9f, -39.5f) + offset, new Vector3(0, 0, 90), new Vector3(1.4f, 1, 1));
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            networkIdentities.Add(door.netIdentity);
 
             //-16.58 1003.7 -41 90 180 0 15 550 6
             SpawnItem(keycardType, new Vector3(-16.58f, 1003.7f, -41f) + offset, new Vector3(90, 180, 0), new Vector3(15, 550, 6), true); //Up
@@ -172,6 +256,7 @@ namespace Gamer.Mistaken.CassieRoom
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            networkIdentities.Add(door.netIdentity);
             var obj = new GameObject();
             var collider = obj.AddComponent<BoxCollider>();
             obj.transform.position = new Vector3(-16.58f, 1004f, -41f) + offset;
@@ -194,6 +279,7 @@ namespace Gamer.Mistaken.CassieRoom
             var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, "SCP1499Chamber", new Vector3(-23.8f, 1018.6f, -43.5f), Vector3.up * 90, Vector3.one);
             mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree;
             (mainDoor as BreakableDoor)._brokenPrefab = null;
+            networkIdentities.Add(mainDoor.netIdentity);
             //Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
 
             //-23.7 1022.35 -43.5 0 90 0 10 110 1
@@ -325,6 +411,7 @@ namespace Gamer.Mistaken.CassieRoom
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            networkIdentities.Add(door.netIdentity);
             return door;
         }
     }
