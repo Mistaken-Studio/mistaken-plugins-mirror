@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExperimentalHandler.cs" />
     <Compile Include="CustomInfoHandler.cs" />
     <Compile Include="CustomItems\CustomItemsHandler.cs" />
     <Compile Include="PluginHandler.cs" />

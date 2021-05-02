@@ -7,6 +7,9 @@ using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using MEC;
 using Mirror;
+using MistakenSocket.Client.SL;
+using MistakenSocket.Shared.API;
+using MistakenSocket.Shared.SLToCentral;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +21,6 @@ namespace Xname.ColorfullEZ
     /// <inheritdoc/>
     public class ColorfullEZHandler : Gamer.Diagnostics.Module
     {
-        private const bool ExperimentalMode = true;
-
         /// <inheritdoc/>
         public override string Name => "ColorfullEZHandler";
         private static new __Log Log;
@@ -40,8 +41,6 @@ namespace Xname.ColorfullEZ
                     var start = DateTime.Now;
                     foreach (var player in RealPlayers.List)
                     {
-                        if (!SyncDynamicFor.Contains(player))
-                            continue;
                         tmp.Clear();
                         if (player.Role == RoleType.Spectator || player.Role == RoleType.Scp079)
                         {
@@ -71,7 +70,7 @@ namespace Xname.ColorfullEZ
                             {
                                 foreach (var item in Keycards)
                                 {
-                                    if (Vector3.Distance(item.Key.Position, player.Position) < 40)
+                                    if (UnityEngine.Vector3.Distance(item.Key.Position, player.Position) < 40)
                                         tmp.AddRange(item.Value);
                                 }
                             }
@@ -141,21 +140,20 @@ namespace Xname.ColorfullEZ
         }
         internal static readonly Dictionary<Player, List<NetworkIdentity>> LoadedFor = new Dictionary<Player, List<NetworkIdentity>>();
         internal static readonly Dictionary<Player, Room> LastRooms = new Dictionary<Player, Room>();
-        internal static readonly HashSet<Player> SyncDynamicFor = new HashSet<Player>();
         internal static readonly HashSet<Room> HCZRooms = new HashSet<Room>();
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
 
         private void Player_Verified(VerifiedEventArgs ev)
         {
-            if(ExperimentalMode)
-            {
-                ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br><size=33%>Trwają testy ColorfulEZ (Kolorowy EZ), z powodu testów nie da się go wyłączyć oraz może powodować problemy lub lagi serwera</size> | Wersja pluginów: {Assembly.GetExecutingAssembly().GetName().Version}</size>");
-                SyncDynamicFor.Add(ev.Player);
-                return;
-            }
             if ((Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] & Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ) != Gamer.API.PlayerPreferences.NONE)
-                return;
-            SyncFor(ev.Player);
+            {
+                Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] &= ~Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ;
+                SSL.Client.Send(MessageType.SL_SET_PLAYER_PREFERENCES, new SL_Player_Set_Preferences
+                {
+                    Player = ev.Player.UserId,
+                    Prefs = (SL_Player_Prefs)Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId]
+                });
+            }
         }
 
         internal static void SyncFor(Player player)
@@ -237,7 +235,6 @@ namespace Xname.ColorfullEZ
             networkIdentities.Clear();
             Keycards.Clear();
             LastRooms.Clear();
-            SyncDynamicFor.Clear();
             LoadedFor.Clear();
             HCZRooms.Clear();
             LoadedAll.Clear();
@@ -259,7 +256,7 @@ namespace Xname.ColorfullEZ
             {
                 if (room.Zone != ZoneType.HeavyContainment)
                     continue;
-                if (Vector3.Distance(checkpoint.Position, room.Position) < 30)
+                if (UnityEngine.Vector3.Distance(checkpoint.Position, room.Position) < 30)
                     HCZRooms.Add(room);
             }
 
@@ -274,7 +271,7 @@ namespace Xname.ColorfullEZ
                     {
                         var basePos = room.Position;
                         var offset = item.Item1;
-                        offset = room.transform.forward * -offset.x + room.transform.right * -offset.z + Vector3.up * offset.y;
+                        offset = room.transform.forward * -offset.x + room.transform.right * -offset.z + UnityEngine.Vector3.up * offset.y;
                         basePos += offset;
                         GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
                         gameObject.transform.position = basePos;

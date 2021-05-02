@@ -53,6 +53,16 @@
     <Reference Include="Mirror">
       <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
     </Reference>
+    <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\MistakenSocket.Client.SL.Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MistakenSocket.Shared, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\MistakenSocket.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="NetCoreServer, Version=1.9.2.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
