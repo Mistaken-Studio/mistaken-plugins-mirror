@@ -143,32 +143,13 @@ namespace Gamer.Mistaken.Systems.End
                     var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate();
+                    RequestServersRestart();
                     File.WriteAllText(VersionPath, release.TagName);
                 }
             }
         }
-
-        private static void UpdateLate()
+        private static void RequestServersRestart()
         {
-            string sourceDirectory = Paths.Plugins + "/Extracted";
-            using (var inputStream = File.OpenRead(sourceDirectory + "/plugins.tar.gz"))
-            {
-                using (var outputStream = File.Create(sourceDirectory + "/plugins.tar"))
-                {
-                    using (GZipStream decompresionStream = new GZipStream(inputStream, CompressionMode.Decompress))
-                    {
-                        decompresionStream.CopyTo(outputStream);
-                    }
-                }
-            }
-            if (Directory.Exists(sourceDirectory + "/plugins"))
-                Directory.Delete(sourceDirectory + "/plugins", true);
-            using (var stream = File.OpenRead(sourceDirectory + "/plugins.tar"))
-                ExtractTar(stream, sourceDirectory);
-            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins"))
-                File.Copy(item, Paths.Plugins + "/" + item.Split('/').Last(), true);
-            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
-                File.Copy(item, Paths.Dependencies + "/" + item.Split('/').Last(), true);
             SSL.Client.Send(MessageType.CMD_MULTI_MESSAGE, new MultiMessage
             {
                 Messages = new Message[]
@@ -215,6 +196,30 @@ namespace Gamer.Mistaken.Systems.End
                     }
                 }
             });
+        }
+
+        private static void UpdateLate()
+        {
+            string sourceDirectory = Paths.Plugins + "/Extracted";
+            using (var inputStream = File.OpenRead(sourceDirectory + "/plugins.tar.gz"))
+            {
+                using (var outputStream = File.Create(sourceDirectory + "/plugins.tar"))
+                {
+                    using (GZipStream decompresionStream = new GZipStream(inputStream, CompressionMode.Decompress))
+                    {
+                        decompresionStream.CopyTo(outputStream);
+                    }
+                }
+            }
+            if (Directory.Exists(sourceDirectory + "/plugins"))
+                Directory.Delete(sourceDirectory + "/plugins", true);
+            using (var stream = File.OpenRead(sourceDirectory + "/plugins.tar"))
+                ExtractTar(stream, sourceDirectory);
+            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins"))
+                File.Copy(item, Paths.Plugins + "/" + item.Split('/').Last(), true);
+            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
+                File.Copy(item, Paths.Dependencies + "/" + item.Split('/').Last(), true);
+            
         }
 
         public static void ExtractTar(Stream stream, string outputDir)
