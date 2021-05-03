@@ -53,7 +53,9 @@
     <Reference Include="Mirror">
       <HintPath>..\References\BaseGame\Mirror.dll</HintPath>
     </Reference>
-    <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="MistakenSocket.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\References\Sum\MistakenSocket.Client.dll</HintPath>
+    </Reference>
     <Reference Include="MistakenSocket.Client.SL.Lib, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\MistakenSocket.Client.SL.Lib.dll</HintPath>
