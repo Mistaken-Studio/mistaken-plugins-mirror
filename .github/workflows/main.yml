@@ -34,6 +34,15 @@ jobs:
           echo %GITHUB_WORKSPACE%
           echo %path%
           nuget restore
+          echo ---------
+          echo %GITHUB_REF%
+          echo ---------
+          ehco %GITHUB_HEAD_REF%
+          echo ---------
+          ehco %GITHUB_BASE_REF%
+          echo ---------
+          ehco %GITHUB_SHA%
+          echo ---------
           %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_HEAD_REF% %GITHUB_SHA%
         shell: cmd
 
