@@ -33,13 +33,15 @@ jobs:
           echo ---------
           echo %GITHUB_REF%
           echo ---------
-          echo %GITHUB_HEAD_REF%
+          echo ${{ github.event.inputs.version }}
           echo ---------
-          echo %GITHUB_BASE_REF%
+          echo %INPUT_VERSION%
+          echo ---------
+          echo %INPUTS_VERSION%
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
-          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false %INPUT_VERSION%
+          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }}
         shell: cmd
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
