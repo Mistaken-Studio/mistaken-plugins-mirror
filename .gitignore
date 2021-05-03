@@ -340,6 +340,6 @@ ASALocalRun/
 healthchecksdb
 /MistakenSystemsPlugin/Code.zip
 **/AssemblyInfo.cs
-/MistakenBasePlugin/Version.cs
 /plugins
 /plugins.tar.gz
+/MistakenBasePlugins/Version.cs
