@@ -33,9 +33,11 @@ jobs:
           echo ---------
           echo %GITHUB_REF%
           echo ---------
-          echo %GITHUB_HEAD_REF%
+          echo ${{ github.event.inputs.version }}
           echo ---------
-          echo %GITHUB_BASE_REF%
+          echo %INPUT_VERSION%
+          echo ---------
+          echo %INPUTS_VERSION%
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
