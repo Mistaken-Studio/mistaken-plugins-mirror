@@ -86,7 +86,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 }
                 ev.MaximumRespawnAmount = Mathf.Min(num, spawnableTeam.MaxWaveSize);
             }
-
+            ev.MaximumRespawnAmount = Mathf.Max(ev.MaximumRespawnAmount, 0);
             while (ev.Players.Count > ev.MaximumRespawnAmount)
                 ev.Players.RemoveAt(ev.Players.Count - 1);
             ev.Players.Shuffle(RespawnQueueSeed);
