@@ -133,7 +133,7 @@
     <Compile Include="SCP079\SCP079Handler.cs" />
     <Compile Include="SCP106\OldManHandler.cs" />
     <Compile Include="PluginHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="SCP173\SCP173Handler.cs" />
     <Compile Include="SCP914\SCP914Handler.cs" />
   </ItemGroup>

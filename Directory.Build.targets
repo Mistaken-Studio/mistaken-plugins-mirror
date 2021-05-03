@@ -12,7 +12,7 @@
 </PropertyGroup>
 
 <ItemGroup>
-    <AssemblyVersionFiles Include="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs"/>
+    <AssemblyVersionFiles Include="$(MSBuildProjectDirectory)\AssemblyInfo.cs"/>
 </ItemGroup>
 
 <Target Name="AssemblyVersion"

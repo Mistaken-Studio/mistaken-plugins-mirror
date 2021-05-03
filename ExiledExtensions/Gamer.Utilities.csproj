@@ -119,7 +119,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MapPlus.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="RealPlayers.cs" />
     <Compile Include="RoomSystemAPI.cs" />
     <Compile Include="RoundPlus.cs" />
