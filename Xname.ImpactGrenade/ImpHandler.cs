@@ -109,6 +109,7 @@ namespace Xname.ImpactGrenade
             Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Map.ChangingIntoGrenade += this.Handle<Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs>((ev) => Map_ChangingIntoGrenade(ev));
+            Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -116,8 +117,25 @@ namespace Xname.ImpactGrenade
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Map.ChangingIntoGrenade -= this.Handle<Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs>((ev) => Map_ChangingIntoGrenade(ev));
+            Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
         }
         private GrenadeManager lastImpactThrower;
+        private void Player_ThrowingGrenade(Exiled.Events.EventArgs.ThrowingGrenadeEventArgs ev)
+        {
+            if (ev.Type == Exiled.API.Enums.GrenadeType.Flashbang)
+            {
+                ev.IsAllowed = false;
+                if (ev.Player.GetEffectActive<CustomPlayerEffects.Scp268>())
+                    ev.Player.DisableEffect<CustomPlayerEffects.Scp268>();
+                Grenade grenade = UnityEngine.Object.Instantiate(ev.Player.GrenadeManager.availableGrenades[1].grenadeInstance).GetComponent<Grenade>();
+                grenade.fuseDuration = 999;
+                grenade.InitData(ev.Player.GrenadeManager, Vector3.zero, ev.Player.CameraTransform.forward, ev.IsSlow ? 0.5f : 1f);
+                Mirror.NetworkServer.Spawn(grenade.gameObject);
+                grenade.GetComponent<Rigidbody>().AddForce(new Vector3(grenade.NetworkserverVelocities.linear.x * 1.5f, grenade.NetworkserverVelocities.linear.y / 2f, grenade.NetworkserverVelocities.linear.z * 1.5f), ForceMode.VelocityChange);
+                ev.Player.RemoveItem(ev.Player.CurrentItem);
+                grenade.gameObject.AddComponent<ImpComponent>();
+            }
+        }
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
             if (!grenades.Contains(ev.Grenade))
