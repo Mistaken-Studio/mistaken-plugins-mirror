@@ -205,17 +205,17 @@ namespace Gamer.Mistaken.CassieRoom
             //networkIdentities.Add(elevatorDoor.netIdentity);
 
             DoorVariant door;
-            foreach (var item in ElevatorDoors)
+            foreach (var (Pos, Size, Rot) in ElevatorDoors)
             {
                 Log.Debug("Spawning Door");
                 //Door
-                door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, item.Pos + offset, item.Rot, item.Size);
+                door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, Pos + offset, Rot, Size);
                 door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 (door as BreakableDoor)._brokenPrefab = null;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
                 networkIdentities.Add(door.netIdentity);
                 //Card
-                SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0) + offset, item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
+                SpawnItem(keycardType, Pos - new Vector3(1.65f, 0, 0) + offset, Rot, new Vector3(Size.x * 9, Size.y * 410, Size.z * 2));
                 Log.Debug("Spawned Door");
             }
 

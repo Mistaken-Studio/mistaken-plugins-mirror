@@ -217,13 +217,13 @@ namespace Gamer.Mistaken.CassieRoom
                 SpawnItem(keycardType, new Vector3(188f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(70, 500, 2));
                 SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
 
-                foreach (var item in Doors)
+                foreach (var (Pos, Size, Rot) in Doors)
                 {
                     Log.Debug("Spawning Door");
                     //Door
-                    SpawnDoor(null, item.Pos, item.Rot, item.Size);
+                    SpawnDoor(null, Pos, Rot, Size);
                     //Card
-                    SpawnItem(keycardType, item.Pos - new Vector3(1.65f, 0, 0), item.Rot, new Vector3(item.Size.x * 9, item.Size.y * 410, item.Size.z * 2));
+                    SpawnItem(keycardType, Pos - new Vector3(1.65f, 0, 0), Rot, new Vector3(Size.x * 9, Size.y * 410, Size.z * 2));
                     Log.Debug("Spawned Door");
                 }
 
