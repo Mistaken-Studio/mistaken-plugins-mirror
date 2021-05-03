@@ -25,11 +25,23 @@ namespace Gamer.Mistaken.Systems.End
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
+
+        private void Server_RoundStarted()
+        {
+            if(RequestRestart)
+            {
+                ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                PlayerStats.StaticChangeLevel(true);
+            }
+        }
+
 #pragma warning disable CS0649
         private struct Artifacts
         {
@@ -50,6 +62,7 @@ namespace Gamer.Mistaken.Systems.End
             public DateTime updated_at;
         }
 #pragma warning restore CS0649
+        public static bool RequestRestart = false;
 
         private static readonly string VersionPath = Paths.Configs + "/PluginsVersion.txt";
         private async void Server_RestartingRound()
@@ -78,10 +91,26 @@ namespace Gamer.Mistaken.Systems.End
                             artifact = item;
                         }
                     }
+                    if(File.Exists(Paths.Plugins + "/Extracted/plugins.version.txt"))
+                    {
+                        var fileVer = File.ReadAllText(Paths.Plugins + "/Extracted/plugins.version.txt");
+                        if (fileVer == artifact.node_id)
+                        {
+                            Log.Debug("File Version is equal to node id");
+                            return;
+                        }
+                        Log.Debug($"File Version missmatch | {fileVer} | {artifact.node_id}");
+                    }
+                    else
+                        Log.Debug("File Version not found");
                     var responseRaw = await github.Connection.GetRaw(new Uri(artifact.archive_download_url), new System.Collections.Generic.Dictionary<string, string>());
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.zip", responseRaw.Body);
+                    File.Delete(Paths.Plugins + "/Extracted/plugins.tar.gz");
                     ZipFile.ExtractToDirectory(Paths.Plugins + "/Extracted/plugins.zip", Paths.Plugins + "/Extracted");
                     UpdateLate();
+                    File.WriteAllText(Paths.Plugins + "/Extracted/plugins.version.txt", artifact.node_id);
+                    RequestRestart = true;
+                    ServerConsole.EnterCommand("rnr", out _);
                 }
             }
             else
@@ -114,32 +143,13 @@ namespace Gamer.Mistaken.Systems.End
                     var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate();
+                    RequestServersRestart();
                     File.WriteAllText(VersionPath, release.TagName);
                 }
             }
         }
-
-        private static void UpdateLate()
+        private static void RequestServersRestart()
         {
-            string sourceDirectory = Paths.Plugins + "/Extracted";
-            using (var inputStream = File.OpenRead(sourceDirectory + "/plugins.tar.gz"))
-            {
-                using (var outputStream = File.Create(sourceDirectory + "/plugins.tar"))
-                {
-                    using (GZipStream decompresionStream = new GZipStream(inputStream, CompressionMode.Decompress))
-                    {
-                        decompresionStream.CopyTo(outputStream);
-                    }
-                }
-            }
-            if (Directory.Exists(sourceDirectory + "/plugins"))
-                Directory.Delete(sourceDirectory + "/plugins", true);
-            using (var stream = File.OpenRead(sourceDirectory + "/plugins.tar"))
-                ExtractTar(stream, sourceDirectory);
-            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins"))
-                File.Copy(item, Paths.Plugins + "/" + item.Split('/').Last(), true);
-            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
-                File.Copy(item, Paths.Dependencies + "/" + item.Split('/').Last(), true);
             SSL.Client.Send(MessageType.CMD_MULTI_MESSAGE, new MultiMessage
             {
                 Messages = new Message[]
@@ -186,6 +196,30 @@ namespace Gamer.Mistaken.Systems.End
                     }
                 }
             });
+        }
+
+        private static void UpdateLate()
+        {
+            string sourceDirectory = Paths.Plugins + "/Extracted";
+            using (var inputStream = File.OpenRead(sourceDirectory + "/plugins.tar.gz"))
+            {
+                using (var outputStream = File.Create(sourceDirectory + "/plugins.tar"))
+                {
+                    using (GZipStream decompresionStream = new GZipStream(inputStream, CompressionMode.Decompress))
+                    {
+                        decompresionStream.CopyTo(outputStream);
+                    }
+                }
+            }
+            if (Directory.Exists(sourceDirectory + "/plugins"))
+                Directory.Delete(sourceDirectory + "/plugins", true);
+            using (var stream = File.OpenRead(sourceDirectory + "/plugins.tar"))
+                ExtractTar(stream, sourceDirectory);
+            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins"))
+                File.Copy(item, Paths.Plugins + "/" + item.Split('/').Last(), true);
+            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
+                File.Copy(item, Paths.Dependencies + "/" + item.Split('/').Last(), true);
+            
         }
 
         public static void ExtractTar(Stream stream, string outputDir)
