@@ -101,6 +101,7 @@ namespace Gamer.Mistaken.Systems.End
                     File.Delete(Paths.Plugins + "/Extracted/plugins.tar.gz");
                     ZipFile.ExtractToDirectory(Paths.Plugins + "/Extracted/plugins.zip", Paths.Plugins + "/Extracted");
                     UpdateLate();
+                    File.WriteAllText(Paths.Plugins + "/Extracted/plugins.version.txt", artifact.node_id);
                     RequestRestart = true;
                     ServerConsole.EnterCommand("rnr", out _);
                 }
