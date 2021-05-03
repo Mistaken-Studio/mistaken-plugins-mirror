@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace Gamer.Mistaken.Systems.End
@@ -18,8 +19,7 @@ namespace Gamer.Mistaken.Systems.End
     {
         public AutoUpdateHandler(PluginHandler p) : base(p)
         {
-            if (Server.Port == 7790)
-                this.Enabled = false;
+            //this.Enabled = false;
         }
         public override string Name => "AutoUpdate";
         public override void OnEnable()
@@ -30,6 +30,26 @@ namespace Gamer.Mistaken.Systems.End
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
+#pragma warning disable CS0649
+        private struct Artifacts
+        {
+            public int total_count;
+            public Artifact[] artifacts;
+        }
+        private struct Artifact
+        {
+            public int id;
+            public string node_id;
+            public string name;
+            public ulong size_in_bytes;
+            public string url;
+            public string archive_download_url;
+            public bool expired;
+            public DateTime created_at;
+            public DateTime expires_at;
+            public DateTime updated_at;
+        }
+#pragma warning restore CS0649
 
         private static readonly string VersionPath = Paths.Configs + "/PluginsVersion.txt";
         private async void Server_RestartingRound()
@@ -41,19 +61,45 @@ namespace Gamer.Mistaken.Systems.End
             {
                 Credentials = tokenAuth
             };
-            var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
-            if (!File.Exists(VersionPath))
+            if (Server.Port == 7790)
             {
-                File.Create(VersionPath).Close();
-                File.WriteAllText(VersionPath, release.TagName);
+                var url = $"https://api.github.com/repos/Mistaken-Studio/SL-Plugin/actions/artifacts";
+                using (var client = new WebClient())
+                {
+                    var result = await github.Connection.GetHtml(new Uri(url));
+                    var obj = result.Body.DeserializeJson<Artifacts>();
+                    Artifact artifact = obj.artifacts.FirstOrDefault();
+                    long max = 0;
+                    foreach (var item in obj.artifacts)
+                    {
+                        if (item.expires_at.Ticks > max)
+                        {
+                            max = item.expires_at.Ticks;
+                            artifact = item;
+                        }
+                    }
+                    var responseRaw = await github.Connection.GetRaw(new Uri(artifact.archive_download_url), new System.Collections.Generic.Dictionary<string, string>());
+                    File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.zip", responseRaw.Body);
+                    ZipFile.ExtractToDirectory(Paths.Plugins + "/Extracted/plugins.zip", Paths.Plugins + "/Extracted");
+                    UpdateLate();
+                }
             }
             else
             {
-                var version = File.ReadAllText(VersionPath);
-                if (version != release.TagName)
+                var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
+                if (!File.Exists(VersionPath))
                 {
-                    RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
-                    Update(release, github);
+                    File.Create(VersionPath).Close();
+                    File.WriteAllText(VersionPath, release.TagName);
+                }
+                else
+                {
+                    var version = File.ReadAllText(VersionPath);
+                    if (version != release.TagName)
+                    {
+                        RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
+                        Update(release, github);
+                    }
                 }
             }
         }
@@ -67,12 +113,13 @@ namespace Gamer.Mistaken.Systems.End
                 {
                     var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
-                    UpdateLate(release);
+                    UpdateLate();
+                    File.WriteAllText(VersionPath, release.TagName);
                 }
             }
         }
 
-        private static void UpdateLate(Release release)
+        private static void UpdateLate()
         {
             string sourceDirectory = Paths.Plugins + "/Extracted";
             using (var inputStream = File.OpenRead(sourceDirectory + "/plugins.tar.gz"))
@@ -139,7 +186,6 @@ namespace Gamer.Mistaken.Systems.End
                     }
                 }
             });
-            File.WriteAllText(VersionPath, release.TagName);
         }
 
         public static void ExtractTar(Stream stream, string outputDir)
