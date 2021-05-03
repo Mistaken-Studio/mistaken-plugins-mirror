@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Release Test
+name: Release with params
 
 on: 
  workflow_dispatch:
@@ -8,6 +8,9 @@ on:
    version:
     description: 'Podaj wersję pluginów do release'     
     required: true
+   name:
+    description: 'Podaj nazwę wersji'     
+    required: false
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -41,7 +44,7 @@ jobs:
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
-          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }}
+          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
         shell: cmd
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
