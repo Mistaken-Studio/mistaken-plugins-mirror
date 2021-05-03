@@ -41,14 +41,6 @@ namespace Xname.ColorfullEZ
                 case "false":
                     ColorfullEZHandler.DesyncFor(sender.GetPlayer());
                     break;
-                case "dynamic":
-                    ColorfullEZHandler.DesyncFor(sender.GetPlayer());
-                    //ColorfullEZHandler.SyncDynamicFor.Add(sender.GetPlayer());
-                    break;
-                case "static":
-                    //ColorfullEZHandler.SyncDynamicFor.Remove(sender.GetPlayer());
-                    ColorfullEZHandler.SyncFor(sender.GetPlayer());
-                    break;
                 default:
                     ColorfullEZHandler.Generate((ItemType)byte.Parse(args[0]));
                     break;
