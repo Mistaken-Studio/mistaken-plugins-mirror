@@ -46,6 +46,17 @@ jobs:
           echo ---------
           %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
         shell: cmd
+      - name: Bump version
+        uses: actions-go/push@v1
+        with:
+          # The email that will appear in commits when changes needs to be committed
+          author-email: ci@mistaken.pl# optional, default is actions-go@users.noreply.github.com
+          # The name that will appear in commits when changes needs to be committed
+          author-name: CI# optional, default is ActionsGo Bot
+          # Instructs to create a commit with changed files
+          commit-files: version # optional
+          # The commit message used when changes needs to be committed
+          commit-message: Bump version
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
