@@ -93,9 +93,16 @@ namespace Gamer.Mistaken.Systems.End
                     }
                     if(File.Exists(Paths.Plugins + "/Extracted/plugins.version.txt"))
                     {
-                        if (File.ReadAllText(Paths.Plugins + "/Extracted/plugins.version.txt") == artifact.node_id)
+                        var fileVer = File.ReadAllText(Paths.Plugins + "/Extracted/plugins.version.txt");
+                        if (fileVer == artifact.node_id)
+                        {
+                            Log.Debug("File Version is equal to node id");
                             return;
+                        }
+                        Log.Debug($"File Version missmatch | {fileVer} | {artifact.node_id}");
                     }
+                    else
+                        Log.Debug("File Version not found");
                     var responseRaw = await github.Connection.GetRaw(new Uri(artifact.archive_download_url), new System.Collections.Generic.Dictionary<string, string>());
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.zip", responseRaw.Body);
                     File.Delete(Paths.Plugins + "/Extracted/plugins.tar.gz");
