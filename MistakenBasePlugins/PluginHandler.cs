@@ -22,6 +22,7 @@ namespace Gamer.Mistaken.Base
             new GUI.PseudoGUIHandler(this);
             new Staff.StaffHandler(this);
             new CustomItems.CustomItemsHandler(this);
+            new ExperimentalHandler(this);
 
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
