@@ -63,6 +63,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\BaseGame\CommandSystem.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Exiled.API, Version=2.2.4.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Exiled.API.dll</HintPath>
