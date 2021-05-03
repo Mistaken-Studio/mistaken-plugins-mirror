@@ -173,8 +173,10 @@ namespace Xname.ImpactGrenade
         private bool used;
         private void OnCollisionEnter(Collision collision)
         {
-            if (!used)
-                GetComponent<FragGrenade>().NetworkfuseTime = 0.01f;
+            if (!used && TryGetComponent<FragGrenade>(out FragGrenade frag))
+                frag.NetworkfuseTime = 0.01f;
+            else if (!used && TryGetComponent<FlashGrenade>(out FlashGrenade flash))
+                flash.NetworkfuseTime = 0.01f;
             used = true;
         }
     }
