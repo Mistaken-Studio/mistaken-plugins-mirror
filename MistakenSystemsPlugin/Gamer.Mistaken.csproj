@@ -346,7 +346,7 @@
     <Compile Include="Systems\ThreatLevel\ThreatLevelManager.cs" />
     <Compile Include="Systems\Utilities\API.cs" />
     <Compile Include="Systems\Utilities\UtilitiesHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Systems\Bans\BansManager.cs" />
     <Compile Include="Systems\SystemsHandler.cs" />
     <Compile Include="CassieRoom\CassieRoomHandler.cs" />

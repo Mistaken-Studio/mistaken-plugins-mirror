@@ -15,15 +15,13 @@ namespace Gamer.Mistaken.Base
     /// <inheritdoc/>
     public class ExperimentalHandler : Diagnostics.Module
     {
-        private const string Message = "Trwają testy ColorfulEZ (Kolorowy EZ), z powodu testów nie da się go wyłączyć oraz może powodować problemy lub lagi serwera";
         /// <inheritdoc/>
-        public override bool Enabled => false;
+        public override bool Enabled => Version.Debug;
         /// <inheritdoc/>
         public override bool IsBasic => true;
         /// <inheritdoc/>
         public ExperimentalHandler(PluginHandler p) : base(p)
         {
-            PluginsVersion = Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         /// <inheritdoc/>
@@ -38,13 +36,10 @@ namespace Gamer.Mistaken.Base
         {
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
-        /// <summary>
-        /// Current plugins version
-        /// </summary>
-        public static Version PluginsVersion { get; private set; }
+
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br><size=33%>{Message}</size> | Wersja pluginów: {PluginsVersion}</size>");
+            ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br>Wersja pluginów: {Version.CurrentVersion}</size>");
         }
     }
 }
