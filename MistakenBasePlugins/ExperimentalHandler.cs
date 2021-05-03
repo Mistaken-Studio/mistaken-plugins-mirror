@@ -42,4 +42,19 @@ namespace Gamer.Mistaken.Base
             ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br>Wersja pluginów: {Version.CurrentVersion}</size>");
         }
     }
+    /// <inheritdoc/>
+    [CommandSystem.CommandHandler(typeof(CommandSystem.ClientCommandHandler))]
+    public class CommandHandler : IBetterCommand
+    {
+        /// <inheritdoc/>
+        public override string Command => "version";
+        /// <inheritdoc/>
+        public override string[] Aliases => new string[] { "v" };
+        /// <inheritdoc/>
+        public override string[] Execute(CommandSystem.ICommandSender sender, string[] args, out bool success)
+        {
+            success = true;
+            return new string[] { "Version: " + Version.CurrentVersion, "Debug: " + Version.Debug };
+        }
+    }
 }
