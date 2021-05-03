@@ -10,7 +10,7 @@
 
 [assembly: System.Reflection.AssemblyCompany("Mistaken")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright Mistaken, All rights reserved.")]
-[assembly: System.Reflection.AssemblyFileVersion("2.1.3.7")]
-[assembly: System.Reflection.AssemblyVersion("2.1.3.7")]
+[assembly: System.Reflection.AssemblyFileVersion("3.0.0.0")]
+[assembly: System.Reflection.AssemblyVersion("3.0.0.0")]
 
 
