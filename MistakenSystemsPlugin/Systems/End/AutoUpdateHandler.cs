@@ -25,11 +25,23 @@ namespace Gamer.Mistaken.Systems.End
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
+
+        private void Server_RoundStarted()
+        {
+            if(RequestRestart)
+            {
+                ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                PlayerStats.StaticChangeLevel(true);
+            }
+        }
+
 #pragma warning disable CS0649
         private struct Artifacts
         {
@@ -50,6 +62,7 @@ namespace Gamer.Mistaken.Systems.End
             public DateTime updated_at;
         }
 #pragma warning restore CS0649
+        public static bool RequestRestart = false;
 
         private static readonly string VersionPath = Paths.Configs + "/PluginsVersion.txt";
         private async void Server_RestartingRound()
@@ -78,10 +91,18 @@ namespace Gamer.Mistaken.Systems.End
                             artifact = item;
                         }
                     }
+                    if(File.Exists(Paths.Plugins + "/Extracted/plugins.version.txt"))
+                    {
+                        if (File.ReadAllText(Paths.Plugins + "/Extracted/plugins.version.txt") == artifact.node_id)
+                            return;
+                    }
                     var responseRaw = await github.Connection.GetRaw(new Uri(artifact.archive_download_url), new System.Collections.Generic.Dictionary<string, string>());
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.zip", responseRaw.Body);
+                    File.Delete(Paths.Plugins + "/Extracted/plugins.tar.gz");
                     ZipFile.ExtractToDirectory(Paths.Plugins + "/Extracted/plugins.zip", Paths.Plugins + "/Extracted");
                     UpdateLate();
+                    RequestRestart = true;
+                    ServerConsole.EnterCommand("rnr", out _);
                 }
             }
             else
