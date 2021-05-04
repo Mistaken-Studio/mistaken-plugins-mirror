@@ -16,7 +16,7 @@ namespace Gamer.Diagnostics
     public static class MasterHandler
     {
         private const ushort CI_TEST_SERVER_PORT = 8050;
-        private static Status _status = new Status(0);
+        internal static Status _status = new Status(0);
         /// <summary>
         /// Run Status
         /// </summary>
@@ -31,11 +31,21 @@ namespace Gamer.Diagnostics
             /// </summary>
             public List<Exception> Exceptions;
             /// <summary>
+            /// Loaded Modules
+            /// </summary>
+            public byte LoadedModules;
+            /// <summary>
+            /// Loaded Plugins
+            /// </summary>
+            public byte LoadedPlugins;
+            /// <summary>
             /// Constructor
             /// </summary>
             public Status(byte _)
             {
                 StatusCode = 0;
+                LoadedModules = 0;
+                LoadedPlugins = 0;
                 Exceptions = new List<Exception>();
             }
         }
@@ -371,9 +381,13 @@ namespace Gamer.Diagnostics
             this.Log = new __Log(Name);
             this.plugin = plugin;
             if (!Modules.ContainsKey(plugin))
+            {
+                MasterHandler._status.LoadedPlugins++;
                 Modules.Add(plugin, new List<Module>());
+            }
             Modules[plugin].RemoveAll(i => i.Name == Name);
             Modules[plugin].Add(this);
+            MasterHandler._status.LoadedModules++;
         }
         /// <summary>
         /// Enables all modules that has <see cref="Module.Enabled"/> set to <see langword="true"/> from specific plugin
