@@ -37,19 +37,14 @@ namespace Gamer.Mistaken.Systems.Patches
         }
         public static bool Recontained { get; private set; } = false;
 
-        public static CoroutineHandle? Handle;
-
         public static bool Prefix(bool forced)
         {
-            //Timing.RunCoroutine(SCP079RecontainPatch._Recontain(forced).CancelWith(Recontainer079.singleton.gameObject), Segment.FixedUpdate);
-            SCP079RecontainInfoPatch.Postfix(forced);
-            return true;
+            Timing.RunCoroutine(SCP079RecontainPatch._Recontain(forced).CancelWith(Recontainer079.singleton.gameObject), Segment.FixedUpdate);
+            return false;
         }
 
         public static void Restart()
         {
-            if (Handle.HasValue)
-                Timing.KillCoroutines(Handle.Value);
             Waiting = false;
             SecondsLeft = -1;
             Recontained = false;
@@ -157,6 +152,7 @@ namespace Gamer.Mistaken.Systems.Patches
         public static void Postfix(bool forced)
         {
             Recontaining = true;
+            Log.Debug("RUN POSTFIX ON Recontainer079.BeginContainment");
         }
 
         public static void Restart()

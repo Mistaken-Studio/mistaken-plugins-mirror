@@ -41,9 +41,21 @@ namespace Xname.ColorfullEZ
                     var start = DateTime.Now;
                     foreach (var player in RealPlayers.List)
                     {
+                        if (SkipFor.Contains(player))
+                        {
+                            if (!Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
+                                SkipFor.Remove(player);
+                        }
+                        else
+                        {
+                            if (Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
+                                SkipFor.Add(player);
+                        }
                         tmp.Clear();
                         if (player.Role == RoleType.Spectator || player.Role == RoleType.Scp079)
                         {
+                            if (SkipFor.Contains(player))
+                                continue;
                             if (LoadedAll.Contains(player))
                                 continue;
                             LoadedAll.Add(player);
@@ -70,7 +82,7 @@ namespace Xname.ColorfullEZ
                             {
                                 foreach (var item in Keycards)
                                 {
-                                    if (UnityEngine.Vector3.Distance(item.Key.Position, player.Position) < 40)
+                                    if (UnityEngine.Vector3.Distance(item.Key.Position, player.Position) < 50)
                                         tmp.AddRange(item.Value);
                                 }
                             }
@@ -103,8 +115,8 @@ namespace Xname.ColorfullEZ
                                     MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
                                     sendSpawnMessage.Invoke(null, new object[]
                                     {
-                                    netid,
-                                    player.Connection
+                                        netid,
+                                        player.Connection
                                     });
                                     loadedFor.Add(netid);
                                 }
@@ -130,6 +142,8 @@ namespace Xname.ColorfullEZ
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
 
         /// <inheritdoc/>
@@ -137,23 +151,33 @@ namespace Xname.ColorfullEZ
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
+
+        private void Player_Died(DiedEventArgs ev)
+        {
+            if (SkipFor.Contains(ev.Target))
+                DesyncSyncedFor(ev.Target);
+        }
+
+        private void Player_ChangingRole(ChangingRoleEventArgs ev)
+        {
+            if(SkipFor.Contains(ev.Player) && (ev.NewRole == RoleType.Spectator || ev.NewRole == RoleType.Scp079))
+                DesyncSyncedFor(ev.Player);
+        }
+
         internal static readonly Dictionary<Player, List<NetworkIdentity>> LoadedFor = new Dictionary<Player, List<NetworkIdentity>>();
         internal static readonly Dictionary<Player, Room> LastRooms = new Dictionary<Player, Room>();
         internal static readonly HashSet<Room> HCZRooms = new HashSet<Room>();
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
-
+        internal static readonly HashSet<Player> SkipFor = new HashSet<Player>();
         private void Player_Verified(VerifiedEventArgs ev)
         {
-            if ((Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] & Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ) != Gamer.API.PlayerPreferences.NONE)
-            {
-                Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] &= ~Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ;
-                SSL.Client.Send(MessageType.SL_SET_PLAYER_PREFERENCES, new SL_Player_Set_Preferences
-                {
-                    Player = ev.Player.UserId,
-                    Prefs = (SL_Player_Prefs)Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId]
-                });
-            }
+            if (Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
+                SkipFor.Add(ev.Player);
+            else
+                SkipFor.Remove(ev.Player);
         }
 
         internal static void SyncFor(Player player)
@@ -175,7 +199,7 @@ namespace Xname.ColorfullEZ
         private static MethodInfo removeFromVisList = null;
         internal static void DesyncFor(Player player)
         {
-            if(removeFromVisList == null)
+            if (removeFromVisList == null)
                 removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
             Log.Debug($"DeSyncing cards for {player.Nickname}");
             foreach (var netid in networkIdentities)
@@ -193,6 +217,32 @@ namespace Xname.ColorfullEZ
             }
             if(LoadedFor.ContainsKey(player))
                 LoadedFor[player].Clear();
+        }
+
+        internal static void DesyncSyncedFor(Player player)
+        {
+            if (LoadedFor.TryGetValue(player, out var loadedFor))
+            {
+                if (removeFromVisList == null)
+                    removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                Log.Debug($"DeSyncing Synced cards for {player.Nickname}");
+                foreach (var netid in loadedFor.ToArray())
+                {
+                    ObjectDestroyMessage msg = new ObjectDestroyMessage
+                    {
+                        netId = netid.netId
+                    };
+                    NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                    if (netid.observers.ContainsKey(player.Connection.connectionId))
+                    {
+                        netid.observers.Remove(player.Connection.connectionId);
+                        removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
+                    }
+                    loadedFor.Remove(netid);
+                }
+            }
+            else
+                Log.Debug($"No cards to DeSync for {player.Nickname}");
         }
 
         /// <summary>
@@ -238,6 +288,7 @@ namespace Xname.ColorfullEZ
             LoadedFor.Clear();
             HCZRooms.Clear();
             LoadedAll.Clear();
+            SkipFor.Clear();
         }
         private static readonly Dictionary<Room, List<NetworkIdentity>> Keycards = new Dictionary<Room, List<NetworkIdentity>>();
         private static readonly List<GameObject> KeycardsGameObjects = new List<GameObject>();
