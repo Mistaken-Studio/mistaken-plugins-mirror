@@ -12,6 +12,7 @@ using System.Linq;
 using UnityEngine;
 using Gamer.API.CustomItem;
 using Interactables.Interobjects;
+using Interactables.Interobjects.DoorUtils;
 
 namespace Gamer.SNAV
 {
@@ -1429,66 +1430,70 @@ __|  /‾‾‾‾|   '  |
                 //= - góra
                 //+ - dolne
                 var doors = room.Doors.ToList();
+                var tmp = new Dictionary<DoorVariant, int>();
+                foreach (var item in doors)
+                {
+                    float def = Vector3.Distance(item.transform.position, room.GetByRoomOffset(Vector3.zero));
+                    if (def > Vector3.Distance(item.transform.position, room.GetByRoomOffset(Vector3.right)))
+                        tmp[item] = 1;
+                    else if(def > Vector3.Distance(item.transform.position, room.GetByRoomOffset(Vector3.back)))
+                        tmp[item] = 2;
+                    else if (def > Vector3.Distance(item.transform.position, room.GetByRoomOffset(Vector3.left)))
+                        tmp[item] = 3;
+                    else if (def > Vector3.Distance(item.transform.position, room.GetByRoomOffset(Vector3.forward)))
+                        tmp[item] = 4;
+                    else
+                    {
+                        Log.Error("DOOR STUCK");
+                        tmp[item] = 5;
+                    }
+                }
+                if(room.Players.Any())
+                {
+                    foreach (var item in tmp)
+                        Log.Debug(item.Value + ": " + item.Key.NetworkTargetState);
+                }
+                doors.Sort((i, _j) => tmp[i] - tmp[_j]);
                 int j = 0;
                 int l = doors.Count;
                 for (int i = 0; i < data.Length; i++)
                 {
                     if (doors.Count == 0)
-                    {
-                        Log.Debug("Out of doors|1");
                         break;
-                    }
                     while (data[i].Contains("!"))
                     {
                         var door = doors.First();
-                        Log.Debug(door.name);
-                        Log.Debug(door.GetNametag());
-                        Log.Debug(door.transform.parent?.name);
                         int index = data[i].IndexOf('!');
                         data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
-                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//|
+                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>|</color>");//|
                         doors.RemoveAt(0);
                         j++;
                         if (doors.Count == 0)
-                        {
-                            Log.Debug("Out of doors|2");
                             break;
-                        }
                     }
                     while (data[i].Contains("~"))
                     {
                         var door = doors.First();
-                        Log.Debug(door.name);
-                        Log.Debug(door.GetNametag());
                         int index = data[i].IndexOf('~');
                         data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
-                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//_
+                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>_</color>");//_
                         doors.RemoveAt(0);
                         j++;
                         if (doors.Count == 0)
-                        {
-                            Log.Debug("Out of doors|3");
                             break;
-                        }
                     }
                     while (data[i].Contains("+"))
                     {
                         var door = doors.First();
-                        Log.Debug(door.name);
-                        Log.Debug(door.GetNametag());
                         int index = data[i].IndexOf('+');
                         data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
-                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//‾
+                        data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>‾</color>");//‾
                         doors.RemoveAt(0);
                         j++;
                         if (doors.Count == 0)
-                        {
-                            Log.Debug("Out of doors|4");
                             break;
-                        }
                     }
                 }
-                Log.Debug("NOT Out of doors|-1");
                 return data;
             }
             catch(System.Exception ex)
