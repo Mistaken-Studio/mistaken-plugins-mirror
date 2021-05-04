@@ -1416,10 +1416,12 @@ __|  /‾‾‾‾|   '  |
         /// <param name="type">Room Type</param>
         /// <returns>Preset</returns>
         public static string[] GetRoomString(SNavRoomType type) => Presets[type];
-        public static string[] GetDoorRoomString(string[] data, Room room)
+        public static string[] GetDoorRoomString(string[] _data, Room room)
         {
             if (room == null)
-                return data;
+                return _data;
+            string[] data = new string[_data.Length];
+            _data.CopyTo(data, 0);
             try
             {
                 //!=+
