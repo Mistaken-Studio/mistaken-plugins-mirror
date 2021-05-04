@@ -10,12 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Exiled.API.Extensions;
-using Gamer.Diagnostics;
 using Gamer.API.CustomItem;
-using Exiled.CustomItems.API.Features;
-using Exiled.CustomItems.API.Spawn;
-using Scp914;
 using Interactables.Interobjects;
 
 namespace Gamer.SNAV
