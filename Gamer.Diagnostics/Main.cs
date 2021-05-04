@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using MEC;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -327,6 +328,7 @@ namespace Gamer.Diagnostics
         /// <summary>
         /// Plugin that this module belong to
         /// </summary>
+        [JsonIgnore]
         protected readonly IPlugin<IConfig> plugin;
         /// <summary>
         /// If is requied for basic functions
@@ -335,13 +337,14 @@ namespace Gamer.Diagnostics
         /// <summary>
         /// Used to use special logging method
         /// </summary>
-        protected __Log Log => new __Log(Name);
+        protected __Log Log { get; }
         /// <summary>
         /// Default Constructor
         /// </summary>
         /// <param name="plugin">Plugin creating module</param>
         public Module(IPlugin<IConfig> plugin)
         {
+            this.Log = new __Log(Name);
             this.plugin = plugin;
             if (!Modules.ContainsKey(plugin))
                 Modules.Add(plugin, new List<Module>());
