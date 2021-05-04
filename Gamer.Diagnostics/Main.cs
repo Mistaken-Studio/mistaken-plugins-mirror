@@ -17,20 +17,44 @@ namespace Gamer.Diagnostics
     {
         private const ushort CI_TEST_SERVER_PORT = 8050;
         private static Status _status = new Status(0);
+        /// <summary>
+        /// Run Status
+        /// </summary>
         public struct Status
         {
+            /// <summary>
+            /// Run Status Code
+            /// </summary>
             public byte StatusCode;
+            /// <summary>
+            /// Run Exceptions
+            /// </summary>
             public List<Exception> Exceptions;
+            /// <summary>
+            /// Constructor
+            /// </summary>
             public Status(byte _)
             {
                 StatusCode = 0;
                 Exceptions = new List<Exception>();
             }
         }
+        /// <summary>
+        /// Exception Info
+        /// </summary>
         public struct Exception
         {
+            /// <summary>
+            /// Thrown Exception
+            /// </summary>
             public System.Exception ex;
+            /// <summary>
+            /// Module throwing exception
+            /// </summary>
             public Module module;
+            /// <summary>
+            /// Handler Name
+            /// </summary>
             public string Name;
         }
         internal static void LogError(System.Exception ex, Module module, string Name)
