@@ -16,6 +16,7 @@ namespace Xname.ImpactGrenade
         public override void OnEnabled()
         {
             new ImpHandler(this);
+            new FlashImpHandler(this);
             Gamer.Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }
