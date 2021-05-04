@@ -1432,7 +1432,10 @@ __|  /‾‾‾‾|   '  |
                 for (int i = 0; i < data.Length; i++)
                 {
                     if (doors.Count == 0)
+                    {
+                        Log.Debug("Out of doors|1");
                         break;
+                    }
                     while (data[i].Contains("!"))
                     {
                         var door = doors.First();
@@ -1444,7 +1447,10 @@ __|  /‾‾‾‾|   '  |
                         doors.RemoveAt(0);
                         j++;
                         if (doors.Count == 0)
+                        {
+                            Log.Debug("Out of doors|2");
                             break;
+                        }
                     }
                     while (data[i].Contains("~"))
                     {
@@ -1457,7 +1463,10 @@ __|  /‾‾‾‾|   '  |
                         doors.RemoveAt(0);
                         j++;
                         if (doors.Count == 0)
+                        {
+                            Log.Debug("Out of doors|3");
                             break;
+                        }
                     }
                     while (data[i].Contains("+"))
                     {
@@ -1470,7 +1479,10 @@ __|  /‾‾‾‾|   '  |
                         doors.RemoveAt(0);
                         j++;
                         if (doors.Count == 0)
+                        {
+                            Log.Debug("Out of doors|4");
                             break;
+                        }
                     }
                 }
                 return data;
