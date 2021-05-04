@@ -74,7 +74,7 @@ namespace Gamer.Mistaken.Systems.End
             {
                 Credentials = tokenAuth
             };
-            if (Server.Port == 7790)
+            if (Base.PluginHandler.Config.IsExperimentalServer)
             {
                 var url = $"https://api.github.com/repos/Mistaken-Studio/SL-Plugin/actions/artifacts";
                 using (var client = new WebClient())

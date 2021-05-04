@@ -5,8 +5,9 @@ using Gamer.API;
 namespace Gamer.Mistaken.Base
 {
     /// <inheritdoc/>
-    public class PluginHandler : Plugin<Config>
+    public class PluginHandler : Plugin<ConfigPlus>
     {
+        public static new ConfigPlus Config;
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Highest - 2;
         /// <inheritdoc/>
@@ -18,6 +19,7 @@ namespace Gamer.Mistaken.Base
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            PluginHandler.Config = base.Config as ConfigPlus;
             new CustomInfoHandler(this);
             new GUI.PseudoGUIHandler(this);
             new Staff.StaffHandler(this);
@@ -33,5 +35,9 @@ namespace Gamer.Mistaken.Base
             Diagnostics.Module.OnDisable(this);
             base.OnDisabled();
         }
+    }
+    public class ConfigPlus : Config
+    {
+        public bool IsExperimentalServer = false;
     }
 }
