@@ -14,6 +14,38 @@ namespace Gamer.Diagnostics
     /// </summary>
     public static class MasterHandler
     {
+        private const ushort CI_TEST_SERVER_PORT = 8050;
+        private static Status _status = new Status(0);
+        public struct Status
+        {
+            public byte StatusCode;
+            public List<Exception> Exceptions;
+            public Status(byte _)
+            {
+                StatusCode = 0;
+                Exceptions = new List<Exception>();
+            }
+        }
+        public struct Exception
+        {
+            public System.Exception ex;
+            public Module module;
+            public string Name;
+        }
+        internal static void LogError(System.Exception ex, Module module, string Name)
+        {
+            if (Server.Port != CI_TEST_SERVER_PORT)
+                return;
+            _status.StatusCode = 1;
+            _status.Exceptions.Add(new Exception
+            {
+                ex = ex,
+                module = module,
+                Name = Name
+            });
+            File.WriteAllText(Path.Combine(Paths.Exiled, "RunResult.txt"), Newtonsoft.Json.JsonConvert.SerializeObject(_status));
+        }
+
         /// <summary>
         /// Handlers bound to Module
         /// </summary>
@@ -46,6 +78,7 @@ namespace Gamer.Diagnostics
                     Log.Error($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] Caused Exception");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
+                    LogError(ex, module, Name);
                     ErrorBacklog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] Caused Exception");
                     ErrorBacklog.Add(ex.Message);
                     ErrorBacklog.Add(ex.StackTrace);
@@ -97,6 +130,7 @@ namespace Gamer.Diagnostics
                         Log.Error($"[{module.Name}: {ev.GetType().Name}] Caused Exception");
                         Log.Error(ex.Message);
                         Log.Error(ex.StackTrace);
+                        LogError(ex, module, ev.GetType().Name);
                         ErrorBacklog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
                         ErrorBacklog.Add(ex.Message);
                         ErrorBacklog.Add(ex.StackTrace);
@@ -131,6 +165,11 @@ namespace Gamer.Diagnostics
             Log.Debug($"Called Ini");
             if (Initiated)
                 return;
+            if (Server.Port == CI_TEST_SERVER_PORT)
+            {
+                _status = new Status(0);
+                File.WriteAllText(Path.Combine(Paths.Exiled, "RunResult.txt"), Newtonsoft.Json.JsonConvert.SerializeObject(_status));
+            }
             Timing.RunCoroutine(SaveLoop());
             Initiated = true;
             RoundLoggerSystem.RoundLogger.IniIfNotAlready();
@@ -319,7 +358,14 @@ namespace Gamer.Diagnostics
             {
                 MasterHandler.Ini();
                 Exiled.API.Features.Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                item.OnEnable();
+                try
+                {
+                    item.OnEnable();
+                }
+                catch(System.Exception ex)
+                {
+                    MasterHandler.LogError(ex, item, "ENABLING");
+                }
                 Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
@@ -333,7 +379,14 @@ namespace Gamer.Diagnostics
             {
                 MasterHandler.Ini();
                 Exiled.API.Features.Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                item.OnDisable();
+                try
+                {
+                    item.OnDisable();
+                }
+                catch (System.Exception ex)
+                {
+                    MasterHandler.LogError(ex, item, "DISABLING");
+                }
                 Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
@@ -349,7 +402,14 @@ namespace Gamer.Diagnostics
                 {
                     MasterHandler.Ini();
                     Exiled.API.Features.Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                    item.OnEnable();
+                    try
+                    {
+                        item.OnEnable();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        MasterHandler.LogError(ex, item, "ENABLING");
+                    }
                     Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
                 }
             }
@@ -366,7 +426,14 @@ namespace Gamer.Diagnostics
                 {
                     MasterHandler.Ini();
                     Exiled.API.Features.Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                    item.OnDisable();
+                    try
+                    {
+                        item.OnDisable();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        MasterHandler.LogError(ex, item, "DISABLING");
+                    }
                     Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
                 }
             }
