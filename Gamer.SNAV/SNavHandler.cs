@@ -1443,6 +1443,7 @@ __|  /‾‾‾‾|   '  |
                         var door = doors.First();
                         Log.Debug(door.name);
                         Log.Debug(door.GetNametag());
+                        Log.Debug(door.transform.parent?.name);
                         int index = data[i].IndexOf('!');
                         data[i] = data[i].Substring(0, index) + data[i].Substring(index + 1);
                         data[i] = data[i].Insert(index, $"<color={((door is BreakableDoor bdoor && bdoor.IsDestroyed) ? "red" : door.IsConsideredOpen() ? "green" : "blue")}>{l}</color>");//|
