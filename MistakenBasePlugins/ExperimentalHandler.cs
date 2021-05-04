@@ -39,6 +39,7 @@ namespace Gamer.Mistaken.Base
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
+            Round.IsLocked = true;
             ev.Player.SetGUI("experimental", PseudoGUIHandler.Position.BOTTOM, $"<size=50%>Serwer jest w trybie <color=yellow>eksperymentalnym</color>, mogą wystąpić <b>lagi</b> lub błędy<br>Wersja pluginów: {Version.CurrentVersion}</size>");
         }
     }
