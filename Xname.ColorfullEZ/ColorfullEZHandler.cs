@@ -132,6 +132,7 @@ namespace Xname.ColorfullEZ
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
 
         /// <inheritdoc/>
@@ -139,7 +140,15 @@ namespace Xname.ColorfullEZ
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
+
+        private void Player_ChangingRole(ChangingRoleEventArgs ev)
+        {
+            if(SkipFor.Contains(ev.Player) && (ev.NewRole == RoleType.Spectator || ev.NewRole == RoleType.Scp079))
+                DesyncSyncedFor(ev.Player);
+        }
+
         internal static readonly Dictionary<Player, List<NetworkIdentity>> LoadedFor = new Dictionary<Player, List<NetworkIdentity>>();
         internal static readonly Dictionary<Player, Room> LastRooms = new Dictionary<Player, Room>();
         internal static readonly HashSet<Room> HCZRooms = new HashSet<Room>();
@@ -190,6 +199,32 @@ namespace Xname.ColorfullEZ
             }
             if(LoadedFor.ContainsKey(player))
                 LoadedFor[player].Clear();
+        }
+
+        internal static void DesyncSyncedFor(Player player)
+        {
+            if (LoadedFor.TryGetValue(player, out var loadedFor))
+            {
+                if (removeFromVisList == null)
+                    removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                Log.Debug($"DeSyncing Synced cards for {player.Nickname}");
+                foreach (var netid in loadedFor.ToArray())
+                {
+                    ObjectDestroyMessage msg = new ObjectDestroyMessage
+                    {
+                        netId = netid.netId
+                    };
+                    NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                    if (netid.observers.ContainsKey(player.Connection.connectionId))
+                    {
+                        netid.observers.Remove(player.Connection.connectionId);
+                        removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
+                    }
+                    loadedFor.Remove(netid);
+                }
+            }
+            else
+                Log.Debug($"No cards to DeSync for {player.Nickname}");
         }
 
         /// <summary>
