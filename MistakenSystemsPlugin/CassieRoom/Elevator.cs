@@ -117,20 +117,6 @@ namespace Gamer.Mistaken.CassieRoom
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             DesyncFor(ev.Player);
-            return;
-            System.Reflection.MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
-            if (sendSpawnMessage != null)
-            {
-                Log.Debug("Syncing cards");
-                foreach (var netid in networkIdentities)
-                {
-                    sendSpawnMessage.Invoke(null, new object[]
-                    {
-                        netid,
-                        ev.Player.Connection
-                    });
-                }
-            }
         }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
