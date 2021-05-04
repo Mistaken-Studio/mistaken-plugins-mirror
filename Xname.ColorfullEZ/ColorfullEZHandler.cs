@@ -41,6 +41,16 @@ namespace Xname.ColorfullEZ
                     var start = DateTime.Now;
                     foreach (var player in RealPlayers.List)
                     {
+                        if (SkipFor.Contains(player))
+                        {
+                            if (!Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
+                                SkipFor.Remove(player);
+                        }
+                        else
+                        {
+                            if (Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
+                                SkipFor.Add(player);
+                        }
                         tmp.Clear();
                         if (player.Role == RoleType.Spectator || player.Role == RoleType.Scp079)
                         {
@@ -72,7 +82,7 @@ namespace Xname.ColorfullEZ
                             {
                                 foreach (var item in Keycards)
                                 {
-                                    if (UnityEngine.Vector3.Distance(item.Key.Position, player.Position) < 40)
+                                    if (UnityEngine.Vector3.Distance(item.Key.Position, player.Position) < 50)
                                         tmp.AddRange(item.Value);
                                 }
                             }
@@ -133,6 +143,7 @@ namespace Xname.ColorfullEZ
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
 
         /// <inheritdoc/>
@@ -141,6 +152,13 @@ namespace Xname.ColorfullEZ
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
+        }
+
+        private void Player_Died(DiedEventArgs ev)
+        {
+            if (SkipFor.Contains(ev.Target))
+                DesyncSyncedFor(ev.Target);
         }
 
         private void Player_ChangingRole(ChangingRoleEventArgs ev)
@@ -156,10 +174,10 @@ namespace Xname.ColorfullEZ
         internal static readonly HashSet<Player> SkipFor = new HashSet<Player>();
         private void Player_Verified(VerifiedEventArgs ev)
         {
-            if ((Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId] & Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079) != Gamer.API.PlayerPreferences.NONE)
-            {
+            if (Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[ev.Player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
                 SkipFor.Add(ev.Player);
-            }
+            else
+                SkipFor.Remove(ev.Player);
         }
 
         internal static void SyncFor(Player player)
