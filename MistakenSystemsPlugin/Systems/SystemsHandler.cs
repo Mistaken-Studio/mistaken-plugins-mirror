@@ -94,6 +94,7 @@ namespace Gamer.Mistaken.Systems
 
         public override void OnEnable()
         {
+            throw new Exception("Wywróć się");
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
             Exiled.Events.Handlers.Player.Left += this.Handle<Exiled.Events.EventArgs.LeftEventArgs>((ev) => Player_Left(ev));
             Exiled.Events.Handlers.Player.InteractingElevator += this.Handle<Exiled.Events.EventArgs.InteractingElevatorEventArgs>((ev) => Player_InteractingElevator(ev));
