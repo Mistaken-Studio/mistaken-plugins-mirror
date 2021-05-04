@@ -152,6 +152,7 @@ namespace Gamer.Mistaken.Systems.Patches
         public static void Postfix(bool forced)
         {
             Recontaining = true;
+            Log.Debug("RUN POSTFIX ON Recontainer079.BeginContainment");
         }
 
         public static void Restart()
