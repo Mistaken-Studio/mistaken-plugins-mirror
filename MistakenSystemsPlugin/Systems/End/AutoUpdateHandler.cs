@@ -216,9 +216,9 @@ namespace Gamer.Mistaken.Systems.End
             using (var stream = File.OpenRead(sourceDirectory + "/plugins.tar"))
                 ExtractTar(stream, sourceDirectory);
             foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins"))
-                File.Copy(item, Paths.Plugins + "/" + item.Split('/').Last(), true);
+                File.Copy(item, Paths.Plugins + "/" + Path.GetFileName(item), true);
             foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
-                File.Copy(item, Paths.Dependencies + "/" + item.Split('/').Last(), true);
+                File.Copy(item, Paths.Dependencies + "/" + Path.GetFileName(item), true);
             
         }
 
