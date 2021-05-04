@@ -1485,6 +1485,7 @@ __|  /‾‾‾‾|   '  |
                         }
                     }
                 }
+                Log.Debug("NOT Out of doors|-1");
                 return data;
             }
             catch(System.Exception ex)
