@@ -327,7 +327,7 @@ namespace Gamer.Diagnostics
         /// <summary>
         /// Plugin that this module belong to
         /// </summary>
-        public readonly IPlugin<IConfig> plugin;
+        protected readonly IPlugin<IConfig> plugin;
         /// <summary>
         /// If is requied for basic functions
         /// </summary>
