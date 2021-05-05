@@ -245,7 +245,7 @@ namespace Gamer.Mistaken.Systems.End
         }
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
-            RoundLogger.Log("NETWORK EVENT", "PLAYER PREAUTHED", $"Preauthing {ev.UserId} from {ev.Request.RemoteEndPoint.Address} ({ev.Country}) with flags {ev.Flags}, {(ev.IsAllowed ? "allowed" : "denied")}");
+            RoundLogger.Log("NETWORK EVENT", "PLAYER PREAUTHED", $"Preauthing {ev.UserId} from {(ev.Request?.RemoteEndPoint?.Address?.ToString() ?? "NULL")} ({ev.Country}) with flags {ev.Flags}, {(ev.IsAllowed ? "allowed" : "denied")}");
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
