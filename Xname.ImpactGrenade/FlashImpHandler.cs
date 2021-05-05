@@ -74,7 +74,8 @@ namespace Xname.ImpactGrenade
                 ev.IsAllowed = false;
             }
         }
-        public static Dictionary<GameObject, bool> explodedBalls;
+        /// <inheritdoc/>
+        public static Dictionary<GameObject, bool> explodedBalls = new Dictionary<GameObject, bool>();
         private void Map_ExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
@@ -92,6 +93,8 @@ namespace Xname.ImpactGrenade
     {
         private void OnCollisionEnter(Collision collision)
         {
+            if (this == null)
+                RoundLogger.Log("SCP 018 COLLISION", "BALLISNULL", "KURWA JAK");
             foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
                 p.SendConsoleMessage($"{this?.name}, {this?.gameObject}", "grey");
