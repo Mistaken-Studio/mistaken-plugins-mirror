@@ -15,7 +15,7 @@ namespace Gamer.Diagnostics
     /// </summary>
     public static class MasterHandler
     {
-        private const ushort CI_TEST_SERVER_PORT = 8050;
+        private static readonly ushort[] CI_TEST_SERVER_PORTS = new ushort[] { 8050, 8008 };
         internal static Status _status = new Status(0);
         /// <summary>
         /// Run Status
@@ -69,7 +69,7 @@ namespace Gamer.Diagnostics
         }
         internal static void LogError(System.Exception ex, Module module, string Name)
         {
-            if (Server.Port != CI_TEST_SERVER_PORT)
+            if (!CI_TEST_SERVER_PORTS.Contains(Server.Port))
                 return;
             _status.StatusCode = 1;
             _status.Exceptions.Add(new Exception
@@ -200,7 +200,7 @@ namespace Gamer.Diagnostics
             Log.Debug($"Called Ini");
             if (Initiated)
                 return;
-            if (Server.Port == CI_TEST_SERVER_PORT)
+            if (CI_TEST_SERVER_PORTS.Contains(Server.Port))
             {
                 _status = new Status(0);
                 File.WriteAllText(Path.Combine(Paths.Exiled, "RunResult.txt"), Newtonsoft.Json.JsonConvert.SerializeObject(_status));

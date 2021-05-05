@@ -120,4 +120,36 @@ namespace Gamer.CITester
             return false;
         }
     }
+
+    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.TargetSyncHp))]
+    internal static class PlayerStats_TargetSyncHp
+    {
+        private static bool Prefix(NetworkConnection conn, float hp)
+        {
+            if (conn == null)
+                return false;
+            return true;
+        }
+    }
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.TargetConsolePrint))]
+    internal static class CharacterClassManager_TargetConsolePrint
+    {
+        private static bool Prefix(NetworkConnection connection, string text, string color)
+        {
+            if (connection == null)
+                return false;
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.TargetForcePosition))]
+    internal static class PlayerMovementSync_TargetForcePosition
+    {
+        private static bool Prefix(NetworkConnection conn, Vector3 pos)
+        {
+            if (conn == null)
+                return false;
+            return true;
+        }
+    }
 }
