@@ -90,6 +90,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             /// <inheritdoc/>
             public override ItemType Item => ItemType.GrenadeFlash;
             /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_SCP1499;
+            /// <inheritdoc/>
             public override int Durability => 149;
             /// <inheritdoc/>
             public override Vector3 Size => new Vector3(1.5f, 0.5f, 1.5f);

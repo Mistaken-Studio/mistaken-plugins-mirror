@@ -42,6 +42,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static Armor Instance = new Armor();
             public Armor() => Register();
             public override string ItemName => "Pancerz";
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_ARMOR;
             public override ItemType Item => ItemType.Coin;
             public override int Durability => 001;
 
@@ -198,6 +199,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static LiteArmor Instance = new LiteArmor();
             public LiteArmor() => Register();
             public override string ItemName => "Lekki Pancerz";
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_LIGHT_ARMOR;
             public override ItemType Item => ItemType.Coin;
             public override int Durability => 002;
 
@@ -342,6 +344,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static HeavyArmor Instance = new HeavyArmor();
             public HeavyArmor() => Register();
             public override string ItemName => "Ciężki Pancerz";
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_HEAVY_ARMOR;
             public override ItemType Item => ItemType.Coin;
             public override int Durability => 003;
 

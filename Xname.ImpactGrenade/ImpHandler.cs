@@ -10,6 +10,7 @@ using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
 using Grenades;
 using Mirror;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace Xname.ImpactGrenade
             public override string ItemName => "Impact Grenade";
             /// <inheritdoc/>
             public override ItemType Item => ItemType.GrenadeFrag;
+            /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_IMPACT;
             /// <inheritdoc/>
             public override int Durability => 001;
             /// <inheritdoc/>
@@ -91,11 +94,15 @@ namespace Xname.ImpactGrenade
             /// <param name="player">Player that Impact Grenade should be given to</param>
             public static void Give(Player player)
             {
-                player.AddItem(new Inventory.SyncItemInfo
+                if (player.Inventory.items.Count < 8)
                 {
-                    durability = 1.001f,
-                    id = ItemType.GrenadeFrag,
-                });
+                    player.AddItem(new Inventory.SyncItemInfo
+                    {
+                        durability = 1.001f,
+                        id = ItemType.GrenadeFrag,
+                    });
+                    player.SetSessionVar(Main.SessionVarType.CI_IMPACT, true);
+                }
             }
         }
         /// <inheritdoc/>
