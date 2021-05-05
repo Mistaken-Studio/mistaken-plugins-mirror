@@ -74,7 +74,7 @@ namespace Xname.ImpactGrenade
                 ev.IsAllowed = false;
             }
         }
-        public static Dictionary<GameObject, bool> explodedBalls;
+        public static readonly Dictionary<GameObject, bool> explodedBalls = new Dictionary<GameObject, bool>();
         private void Map_ExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
