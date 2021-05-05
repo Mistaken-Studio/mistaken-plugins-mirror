@@ -74,12 +74,12 @@ namespace Gamer.CITester
             if(success)
             {
                 Log.Info("!! Test was successful !!");
-                Environment.Exit(0);
+                MEC.Timing.CallDelayed(1, () => Environment.Exit(0));
             }
             else
             {
                 Log.Error("!! Test FAILED !!");
-                Environment.Exit(1);
+                MEC.Timing.CallDelayed(1, () => Environment.Exit(1));
             }
         }
         private bool success = false;
