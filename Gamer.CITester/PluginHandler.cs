@@ -153,10 +153,21 @@ namespace Gamer.CITester
         }
     }
 
+    [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.TargetSetRotation))]
+    internal static class PlayerMovementSync_TargetSetRotation
+    {
+        private static bool Prefix(NetworkConnection conn, float rot)
+        {
+            if (conn == null)
+                return false;
+            return true;
+        }
+    }
+
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.TargetSetRealId))]
     internal static class CharacterClassManager_TargetSetRealId
     {
-        private static bool Prefix(NetworkConnection conn, string userid)
+        private static bool Prefix(NetworkConnection conn, string userId)
         {
             if (conn == null)
                 return false;
