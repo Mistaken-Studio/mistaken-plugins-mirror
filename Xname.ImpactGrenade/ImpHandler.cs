@@ -11,6 +11,7 @@ using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
 using Grenades;
+using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -119,19 +120,39 @@ namespace Xname.ImpactGrenade
             Exiled.Events.Handlers.Map.ChangingIntoGrenade -= this.Handle<Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs>((ev) => Map_ChangingIntoGrenade(ev));
         }
         private GrenadeManager lastImpactThrower;
+        private GameObject ballgo;
+        private IEnumerator<float> Checkball()
+        {
+            if (ballgo != null)
+            {
+                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
+                {
+                    p.SendConsoleMessage($"{ballgo.activeSelf}, {ballgo.transform.position}", "green");
+                }
+                if (ballgo.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
+                {
+                    ball.enabled = false;
+                    NetworkServer.Destroy(ball.gameObject);
+                }
+            }
+            yield return MEC.Timing.WaitForSeconds(1f);
+        }
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
+            if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
             {
-                if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
+                ballgo = ev.Grenade;
+                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
-                    p.SendConsoleMessage($"{ev.Grenade.name}, {ball.fuseTime}, {ball.fuse}, {ball.fuseDuration}, {ball.NetworkfuseTime}", "grey");
+                    p.SendConsoleMessage($"{ev.Grenade.name}, {ball.NetworkfuseTime}", "grey");
                 }
-                else
+            }
+            else
+            {
+                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
                     p.SendConsoleMessage($"{ev.Grenade.name}", "green");
                 }
-
             }
             if (!grenades.Contains(ev.Grenade))
                 return;
@@ -152,6 +173,7 @@ namespace Xname.ImpactGrenade
         private void Server_RoundStarted()
         {
             grenades.Clear();
+            MEC.Timing.RunCoroutine(Checkball());
             var lockers = LockerManager.singleton.lockers.Where(i => i.chambers.Length == 9).ToArray();
             int toSpawn = 8;
             while (toSpawn > 0)
