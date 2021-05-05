@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Gamer.Mistaken.Subtitles
 {
-    [HarmonyPatch(typeof(RespawnEffectsController), "RpcCassieAnnouncement")]
+    //[HarmonyPatch(typeof(RespawnEffectsController), "RpcCassieAnnouncement")]
     internal static class CassiePatch
     {
         public static readonly Queue<string> Messages = new Queue<string>();
@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.Subtitles
         }
     }
 
-    [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.Start))]
+    //[HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.Start))]
     internal static class CassiePatch2
     {
         public static int Index = -1;
