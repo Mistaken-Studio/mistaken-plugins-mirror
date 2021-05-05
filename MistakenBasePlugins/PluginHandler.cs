@@ -7,6 +7,9 @@ namespace Gamer.Mistaken.Base
     /// <inheritdoc/>
     public class PluginHandler : Plugin<ConfigPlus>
     {
+        /// <summary>
+        /// Config
+        /// </summary>
         public static new ConfigPlus Config;
         /// <inheritdoc/>
         public override PluginPriority Priority => PluginPriority.Highest - 2;
@@ -36,8 +39,12 @@ namespace Gamer.Mistaken.Base
             base.OnDisabled();
         }
     }
+    /// <inheritdoc/>
     public class ConfigPlus : Config
     {
+        /// <summary>
+        /// Is Experimental Server
+        /// </summary>
         public bool IsExperimentalServer { get; set; } = false;
     }
 }
