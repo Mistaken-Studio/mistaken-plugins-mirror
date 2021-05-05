@@ -41,6 +41,8 @@ namespace Xname.ColorfullEZ
                     var start = DateTime.Now;
                     foreach (var player in RealPlayers.List)
                     {
+                        if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                            continue;
                         if (SkipFor.Contains(player))
                         {
                             if (!Gamer.Mistaken.Systems.Handler.PlayerPreferencesDict[player.UserId].HasFlag(Gamer.API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079))
@@ -185,6 +187,8 @@ namespace Xname.ColorfullEZ
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
+                if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                    return;
                 Log.Debug($"Syncing cards for {player.Nickname}");
                 foreach (var netid in networkIdentities)
                 {
@@ -201,6 +205,8 @@ namespace Xname.ColorfullEZ
         {
             if (removeFromVisList == null)
                 removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                return;
             Log.Debug($"DeSyncing cards for {player.Nickname}");
             foreach (var netid in networkIdentities)
             {
@@ -225,6 +231,8 @@ namespace Xname.ColorfullEZ
             {
                 if (removeFromVisList == null)
                     removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                    return;
                 Log.Debug($"DeSyncing Synced cards for {player.Nickname}");
                 foreach (var netid in loadedFor.ToArray())
                 {

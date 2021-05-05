@@ -36,6 +36,8 @@ namespace Gamer.Mistaken.CassieRoom
                     var start = DateTime.Now;
                     foreach (var player in RealPlayers.List)
                     {
+                        if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                            continue;
                         if (player.Position.y > 900 || player.Role == RoleType.Spectator || player.Role == RoleType.Scp079)
                         {
                             if (LoadedAll.Contains(player))
@@ -65,6 +67,8 @@ namespace Gamer.Mistaken.CassieRoom
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
             if (sendSpawnMessage != null)
             {
+                if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                    return;
                 Log.Debug($"Syncing cards for {player.Nickname}");
                 foreach (var netid in networkIdentities)
                 {
@@ -81,6 +85,8 @@ namespace Gamer.Mistaken.CassieRoom
         {
             if (removeFromVisList == null)
                 removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                return;
             Log.Debug($"DeSyncing cards for {player.Nickname}");
             foreach (var netid in networkIdentities)
             {
@@ -117,21 +123,7 @@ namespace Gamer.Mistaken.CassieRoom
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            DesyncFor(ev.Player);
-            return;
-            System.Reflection.MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
-            if (sendSpawnMessage != null)
-            {
-                Log.Debug("Syncing cards");
-                foreach (var netid in networkIdentities)
-                {
-                    sendSpawnMessage.Invoke(null, new object[]
-                    {
-                        netid,
-                        ev.Player.Connection
-                    });
-                }
-            }
+            DesyncFor(ev.Player);         
         }
 
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
