@@ -61,10 +61,15 @@ namespace Gamer.CustomClasses
         {
             MEC.Timing.CallDelayed(1.2f, () =>
             {
-                var scientist = RealPlayers.Get(RoleType.Scientist).ToArray();
-                if (scientist.Length < 2)
-                    return;
-                ZoneManger.Instance.Spawn(scientist[UnityEngine.Random.Range(0, scientist.Length)]);
+                if (Mistaken.Base.Version.Debug)
+                    ZoneManger.Instance.Spawn(RealPlayers.List.First());
+                else
+                {
+                    var scientist = RealPlayers.Get(RoleType.Scientist).ToArray();
+                    if (scientist.Length < 2)
+                        return;
+                    ZoneManger.Instance.Spawn(scientist[UnityEngine.Random.Range(0, scientist.Length)]);
+                }
             });
         }
         public class ZoneManger : CustomClass
