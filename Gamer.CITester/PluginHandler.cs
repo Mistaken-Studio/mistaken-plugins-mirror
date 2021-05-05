@@ -1,4 +1,5 @@
 ﻿using CustomPlayerEffects;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
@@ -34,6 +35,7 @@ namespace Gamer.CITester
             
 
             Exiled.Events.Events.DisabledPatchesHashSet.Add(typeof(PlayerPositionManager).GetMethod("TransmitData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance));
+            Exiled.Events.Events.DisabledPatchesHashSet.Add(typeof(PlayableScps.Scp096).GetMethod(nameof(PlayableScps.Scp096.AddTarget)));
             Exiled.Events.Events.Instance.ReloadDisabledPatches();
             var harmony = new HarmonyLib.Harmony("gamer.citester");
             harmony.PatchAll();
@@ -331,6 +333,26 @@ namespace Gamer.CITester
             if (conn == null)
                 return false;
             return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(MirrorExtensions), nameof(MirrorExtensions.SendFakeSyncVar))]
+    internal static class MirrorExtensions_SendFakeSyncVar
+    {
+        private static bool Prefix(Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
+        {
+            if (target.Connection == null)
+                return false;
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.AddTarget))]
+    internal static class PlayableScps_Scp096_AddTarget
+    {
+        private static bool Prefix(GameObject target)
+        {
+            return false;
         }
     }
 }
