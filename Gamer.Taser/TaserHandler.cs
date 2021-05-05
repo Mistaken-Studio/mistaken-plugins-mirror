@@ -230,7 +230,7 @@ namespace Gamer.Taser
         /// <returns>Spawned taser as <see cref="Pickup"/></returns>
         public static Pickup SpawnTaser(Vector3 position)
         {
-            float dur = 501f + (Index++);
+            float dur = 501000f + (Index++);
             return MapPlus.Spawn(new Inventory.SyncItemInfo
             {
                 durability = dur,
@@ -259,7 +259,7 @@ namespace Gamer.Taser
                 return;
             if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE))
                 return;
-            float dur = 501f + (Index++);
+            float dur = 501000f + (Index++);
             if (ev.NewRole == RoleType.FacilityGuard)
             {
                 ev.Items.Remove(ItemType.GunUSP);
