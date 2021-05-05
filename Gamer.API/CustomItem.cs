@@ -35,6 +35,10 @@ namespace Gamer.API
             /// </summary>
             public abstract string ItemName { get; }
             /// <summary>
+            /// Item Name
+            /// </summary>
+            public abstract Utilities.Main.SessionVarType SessionVarType { get; }
+            /// <summary>
             /// Item Type
             /// </summary>
             public abstract ItemType Item { get; }
@@ -65,7 +69,7 @@ namespace Gamer.API
             /// <returns>If shoud be allowed</returns>
             public virtual bool OnPickup(Player player, Pickup pickup)
             {
-                player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", true);
+                player.SetSessionVar(SessionVarType, true);
                 return true;
             }
             /// <summary>
@@ -76,7 +80,7 @@ namespace Gamer.API
             /// <returns>If should be allowed</returns>
             public virtual bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
-                player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", false);
+                player.SetSessionVar(SessionVarType, false);
                 return true;
             }
             /// <summary>
@@ -116,14 +120,14 @@ namespace Gamer.API
             /// <returns>If should be allowed</returns>
             public virtual bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
             {
-                player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", false);
+                player.SetSessionVar(SessionVarType, false);
                 return true;
             }
             /// <summary>
             /// Called when player is forceclassed with item in inventory
             /// </summary>
             /// <param name="player">Forceclassed player</param>
-            public virtual void OnForceclass(Player player) => player.SetSessionVar($"CI_{ItemName.ToUpper().Replace(' ', '_')}", false);
+            public virtual void OnForceclass(Player player) => player.SetSessionVar(SessionVarType, false);
             /// <summary>
             /// Called on round restart
             /// </summary>

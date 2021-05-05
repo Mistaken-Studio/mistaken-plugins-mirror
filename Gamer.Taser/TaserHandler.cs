@@ -42,6 +42,8 @@ namespace Gamer.Taser
             /// <inheritdoc/>
             public override ItemType Item => ItemType.GunUSP;
             /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_TASER;
+            /// <inheritdoc/>
             public override int Durability => 501;
             /// <inheritdoc/>
             public override Vector3 Size => TaserHandler.Size;
@@ -66,12 +68,16 @@ namespace Gamer.Taser
             /// <param name="player">Player to give taser to</param>
             public static void Give(Player player)
             {
-                float dur = 1.501f + (Index++) / 1000000f;
-                player.AddItem(new Inventory.SyncItemInfo
+                if (player.Inventory.items.Count < 8)
                 {
-                    durability = dur,
-                    id = ItemType.GunUSP,
-                });
+                    float dur = 1.501f + (Index++) / 1000000f;
+                    player.AddItem(new Inventory.SyncItemInfo
+                    {
+                        durability = dur,
+                        id = ItemType.GunUSP,
+                    });
+                    player.SetSessionVar(Main.SessionVarType.CI_TASER, true);
+                }
             }
             /// <inheritdoc/>
             public override Upgrade[] Upgrades => new Upgrade[]

@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BallFix.cs" />
     <Compile Include="FlashImpHandler.cs" />
     <Compile Include="ImpHandler.cs" />
     <Compile Include="PluginHandler.cs" />

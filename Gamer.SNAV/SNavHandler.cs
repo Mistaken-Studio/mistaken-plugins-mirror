@@ -30,6 +30,8 @@ namespace Gamer.SNAV
             /// <inheritdoc/>
             public override ItemType Item => ItemType.WeaponManagerTablet;
             /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_SNAV;
+            /// <inheritdoc/>
             public override int Durability => 301;
             /// <inheritdoc/>
             public override Vector3 Size => new Vector3(2.0f, .50f, .50f);
@@ -76,6 +78,8 @@ namespace Gamer.SNAV
             public override string ItemName => "SNav-Ultimate";
             /// <inheritdoc/>
             public override ItemType Item => ItemType.WeaponManagerTablet;
+            /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_SNAV;
             /// <inheritdoc/>
             public override int Durability => 401;
             /// <inheritdoc/>

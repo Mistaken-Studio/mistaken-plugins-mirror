@@ -17,6 +17,7 @@ namespace Xname.ImpactGrenade
         {
             new ImpHandler(this);
             new FlashImpHandler(this);
+            new BallFix(this);
             Gamer.Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }

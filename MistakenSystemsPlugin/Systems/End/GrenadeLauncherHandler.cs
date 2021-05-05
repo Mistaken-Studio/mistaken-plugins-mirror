@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Utilities;
 using Grenades;
 using Mirror;
 using System;
@@ -40,6 +41,8 @@ namespace Gamer.Mistaken.Systems.End
             public GrenadeLauncher() => base.Register();
             public override string ItemName => "Grenade Launcher";
             public override ItemType Item => ItemType.GunUSP;
+            /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_GRENADE_LAUNCHER;
             public override int Durability => 589;
             public override Vector3 Size => new Vector3(2f, 1.5f, 1.5f);
             public readonly int MagSize = 3;

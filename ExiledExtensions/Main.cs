@@ -187,6 +187,9 @@ namespace Gamer.Utilities
             CI_TASER,
             CI_SNAV,
             CI_IMPACT,
+            CI_SCP1499,
+            CI_GRENADE_LAUNCHER,
+            CI_GUARD_COMMANDER_KEYCARD,
             CC_GUARD_COMMANDER
 #pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }

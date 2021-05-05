@@ -295,6 +295,8 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override string ItemName => "Karta Dowódcy Ochrony";
             /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD;
+            /// <inheritdoc/>
             public override ItemType Item => ItemType.KeycardSeniorGuard;
             /// <inheritdoc/>
             public override int Durability => 001;
