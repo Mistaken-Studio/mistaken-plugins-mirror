@@ -153,7 +153,7 @@ namespace Gamer.Mistaken.CassieRoom
         private DoorVariant WarheadStopButton;
         private DoorVariant WarheadLockButton;
         private DoorVariant TeslaToggleButton;
-        private DoorVariant TeslaIndicator;
+        internal static DoorVariant TeslaIndicator;
         private void Server_WaitingForPlayers()
         {
             networkIdentities.Clear();
@@ -261,7 +261,7 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Warhead engaged", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    this.CallDelayed(6, () =>
+                    this.CallDelayed(5, () =>
                     {
                         Warhead.Start();
                         this.CallDelayed(2 * 60, () =>
@@ -274,11 +274,11 @@ namespace Gamer.Mistaken.CassieRoom
                 //Warhead Stop
                 WarheadStopButton = SpawnButton(new Vector3(181, 994, -83), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Stop</color> a Warhead</size>", (ev) =>
                 {
-                    if (Warhead.DetonationTimer < 10 + 6)
+                    if (Warhead.DetonationTimer < 10 + 5)
                         return false;
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Warhead disengaged", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    this.CallDelayed(6, () =>
+                    this.CallDelayed(5, () =>
                     {
                         Warhead.Stop();
                         this.CallDelayed(2 * 60, () =>
@@ -297,11 +297,11 @@ namespace Gamer.Mistaken.CassieRoom
                     WarheadLockButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                     return false;
                 });
-                TeslaIndicator = SpawnButton(new Vector3(181, 994.3f, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90));
+                TeslaIndicator = SpawnIndicator(new Vector3(181, 994.5f, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90));
                 TeslaToggleButton = SpawnButton(new Vector3(181, 994, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Toggles</color> all Tesla gate</size><br><color=blue>Enabled</color> | <color=green>Disabled</color>", (ev) =>
                 {
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    if (!ev.Door.TargetState)
+                    if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
                     {
                         Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
                         TeslaIndicator.NetworkTargetState = true;
@@ -322,11 +322,11 @@ namespace Gamer.Mistaken.CassieRoom
             }
             #endregion
         }
-        public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation)
+        public static DoorVariant SpawnIndicator(Vector3 pos, Vector3 buttonOffset, Vector3 rotation)
         {
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, Vector3.one);
             (door as BreakableDoor)._brokenPrefab = null;
-            door.NetworkTargetState = true;
+            door.NetworkTargetState = false;
             DoorCallbacks[door] = (ev) => false;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             return door;
