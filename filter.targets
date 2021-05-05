@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="BeforeBuild">
+      <ItemGroup>
+            <ReferenceNew Include="@(Reference)">
+              <Private>False</Private>
+            </ReferenceNew>
+            <Reference Remove="@(Reference)"/>
+            <Reference Include="@(ReferenceNew)"/>
+      </ItemGroup>
+  </Target>
+</Project>
