@@ -211,13 +211,13 @@ namespace Gamer.Mistaken.Systems.End
                     }
                 }
             }
-            if (Directory.Exists(sourceDirectory + "/plugins"))
-                Directory.Delete(sourceDirectory + "/plugins", true);
+            if (Directory.Exists(sourceDirectory + "/Plugins"))
+                Directory.Delete(sourceDirectory + "/Plugins", true);
             using (var stream = File.OpenRead(sourceDirectory + "/plugins.tar"))
                 ExtractTar(stream, sourceDirectory);
-            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins"))
+            foreach (var item in Directory.GetFiles(sourceDirectory + "/Plugins"))
                 File.Copy(item, Paths.Plugins + "/" + Path.GetFileName(item), true);
-            foreach (var item in Directory.GetFiles(sourceDirectory + "/plugins/dependencies"))
+            foreach (var item in Directory.GetFiles(sourceDirectory + "/Plugins/dependencies"))
                 File.Copy(item, Paths.Dependencies + "/" + Path.GetFileName(item), true);
             
         }

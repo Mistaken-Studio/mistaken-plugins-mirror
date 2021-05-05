@@ -14,7 +14,15 @@
 <ItemGroup>
     <AssemblyVersionFiles Include="$(MSBuildProjectDirectory)\AssemblyInfo.cs"/>
 </ItemGroup>
-
+  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <ReferenceNew Include="@(Reference)">
+        <Private>False</Private>
+      </ReferenceNew>
+      <Reference Remove="@(Reference)"/>
+      <Reference Include="@(ReferenceNew)"/>
+    </ItemGroup>
+  </Target>
 <Target Name="AssemblyVersion"
                 Inputs="@(AssemblyVersionFiles)"
                 Outputs="UpdatedAssemblyVersionFiles">
@@ -31,4 +39,5 @@
                         ItemName="UpdatedAssemblyVersionFiles"/>
     </AssemblyInfo>
 </Target>
+  
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using MEC;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,72 @@ namespace Gamer.Diagnostics
     /// </summary>
     public static class MasterHandler
     {
+        private static readonly ushort[] CI_TEST_SERVER_PORTS = new ushort[] { 8050, 8008 };
+        internal static Status _status = new Status(0);
+        /// <summary>
+        /// Run Status
+        /// </summary>
+        public struct Status
+        {
+            /// <summary>
+            /// Run Status Code
+            /// </summary>
+            public byte StatusCode;
+            /// <summary>
+            /// Run Exceptions
+            /// </summary>
+            public List<Exception> Exceptions;
+            /// <summary>
+            /// Loaded Modules
+            /// </summary>
+            public byte LoadedModules;
+            /// <summary>
+            /// Loaded Plugins
+            /// </summary>
+            public byte LoadedPlugins;
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            public Status(byte _)
+            {
+                StatusCode = 0;
+                LoadedModules = 0;
+                LoadedPlugins = 0;
+                Exceptions = new List<Exception>();
+            }
+        }
+        /// <summary>
+        /// Exception Info
+        /// </summary>
+        public struct Exception
+        {
+            /// <summary>
+            /// Thrown Exception
+            /// </summary>
+            public System.Exception ex;
+            /// <summary>
+            /// Module throwing exception
+            /// </summary>
+            public Module module;
+            /// <summary>
+            /// Handler Name
+            /// </summary>
+            public string Name;
+        }
+        public static void LogError(System.Exception ex, Module module, string Name)
+        {
+            if (!CI_TEST_SERVER_PORTS.Contains(Server.Port))
+                return;
+            _status.StatusCode = 1;
+            _status.Exceptions.Add(new Exception
+            {
+                ex = ex,
+                module = module,
+                Name = Name
+            });
+            File.WriteAllText(Path.Combine(Paths.Exiled, "RunResult.txt"), Newtonsoft.Json.JsonConvert.SerializeObject(_status));
+        }
+
         /// <summary>
         /// Handlers bound to Module
         /// </summary>
@@ -46,6 +113,7 @@ namespace Gamer.Diagnostics
                     Log.Error($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] Caused Exception");
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
+                    LogError(ex, module, Name);
                     ErrorBacklog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {Name}] Caused Exception");
                     ErrorBacklog.Add(ex.Message);
                     ErrorBacklog.Add(ex.StackTrace);
@@ -97,6 +165,7 @@ namespace Gamer.Diagnostics
                         Log.Error($"[{module.Name}: {ev.GetType().Name}] Caused Exception");
                         Log.Error(ex.Message);
                         Log.Error(ex.StackTrace);
+                        LogError(ex, module, ev.GetType().Name);
                         ErrorBacklog.Add($"[{DateTime.Now:HH:mm:ss.fff}] [{module.Name}: {ev.GetType().Name}] Caused Exception");
                         ErrorBacklog.Add(ex.Message);
                         ErrorBacklog.Add(ex.StackTrace);
@@ -131,6 +200,11 @@ namespace Gamer.Diagnostics
             Log.Debug($"Called Ini");
             if (Initiated)
                 return;
+            if (CI_TEST_SERVER_PORTS.Contains(Server.Port))
+            {
+                _status = new Status(0);
+                File.WriteAllText(Path.Combine(Paths.Exiled, "RunResult.txt"), Newtonsoft.Json.JsonConvert.SerializeObject(_status));
+            }
             Timing.RunCoroutine(SaveLoop());
             Initiated = true;
             RoundLoggerSystem.RoundLogger.IniIfNotAlready();
@@ -288,7 +362,8 @@ namespace Gamer.Diagnostics
         /// <summary>
         /// Plugin that this module belong to
         /// </summary>
-        public readonly IPlugin<IConfig> plugin;
+        [JsonIgnore]
+        protected readonly IPlugin<IConfig> plugin;
         /// <summary>
         /// If is requied for basic functions
         /// </summary>
@@ -296,18 +371,23 @@ namespace Gamer.Diagnostics
         /// <summary>
         /// Used to use special logging method
         /// </summary>
-        protected __Log Log => new __Log(Name);
+        protected __Log Log { get; }
         /// <summary>
         /// Default Constructor
         /// </summary>
         /// <param name="plugin">Plugin creating module</param>
         public Module(IPlugin<IConfig> plugin)
         {
+            this.Log = new __Log(Name);
             this.plugin = plugin;
             if (!Modules.ContainsKey(plugin))
+            {
+                MasterHandler._status.LoadedPlugins++;
                 Modules.Add(plugin, new List<Module>());
+            }
             Modules[plugin].RemoveAll(i => i.Name == Name);
             Modules[plugin].Add(this);
+            MasterHandler._status.LoadedModules++;
         }
         /// <summary>
         /// Enables all modules that has <see cref="Module.Enabled"/> set to <see langword="true"/> from specific plugin
@@ -319,7 +399,14 @@ namespace Gamer.Diagnostics
             {
                 MasterHandler.Ini();
                 Exiled.API.Features.Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                item.OnEnable();
+                try
+                {
+                    item.OnEnable();
+                }
+                catch(System.Exception ex)
+                {
+                    MasterHandler.LogError(ex, item, "ENABLING");
+                }
                 Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
@@ -333,7 +420,14 @@ namespace Gamer.Diagnostics
             {
                 MasterHandler.Ini();
                 Exiled.API.Features.Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                item.OnDisable();
+                try
+                {
+                    item.OnDisable();
+                }
+                catch (System.Exception ex)
+                {
+                    MasterHandler.LogError(ex, item, "DISABLING");
+                }
                 Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
             }
         }
@@ -349,7 +443,14 @@ namespace Gamer.Diagnostics
                 {
                     MasterHandler.Ini();
                     Exiled.API.Features.Log.Debug($"Enabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                    item.OnEnable();
+                    try
+                    {
+                        item.OnEnable();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        MasterHandler.LogError(ex, item, "ENABLING");
+                    }
                     Exiled.API.Features.Log.Debug($"Enabled {item.Name} from {plugin.Author}.{plugin.Name}");
                 }
             }
@@ -366,7 +467,14 @@ namespace Gamer.Diagnostics
                 {
                     MasterHandler.Ini();
                     Exiled.API.Features.Log.Debug($"Disabling {item.Name} from {plugin.Author}.{plugin.Name}");
-                    item.OnDisable();
+                    try
+                    {
+                        item.OnDisable();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        MasterHandler.LogError(ex, item, "DISABLING");
+                    }
                     Exiled.API.Features.Log.Debug($"Disabled {item.Name} from {plugin.Author}.{plugin.Name}");
                 }
             }
