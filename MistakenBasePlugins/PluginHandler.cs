@@ -23,6 +23,7 @@ namespace Gamer.Mistaken.Base
         public override void OnEnabled()
         {
             PluginHandler.Config = base.Config as ConfigPlus;
+            Log.Info($"You are running Mistaken Plugins ({Base.Version.CurrentVersion}|Debug: {Base.Version.Debug})");
             new CustomInfoHandler(this);
             new GUI.PseudoGUIHandler(this);
             new Staff.StaffHandler(this);
