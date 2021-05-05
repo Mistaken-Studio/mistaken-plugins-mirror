@@ -120,6 +120,16 @@ namespace Xname.ImpactGrenade
         private GrenadeManager lastImpactThrower;
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
+            if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
+            {
+                Log.Debug(ev.Grenade.name);
+                Log.Debug(ball.fuseTime);
+                Log.Debug(ball.fuse);
+                Log.Debug(ball.fuseDuration);
+                Log.Debug(ball.NetworkfuseTime);
+            }
+            else
+                Log.Debug(ev.Grenade.name);
             if (!grenades.Contains(ev.Grenade))
                 return;
             RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
