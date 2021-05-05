@@ -42,7 +42,7 @@ namespace Xname.ImpactGrenade
                 {
                     if (ev.Player.GetEffectActive<CustomPlayerEffects.Scp268>())
                         ev.Player.DisableEffect<CustomPlayerEffects.Scp268>();
-                    RoundLogger.Log("IMPACT FLASH GRENADE", "THROW", $"{ev.Player.PlayerToString()} threw an impact flash grenade");
+                    RoundLogger.Log("IMPACT FLASH", "THROW", $"{ev.Player.PlayerToString()} threw an impact flash");
                     Grenade grenade = UnityEngine.Object.Instantiate(ev.Player.GrenadeManager.availableGrenades[1].grenadeInstance).GetComponent<Grenade>();
                     grenade.fuseDuration = 999;
                     grenade.InitData(ev.Player.GrenadeManager, Vector3.zero, ev.Player.CameraTransform.forward, ev.IsSlow ? 0.5f : 1f);
