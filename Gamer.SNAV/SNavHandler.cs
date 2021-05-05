@@ -65,7 +65,7 @@ namespace Gamer.SNAV
             public override Pickup OnUpgrade(Pickup pickup, Scp914Knob setting)
             {
                 if (setting == Scp914Knob.Fine || setting == Scp914Knob.VeryFine)
-                    pickup.durability = 1.401f;
+                    pickup.durability = 401000f;
                 return pickup;
             }
         }
@@ -504,7 +504,6 @@ namespace Gamer.SNAV
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InsertingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
             Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
-            Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -513,7 +512,6 @@ namespace Gamer.SNAV
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InsertingGeneratorTablet -= this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
             Exiled.Events.Handlers.Player.ActivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
-            Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
         /// <summary>
         /// Spawns SNAV
@@ -538,27 +536,6 @@ namespace Gamer.SNAV
                     durability = 301000f,
                     id = ItemType.WeaponManagerTablet,
                 }, pos, Quaternion.identity, new Vector3(2.0f, .50f, .50f));
-            }
-        }
-
-        private void Scp914_UpgradingItems(Exiled.Events.EventArgs.UpgradingItemsEventArgs ev)
-        {
-            foreach (var item in ev.Items.ToArray())
-            {
-                if (item.ItemId == ItemType.WeaponManagerTablet)
-                {
-                    switch (ev.KnobSetting)
-                    {
-                        case Scp914.Scp914Knob.Fine:
-                            if (UnityEngine.Random.Range(1, 101) <= 25)
-                            {
-                                SpawnSNAV(false, ev.Scp914.output.position + Vector3.up);
-                                ev.Items.Remove(item);
-                                item.Delete();
-                            }
-                            break;
-                    }
-                }
             }
         }
 

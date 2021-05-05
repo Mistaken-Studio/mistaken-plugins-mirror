@@ -55,7 +55,7 @@ namespace Gamer.Taser
             /// <inheritdoc/>
             public override void Spawn(Vector3 position, float innerDurability = 0f)
             {
-                float dur = Durability + (Index++);
+                float dur = Durability * 1000 + (Index++);
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     durability = dur,
@@ -70,7 +70,7 @@ namespace Gamer.Taser
             {
                 if (player.Inventory.items.Count < 8)
                 {
-                    float dur = 501 + (Index++);
+                    float dur = 501000 + (Index++);
                     player.AddItem(new Inventory.SyncItemInfo
                     {
                         durability = dur,
