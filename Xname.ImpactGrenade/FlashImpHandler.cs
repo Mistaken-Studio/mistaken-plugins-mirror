@@ -98,6 +98,10 @@ namespace Xname.ImpactGrenade
             }
             if (FlashImpHandler.explodedBalls.ContainsKey(this?.gameObject))
             {
+                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
+                {
+                    p.SendConsoleMessage($"works", "green");
+                }
                 Mirror.NetworkServer.Destroy(this?.gameObject);
             }
         }
