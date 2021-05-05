@@ -104,16 +104,16 @@ namespace Gamer.Mistaken.CassieRoom
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            //Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
-            //Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
+            Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            //Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
-            //Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
+            Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
 
@@ -151,6 +151,8 @@ namespace Gamer.Mistaken.CassieRoom
 
         private DoorVariant WarheadStartButton;
         private DoorVariant WarheadStopButton;
+        private DoorVariant WarheadLockButton;
+        private DoorVariant TeslaToggleButton;
 
         private void Server_WaitingForPlayers()
         {
@@ -242,13 +244,6 @@ namespace Gamer.Mistaken.CassieRoom
                 collider.size = new Vector3(20, 2, 20);
             }
             #endregion
-            #region move to functionality on release
-            SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
-            {
-                return false;
-            }, new Vector3(0.5f, 0.5f, 0.5f));
-            #endregion
-            return;
             #region Functionality
             {
                 //Test Button
@@ -295,12 +290,30 @@ namespace Gamer.Mistaken.CassieRoom
                     return false;
                 });
                 WarheadStopButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
-                //Delay Decontamination
-                WarheadStartButton = SpawnButton(new Vector3(181, 994, -87), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Delay</color> by <color=yellow>5 minutes</color> LCZ Decontamination</size>", (ev) =>
+                //Disable warhead
+                WarheadLockButton = SpawnButton(new Vector3(181, 994, -87), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Disable</color> a Warhead</size>", (ev) =>
                 {
-                    Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . LIGHT CONTAINMENT ZONE DECONTAMINATION TIME INCREASED BY 5 MINUTES");
+                    Systems.Misc.BetterWarheadHandler.Warhead.StartLock = true;
+                    WarheadLockButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
+                    return false;
+                });
+                TeslaToggleButton = SpawnButton(new Vector3(181, 994, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Toggles</color> all Tesla gate</size><br><color=blue>Enabled</color> | <color=green>Disabled</color>", (ev) =>
+                {
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    DecontaminationController.Singleton.NetworkRoundStartTime += 300;
+                    if (!ev.Door.TargetState)
+                    {
+                        Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
+                        Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Tesla gates is now deactivated");
+                    }
+                    else
+                    {
+                        Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
+                        Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Tesla gates is now activated");
+                    }
+                    MEC.Timing.CallDelayed(2 * 60, () =>
+                    {
+                        ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                    });
                     return false;
                 });
             }
