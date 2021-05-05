@@ -8,6 +8,7 @@ using Exiled.API.Interfaces;
 using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
 using Grenades;
 using System.Collections.Generic;
@@ -120,16 +121,18 @@ namespace Xname.ImpactGrenade
         private GrenadeManager lastImpactThrower;
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
+            foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
-                Log.Debug(ev.Grenade.name);
-                Log.Debug(ball.fuseTime);
-                Log.Debug(ball.fuse);
-                Log.Debug(ball.fuseDuration);
-                Log.Debug(ball.NetworkfuseTime);
+                if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
+                {
+                    p.SendConsoleMessage($"{ev.Grenade.name}, {ball.fuseTime}, {ball.fuse}, {ball.fuseDuration}, {ball.NetworkfuseTime}", "grey");
+                }
+                else
+                {
+                    p.SendConsoleMessage($"{ev.Grenade.name}", "green");
+                }
+
             }
-            else
-                Log.Debug(ev.Grenade.name);
             if (!grenades.Contains(ev.Grenade))
                 return;
             RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
