@@ -75,7 +75,7 @@ jobs:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v2.0.9
       with:
-        path: $GITHUB_WORKSPACE
+       path: build
     - name: Create release
       run: |
         %GITHUB_WORKSPACE%/CI-Publisher.exe ${{ github.event.inputs.version }} %GITHUB_SHA% ${{ github.event.inputs.name }}
