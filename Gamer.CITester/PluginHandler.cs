@@ -355,4 +355,13 @@ namespace Gamer.CITester
             return false;
         }
     }
+
+    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.OnDamage))]
+    internal static class PlayableScps_Scp096_OnDamage
+    {
+        private static bool Prefix(GameObject target)
+        {
+            return false;
+        }
+    }
 }
