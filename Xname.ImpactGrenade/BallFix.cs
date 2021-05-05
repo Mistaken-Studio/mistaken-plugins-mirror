@@ -81,7 +81,7 @@ namespace Xname.ImpactGrenade
         private void OnCollisionEnter(Collision collision)
         {
             if (this == null)
-                RoundLogger.Log("SCP 018 FIX", "COLLISION", "Ball is null :/");
+                RoundLogger.Log("SCP 018 FIX", "COLLISION", "Ball is null");
             foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
                 p.SendConsoleMessage($"{this?.name}, {collision?.collider.name}", "grey");
