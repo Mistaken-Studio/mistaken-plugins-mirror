@@ -120,47 +120,8 @@ namespace Xname.ImpactGrenade
             Exiled.Events.Handlers.Map.ChangingIntoGrenade -= this.Handle<Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs>((ev) => Map_ChangingIntoGrenade(ev));
         }
         private GrenadeManager lastImpactThrower;
-        private HashSet<GameObject> ballgo;
-        private IEnumerator<float> Checkball()
-        {
-            if (ballgo.Count > 0)
-            {
-                foreach (var go in ballgo)
-                {
-                    if (go != null)
-                    {
-                        foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
-                        {
-                            p.SendConsoleMessage($"{go.activeSelf}, {go.transform.position}", "green");
-                        }
-                        if (go.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
-                        {
-                            ball.enabled = false;
-                            NetworkServer.Destroy(ball.gameObject);
-                            NetworkServer.Destroy(go);
-                        }
-                    }
-                }
-            }
-            yield return MEC.Timing.WaitForSeconds(1f);
-        }
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
-            if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
-            {
-                ballgo.Add(ev.Grenade);
-                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
-                {
-                    p.SendConsoleMessage($"{ev.Grenade.name}, {ball.NetworkfuseTime}", "grey");
-                }
-            }
-            else
-            {
-                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
-                {
-                    p.SendConsoleMessage($"{ev.Grenade.name}", "green");
-                }
-            }
             if (!grenades.Contains(ev.Grenade))
                 return;
             RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
@@ -179,9 +140,7 @@ namespace Xname.ImpactGrenade
         }
         private void Server_RoundStarted()
         {
-            ballgo.Clear();
             grenades.Clear();
-            MEC.Timing.RunCoroutine(Checkball());
             var lockers = LockerManager.singleton.lockers.Where(i => i.chambers.Length == 9).ToArray();
             int toSpawn = 8;
             while (toSpawn > 0)
