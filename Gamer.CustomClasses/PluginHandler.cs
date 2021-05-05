@@ -24,9 +24,9 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            new CustomClassesHandler(this);
             new GuardCommanderHandler(this);
             new ZoneManagerHandler(this);
+            new CustomClassesHandler(this);
 
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();

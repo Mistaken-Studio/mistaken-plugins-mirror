@@ -35,6 +35,7 @@ namespace Gamer.CustomClasses
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
+           
             Log.Debug(ev.Player.Nickname);
             Log.Debug(ev.IsEscaped);
             Log.Debug(ev.NewRole);
@@ -92,9 +93,9 @@ namespace Gamer.CustomClasses
             public override RoleType Role => RoleType.Scientist;
             public override void Spawn(Player player)
             {
+                player.SetRole(RoleType.Scientist,true, false);
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
-                player.SetRole(RoleType.Scientist,true, false);
                 player.Position = Exiled.API.Features.Map.Rooms.Where(x => x.Type == Exiled.API.Enums.RoomType.HczChkpA || x.Type == Exiled.API.Enums.RoomType.HczChkpB).First().Position + Vector3.up;
                 bool hasRadio = false;
                 foreach(var item in player.Inventory.items)

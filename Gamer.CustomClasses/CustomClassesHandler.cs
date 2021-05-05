@@ -1,4 +1,5 @@
 ﻿using Gamer.Diagnostics;
+using Gamer.Utilities;
 
 namespace Gamer.CustomClasses
 {
@@ -38,6 +39,8 @@ namespace Gamer.CustomClasses
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
+            if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE))
+                return;
             foreach (var item in API.CustomClass.CustomClass.CustomClasses)
             {
                 if (ev.NewRole == item.Role)
