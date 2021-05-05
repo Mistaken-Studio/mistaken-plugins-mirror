@@ -44,15 +44,9 @@ jobs:
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
-          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
+          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.version }}
         shell: cmd
-      - name: Add & Commit
-        # You may pin to the exact commit or the version.
-        # uses: EndBug/add-and-commit@a3adef035a1381dcf888c90b847240e2ddb9e008
-        uses: EndBug/add-and-commit@v7.2.0
-        with:
-         add: version
-         message: Bump version
+      
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
@@ -60,3 +54,32 @@ jobs:
           name: plugins.tar.gz
           # A file, directory or wildcard pattern that describes what to upload
           path: plugins.tar.gz
+  test:
+   runs-on: [self-hosted,test]
+   steps:
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.9
+      with:
+        # Artifact name
+        name: plugins.tar.gz
+        # Destination path
+        path: /home/barwa/
+    - name: Unzip files
+      run: /home/barwa/unzip.sh
+  publish:
+   runs-on: [self-hosted, Windows]
+   steps:
+    - uses: actions/checkout@v2
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.9
+      with:
+        path: $GITHUB_WORKSPACE
+    - name: Create release
+      run: %GITHUB_WORKSPACE%/CI-Publisher.exe ${{ github.event.inputs.version }} %GITHUB_SHA% ${{ github.event.inputs.version }}
+    - name: Bump version
+        # You may pin to the exact commit or the version.
+        # uses: EndBug/add-and-commit@a3adef035a1381dcf888c90b847240e2ddb9e008
+        uses: EndBug/add-and-commit@v7.2.0
+        with:
+         add: version
+         message: Bump version
