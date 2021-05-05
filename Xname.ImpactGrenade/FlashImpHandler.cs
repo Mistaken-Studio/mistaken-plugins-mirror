@@ -75,11 +75,11 @@ namespace Xname.ImpactGrenade
             }
         }
         /// <inheritdoc/>
-        public static Dictionary<GameObject, bool> explodedBalls = new Dictionary<GameObject, bool>();
+        public static HashSet<GameObject> explodedBalls = new HashSet<GameObject>();
         private void Map_ExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
-                explodedBalls[ev.Grenade] = true;
+                explodedBalls.Add(ev.Grenade);
         }
         private void Server_RoundStarted()
         {
@@ -99,7 +99,7 @@ namespace Xname.ImpactGrenade
             {
                 p.SendConsoleMessage($"{this?.name}, {this?.gameObject}", "grey");
             }
-            if (FlashImpHandler.explodedBalls.ContainsKey(this?.gameObject))
+            if (FlashImpHandler.explodedBalls.Contains(this?.gameObject))
             {
                 foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
