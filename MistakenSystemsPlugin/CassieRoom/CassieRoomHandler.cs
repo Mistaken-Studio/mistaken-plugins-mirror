@@ -216,7 +216,6 @@ namespace Gamer.Mistaken.CassieRoom
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
-                networkIdentities.Add(mainDoor.netIdentity);
                 //UpperDoor
                 SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
                 SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
@@ -334,7 +333,6 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
             });
-            networkIdentities.Add(door.netIdentity);
             return door;
         }
         public static DoorVariant SpawnDoor(string name, Vector3 pos, Vector3 rotation, Vector3 size)
