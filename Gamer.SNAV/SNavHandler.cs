@@ -527,7 +527,7 @@ namespace Gamer.SNAV
             {
                 return MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
-                    durability = 1.401f,
+                    durability = 401000f,
                     id = ItemType.WeaponManagerTablet,
                 }, pos, Quaternion.identity, new Vector3(2.5f, .75f, .75f));
             }
@@ -535,7 +535,7 @@ namespace Gamer.SNAV
             {
                 return MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
-                    durability = 1.301f,
+                    durability = 301000f,
                     id = ItemType.WeaponManagerTablet,
                 }, pos, Quaternion.identity, new Vector3(2.0f, .50f, .50f));
             }
@@ -564,7 +564,7 @@ namespace Gamer.SNAV
 
         private void Player_ActivatingWorkstation(Exiled.Events.EventArgs.ActivatingWorkstationEventArgs ev)
         {
-            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
+            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
             {
                 ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
                 ev.IsAllowed = false;
@@ -573,7 +573,7 @@ namespace Gamer.SNAV
 
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
-            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 1.301f)
+            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
             {
                 ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
                 ev.IsAllowed = false;
@@ -936,7 +936,7 @@ namespace Gamer.SNAV
                     RequireUpdate.Add(player);
                     i = 20;
                 }
-                if (i >= 19 || RequireUpdate.Contains(player) || (RequireUpdateUltimate && player.CurrentItem.durability == 1.401f))
+                if (i >= 19 || RequireUpdate.Contains(player) || (RequireUpdateUltimate && player.CurrentItem.durability == 401000f))
                 {
                     UpdateInterface(player);
                     RequireUpdate.Remove(player);
@@ -959,9 +959,9 @@ namespace Gamer.SNAV
         private static void UpdateInterface(Player player)
         {
             bool Ultimate;
-            if (player.CurrentItem.durability == 1.401f)
+            if (player.CurrentItem.durability == 401000f)
                 Ultimate = true;
-            else if (player.CurrentItem.durability == 1.301f)
+            else if (player.CurrentItem.durability == 301000f)
                 Ultimate = false;
             else
                 return;

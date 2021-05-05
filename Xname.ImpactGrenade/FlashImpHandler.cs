@@ -40,7 +40,7 @@ namespace Xname.ImpactGrenade
         }
         private void Player_ThrowingGrenade(ThrowingGrenadeEventArgs ev)
         {
-            if (ev.Type == Exiled.API.Enums.GrenadeType.Flashbang && ev.Player.CurrentItem.durability != 1.149f)
+            if (ev.Type == Exiled.API.Enums.GrenadeType.Flashbang && ev.Player.CurrentItem.durability != 149000f)
             {
                 MEC.Timing.CallDelayed(1f, () =>
                 {

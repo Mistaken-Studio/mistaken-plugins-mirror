@@ -98,7 +98,7 @@ namespace Xname.ImpactGrenade
                 {
                     player.AddItem(new Inventory.SyncItemInfo
                     {
-                        durability = 1.001f,
+                        durability = 1000f,
                         id = ItemType.GrenadeFrag,
                     });
                     player.SetSessionVar(Main.SessionVarType.CI_IMPACT, true);
@@ -153,14 +153,14 @@ namespace Xname.ImpactGrenade
             while (toSpawn > 0)
             {
                 var locker = lockers[UnityEngine.Random.Range(0, lockers.Length)];
-                locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1.001f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
+                locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1000f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
                 RoundLogger.Log("IMPACT GRENADE", "SPAWN", $"Impact grenade spawned");
                 toSpawn--;
             }
         }
         private void Map_ChangingIntoGrenade(Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs ev)
         {
-            if (ev.Pickup.durability == 1.001f)
+            if (ev.Pickup.durability == 1000f)
             {
                 ev.IsAllowed = false;
                 Grenade grenade = UnityEngine.Object.Instantiate(Server.Host.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();

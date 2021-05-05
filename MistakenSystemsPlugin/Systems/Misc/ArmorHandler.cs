@@ -142,19 +142,19 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (1 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (10 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (25 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 25;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
                         break;
                 }
                 return pickup;
@@ -171,7 +171,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     _spawn(player.Position, innerDurability);
                     return true;
                 }
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -184,7 +184,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
             private void _spawn(Vector3 position, int innerDurability = 25)
             {
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -287,19 +287,19 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (1 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (10 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (25 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 25;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
                         break;
                 }
                 return pickup;
@@ -316,7 +316,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     _spawn(player.Position, innerDurability);
                     return true;
                 }
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -329,7 +329,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
             private void _spawn(Vector3 position, int innerDurability = 25)
             {
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -437,19 +437,19 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (1 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (10 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (25 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 25;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
                         break;
                 }
                 return pickup;
@@ -466,7 +466,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     _spawn(player.Position, innerDurability);
                     return true;
                 }
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -479,7 +479,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
             private void _spawn(Vector3 position, int innerDurability = 25)
             {
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
