@@ -43,8 +43,6 @@ namespace Gamer.CITester
 
             base.OnEnabled();
         }
-
-        
     }
 
     public class CIModule : Module
@@ -59,14 +57,30 @@ namespace Gamer.CITester
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
 
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
 
+        private void Server_RestartingRound()
+        {
+            if(success)
+            {
+                Log.Info("!! Test was successful !!");
+                Environment.Exit(0);
+            }
+            else
+            {
+                Log.Error("!! Test FAILED !!");
+                Environment.Exit(1);
+            }
+        }
+        private bool success = false;
         private void Server_RoundStarted()
         {
             Timing.CallDelayed(1, () =>
@@ -79,7 +93,10 @@ namespace Gamer.CITester
                     var player2 = Player.Get(3);
                     if (player2 == null)
                         throw new Exception("Player 1 not found");
-
+                    player1.Role = RoleType.Scp173;
+                    player2.Role = RoleType.ClassD;
+                    player2.ReferenceHub.weaponManager.curWeapon = 0;
+                    player1.ReferenceHub.weaponManager.curWeapon = 0;
                     player1.Hurt(10000000000, player2, DamageTypes.E11StandardRifle);
                     if (player1.IsAlive)
                         throw new Exception("Player 1 did not die");
@@ -90,17 +107,38 @@ namespace Gamer.CITester
                     if (!player1.IsAlive)
                         throw new Exception("Player 1 died when he shouldn't");
                     player1.EnableEffect<Bleeding>();
-                    if (player1.GetEffectActive<Bleeding>())
+                    if (!player1.GetEffectActive<Bleeding>())
                         throw new Exception("Player 1 don't have bleeding effect when he should");
                     player2.DisplayNickname = "Test";
                     if (player2.GetDisplayName() != "Test")
                         throw new Exception("Player 2 nickname didn't change");
+                    player2.Kill(DamageTypes.Wall);
+                    if (player2.IsAlive)
+                        throw new Exception("Player 2 did not die|2");
+                    Round.IsLocked = false;
+                    MEC.Timing.CallDelayed(1, () =>
+                    {
+                        try
+                        {
+                            if (Round.IsStarted)
+                                throw new Exception("Round didn't end");
+                            //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Shutdown;
+                            success = true;
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                            MasterHandler.LogError(ex, this, "RoundStart");
+                        }
+                    });
                 }
                 catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                     MasterHandler.LogError(ex, this, "RoundStart");
+                    Round.IsLocked = false;
                 }
             });
         }
@@ -117,10 +155,12 @@ namespace Gamer.CITester
                         throw new Exception("Unexpected player count, expected 2 but got " + Player.List.Count());
                     if (RealPlayers.List.Count() != 2)
                         throw new Exception("Unexpected real players count, expected 2 but got " + RealPlayers.List.Count());
+                    GameCore.RoundStart.singleton.NetworkTimer = 2;
                 }
                 catch (System.Exception ex)
                 {
                     MasterHandler.LogError(ex, this, "WaitingForPlayers");
+                    Round.IsLocked = false;
                 }
             });
         }
@@ -153,6 +193,23 @@ namespace Gamer.CITester
                     ccm.UserId = userId;
                     Exiled.Events.Handlers.Player.OnVerified(new Exiled.Events.EventArgs.VerifiedEventArgs(player));
                     //Npc.Dictionary.Add(obj, null);
+                    player.ReferenceHub.inventory._weaponManager.modPreferences = new int[10, 3];
+                    if (player.ReferenceHub == null)
+                        throw new Exception("RH is null");
+                    if (player.ReferenceHub.inventory == null)
+                        throw new Exception("INV is null");
+                    if (player.ReferenceHub.inventory._ccm == null)
+                        throw new Exception("INV's CCM is null");
+                    if (player.ReferenceHub.inventory._ccm._hub == null)
+                        throw new Exception("INV's CCM's hub is null");
+                    if (player.ReferenceHub.inventory._weaponManager == null)
+                        throw new Exception("INV's WM is null");
+                    if (player.ReferenceHub.inventory._weaponManager.weapons == null)
+                        throw new Exception("INV's WM's weapons is null");
+                    if (player.ReferenceHub.inventory._weaponManager.modPreferences == null)
+                        throw new Exception("INV's WM's modPreferences is null");
+                    if (player.ReferenceHub.inventory.items == null)
+                        throw new Exception("INV's items is null");
                 }
                 catch (Exception ex)
                 {
@@ -248,6 +305,28 @@ namespace Gamer.CITester
     internal static class PlayerStats_TargetAchieve
     {
         private static bool Prefix(NetworkConnection conn, string key)
+        {
+            if (conn == null)
+                return false;
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.TargetSetHiddenRole))]
+    internal static class ServerRoles_TargetSetHiddenRole
+    {
+        private static bool Prefix(NetworkConnection connection, string role)
+        {
+            if (connection == null)
+                return false;
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.TargetBloodEffect))]
+    internal static class PlayerStats_TargetBloodEffect
+    {
+        private static bool Prefix(NetworkConnection conn, Vector3 pos, float overall)
         {
             if (conn == null)
                 return false;
