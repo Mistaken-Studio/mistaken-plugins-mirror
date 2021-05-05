@@ -379,7 +379,7 @@ namespace Gamer.CITester
     [HarmonyPatch(typeof(VersionCheck), nameof(VersionCheck.TargetCheckVersion))]
     internal static class VersionCheck_TargetCheckVersion
     {
-        private static bool Prefix(NetworkConnection conn, byte major, byte minor, byte revison)
+        private static bool Prefix(NetworkConnection conn, byte major, byte minor, byte revision)
         {
             if (conn == null)
                 return false;
