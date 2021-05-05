@@ -153,6 +153,8 @@ namespace Gamer.Mistaken.CassieRoom
         private DoorVariant WarheadStopButton;
         private DoorVariant WarheadLockButton;
         private DoorVariant TeslaToggleButton;
+        private DoorVariant CassieRoomOpenButton;
+        private DoorVariant mainDoor;
         internal static DoorVariant TeslaIndicator;
         private void Server_WaitingForPlayers()
         {
@@ -211,7 +213,7 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 ItemType keycardType = ItemType.KeycardContainmentEngineer;
                 //MainDoor
-                var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one, true);
+                mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
                 mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
@@ -298,7 +300,7 @@ namespace Gamer.Mistaken.CassieRoom
                     return false;
                 });
                 TeslaIndicator = SpawnIndicator(new Vector3(181, 994.5f, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90));
-                TeslaToggleButton = SpawnButton(new Vector3(181, 994, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Toggles</color> all Tesla gate</size><br><color=blue>Enabled</color> | <color=green>Disabled</color>", (ev) =>
+                TeslaToggleButton = SpawnButton(new Vector3(181, 994, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Toggles</color> all Tesla gates</size><br><color=blue>Enabled</color> | <color=green>Disabled</color>", (ev) =>
                 {
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
@@ -319,6 +321,15 @@ namespace Gamer.Mistaken.CassieRoom
                     });
                     return false;
                 });
+
+                CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "", (ev) =>
+                {
+                    MEC.Timing.CallDelayed(3f, () =>
+                    {
+
+                    });
+                    return false;
+                }, new Vector3(0.5f, 0.5f, 0.5f));
             }
             #endregion
         }
