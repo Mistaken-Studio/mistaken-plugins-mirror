@@ -78,8 +78,17 @@ namespace Gamer.Utilities
         {
             DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, Quaternion.Euler(rotation));
             GameObject.Destroy(doorVariant.GetComponent<DoorEventOpenerExtension>());
-            if(!enableFor079 && doorVariant.TryGetComponent<Scp079Interactable>(out var scp079Interactable))
-                GameObject.Destroy(scp079Interactable);
+            if (doorVariant.TryGetComponent<Scp079Interactable>(out var scp079Interactable)) 
+            {
+                if (!enableFor079)
+                    GameObject.Destroy(scp079Interactable);
+                else
+                    scp079Interactable.currentZonesAndRooms.Add(new Scp079Interactable.ZoneAndRoom
+                    {
+                        currentZone = "Surface",
+                        currentRoom = "Surface"
+                    });
+            }
             doorVariant.transform.localScale = size;
             if (doorVariant is BasicDoor door)
                 door._portalCode = 1;
