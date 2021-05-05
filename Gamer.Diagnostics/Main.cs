@@ -67,7 +67,7 @@ namespace Gamer.Diagnostics
             /// </summary>
             public string Name;
         }
-        internal static void LogError(System.Exception ex, Module module, string Name)
+        public static void LogError(System.Exception ex, Module module, string Name)
         {
             if (!CI_TEST_SERVER_PORTS.Contains(Server.Port))
                 return;

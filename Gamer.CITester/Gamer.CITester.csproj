@@ -86,6 +86,10 @@
       <Project>{594fc7bb-8b93-4346-8c28-6ab0ea0a4430}</Project>
       <Name>Gamer.API</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gamer.Diagnostics\Gamer.Diagnostics.csproj">
+      <Project>{c50d9525-091d-4176-acae-890b5750d2b0}</Project>
+      <Name>Gamer.Diagnostics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
