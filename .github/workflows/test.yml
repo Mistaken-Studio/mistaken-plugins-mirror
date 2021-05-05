@@ -28,7 +28,7 @@ jobs:
         # uses: NuGet/setup-nuget@04b0c2b8d1b97922f67eca497d7cf0bf17b8ffe1
         uses: NuGet/setup-nuget@v1.0.5
       # Runs a single command using the runners shell
-      - name: Build and create release
+      - name: Build plugins
         run: |
           echo %GITHUB_WORKSPACE%
           echo %path%
@@ -79,6 +79,7 @@ jobs:
     - name: Create release
       run: |
         %GITHUB_WORKSPACE%/CI-Publisher.exe ${{ github.event.inputs.version }} %GITHUB_SHA% ${{ github.event.inputs.name }}
+      shell: cmd
     - name: Bump version
       uses: EndBug/add-and-commit@v7.2.0
       with:
