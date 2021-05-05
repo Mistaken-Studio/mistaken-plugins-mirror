@@ -75,7 +75,7 @@
     <Compile Include="HintPatch.cs" />
     <Compile Include="GhostMode.cs" />
     <Compile Include="PluginHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">
