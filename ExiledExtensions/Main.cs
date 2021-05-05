@@ -190,7 +190,8 @@ namespace Gamer.Utilities
             CI_SCP1499,
             CI_GRENADE_LAUNCHER,
             CI_GUARD_COMMANDER_KEYCARD,
-            CC_GUARD_COMMANDER
+            CC_GUARD_COMMANDER,
+            CC_ZONE_MANAGER
 #pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }
         /// <summary>
