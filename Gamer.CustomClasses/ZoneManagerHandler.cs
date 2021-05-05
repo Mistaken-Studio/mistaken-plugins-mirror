@@ -35,6 +35,10 @@ namespace Gamer.CustomClasses
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
+            Log.Debug(ev.Player.Nickname);
+            Log.Debug(ev.IsEscaped);
+            Log.Debug(ev.NewRole);
+            Log.Debug(ZoneManger.Instance.PlayingAsClass.Contains(ev.Player));
             if (ev.IsEscaped) 
             {
                 if (ZoneManger.Instance.PlayingAsClass.Contains(ev.Player))
@@ -92,15 +96,19 @@ namespace Gamer.CustomClasses
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.SetRole(RoleType.Scientist,true, false);
                 player.Position = Exiled.API.Features.Map.Rooms.Where(x => x.Type == Exiled.API.Enums.RoomType.HczChkpA || x.Type == Exiled.API.Enums.RoomType.HczChkpB).First().Position + Vector3.up;
+                bool hasRadio = false;
                 foreach(var item in player.Inventory.items)
                 {
                     if(item.id== ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
                     {
                         player.RemoveItem(item);
                         player.AddItem(ItemType.KeycardZoneManager);
-                        player.AddItem(ItemType.Radio);
                     }
+                    if (item.id == ItemType.Radio)
+                        hasRadio = true;
                 }
+                if(!hasRadio)
+                    player.AddItem(ItemType.Radio);
             }
         }
     }
