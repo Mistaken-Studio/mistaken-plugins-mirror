@@ -65,7 +65,7 @@ namespace Xname.ImpactGrenade
                         ev.Player.DisableEffect<CustomPlayerEffects.Scp268>();
                     RoundLogger.Log("SCP 018 FIX", "THROW", $"{ev.Player.PlayerToString()} threw SCP-018");
                     Grenade grenade = UnityEngine.Object.Instantiate(ev.Player.GrenadeManager.availableGrenades[2].grenadeInstance).GetComponent<Grenade>();
-                    grenade.fuseDuration = 3f;
+                    grenade.fuseDuration = 900f;
                     grenade.InitData(ev.Player.GrenadeManager, Vector3.zero, ev.Player.CameraTransform.forward, ev.IsSlow ? 0.5f : 1f);
                     Mirror.NetworkServer.Spawn(grenade.gameObject);
                     ev.Player.RemoveItem(ev.Player.CurrentItem);
