@@ -156,8 +156,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         private void CustomEvents_OnRequestPickItem(Exiled.Events.EventArgs.PickItemRequestEventArgs ev)
         {
             if (
-                (ev.Pickup.ItemId == ItemType.GrenadeFlash && ev.Pickup.durability == 1.149f && ev.Player.Inventory.items.Any(i => i.id == ItemType.SCP268)) ||
-                (ev.Pickup.ItemId == ItemType.SCP268 && ev.Player.Inventory.items.Any(i => i.id == ItemType.GrenadeFlash && i.durability == 1.149f))
+                (ev.Pickup.ItemId == ItemType.GrenadeFlash && ev.Pickup.durability == 149000f && ev.Player.Inventory.items.Any(i => i.id == ItemType.SCP268)) ||
+                (ev.Pickup.ItemId == ItemType.SCP268 && ev.Player.Inventory.items.Any(i => i.id == ItemType.GrenadeFlash && i.durability == 149000f))
                 )
             {
                 ev.IsAllowed = false;
@@ -168,7 +168,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         private static IEnumerator<float> UpdateFlashCooldown(Player player)
         {
             yield return MEC.Timing.WaitForSeconds(0.1f);
-            while (player?.CurrentItem.id == ItemType.GrenadeFlash && Round.IsStarted)
+            while (Round.IsStarted && player?.CurrentItem.id == ItemType.GrenadeFlash && player?.CurrentItem.durability == 149000f)
             {
                 try
                 {
@@ -278,7 +278,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         {
             if (ev.IsEscaped || ev.NewRole == RoleType.Spectator)
             {
-                if (ev.Player.Inventory.items.Any(i => i.id == ItemType.GrenadeFlash && i.durability == 1.149f))
+                if (ev.Player.Inventory.items.Any(i => i.id == ItemType.GrenadeFlash && i.durability == 149000f))
                 {
                     ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.GrenadeFlash));
                     var pos = ev.Player.Position;
@@ -287,7 +287,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                         MapPlus.Spawn(new Inventory.SyncItemInfo
                         {
                             id = ItemType.GrenadeFlash,
-                            durability = 1.149f,
+                            durability = 149000f,
                         }, ev.Player.Role == RoleType.Spectator ? pos : ev.Player.Position, Quaternion.identity, new Vector3(1.5f, 0.5f, 1.5f));
                     });
                 }
@@ -299,12 +299,12 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             var positionToSpawn = new Vector3(-26, 1020, -44);
             MEC.Timing.CallDelayed(5, () =>
             {
-                var tmp = ItemType.GrenadeFlash.Spawn(1.149f, Vector3.zero);
+                var tmp = ItemType.GrenadeFlash.Spawn(149000f, Vector3.zero);
                 MEC.Timing.CallDelayed(5, () => tmp.Delete());
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = ItemType.GrenadeFlash,
-                    durability = 1.149f,
+                    durability = 149000f,
                 }, positionToSpawn, Quaternion.identity, new Vector3(1.5f, 0.5f, 1.5f));
             });
 

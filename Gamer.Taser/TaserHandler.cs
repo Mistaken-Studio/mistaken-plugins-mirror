@@ -55,7 +55,7 @@ namespace Gamer.Taser
             /// <inheritdoc/>
             public override void Spawn(Vector3 position, float innerDurability = 0f)
             {
-                float dur = 1.501f + (Index++) / 1000000f;
+                float dur = Durability * 1000 + (Index++);
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     durability = dur,
@@ -70,7 +70,7 @@ namespace Gamer.Taser
             {
                 if (player.Inventory.items.Count < 8)
                 {
-                    float dur = 1.501f + (Index++) / 1000000f;
+                    float dur = 501000 + (Index++);
                     player.AddItem(new Inventory.SyncItemInfo
                     {
                         durability = dur,
@@ -170,7 +170,7 @@ namespace Gamer.Taser
                 yield return Timing.WaitForSeconds(0.5f);
                 while (player.CurrentItem.id == ItemType.GunUSP)
                 {
-                    if (!(player.CurrentItem.durability >= 1.501 && player.CurrentItem.durability <= 1.5011))
+                    if (!(player.CurrentItem.durability >= 501000f && player.CurrentItem.durability <= 502000f))
                         break;
                     int dur = (int)GetInternalDurability(player.CurrentItem);
                     if (!Cooldowns.TryGetValue(dur, out DateTime time))
@@ -230,7 +230,7 @@ namespace Gamer.Taser
         /// <returns>Spawned taser as <see cref="Pickup"/></returns>
         public static Pickup SpawnTaser(Vector3 position)
         {
-            float dur = 1.501f + (Index++) / 1000000f;
+            float dur = 501f + (Index++);
             return MapPlus.Spawn(new Inventory.SyncItemInfo
             {
                 durability = dur,
@@ -259,7 +259,7 @@ namespace Gamer.Taser
                 return;
             if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE))
                 return;
-            float dur = 1.501f + (Index++) / 1000000f;
+            float dur = 501f + (Index++);
             if (ev.NewRole == RoleType.FacilityGuard)
             {
                 ev.Items.Remove(ItemType.GunUSP);

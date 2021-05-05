@@ -149,7 +149,7 @@ namespace Gamer.API
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
-                    durability = 1f + (Durability / 1000f) + (innerDurability / 1000000),
+                    durability = Durability * 1000f + innerDurability,
                 }, position, Quaternion.identity, Size);
             }
             /// <summary>
@@ -165,9 +165,7 @@ namespace Gamer.API
             /// <returns>Internal durability</returns>
             public float GetInternalDurability(float durability)
             {
-                if (((durability - 1) * 1000).ToString().Length == 3)
-                    return 0;
-                return (((durability - 1) * 1000) % 1) * 1000;
+                return durability - this.Durability * 1000;
             }
             /// <summary>
             /// Sets internal durability
@@ -177,7 +175,7 @@ namespace Gamer.API
             /// <param name="value">Internal durability</param>
             public void SetInternalDurability(Player player, Inventory.SyncItemInfo item, float value)
             {
-                float fullValue = 1 + (Durability + (value / 1000)) / 1000;
+                float fullValue = this.Durability * 1000 + value;
                 int index = player.Inventory.items.IndexOf(item);
                 var info = player.Inventory.items[index];
                 info.durability = fullValue;
