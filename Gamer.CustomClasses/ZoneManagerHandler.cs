@@ -88,6 +88,8 @@ namespace Gamer.CustomClasses
             public override RoleType Role => RoleType.Scientist;
             public override void Spawn(Player player)
             {
+                PlayingAsClass.Add(player);
+                player.SetSessionVar(ClassSessionVarType, true);
                 player.SetRole(RoleType.Scientist,true, false);
                 player.Position = Exiled.API.Features.Map.Rooms.Where(x => x.Type == Exiled.API.Enums.RoomType.HczChkpA || x.Type == Exiled.API.Enums.RoomType.HczChkpB).First().Position + Vector3.up;
                 foreach(var item in player.Inventory.items)
