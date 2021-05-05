@@ -371,7 +371,7 @@ namespace Gamer.CITester
         private static bool Prefix(NetworkConnection conn, bool gd)
         {
             if (conn == null)
-                return false;
+                return false; //A
             return true;
         }
     }
