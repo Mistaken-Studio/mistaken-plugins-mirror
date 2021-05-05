@@ -152,4 +152,26 @@ namespace Gamer.CITester
             return true;
         }
     }
+
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.TargetSetRealId))]
+    internal static class CharacterClassManager_TargetSetRealId
+    {
+        private static bool Prefix(NetworkConnection conn, string userid)
+        {
+            if (conn == null)
+                return false;
+            return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.TargetOpenRemoteAdmin))]
+    internal static class ServerRoles_TargetOpenRemoteAdmin
+    {
+        private static bool Prefix(NetworkConnection connection, bool password)
+        {
+            if (connection == null)
+                return false;
+            return true;
+        }
+    }
 }
