@@ -74,10 +74,12 @@ namespace Gamer.Utilities
         /// <param name="rotation">Door Rotation</param>
         /// <param name="size">Door Size</param>
         /// <returns></returns>
-        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation, Vector3 size)
+        public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation, Vector3 size, bool enableFor079 = false)
         {
             DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, Quaternion.Euler(rotation));
             GameObject.Destroy(doorVariant.GetComponent<DoorEventOpenerExtension>());
+            if(!enableFor079 && doorVariant.TryGetComponent<Scp079Interactable>(out var scp079Interactable))
+                GameObject.Destroy(scp079Interactable);
             doorVariant.transform.localScale = size;
             if (doorVariant is BasicDoor door)
                 door._portalCode = 1;
