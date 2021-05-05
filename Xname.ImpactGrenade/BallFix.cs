@@ -41,7 +41,7 @@ namespace Xname.ImpactGrenade
         }
         private void Player_ThrowingGrenade(ThrowingGrenadeEventArgs ev)
         {
-            if (ev.Type == Exiled.API.Enums.GrenadeType.Scp018)
+            /*if (ev.Type == Exiled.API.Enums.GrenadeType.Scp018)
             {
                 MEC.Timing.CallDelayed(1f, () =>
                 {
@@ -56,14 +56,17 @@ namespace Xname.ImpactGrenade
                     grenade.gameObject.AddComponent<Scp018Fix>();
                 });
                 ev.IsAllowed = false;
-            }
+            }*/
         }
         /// <inheritdoc/>
         public static HashSet<GameObject> explodedBalls = new HashSet<GameObject>();
         private void Map_ExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
+            {
+                ev.Grenade.AddComponent<Scp018Fix>();
                 explodedBalls.Add(ev.Grenade);
+            }
         }
         private void Server_RoundStarted()
         {
@@ -78,7 +81,7 @@ namespace Xname.ImpactGrenade
         private void OnCollisionEnter(Collision collision)
         {
             if (this == null)
-                RoundLogger.Log("SCP 018 FIX", "COLLISION", "Ball is null :/");
+                RoundLogger.Log("SCP 018 FIX", "COLLISION", "Ball is null");
             foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
                 p.SendConsoleMessage($"{this?.name}, {collision?.collider.name}", "grey");

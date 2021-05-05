@@ -134,12 +134,6 @@ namespace Gamer.Mistaken.BetterSCP.Global
                 ev.IsAllowed = true;
                 ev.ReturnMessage = "Done";
             }
-            else if (ev.Name == "yeet")
-            {
-                Gamer.Utilities.DoorUtils.SpawnDoor((DoorUtils.DoorType)int.Parse(ev.Arguments[0]), null, ev.Player.Position, ev.Player.Rotation, Vector3.one);
-                ev.IsAllowed = true;
-                ev.ReturnMessage = "Done";
-            }
             else if (ev.Name == "int")
             {
                 ev.Player.CurrentRoom.SetLightIntensity(float.Parse(ev.Arguments[0]));
