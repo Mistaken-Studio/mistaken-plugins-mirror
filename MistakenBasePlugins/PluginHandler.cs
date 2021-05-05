@@ -38,6 +38,6 @@ namespace Gamer.Mistaken.Base
     }
     public class ConfigPlus : Config
     {
-        public bool IsExperimentalServer = false;
+        public bool IsExperimentalServer { get; set; } = false;
     }
 }
