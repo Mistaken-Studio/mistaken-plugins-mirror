@@ -74,7 +74,7 @@ namespace Xname.ImpactGrenade
                 ev.IsAllowed = false;
             }
         }
-        private Dictionary<GameObject, bool> explodedBalls;
+        public static Dictionary<GameObject, bool> explodedBalls;
         private void Map_ExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
@@ -94,7 +94,11 @@ namespace Xname.ImpactGrenade
         {
             foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
-                p.SendConsoleMessage($"{collision?.collider.name}, {collision?.gameObject}, {collision?.rigidbody}", "grey");
+                p.SendConsoleMessage($"{this?.name}, {this?.gameObject}", "grey");
+            }
+            if (FlashImpHandler.explodedBalls.ContainsKey(this?.gameObject))
+            {
+                Mirror.NetworkServer.Destroy(this?.gameObject);
             }
         }
     }
