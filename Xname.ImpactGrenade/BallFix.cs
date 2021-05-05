@@ -81,19 +81,24 @@ namespace Xname.ImpactGrenade
         private void OnCollisionEnter(Collision collision)
         {
             if (this == null)
-                RoundLogger.Log("SCP 018 FIX", "COLLISION", "Ball is null");
-            foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
-            {
-                p.SendConsoleMessage($"{this?.name}, {collision?.collider.name}", "grey");
-            }
-            if (BallFix.explodedBalls.Contains(this?.gameObject))
+                RoundLogger.Log("SCP018 FIX", "COLLISION", "Ball is null... but how???");
+            else
             {
                 foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
-                    p.SendConsoleMessage($"works", "green");
+                    p.SendConsoleMessage($"{this?.name}, {collision?.collider.name}", "grey");
                 }
-                RoundLogger.Log("SCP 018 FIX", "DESTROY", "Tried to destroy a ball, but did it?");
-                Mirror.NetworkServer.Destroy(this?.gameObject);
+                if (BallFix.explodedBalls.Contains(this?.gameObject))
+                {
+                    foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
+                    {
+                        p.SendConsoleMessage($"works", "green");
+                    }
+                    RoundLogger.Log("SCP018 FIX", "PREDESTROY", "Trying to destroy the ball..");
+                    Mirror.NetworkServer.Destroy(this?.gameObject);
+                    if (this == null)
+                        RoundLogger.Log("SCP018 FIX", "DESTROY", "The ball got destroyed");
+                }
             }
         }
     }
