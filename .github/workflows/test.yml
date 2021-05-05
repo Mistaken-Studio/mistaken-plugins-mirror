@@ -78,9 +78,7 @@ jobs:
       run: |
         %GITHUB_WORKSPACE%/CI-Publisher.exe ${{ github.event.inputs.version }} %GITHUB_SHA% ${{ github.event.inputs.version }}
     - name: Bump version
-        # You may pin to the exact commit or the version.
-        # uses: EndBug/add-and-commit@a3adef035a1381dcf888c90b847240e2ddb9e008
-        uses: EndBug/add-and-commit@v7.2.0
-        with:
+      uses: EndBug/add-and-commit@v7.2.0
+      with:
          add: version
          message: Bump version
