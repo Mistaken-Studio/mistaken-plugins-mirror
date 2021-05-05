@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.Systems.Patches
 						doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, true);
 						break;
 					case "UNLOCK":
-						doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, true);
+						doorVariant.ServerChangeLock(DoorLockReason.AdminCommand, false);
 						break;
 					case "UNLOCKALL":
 						doorVariant.NetworkActiveLocks = 0;
