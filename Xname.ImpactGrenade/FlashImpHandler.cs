@@ -97,7 +97,7 @@ namespace Xname.ImpactGrenade
                 RoundLogger.Log("SCP 018 COLLISION", "BALLISNULL", "KURWA JAK");
             foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
-                p.SendConsoleMessage($"{this?.name}, {this?.gameObject}", "grey");
+                p.SendConsoleMessage($"{this?.name}, {collision?.gameObject}", "grey");
             }
             if (FlashImpHandler.explodedBalls.Contains(this?.gameObject))
             {
