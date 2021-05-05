@@ -73,6 +73,7 @@ namespace Gamer.Utilities
         /// <param name="position">Door Position, if <see cref="Vector3.y"/> is smaller than 900 then door are automaticly locked to prevent crash</param>
         /// <param name="rotation">Door Rotation</param>
         /// <param name="size">Door Size</param>
+        /// <param name="enableFor079">Enable SCP079</param>
         /// <returns></returns>
         public static DoorVariant SpawnDoor(DoorType type, string name, Vector3 position, Vector3 rotation, Vector3 size, bool enableFor079 = false)
         {
