@@ -28,15 +28,11 @@ namespace Xname.ImpactGrenade
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Player.ThrowingGrenade += this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
-            Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.ThrowingGrenade -= this.Handle<Exiled.Events.EventArgs.ThrowingGrenadeEventArgs>((ev) => Player_ThrowingGrenade(ev));
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
-            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         private void Player_ThrowingGrenade(ThrowingGrenadeEventArgs ev)
         {
@@ -56,56 +52,6 @@ namespace Xname.ImpactGrenade
                     grenade.gameObject.AddComponent<ImpComponent>();
                 });
                 ev.IsAllowed = false;
-            }
-            else if (ev.Type == Exiled.API.Enums.GrenadeType.Scp018)
-            {
-                MEC.Timing.CallDelayed(1f, () =>
-                {
-                    if (ev.Player.GetEffectActive<CustomPlayerEffects.Scp268>())
-                        ev.Player.DisableEffect<CustomPlayerEffects.Scp268>();
-                    RoundLogger.Log("SCP 018 FIX", "THROW", $"{ev.Player.PlayerToString()} threw SCP-018");
-                    Grenade grenade = UnityEngine.Object.Instantiate(ev.Player.GrenadeManager.availableGrenades[2].grenadeInstance).GetComponent<Grenade>();
-                    grenade.fuseDuration = 900f;
-                    grenade.InitData(ev.Player.GrenadeManager, Vector3.zero, ev.Player.CameraTransform.forward, ev.IsSlow ? 0.5f : 1f);
-                    Mirror.NetworkServer.Spawn(grenade.gameObject);
-                    ev.Player.RemoveItem(ev.Player.CurrentItem);
-                    grenade.gameObject.AddComponent<Scp018Fix>();
-                });
-                ev.IsAllowed = false;
-            }
-        }
-        /// <inheritdoc/>
-        public static HashSet<GameObject> explodedBalls = new HashSet<GameObject>();
-        private void Map_ExplodingGrenade(ExplodingGrenadeEventArgs ev)
-        {
-            if (ev.Grenade.TryGetComponent<Scp018Grenade>(out Scp018Grenade ball))
-                explodedBalls.Add(ev.Grenade);
-        }
-        private void Server_RoundStarted()
-        {
-            explodedBalls.Clear();
-        }
-    }
-    /// <summary>
-    /// Fix for ball not getting disabled :/.
-    /// </summary>
-    public class Scp018Fix : MonoBehaviour
-    {
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (this == null)
-                RoundLogger.Log("SCP 018 COLLISION", "BALLISNULL", "KURWA JAK");
-            foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
-            {
-                p.SendConsoleMessage($"{this?.name}, {collision?.gameObject}", "grey");
-            }
-            if (FlashImpHandler.explodedBalls.Contains(this?.gameObject))
-            {
-                foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
-                {
-                    p.SendConsoleMessage($"works", "green");
-                }
-                Mirror.NetworkServer.Destroy(this?.gameObject);
             }
         }
     }
