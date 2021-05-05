@@ -81,7 +81,7 @@ namespace Xname.ImpactGrenade
                 RoundLogger.Log("SCP 018 FIX", "COLLISION", "Ball is null :/");
             foreach (var p in Gamer.Utilities.RealPlayers.List.Where(x => x.IsActiveDev()))
             {
-                p.SendConsoleMessage($"{this?.name}, {collision?.gameObject}", "grey");
+                p.SendConsoleMessage($"{this?.name}, {collision?.collider.name}", "grey");
             }
             if (BallFix.explodedBalls.Contains(this?.gameObject))
             {
