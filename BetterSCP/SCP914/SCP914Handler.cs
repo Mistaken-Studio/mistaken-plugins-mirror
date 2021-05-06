@@ -129,7 +129,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP914
             }
 
             foreach (var player in RealPlayers.List.Where(p => p.IsReadyPlayer() && p.IsAlive && Vector3.Distance(p.Position, ev.Scp914.output.position) < 2))
-                Timing.RunCoroutine(PunishOutput(player));
+                this.RunCoroutine(PunishOutput(player), "PunishOutput");
         }
 
         private IEnumerator<float> PunishOutput(Player player)

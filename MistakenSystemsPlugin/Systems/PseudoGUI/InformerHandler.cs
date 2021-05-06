@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.Systems.GUI
         private void Player_Escaping(Exiled.Events.EventArgs.EscapingEventArgs ev)
         {
             if (PluginHandler.Config.IsRP())
-                Timing.RunCoroutine(EscapeMessage(ev.Player, ev.NewRole == RoleType.ChaosInsurgency, ev.NewRole == RoleType.NtfScientist));
+                this.RunCoroutine(EscapeMessage(ev.Player, ev.NewRole == RoleType.ChaosInsurgency, ev.NewRole == RoleType.NtfScientist), "EscapeMessage");
         }
 
         private static readonly string[] CIMessage = new string[]
@@ -98,7 +98,7 @@ namespace Gamer.Mistaken.Systems.GUI
                 return;
             if (!ev.IsAllowed)
                 return;
-            Timing.RunCoroutine(InformSpeaker(ev.Player));
+            this.RunCoroutine(InformSpeaker(ev.Player), "InformSpeaker");
         }
 
         private IEnumerator<float> InformSpeaker(Player player)
@@ -128,8 +128,8 @@ namespace Gamer.Mistaken.Systems.GUI
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(Update());
-            Timing.RunCoroutine(Update268());
+            this.RunCoroutine(Update(), "Update");
+            this.RunCoroutine(Update268(), "Update268");
         }
 
         public int NextUpdate = 5;

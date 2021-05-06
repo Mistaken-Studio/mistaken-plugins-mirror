@@ -46,13 +46,13 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(UpdateInfo());
+            this.RunCoroutine(UpdateInfo(), "UpdateInfo");
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.NewRole == RoleType.Scp049)
-                Timing.RunCoroutine(UpdateShield(ev.Player));
+                this.RunCoroutine(UpdateShield(ev.Player), "UpdateShield");
         }
 
         private IEnumerator<float> UpdateInfo()

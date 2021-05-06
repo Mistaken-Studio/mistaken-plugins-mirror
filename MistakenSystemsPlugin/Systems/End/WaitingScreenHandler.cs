@@ -43,10 +43,10 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            MEC.Timing.CallDelayed(10, () =>
+            this.CallDelayed(10, () =>
             {
                 ReferenceHub.HostHub.GetComponent<Intercom>().CustomContent = null;
-            });
+            }, "ClearIntercom");
         }
 
         private void Server_WaitingForPlayers()
@@ -58,7 +58,7 @@ namespace Gamer.Mistaken.Systems.End
                 return;
             }
             startRound.transform.localScale = Vector3.zero;
-            Timing.RunCoroutine(WaitingForPlayers());
+            this.RunCoroutine(WaitingForPlayers(), "WaitingForPlayers");
             var intercomDoor = Map.Doors.First(d => d.Type() == DoorType.Intercom)?.transform;
             startPos = intercomDoor.position + intercomDoor.forward * -8 + Vector3.down * 6 + intercomDoor.right * 3;
         }

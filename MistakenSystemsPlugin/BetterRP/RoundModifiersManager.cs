@@ -196,18 +196,18 @@ namespace Gamer.Mistaken.BetterRP
                             }
                         case RandomEvents.LCZ_DECONTAMINATION_REAL_10_MINUTES:
                             {
-                                Timing.CallDelayed(45, () =>
+                                Gamer.Utilities.BetterCourotines.CallDelayed(45, () =>
                                 {
                                     DecontaminationController.Singleton.NetworkRoundStartTime = GetNewLCZTime(600);
-                                });
+                                }, "RoundModifiersManager.LCZDecontReal10Minutes");
                                 break;
                             }
                         case RandomEvents.LCZ_DECONTAMINATION_REAL_5_MINUTES:
                             {
-                                Timing.CallDelayed(45, () =>
+                                Gamer.Utilities.BetterCourotines.CallDelayed(45, () =>
                                 {
                                     DecontaminationController.Singleton.NetworkRoundStartTime = GetNewLCZTime(300);
-                                });
+                                }, "RoundModifiersManager.LCZDecontReal5Minutes");
                                 break;
                             }
                         case RandomEvents.BLACKOUT_FOR_1_SECONDS_EVERY_30_SECONDS:
@@ -240,17 +240,17 @@ namespace Gamer.Mistaken.BetterRP
                             }
                         case RandomEvents.CASSIE_AUTO_SCAN_10_MINUTES:
                             {
-                                Timing.RunCoroutine(ToScan(600));
+                                Gamer.Utilities.BetterCourotines.RunCoroutine(ToScan(600), "RoundModifiersManager.ToScan");
                                 break;
                             }
                         case RandomEvents.CASSIE_AUTO_SCAN_5_MINUTES:
                             {
-                                Timing.RunCoroutine(ToScan(300));
+                                Gamer.Utilities.BetterCourotines.RunCoroutine(ToScan(300), "RoundModifiersManager.ToScan");
                                 break;
                             }
                         case RandomEvents.CASSIE_AUTO_SCAN_15_MINUTES:
                             {
-                                Timing.RunCoroutine(ToScan(900));
+                                Gamer.Utilities.BetterCourotines.RunCoroutine(ToScan(900), "RoundModifiersManager.ToScan");
                                 break;
                             }
                         case RandomEvents.LIFT_A_LOCKDOWN:

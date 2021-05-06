@@ -14,7 +14,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         public CustomSpeedHandler(PluginHandler p) : base(p)
         {
-            Timing.RunCoroutine(AutoUpdate());
+            this.RunCoroutine(AutoUpdate(), "AutoUpdate");
         }
         public override bool Enabled => false;
         public override string Name => "CustomSpeed";

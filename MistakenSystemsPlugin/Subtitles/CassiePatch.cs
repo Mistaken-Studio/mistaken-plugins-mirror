@@ -31,7 +31,7 @@ namespace Gamer.Mistaken.Subtitles
         public static int Index = -1;
         public static bool Prefix(NineTailedFoxAnnouncer __instance)
         {
-            Timing.RunCoroutine(Start(__instance));
+            Gamer.Utilities.BetterCourotines.RunCoroutine(Start(__instance), "CassiePatch2.Start");
             return false;
         }
 

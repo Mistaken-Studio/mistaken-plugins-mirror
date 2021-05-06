@@ -56,7 +56,7 @@ namespace Xname.ImpactGrenade
             /// <inheritdoc/>
             public override bool OnThrow(Player player, Inventory.SyncItemInfo item, bool slow)
             {
-                MEC.Timing.CallDelayed(1f, () =>
+                Instance.CallDelayed(1f, () =>
                 {
                     RoundLogger.Log("IMPACT GRENADE", "THROW", $"{player.PlayerToString()} threw an impact grenade");
                     if (player.GetEffectActive<CustomPlayerEffects.Scp268>())
@@ -70,7 +70,7 @@ namespace Xname.ImpactGrenade
                     player.RemoveItem(item);
                     grenade.gameObject.AddComponent<ImpComponent>();
                     OnStopHolding(player, item);
-                });
+                }, "OnThrow");
                 return false;
             }
             /// <inheritdoc/>
@@ -98,16 +98,18 @@ namespace Xname.ImpactGrenade
                 {
                     player.AddItem(new Inventory.SyncItemInfo
                     {
-                        durability = 1.001f,
+                        durability = 1000f,
                         id = ItemType.GrenadeFrag,
                     });
                     player.SetSessionVar(Main.SessionVarType.CI_IMPACT, true);
                 }
             }
         }
+        private static ImpHandler Instance;
         /// <inheritdoc/>
         public ImpHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
+            Instance = this;
             new ImpItem();
         }
         /// <inheritdoc/>
@@ -134,11 +136,11 @@ namespace Xname.ImpactGrenade
             RoundLogger.Log("IMPACT GRENADE", "EXPLODED", $"Impact grenade exploded");
             var tmp = (ev.Grenade.GetComponent<FragGrenade>()).thrower;
             lastImpactThrower = tmp;
-            MEC.Timing.CallDelayed(1, () =>
+            this.CallDelayed(1, () =>
             {
                 if (lastImpactThrower == tmp)
                     lastImpactThrower = null;
-            });
+            }, "MapExploadingGrenade");
             foreach (Player player in ev.TargetToDamages.Keys.ToArray())
             {
                 ev.TargetToDamages[player] *= Damage_multiplayer;
@@ -153,14 +155,14 @@ namespace Xname.ImpactGrenade
             while (toSpawn > 0)
             {
                 var locker = lockers[UnityEngine.Random.Range(0, lockers.Length)];
-                locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1.001f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
+                locker.AssignPickup(ItemType.GrenadeFrag.Spawn(1000f, locker.chambers[UnityEngine.Random.Range(0, locker.chambers.Length)].spawnpoint.position));
                 RoundLogger.Log("IMPACT GRENADE", "SPAWN", $"Impact grenade spawned");
                 toSpawn--;
             }
         }
         private void Map_ChangingIntoGrenade(Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs ev)
         {
-            if (ev.Pickup.durability == 1.001f)
+            if (ev.Pickup.durability == 1000f)
             {
                 ev.IsAllowed = false;
                 Grenade grenade = UnityEngine.Object.Instantiate(Server.Host.GrenadeManager.availableGrenades[0].grenadeInstance).GetComponent<Grenade>();

@@ -56,14 +56,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         public void DropUnder(int[] pids, int times)
         {
             foreach (var item in pids)
-            {
-                Timing.RunCoroutine(Execute(RealPlayers.Get(item).GrenadeManager, times));
-            }
+                Gamer.Utilities.BetterCourotines.RunCoroutine(Execute(RealPlayers.Get(item).GrenadeManager, times), "CanadelCommand.Execute");
         }
 
         public void Throw(int pid, int times)
         {
-            Timing.RunCoroutine(Execute(RealPlayers.Get(pid).GrenadeManager, times, true));
+            Gamer.Utilities.BetterCourotines.RunCoroutine(Execute(RealPlayers.Get(pid).GrenadeManager, times), "CanadelCommand.Execute");
         }
 
         public IEnumerator<float> Execute(GrenadeManager grenadeManager, int amount = 5, bool throwIt = false)

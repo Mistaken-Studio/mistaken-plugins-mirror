@@ -37,7 +37,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 Muted.Add(player.UserId);
                 player.IsMuted = true;
-                MEC.Timing.RunCoroutine(InformGlobalMute(player));
+                Gamer.Utilities.BetterCourotines.RunCoroutine(InformGlobalMute(player), "MuteAllCommand.InformGlobalMute");
             }
             MapPlus.Broadcast("GLOBAL MUTE", 10, "Activated Global Mute", Broadcast.BroadcastFlags.AdminChat);
             return new string[] { "Done" };

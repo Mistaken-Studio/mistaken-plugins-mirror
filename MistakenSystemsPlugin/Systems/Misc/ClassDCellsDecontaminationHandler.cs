@@ -39,7 +39,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(DoCycle(RoundId));
+            this.RunCoroutine(DoCycle(RoundId), "DoCycle");
         }
 
         public static bool Decontaminated = false;

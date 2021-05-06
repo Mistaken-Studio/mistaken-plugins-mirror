@@ -93,10 +93,10 @@ namespace Gamer.Mistaken.Systems.GUI
             //ev.Players.Clear();
             //foreach (var item in SpawnQueue)
             //    ev.Players.Add(item);
-            MEC.Timing.CallDelayed(20, () =>
+            this.CallDelayed(20, () =>
             {
                 RespawnQueueSeed = -1;
-            });
+            }, "RespawningTeam");
         }
         private void Server_RestartingRound()
         {
@@ -107,12 +107,12 @@ namespace Gamer.Mistaken.Systems.GUI
             cache_maxCI = Respawning.RespawnWaveGenerator.SpawnableTeams[Respawning.SpawnableTeamType.ChaosInsurgency].MaxWaveSize;
             cache_maxMTF = Respawning.RespawnWaveGenerator.SpawnableTeams[Respawning.SpawnableTeamType.NineTailedFox].MaxWaveSize;
 
-            Timing.RunCoroutine(TTRUpdate());
-            Timing.RunCoroutine(UpdateCache());
-            MEC.Timing.CallDelayed(45, () =>
+            this.RunCoroutine(TTRUpdate(), "TTRUpdate");
+            this.RunCoroutine(UpdateCache(), "UpdateCache");
+            this.CallDelayed(45, () =>
             {
                 Is106 = RealPlayers.List.Any(p => p.Role == RoleType.Scp106);
-            });
+            }, "Update106Info");
         }
         private static bool Is106 = false;
         private readonly Dictionary<int, (Player Player, RoleType Role)> spawnQueue = new Dictionary<int, (Player Player, RoleType Role)>();
@@ -122,7 +122,7 @@ namespace Gamer.Mistaken.Systems.GUI
             if (DeathMessages.ContainsKey(player.Id))
                 DeathMessages.Remove(player.Id);
             DeathMessages.Add(player.Id, message);
-            MEC.Timing.CallDelayed(15, () => DeathMessages.Remove(player.Id));
+            Gamer.Utilities.BetterCourotines.CallDelayed(15, () => DeathMessages.Remove(player.Id), "SpecInfo.AddDeathMessage");
         }
 
         public static int cache_ticketsCI;

@@ -50,11 +50,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
 
         private void Server_WaitingForPlayers()
         {
-            MEC.Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 if (Rooms == null || Rooms.Length == 0)
                     Server_WaitingForPlayers();
-            });
+            }, "Server_WaitingForPlayers");
             Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
         }
 
@@ -62,11 +62,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
 
         private void Player_EnteringFemurBreaker(Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs _)
         {
-            MEC.Timing.CallDelayed(10, () =>
+            this.CallDelayed(10, () =>
             {
                 if (!OneOhSixContainer.used)
                     Cassie.Message("SCP 1 0 6 is READY FOR RECONTAINMENT");
-            });
+            }, "Player_EnteringFemurBreaker");
         }
 
         private void Player_FailingEscapePocketDimension(Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs ev)
@@ -90,17 +90,17 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 InTeleportExecution.Add(ev.Target.Id);
                 ev.Target.IsGodModeEnabled = true;
                 ev.IsAllowed = false;
-                MEC.Timing.CallDelayed(3, () =>
+                this.CallDelayed(3, () =>
                 {
                     ev.Target.IsGodModeEnabled = false;
                     ev.Target.Role = RoleType.Spectator;
-                    MEC.Timing.CallDelayed(2, () =>
+                    this.CallDelayed(2, () =>
                     {
                         ev.Target.ReferenceHub.characterClassManager.CallTargetDeathScreen(ev.Target.Connection, ev.HitInformation);
-                    });
+                    }, "Player_Dying2");
                     Cassie.Message("SCP 1 0 6 RECONTAINED SUCCESSFULLY");
                     InTeleportExecution.Remove(ev.Target.Id);
-                });
+                }, "Player_Dying1");
                 Vector3 newTarget = new Vector3(0, -2000, 0);
                 Scp106PlayerScript s106 = ev.Target.ReferenceHub.scp106PlayerScript;
                 s106.NetworkportalPosition = newTarget;
@@ -165,9 +165,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             Rooms = Map.Rooms.Where(r => r != null && !DisallowedRoomTypes.Contains(r.Type)).ToArray();
             LastRooms.Clear();
             InTeleportExecution.Clear();
-            Timing.RunCoroutine(LockStart());
-            Timing.RunCoroutine(CamperHell());
-            Timing.RunCoroutine(MoveFromPocket());
+            this.RunCoroutine(LockStart(), "LockStart");
+            this.RunCoroutine(CamperHell(), "CamperHell");
+            this.RunCoroutine(MoveFromPocket(), "MoveFromPocket");
         }
 
         private int CamperPoints = 0;
@@ -212,7 +212,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             {
                 player.Position = new Vector3(0, -1998, 0);
                 Cooldown.Add(player.Id);
-                MEC.Timing.CallDelayed(25, () => Cooldown.Remove(player.Id));
+                this.CallDelayed(25, () => Cooldown.Remove(player.Id), "LockStart");
             }
             while (Round.ElapsedTime.TotalSeconds < 25)
             {
@@ -289,12 +289,12 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             }
             InTeleportExecution.Add(player.Id);
             Vector3 oldPos = player.Position;
-            MEC.Timing.CallDelayed(2, () =>
+            this.CallDelayed(2, () =>
             {
                 InTeleportExecution.Remove(player.Id);
                 if (Warhead.IsDetonated)
                     player.Position = oldPos;
-            });
+            }, "TeleportOldMan");
             Scp106PlayerScript s106 = player.ReferenceHub.scp106PlayerScript;
             s106.NetworkportalPosition = target;
             s106.CallCmdUsePortal();
@@ -329,7 +329,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             }
             if (InTeleportExecution.Contains(ev.Player.Id))
             {
-                Timing.RunCoroutine(DoPostTeleport(ev.Player));
+                this.RunCoroutine(DoPostTeleport(ev.Player), "DoPostTeleport");
                 return;
             }
             if (Round.ElapsedTime.TotalSeconds < 25)
@@ -353,12 +353,12 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             ev.Player.ReferenceHub.scp106PlayerScript.NetworkportalPosition = newTarget;
             ev.PortalPosition = newTarget;
             Vector3 oldPos = ev.Player.Position;
-            Timing.RunCoroutine(DoPostTeleport(ev.Player));
-            MEC.Timing.CallDelayed(8f, () =>
+            this.RunCoroutine(DoPostTeleport(ev.Player), "DoPostTeleport");
+            this.CallDelayed(8f, () =>
             {
                 if (Warhead.IsDetonated)
                     ev.Player.Position = oldPos;
-            });
+            }, "SCP106_Teleporting");
         }
 
         private IEnumerator<float> DoPostTeleport(Player player)

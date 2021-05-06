@@ -28,7 +28,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(IRoundStarted());
+            this.RunCoroutine(IRoundStarted(), "IRoundStarted");
         }
 
         private IEnumerator<float> IRoundStarted()

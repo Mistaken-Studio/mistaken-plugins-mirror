@@ -11,7 +11,7 @@ namespace Gamer.Mistaken.BetterMutes
         public override bool IsBasic => true;
         public Handler(PluginHandler plugin) : base(plugin)
         {
-            Timing.RunCoroutine(AutoMuteReload());
+            this.RunCoroutine(AutoMuteReload(), "AutoMuteReload");
         }
 
         public override string Name => "BetterMutes";

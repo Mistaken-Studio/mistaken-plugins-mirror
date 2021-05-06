@@ -261,14 +261,14 @@ namespace Gamer.Mistaken.Ranks
                     }
                 });
 
-                MEC.Timing.CallDelayed(15, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(15, () =>
                 {
                     if (VipList.Count == 0)
                     {
                         Log.Warn("VIP List failed to load, loading using old method, tring with API");
                         UpdateRoles(true);
                     }
-                });
+                }, "RanksHandler.LoadVips");
             }
         }
 

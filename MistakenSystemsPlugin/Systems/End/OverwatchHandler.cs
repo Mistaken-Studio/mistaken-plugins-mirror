@@ -67,7 +67,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(DoRoundLoop());
+            this.RunCoroutine(DoRoundLoop(), "DoRoundLoop");
         }
 
         public static readonly HashSet<string> InLongOverwatch = new HashSet<string>();

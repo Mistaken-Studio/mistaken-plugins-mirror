@@ -79,6 +79,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     spectators[0].Role = currentSCP.Role;
                     if (currentSCP.Role == RoleType.Scp079)
                     {
+                        spectators[0].MaxEnergy = currentSCP.MaxEnergy;
                         spectators[0].Energy = currentSCP.Energy;
                         spectators[0].Level = currentSCP.Level;
                         spectators[0].Experience = currentSCP.Experience;
@@ -86,10 +87,10 @@ namespace Gamer.Mistaken.Systems.Misc
                     }
                     else
                     {
-                        Timing.CallDelayed(1, () =>
+                        Gamer.Utilities.BetterCourotines.CallDelayed(.5f, () =>
                         {
                             spectators[0].Position = currentSCP.Position + Vector3.up;
-                        });
+                        }, "Respawn.SetPos");
                         spectators[0].Health = currentSCP.Health;
                         spectators[0].ArtificialHealth = currentSCP.ArtificialHealth;
                         spectators[0].MaxArtificialHealth = currentSCP.MaxArtificialHealth;

@@ -18,11 +18,11 @@ namespace Gamer.Mistaken.Systems.End
         public override string Name => "CamperEscape";
         public override void OnEnable()
         {
-            MEC.Timing.CallDelayed(0.1f, () =>
+            this.CallDelayed(0.1f, () =>
             {
                 Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
                 Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            });
+            }, "LateEnable");
         }
         public override void OnDisable()
         {

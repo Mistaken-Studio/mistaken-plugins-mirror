@@ -61,11 +61,11 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (BlockInteractions.Contains(player))
                         return;
-                    MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.1f, () => BlockInteractions.Add(player), "Armor.Unlock");
                     //player.SetGUI("Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
-                Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
                     if (!player.IsAlive)
                         return;
@@ -75,7 +75,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     if (player.ArtificialHealth < 10 && !player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Scp207>().Enabled)
                         player.ArtificialHealth = 10;
                     BlockInteractions.Remove(player);
-                });
+                }, "Armor.Wear");
             }
             public void OnUnWear(Player player, bool fast)
             {
@@ -85,18 +85,18 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (BlockInteractions.Contains(player))
                         return;
-                    MEC.Timing.CallDelayed(0.1f, () => BlockInteractions.Add(player));
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.1f, () => BlockInteractions.Add(player), "Armor.Unlock");
                     player.SetGUI("Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{ItemName}</color>", 3);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(3);
                 }
-                MEC.Timing.CallDelayed(3 * (fast ? 0 : 1), () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(3 * (fast ? 0 : 1), () =>
                 {
                     if (player.IsConnected)
                         player.DisableEffect<CustomPlayerEffects.Panic>();
                     Shield.ShieldedManager.Remove(player);
                     BlockInteractions.Remove(player);
                     player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
-                });
+                }, "Armor.Unwear");
             }
             public override void OnForceclass(Player player)
             {
@@ -142,25 +142,25 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (1 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (10 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (25 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 25;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
                         break;
                 }
                 return pickup;
             }
             #region Spawn
-            public static void GiveDelayed(Player player, int innerDurability = 25) => MEC.Timing.CallDelayed(0.2f, () => Give(player, innerDurability));
+            public static void GiveDelayed(Player player, int innerDurability = 25) => Gamer.Utilities.BetterCourotines.CallDelayed(0.2f, () => Give(player, innerDurability), "Armor.GiveDelayed");
             public static bool Give(Player player, int innerDurability = 25) => Instance._give(player, innerDurability);
             private bool _give(Player player, int innerDurability = 25)
             {
@@ -171,7 +171,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     _spawn(player.Position, innerDurability);
                     return true;
                 }
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -184,7 +184,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
             private void _spawn(Vector3 position, int innerDurability = 25)
             {
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -213,16 +213,16 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (Armor.BlockInteractions.Contains(player))
                         return;
-                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player), "LiteArmor.Unlock");
                     //player.SetGUI("Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(2);
                 }
-                Timing.CallDelayed(2 * (fast ? 0 : 1), () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(2 * (fast ? 0 : 1), () =>
                 {
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 0.5f));
                     Armor.BlockInteractions.Remove(player);
                     player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{ItemName}</color>");
-                });
+                }, "LiteArmor.Wear");
             }
             public void OnUnWear(Player player, bool fast)
             {
@@ -232,16 +232,16 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (Armor.BlockInteractions.Contains(player))
                         return;
-                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player), "LiteArmor.Unlock");
                     player.SetGUI("Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{ItemName}</color>", 2);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(1);
                 }
-                MEC.Timing.CallDelayed(1 * (fast ? 0 : 1), () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(1 * (fast ? 0 : 1), () =>
                 {
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
                     player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
-                });
+                }, "LiteArmor.UnWear");
             }
             public override void OnForceclass(Player player)
             {
@@ -287,25 +287,25 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (1 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (10 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (25 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 25;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
                         break;
                 }
                 return pickup;
             }
             #region Spawn
-            public static void GiveDelayed(Player player, int innerDurability = 25) => MEC.Timing.CallDelayed(0.2f, () => Give(player, innerDurability));
+            public static void GiveDelayed(Player player, int innerDurability = 25) => Gamer.Utilities.BetterCourotines.CallDelayed(0.2f, () => Give(player, innerDurability), "LiteArmor.GiveDelayed");
             public static bool Give(Player player, int innerDurability = 25) => Instance._give(player, innerDurability);
             private bool _give(Player player, int innerDurability = 25)
             {
@@ -316,7 +316,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     _spawn(player.Position, innerDurability);
                     return true;
                 }
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -329,7 +329,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
             private void _spawn(Vector3 position, int innerDurability = 25)
             {
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -358,11 +358,11 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (Armor.BlockInteractions.Contains(player))
                         return;
-                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player), "HeavyArmor.Unlock");
                     //player.SetGUI("Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Putting on <color=yellow>{this.ItemName}</color>", 8);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(8);
                 }
-                Timing.CallDelayed(8 * (fast ? 0 : 1), () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(8 * (fast ? 0 : 1), () =>
                 {
                     player.EnableEffect<CustomPlayerEffects.Disabled>();
                     Shield.ShieldedManager.Add(new Shield.Shielded(player, (int)Math.Ceiling(durability), durability / 60, 30, 0, 1f));
@@ -370,7 +370,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         player.ArtificialHealth = 30;
                     Armor.BlockInteractions.Remove(player);
                     player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Nosisz <color=yellow>{ItemName}</color>");
-                });
+                }, "HeavyArmor.Wear");
             }
             public void OnUnWear(Player player, bool fast)
             {
@@ -380,18 +380,18 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (Armor.BlockInteractions.Contains(player))
                         return;
-                    MEC.Timing.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player));
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.1f, () => Armor.BlockInteractions.Add(player), "HeavyArmor.Unlock");
                     player.SetGUI("Armor", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"Upuszczasz <color=yellow>{ItemName}</color>", 5);
                     player.EnableEffect<CustomPlayerEffects.Ensnared>(5);
                 }
-                MEC.Timing.CallDelayed(5 * (fast ? 0 : 1), () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(5 * (fast ? 0 : 1), () =>
                 {
                     if (player.IsConnected)
                         player.DisableEffect<CustomPlayerEffects.Disabled>();
                     Shield.ShieldedManager.Remove(player);
                     Armor.BlockInteractions.Remove(player);
                     player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
-                });
+                }, "HeavyArmor.UnWear");
             }
             public override void OnForceclass(Player player)
             {
@@ -437,25 +437,25 @@ namespace Gamer.Mistaken.Systems.Misc
                 switch (setting)
                 {
                     case Scp914Knob.Rough:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (1 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (10 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (25 / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + 25;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(25, 30) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = 1 + (Durability / 1000f) + (UnityEngine.Random.Range(1, 40) / 1000000f);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
                         break;
                 }
                 return pickup;
             }
             #region Spawn
-            public static void GiveDelayed(Player player, int innerDurability = 25) => MEC.Timing.CallDelayed(0.2f, () => Give(player, innerDurability));
+            public static void GiveDelayed(Player player, int innerDurability = 25) => Gamer.Utilities.BetterCourotines.CallDelayed(0.2f, () => Give(player, innerDurability), "HeavyArmor.GiveDelayed");
             public static bool Give(Player player, int innerDurability = 25) => Instance._give(player, innerDurability);
             private bool _give(Player player, int innerDurability = 25)
             {
@@ -466,7 +466,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     _spawn(player.Position, innerDurability);
                     return true;
                 }
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -479,7 +479,7 @@ namespace Gamer.Mistaken.Systems.Misc
             public static void Spawn(Vector3 position, int innerDurability = 25) => Instance._spawn(position, innerDurability);
             private void _spawn(Vector3 position, int innerDurability = 25)
             {
-                float dur = 1 + (Durability / 1000f) + (innerDurability / 1000000f);
+                float dur = Durability * 1000f + innerDurability;
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = Item,
@@ -490,7 +490,7 @@ namespace Gamer.Mistaken.Systems.Misc
         }
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(SpawnItems());
+            this.RunCoroutine(SpawnItems(), "SpawnItems");
         }
         private IEnumerator<float> SpawnItems()
         {

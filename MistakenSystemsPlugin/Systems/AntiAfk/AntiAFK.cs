@@ -27,19 +27,19 @@ namespace Gamer.Mistaken.Systems.AntiAFK
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
         }
 
-        private static void Server_RestartingRound()
+        private void Server_RestartingRound()
         {
             AfkPosition.Clear();
         }
 
-        private static void Server_RoundStarted()
+        private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(AfkDetector());
+            this.RunCoroutine(AfkDetector(), "AfkDetector");
         }
 
         internal static readonly Dictionary<int, KeyValuePair<int, Vector3>> AfkPosition = new Dictionary<int, KeyValuePair<int, Vector3>>();
 
-        private static IEnumerator<float> AfkDetector()
+        private IEnumerator<float> AfkDetector()
         {
             yield return Timing.WaitForSeconds(1);
             int rid = RoundPlus.RoundId;
@@ -57,7 +57,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
             You have <color=yellow>{sLeft} seconds</color> to move or type '<color=yellow>.notafk</color>' in console in '<color=yellow>~</color>'
             </voffset></size>";
 
-        private static void CheckForAfk()
+        private void CheckForAfk()
         {
             foreach (var player in RealPlayers.List.Where(p => p.IsAlive && p.Role != RoleType.Scp079 && !p.GetEffectActive<CustomPlayerEffects.Ensnared>()).ToArray())
             {
@@ -78,7 +78,7 @@ namespace Gamer.Mistaken.Systems.AntiAFK
                                     if (!player.CheckPermission(PluginHandler.Instance.Name + ".anti_afk_kick_proof"))
                                     {
                                         RoundLogger.Log("ANTY AFK", "WARN", $"{player.PlayerToString()} was warned for being afk");
-                                        Timing.RunCoroutine(InformAFK(player));
+                                        this.RunCoroutine(InformAFK(player), "InformAFK");
                                     }
                                     break;
                                 }

@@ -124,12 +124,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             Dummys.Add(dummyId, dummy);
             if (args.Length > 2 && float.TryParse(args[args.Length - 1], out float time))
             {
-                MEC.Timing.CallDelayed(time, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(time, () =>
                 {
                     NetworkServer.Destroy(dummy);
                     GameObject.Destroy(dummy);
                     Dummys.Remove(dummyId);
-                });
+                }, "SpawnDummy");
                 return new string[] { $"Dummy ({dummyId}) spawnned and will be removed in {time} seconds" };
             }
             else return new string[] { $"Dummy ({dummyId}) spawnned" };

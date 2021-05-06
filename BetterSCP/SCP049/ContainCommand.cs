@@ -39,7 +39,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
                 return new string[] { "SCP-049 is already in recontainment process" };
             AlreadyRunning = true;
             foreach (var scp049 in scps)
-                Timing.RunCoroutine(ExecuteRecontainment(scp049, player));
+                Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteRecontainment(scp049, player), "Contain.ExecuteRecontainment");
             return new string[] { "In progress" };
         }
 

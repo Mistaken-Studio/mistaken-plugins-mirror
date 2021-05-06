@@ -22,8 +22,10 @@ namespace Gamer.Mistaken.Systems.Utilities.API
             set
             {
                 _rl = value;
-                if (_roundLimit.HasValue) Timing.KillCoroutines(_roundLimit.Value);
-                if (_rl != 0) _roundLimit = Timing.RunCoroutine(ExecuteRoundLimit());
+                if (_roundLimit.HasValue) 
+                    Timing.KillCoroutines(_roundLimit.Value);
+                if (_rl != 0) 
+                    _roundLimit = Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteRoundLimit(), "Utilities.API.Map.ExecuteRoundLimit");
             }
         }
 
@@ -45,7 +47,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
                     {
                         if (Handle.HasValue)
                             Timing.KillCoroutines(Handle.Value);
-                        Handle = Timing.RunCoroutine(ExecuteBlackout());
+                        Handle = Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteBlackout(), "Utilities.API.Map.ExecuteBlackout");
                     }
                 }
             }
@@ -94,13 +96,13 @@ namespace Gamer.Mistaken.Systems.Utilities.API
                     if (Handle.HasValue)
                         Timing.KillCoroutines(Handle.Value);
                     if (_ohl != -1)
-                        Handle = Timing.RunCoroutine(HandleOvercheat(RoundPlus.RoundId, _ohl, _ohl));
+                        Handle = Gamer.Utilities.BetterCourotines.RunCoroutine(HandleOverheat(RoundPlus.RoundId, _ohl, _ohl), "Utilities.API.Map.HandleOverheat");
                 }
             }
 
             private static MEC.CoroutineHandle? Handle;
 
-            private static IEnumerator<float> HandleOvercheat(int roundId, int proggressLevel, int startLevel)
+            private static IEnumerator<float> HandleOverheat(int roundId, int proggressLevel, int startLevel)
             {
                 if (RoundPlus.RoundId != roundId)
                     yield break;
@@ -386,7 +388,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
                             yield break;
                         }
                 }
-                Handle = Timing.RunCoroutine(HandleOvercheat(roundId, proggressLevel + 1, startLevel));
+                Handle = Gamer.Utilities.BetterCourotines.RunCoroutine(HandleOverheat(roundId, proggressLevel + 1, startLevel), "Utilities.API.Map.HandleOverheat");
             }
         }
 
@@ -417,7 +419,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
 
         public static void RestartTeslaGates(bool loud)
         {
-            Timing.RunCoroutine(IRestartTeslaGates(loud));
+            Gamer.Utilities.BetterCourotines.RunCoroutine(IRestartTeslaGates(loud), "Utilities.API.Map.IRestartTeslaGates");
         }
 
         private static IEnumerator<float> IRestartTeslaGates(bool loud)
@@ -451,7 +453,7 @@ namespace Gamer.Mistaken.Systems.Utilities.API
 
         public static void RestartDoors()
         {
-            Timing.RunCoroutine(IRestartDoors());
+            Gamer.Utilities.BetterCourotines.RunCoroutine(IRestartDoors(), "Utilities.API.Map.IRestartDoors");
         }
 
         private static IEnumerator<float> IRestartDoors()
@@ -480,22 +482,22 @@ namespace Gamer.Mistaken.Systems.Utilities.API
             {
                 case WarheadLockType.SEC30:
                     {
-                        _handle = Timing.RunCoroutine(ExecuteWarheadLock(38));
+                        _handle = Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteWarheadLock(38), "Utilities.API.Map.ExecuteWarheadLock");
                         break;
                     }
                 case WarheadLockType.MIN1:
                     {
-                        _handle = Timing.RunCoroutine(ExecuteWarheadLock(60));
+                        _handle = Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteWarheadLock(60), "Utilities.API.Map.ExecuteWarheadLock");
                         break;
                     }
                 case WarheadLockType.MIN5:
                     {
-                        _handle = Timing.RunCoroutine(ExecuteWarheadLock(300));
+                        _handle = Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteWarheadLock(300), "Utilities.API.Map.ExecuteWarheadLock");
                         break;
                     }
                 case WarheadLockType.MIN10:
                     {
-                        _handle = Timing.RunCoroutine(ExecuteWarheadLock(600));
+                        _handle = Gamer.Utilities.BetterCourotines.RunCoroutine(ExecuteWarheadLock(600), "Utilities.API.Map.ExecuteWarheadLock");
                         break;
                     }
             }

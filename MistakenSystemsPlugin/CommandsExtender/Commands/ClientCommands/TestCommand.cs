@@ -51,42 +51,42 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             info = new Inventory.SyncItemInfo
                             {
                                 id = ItemType.GunUSP,
-                                durability = 1.501f + (int.Parse(args[2]) / 1000000)
+                                durability = 501000f + int.Parse(args[2])
                             };
                             break;
                         case "impact":
                             info = new Inventory.SyncItemInfo
                             {
                                 id = ItemType.GrenadeFrag,
-                                durability = 1.001f
+                                durability = 001000f
                             };
                             break;
                         case "armor":
                             info = new Inventory.SyncItemInfo
                             {
                                 id = ItemType.Coin,
-                                durability = 1.001f + (int.Parse(args[2]) / 1000000)
+                                durability = 001000f + int.Parse(args[2])
                             };
                             break;
                         case "snav-3000":
                             info = new Inventory.SyncItemInfo
                             {
                                 id = ItemType.WeaponManagerTablet,
-                                durability = 1.301f
+                                durability = 301000f
                             };
                             break;
                         case "snav-ultimate":
                             info = new Inventory.SyncItemInfo
                             {
                                 id = ItemType.WeaponManagerTablet,
-                                durability = 1.401f
+                                durability = 401000f
                             };
                             break;
                         case "scp-1499":
                             info = new Inventory.SyncItemInfo
                             {
                                 id = ItemType.GrenadeFlash,
-                                durability = 1.149f
+                                durability = 149000f
                             };
                             break;
                         default:

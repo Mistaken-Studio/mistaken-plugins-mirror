@@ -53,7 +53,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP096
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(Inform096Target());
+            this.RunCoroutine(Inform096Target(), "Inform096Target");
         }
 
         private IEnumerator<float> Inform096Target()

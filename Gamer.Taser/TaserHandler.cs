@@ -50,12 +50,12 @@ namespace Gamer.Taser
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                Timing.RunCoroutine(UpdateInterface(player));
+                Instance.RunCoroutine(UpdateInterface(player), "Taser.UpdateInterface");
             }
             /// <inheritdoc/>
             public override void Spawn(Vector3 position, float innerDurability = 0f)
             {
-                float dur = 1.501f + (Index++) / 1000000f;
+                float dur = Durability * 1000 + (Index++);
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     durability = dur,
@@ -70,7 +70,7 @@ namespace Gamer.Taser
             {
                 if (player.Inventory.items.Count < 8)
                 {
-                    float dur = 1.501f + (Index++) / 1000000f;
+                    float dur = 501000 + (Index++);
                     player.AddItem(new Inventory.SyncItemInfo
                     {
                         durability = dur,
@@ -150,7 +150,7 @@ namespace Gamer.Taser
                                 if (!Mistaken.Systems.Misc.DoorHandler.Doors.TryGetValue(_item.gameObject, out var door) || door == null)
                                     continue;
                                 door.ServerChangeLock(DoorLockReason.NoPower, true);
-                                MEC.Timing.CallDelayed(10, () => door.ServerChangeLock(DoorLockReason.NoPower, false));
+                                Instance.CallDelayed(10, () => door.ServerChangeLock(DoorLockReason.NoPower, false), "UnlockDoors");
                                 player.ReferenceHub.weaponManager.RpcConfirmShot(true, player.ReferenceHub.weaponManager.curWeapon);
                             }
                             player.ReferenceHub.weaponManager.RpcConfirmShot(false, player.ReferenceHub.weaponManager.curWeapon);
@@ -170,7 +170,7 @@ namespace Gamer.Taser
                 yield return Timing.WaitForSeconds(0.5f);
                 while (player.CurrentItem.id == ItemType.GunUSP)
                 {
-                    if (!(player.CurrentItem.durability >= 1.501 && player.CurrentItem.durability <= 1.5011))
+                    if (!(player.CurrentItem.durability >= 501000f && player.CurrentItem.durability <= 502000f))
                         break;
                     int dur = (int)GetInternalDurability(player.CurrentItem);
                     if (!Cooldowns.TryGetValue(dur, out DateTime time))
@@ -205,9 +205,11 @@ namespace Gamer.Taser
         }
         /// <inheritdoc/>
         public override string Name => "TaserHandler";
+        private static TaserHandler Instance;
         /// <inheritdoc/>
         public TaserHandler(PluginHandler p) : base(p)
         {
+            Instance = this;
             new TaserItem();
         }
         /// <inheritdoc/>
@@ -230,7 +232,7 @@ namespace Gamer.Taser
         /// <returns>Spawned taser as <see cref="Pickup"/></returns>
         public static Pickup SpawnTaser(Vector3 position)
         {
-            float dur = 1.501f + (Index++) / 1000000f;
+            float dur = 501000f + (Index++);
             return MapPlus.Spawn(new Inventory.SyncItemInfo
             {
                 durability = dur,
@@ -242,7 +244,7 @@ namespace Gamer.Taser
         {
             Index = 1;
             var initOne = SpawnTaser(Vector3.zero);
-            MEC.Timing.CallDelayed(5, () => initOne.Delete());
+            this.CallDelayed(5, () => initOne.Delete(), "RoundStarted");
             var lockers = LockerManager.singleton.lockers.Where(i => i.chambers.Length == 9).ToArray();
             int toSpawn = 1;
             while (toSpawn > 0)
@@ -259,11 +261,11 @@ namespace Gamer.Taser
                 return;
             if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE))
                 return;
-            float dur = 1.501f + (Index++) / 1000000f;
+            float dur = 501000f + (Index++);
             if (ev.NewRole == RoleType.FacilityGuard)
             {
                 ev.Items.Remove(ItemType.GunUSP);
-                MEC.Timing.CallDelayed(.25f, () =>
+                this.CallDelayed(.25f, () =>
                 {
                     if (ev.Player.Inventory.items.Count >= 8)
                     {
@@ -275,7 +277,7 @@ namespace Gamer.Taser
                     }
                     else
                         ev.Player.Inventory.AddNewItem(ItemType.GunUSP, dur);
-                });
+                }, "ChangingRole");
             }
         }
     }
