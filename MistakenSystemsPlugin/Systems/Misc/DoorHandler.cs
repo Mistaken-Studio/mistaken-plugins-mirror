@@ -44,15 +44,18 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
             }
-            else if ((type == DoorType.GateA || type == DoorType.GateB) && ev.Door.NetworkTargetState)
+            this.CallDelayed(3f, () => 
             {
-                ev.Door.ServerChangeLock(DoorLockReason.Warhead, true);
-                this.CallDelayed(25f, () => 
+                if ((type == DoorType.GateA || type == DoorType.GateB) && ev.Door.NetworkTargetState)
                 {
-                    ev.Door.NetworkTargetState = false;
-                    ev.Door.ServerChangeLock(DoorLockReason.Warhead, false);
-                }, "Closing Gate");
-            }
+                    ev.Door.ServerChangeLock(DoorLockReason.Warhead, true);
+                    this.CallDelayed(25f, () =>
+                    {
+                        ev.Door.NetworkTargetState = false;
+                        ev.Door.ServerChangeLock(DoorLockReason.Warhead, false);
+                    }, "Closing Gate");
+                }
+            });
         }
 
         public static readonly Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
