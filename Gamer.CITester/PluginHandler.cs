@@ -222,7 +222,7 @@ namespace Gamer.CITester
     {
         public bool IsEnabled { get; set; } = false;
     }
-
+#pragma warning disable IDE0060 // Usuń nieużywany parametr
     [HarmonyPatch(typeof(Player), "get_IPAddress")]
     internal static class PlayerIPPatch
     {
