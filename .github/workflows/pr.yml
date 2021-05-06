@@ -16,7 +16,17 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
+      - name: Download builder
+        # You may pin to the exact commit or the version.
+        # uses: aochmann/actions-download-artifact@5709392f11b5937bd316e52687ad87f7deced5f5
+        uses: aochmann/actions-download-artifact@1.0.4
+        with:
+          # GitHub token
+          github_token: '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'
+          # Repository name with owner
+          repo: 'Mistaken-Studio/CI-Tools'
+          # Artifact name (download all artifacts in not specified)
+          name: 'Builder.exe'
       - name: Setup NuGet.exe for use with actions
         # You may pin to the exact commit or the version.
         # uses: NuGet/setup-nuget@04b0c2b8d1b97922f67eca497d7cf0bf17b8ffe1
@@ -38,7 +48,7 @@ jobs:
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
-          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% true
+          "%GITHUB_WORKSPACE%/CI Builder.exe" %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% true
         shell: cmd
       
       - name: Upload a Build Artifact
@@ -59,5 +69,17 @@ jobs:
         name: plugins.tar.gz
         # Destination path
         path: /home/barwa/
+    - name: Download Tester
+        # You may pin to the exact commit or the version.
+        # uses: aochmann/actions-download-artifact@5709392f11b5937bd316e52687ad87f7deced5f5
+      uses: aochmann/actions-download-artifact@1.0.4
+      with:
+          # GitHub token
+          github_token: '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'
+          # Repository name with owner
+          repo: 'Mistaken-Studio/CI-Tools'
+          # Artifact name (download all artifacts in not specified)
+          name: 'Tester'
+          path: /home/scpsl/server_files
     - name: Unzip files
       run: /home/barwa/unzip.sh
