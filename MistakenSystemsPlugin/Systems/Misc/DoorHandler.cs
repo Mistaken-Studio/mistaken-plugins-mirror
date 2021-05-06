@@ -44,12 +44,12 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
             }
-            this.CallDelayed(3f, () => 
+            this.CallDelayed(2.9f, () => 
             {
                 if ((type == DoorType.GateA || type == DoorType.GateB) && ev.Door.NetworkTargetState)
                 {
                     ev.Door.ServerChangeLock(DoorLockReason.Warhead, true);
-                    this.CallDelayed(25f, () =>
+                    this.CallDelayed(15f, () =>
                     {
                         ev.Door.NetworkTargetState = false;
                         ev.Door.ServerChangeLock(DoorLockReason.Warhead, false);
