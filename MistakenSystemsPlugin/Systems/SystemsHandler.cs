@@ -198,7 +198,7 @@ namespace Gamer.Mistaken.Systems
         }
         public void SpawnKeycard(ItemType keycardType, Vector3 size, Vector3 rotation, Vector3 position)
         {
-            GameObject  gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
             gameObject.transform.position = position;
             gameObject.transform.localScale = size;
             gameObject.transform.rotation = Quaternion.Euler(rotation);
@@ -233,12 +233,12 @@ namespace Gamer.Mistaken.Systems
 
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
         {
-           this.CallDelayed(5, () =>
-            {
-                var door = Map.Doors.FirstOrDefault(d => d.Type() == DoorType.SurfaceGate);
-                door.NetworkActiveLocks = 0;
-                door.NetworkTargetState = true;
-            }, "Decontaminating1");
+            this.CallDelayed(5, () =>
+             {
+                 var door = Map.Doors.FirstOrDefault(d => d.Type() == DoorType.SurfaceGate);
+                 door.NetworkActiveLocks = 0;
+                 door.NetworkTargetState = true;
+             }, "Decontaminating1");
             if (!Round.IsStarted)
                 return;
             this.CallDelayed(30, () =>

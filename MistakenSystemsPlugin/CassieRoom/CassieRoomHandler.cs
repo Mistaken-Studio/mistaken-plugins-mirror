@@ -1,20 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using MEC;
-using System;
-using System.Linq;
-using Gamer.Mistaken.BetterRP.Ambients;
-using Exiled.API.Features;
-using Exiled.API.Extensions;
-using Mirror;
-using Gamer.Utilities;
+﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
+using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
-using Gamer.Mistaken.Systems.GUI;
 using LightContainmentZoneDecontamination;
-using Gamer.Mistaken.Base.GUI;
+using MEC;
+using Mirror;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 namespace Gamer.Mistaken.CassieRoom
 {
@@ -123,7 +119,7 @@ namespace Gamer.Mistaken.CassieRoom
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            DesyncFor(ev.Player);         
+            DesyncFor(ev.Player);
         }
 
         private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
@@ -138,7 +134,7 @@ namespace Gamer.Mistaken.CassieRoom
             WarheadStopButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
         }
         [Flags]
-        public enum PluginDoorLockReason: ushort
+        public enum PluginDoorLockReason : ushort
         {
             COOLDOWN = 512,
             NO_CLOSE_ENOUGHT = 1024,
@@ -297,7 +293,7 @@ namespace Gamer.Mistaken.CassieRoom
             Systems.Components.InRage.Spawn(pos, Vector3.one * 2, (p) =>
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, name);
-            }, (p) => 
+            }, (p) =>
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
             });
@@ -351,7 +347,7 @@ namespace Gamer.Mistaken.CassieRoom
             (new Vector3(194.3f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(188f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
             (new Vector3(189f, 998.5f, -73), new Vector3(6, 1, 1), Vector3.forward * 90),
-        }; 
+        };
     }
 
     public static class Extensions

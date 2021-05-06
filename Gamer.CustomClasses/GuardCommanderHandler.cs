@@ -47,7 +47,7 @@ namespace Gamer.CustomClasses
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
-            Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle< Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
             Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
         }
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
@@ -151,7 +151,7 @@ namespace Gamer.CustomClasses
                 return;
             if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
-            if(!HasCommanderEscorted && !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
+            if (!HasCommanderEscorted && !GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
                 ev.IsAllowed = false;
                 return;
@@ -192,7 +192,7 @@ namespace Gamer.CustomClasses
                 ev.IsAllowed = true;
                 return;
             }
-            else if(type == DoorType.NukeSurface)
+            else if (type == DoorType.NukeSurface)
             {
                 foreach (var player in RealPlayers.List.Where(p => p.Id != ev.Player.Id && (p.Role != RoleType.FacilityGuard && p.Team == Team.MTF)))
                 {
@@ -239,7 +239,7 @@ namespace Gamer.CustomClasses
             }
             else if (type == DoorType.HID || type == DoorType.Scp079First || type == DoorType.Scp079Second)
             {
-                if(IsCommanderNow)
+                if (IsCommanderNow)
                 {
                     ev.IsAllowed = true;
                     return;
@@ -309,7 +309,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                if(GuardCommander.Instance.PlayingAsClass.Contains(player) || player == CurrentOwner)
+                if (GuardCommander.Instance.PlayingAsClass.Contains(player) || player == CurrentOwner)
                     player.SetGUI("GC_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>");
                 else
                     player.SetGUI("GC_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=blue>Dowódcy Ochrony</color>, ale chyba <color=yellow>nie</color> możesz jej używać");

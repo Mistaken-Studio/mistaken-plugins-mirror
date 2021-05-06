@@ -10,7 +10,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Text;
 
 namespace Gamer.Mistaken.Systems.End
@@ -35,7 +34,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            if(RequestRestart)
+            if (RequestRestart)
             {
                 ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
                 PlayerStats.StaticChangeLevel(true);
@@ -216,7 +215,7 @@ namespace Gamer.Mistaken.Systems.End
                 File.Copy(item, Paths.Plugins + "/" + Path.GetFileName(item), true);
             foreach (var item in Directory.GetFiles(sourceDirectory + "/Plugins/dependencies"))
                 File.Copy(item, Paths.Dependencies + "/" + Path.GetFileName(item), true);
-            
+
         }
 
         public static void ExtractTar(Stream stream, string outputDir)

@@ -21,7 +21,7 @@ namespace Gamer.Mistaken.Subtitles
 
         private IEnumerator<float> Loop()
         {
-            while(true)
+            while (true)
             {
                 try
                 {

@@ -1,12 +1,7 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Interactables.Interobjects;
-using Interactables.Interobjects.DoorUtils;
-using MapGeneration;
-using Mirror;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Gamer.Utilities
 {
@@ -23,7 +18,7 @@ namespace Gamer.Utilities
                 {
                     action();
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     MasterHandler.LogError(ex, module, name);
                     Log.Error($"[{module.Name}: {name}] {ex.Message}");

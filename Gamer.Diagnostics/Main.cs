@@ -378,7 +378,7 @@ namespace Gamer.Diagnostics
         /// <param name="plugin">Plugin creating module</param>
         public Module(IPlugin<IConfig> plugin)
         {
-            this.Log = new __Log(Name);
+            Log = new __Log(Name);
             this.plugin = plugin;
             if (!Modules.ContainsKey(plugin))
             {
@@ -403,7 +403,7 @@ namespace Gamer.Diagnostics
                 {
                     item.OnEnable();
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     MasterHandler.LogError(ex, item, "ENABLING");
                 }

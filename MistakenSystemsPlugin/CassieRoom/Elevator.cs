@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Systems.GUI;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -8,18 +7,15 @@ using MEC;
 using Mirror;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CassieRoom
 {
-    class Elevator : Diagnostics.Module
+    internal class Elevator : Diagnostics.Module
     {
         //public override bool Enabled => false;
-        private new static __Log Log;
+        private static new __Log Log;
         public Elevator(PluginHandler plugin) : base(plugin)
         {
             Log = base.Log;
@@ -72,7 +68,7 @@ namespace Gamer.Mistaken.CassieRoom
                 Log.Debug($"Syncing cards for {player.Nickname}");
                 foreach (var netid in networkIdentities)
                 {
-                    if(netid == null)
+                    if (netid == null)
                         continue;
                     sendSpawnMessage.Invoke(null, new object[]
                     {

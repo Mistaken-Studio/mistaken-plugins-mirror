@@ -165,7 +165,7 @@ namespace Gamer.API
             /// <returns>Internal durability</returns>
             public float GetInternalDurability(float durability)
             {
-                return durability - this.Durability * 1000;
+                return durability - Durability * 1000;
             }
             /// <summary>
             /// Sets internal durability
@@ -175,7 +175,7 @@ namespace Gamer.API
             /// <param name="value">Internal durability</param>
             public void SetInternalDurability(Player player, Inventory.SyncItemInfo item, float value)
             {
-                float fullValue = this.Durability * 1000 + value;
+                float fullValue = Durability * 1000 + value;
                 int index = player.Inventory.items.IndexOf(item);
                 var info = player.Inventory.items[index];
                 info.durability = fullValue;
