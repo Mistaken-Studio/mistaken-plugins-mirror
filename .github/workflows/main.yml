@@ -24,6 +24,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '1 day'
       - name: Download builder
         # You may pin to the exact commit or the version.
         # uses: aochmann/actions-download-artifact@5709392f11b5937bd316e52687ad87f7deced5f5
