@@ -72,8 +72,8 @@ jobs:
     - name: Download Tester
         # You may pin to the exact commit or the version.
         # uses: aochmann/actions-download-artifact@5709392f11b5937bd316e52687ad87f7deced5f5
-        uses: aochmann/actions-download-artifact@1.0.4
-        with:
+      uses: aochmann/actions-download-artifact@1.0.4
+      with:
           # GitHub token
           github_token: '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'
           # Repository name with owner
