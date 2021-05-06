@@ -31,7 +31,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
         }
-
+        internal Dictionary<DoorType, bool> isOpenGate = new Dictionary<DoorType, bool>();
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (!ev.IsAllowed)
@@ -45,6 +45,23 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
             }
+            else if (type == DoorType.GateA || type == DoorType.GateB)
+            {
+                isOpenGate[type] = ev.Door.NetworkTargetState;
+                if (ev.Door.NetworkTargetState)
+                    this.RunCoroutine(UpdateGates(ev.Door));
+            }
+        }
+        private IEnumerator<float> UpdateGates(DoorVariant door)
+        {
+            for (int i = 0; i < 25; i++)
+            {
+                if (isOpenGate[door.Type()])
+                    yield return 1;
+                else
+                    break;
+            }
+            door.NetworkTargetState = false;
         }
 
         public static readonly Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
