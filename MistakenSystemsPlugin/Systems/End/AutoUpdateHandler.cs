@@ -10,7 +10,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Text;
 
 namespace Gamer.Mistaken.Systems.End
@@ -35,7 +34,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            if(RequestRestart)
+            if (RequestRestart)
             {
                 ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
                 PlayerStats.StaticChangeLevel(true);
@@ -77,41 +76,38 @@ namespace Gamer.Mistaken.Systems.End
             if (Base.PluginHandler.Config.IsExperimentalServer)
             {
                 var url = $"https://api.github.com/repos/Mistaken-Studio/SL-Plugin/actions/artifacts";
-                using (var client = new WebClient())
+                var result = await github.Connection.GetHtml(new Uri(url));
+                var obj = result.Body.DeserializeJson<Artifacts>();
+                Artifact artifact = obj.artifacts.FirstOrDefault();
+                long max = 0;
+                foreach (var item in obj.artifacts)
                 {
-                    var result = await github.Connection.GetHtml(new Uri(url));
-                    var obj = result.Body.DeserializeJson<Artifacts>();
-                    Artifact artifact = obj.artifacts.FirstOrDefault();
-                    long max = 0;
-                    foreach (var item in obj.artifacts)
+                    if (item.expires_at.Ticks > max)
                     {
-                        if (item.expires_at.Ticks > max)
-                        {
-                            max = item.expires_at.Ticks;
-                            artifact = item;
-                        }
+                        max = item.expires_at.Ticks;
+                        artifact = item;
                     }
-                    if(File.Exists(Paths.Plugins + "/Extracted/plugins.version.txt"))
-                    {
-                        var fileVer = File.ReadAllText(Paths.Plugins + "/Extracted/plugins.version.txt");
-                        if (fileVer == artifact.node_id)
-                        {
-                            Log.Debug("File Version is equal to node id");
-                            return;
-                        }
-                        Log.Debug($"File Version missmatch | {fileVer} | {artifact.node_id}");
-                    }
-                    else
-                        Log.Debug("File Version not found");
-                    var responseRaw = await github.Connection.GetRaw(new Uri(artifact.archive_download_url), new System.Collections.Generic.Dictionary<string, string>());
-                    File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.zip", responseRaw.Body);
-                    File.Delete(Paths.Plugins + "/Extracted/plugins.tar.gz");
-                    ZipFile.ExtractToDirectory(Paths.Plugins + "/Extracted/plugins.zip", Paths.Plugins + "/Extracted");
-                    UpdateLate();
-                    File.WriteAllText(Paths.Plugins + "/Extracted/plugins.version.txt", artifact.node_id);
-                    RequestRestart = true;
-                    ServerConsole.EnterCommand("rnr", out _);
                 }
+                if (File.Exists(Paths.Plugins + "/Extracted/plugins.version.txt"))
+                {
+                    var fileVer = File.ReadAllText(Paths.Plugins + "/Extracted/plugins.version.txt");
+                    if (fileVer == artifact.node_id)
+                    {
+                        Log.Debug("File Version is equal to node id");
+                        return;
+                    }
+                    Log.Debug($"File Version missmatch | {fileVer} | {artifact.node_id}");
+                }
+                else
+                    Log.Debug("File Version not found");
+                var responseRaw = await github.Connection.GetRaw(new Uri(artifact.archive_download_url), new System.Collections.Generic.Dictionary<string, string>());
+                File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.zip", responseRaw.Body);
+                File.Delete(Paths.Plugins + "/Extracted/plugins.tar.gz");
+                ZipFile.ExtractToDirectory(Paths.Plugins + "/Extracted/plugins.zip", Paths.Plugins + "/Extracted");
+                UpdateLate();
+                File.WriteAllText(Paths.Plugins + "/Extracted/plugins.version.txt", artifact.node_id);
+                RequestRestart = true;
+                ServerConsole.EnterCommand("rnr", out _);
             }
             else
             {
@@ -219,7 +215,7 @@ namespace Gamer.Mistaken.Systems.End
                 File.Copy(item, Paths.Plugins + "/" + Path.GetFileName(item), true);
             foreach (var item in Directory.GetFiles(sourceDirectory + "/Plugins/dependencies"))
                 File.Copy(item, Paths.Dependencies + "/" + Path.GetFileName(item), true);
-            
+
         }
 
         public static void ExtractTar(Stream stream, string outputDir)

@@ -79,7 +79,7 @@ namespace Gamer.Utilities
         {
             DoorVariant doorVariant = UnityEngine.Object.Instantiate(GetPrefab(type), position, Quaternion.Euler(rotation));
             GameObject.Destroy(doorVariant.GetComponent<DoorEventOpenerExtension>());
-            if (doorVariant.TryGetComponent<Scp079Interactable>(out var scp079Interactable)) 
+            if (doorVariant.TryGetComponent<Scp079Interactable>(out var scp079Interactable))
             {
                 if (!enableFor079)
                     GameObject.Destroy(scp079Interactable);

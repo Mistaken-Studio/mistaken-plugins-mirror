@@ -93,7 +93,7 @@ namespace Gamer.Mistaken.Systems.Patches
                     }
                 }
             }
-            catch(System.Exception ex)
+            catch (System.Exception ex)
             {
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);

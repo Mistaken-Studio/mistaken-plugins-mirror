@@ -30,7 +30,7 @@ namespace Xname.ColorfullEZ
                 ColorfullEZHandler.Generate(ColorfullEZHandler.GetKeycard());
                 return new string[] { "Done" };
             }
-            switch(args[0])
+            switch (args[0])
             {
                 case "none":
                     ColorfullEZHandler.Clear();

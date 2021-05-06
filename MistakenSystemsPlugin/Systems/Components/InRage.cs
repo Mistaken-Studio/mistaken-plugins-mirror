@@ -82,7 +82,7 @@ namespace Gamer.Mistaken.Systems.Components
                 return;
             if (!ColliderInArea.Contains(ev.Player.GameObject))
                 return;
-            this.OnExit?.Invoke(ev.Player);
+            OnExit?.Invoke(ev.Player);
             ColliderInArea.Remove(ev.Player.GameObject);
         }
 
@@ -96,7 +96,7 @@ namespace Gamer.Mistaken.Systems.Components
         {
             if (ColliderInArea.Contains(ev.Target.GameObject))
             {
-                this.OnExit?.Invoke(ev.Target);
+                OnExit?.Invoke(ev.Target);
                 ColliderInArea.Remove(ev.Target.GameObject);
             }
         }
@@ -112,7 +112,7 @@ namespace Gamer.Mistaken.Systems.Components
             if (player.IsNPC() && !AllowNPCs)
                 return;
             ColliderInArea.Add(other.gameObject);
-            this.OnEnter?.Invoke(player);
+            OnEnter?.Invoke(player);
         }
 
         private void OnTriggerExit(Collider other)
@@ -121,7 +121,7 @@ namespace Gamer.Mistaken.Systems.Components
                 return;
             ColliderInArea.Remove(other.gameObject);
             var player = Player.Get(other.gameObject);
-            this.OnExit?.Invoke(player);
+            OnExit?.Invoke(player);
         }
     }
 }

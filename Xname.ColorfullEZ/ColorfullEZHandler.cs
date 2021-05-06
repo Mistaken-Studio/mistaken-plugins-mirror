@@ -3,13 +3,9 @@ using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using MEC;
 using Mirror;
-using MistakenSocket.Client.SL;
-using MistakenSocket.Shared.API;
-using MistakenSocket.Shared.SLToCentral;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +30,7 @@ namespace Xname.ColorfullEZ
         private IEnumerator<float> Loop()
         {
             List<NetworkIdentity> tmp = new List<NetworkIdentity>();
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -65,7 +61,7 @@ namespace Xname.ColorfullEZ
                         }
                         else
                         {
-                            if(LoadedAll.Contains(player))
+                            if (LoadedAll.Contains(player))
                             {
                                 DesyncFor(player);
                                 LoadedAll.Remove(player);
@@ -130,7 +126,7 @@ namespace Xname.ColorfullEZ
                     }
                     Gamer.Diagnostics.MasterHandler.LogTime("ColorfullEZHandler", "Loop", start, DateTime.Now);
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
@@ -165,7 +161,7 @@ namespace Xname.ColorfullEZ
 
         private void Player_ChangingRole(ChangingRoleEventArgs ev)
         {
-            if(SkipFor.Contains(ev.Player) && (ev.NewRole == RoleType.Spectator || ev.NewRole == RoleType.Scp079))
+            if (SkipFor.Contains(ev.Player) && (ev.NewRole == RoleType.Spectator || ev.NewRole == RoleType.Scp079))
                 DesyncSyncedFor(ev.Player);
         }
 
@@ -221,7 +217,7 @@ namespace Xname.ColorfullEZ
                     removeFromVisList?.Invoke(player.Connection, new object[] { netid, true });
                 }
             }
-            if(LoadedFor.ContainsKey(player))
+            if (LoadedFor.ContainsKey(player))
                 LoadedFor[player].Clear();
         }
 

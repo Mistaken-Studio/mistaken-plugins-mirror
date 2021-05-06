@@ -67,6 +67,12 @@ namespace Gamer.Diagnostics
             /// </summary>
             public string Name;
         }
+        /// <summary>
+        /// Logs Error
+        /// </summary>
+        /// <param name="ex">Catched exception</param>
+        /// <param name="module">Catching module</param>
+        /// <param name="Name">Catching function name</param>
         public static void LogError(System.Exception ex, Module module, string Name)
         {
             if (!CI_TEST_SERVER_PORTS.Contains(Server.Port))
@@ -378,7 +384,7 @@ namespace Gamer.Diagnostics
         /// <param name="plugin">Plugin creating module</param>
         public Module(IPlugin<IConfig> plugin)
         {
-            this.Log = new __Log(Name);
+            Log = new __Log(Name);
             this.plugin = plugin;
             if (!Modules.ContainsKey(plugin))
             {
@@ -403,7 +409,7 @@ namespace Gamer.Diagnostics
                 {
                     item.OnEnable();
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     MasterHandler.LogError(ex, item, "ENABLING");
                 }

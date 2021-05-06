@@ -1,12 +1,7 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
-using Interactables.Interobjects;
-using Interactables.Interobjects.DoorUtils;
-using MapGeneration;
-using Mirror;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Gamer.Utilities
 {
@@ -15,6 +10,14 @@ namespace Gamer.Utilities
     /// </summary>
     public static class BetterCourotines
     {
+        /// <summary>
+        /// Calls <see cref="MEC.Timing.CallDelayed(float, Action)"/> and adds try catch to action
+        /// </summary>
+        /// <param name="module">Module calling function</param>
+        /// <param name="delay">Delay passed to called function</param>
+        /// <param name="action">Action passed to called function</param>
+        /// <param name="name">Function name</param>
+        /// <returns>Courotine handle returned by called function</returns>
         public static MEC.CoroutineHandle CallDelayed(this Module module, float delay, Action action, string name = "CallDelayed")
         {
             return MEC.Timing.CallDelayed(delay, () =>
@@ -23,7 +26,7 @@ namespace Gamer.Utilities
                 {
                     action();
                 }
-                catch(System.Exception ex)
+                catch (System.Exception ex)
                 {
                     MasterHandler.LogError(ex, module, name);
                     Log.Error($"[{module.Name}: {name}] {ex.Message}");
@@ -31,8 +34,14 @@ namespace Gamer.Utilities
                 }
             });
         }
-
-        public static MEC.CoroutineHandle CallDelayed(float delay, Action action, string name = "CallDelayed")
+        /// <summary>
+        /// Calls <see cref="MEC.Timing.CallDelayed(float, Action)"/> and adds try catch to action
+        /// </summary>
+        /// <param name="delay">Delay passed to called function</param>
+        /// <param name="action">Action passed to called function</param>
+        /// <param name="name">Function name</param>
+        /// <returns>Courotine handle returned by called function</returns>
+        public static MEC.CoroutineHandle CallDelayed(float delay, Action action, string name)
         {
             return MEC.Timing.CallDelayed(delay, () =>
             {
@@ -48,7 +57,13 @@ namespace Gamer.Utilities
                 }
             });
         }
-
+        /// <summary>
+        /// Calls <see cref="MEC.Timing.RunCoroutine(IEnumerator{float})"/> and reroutes exceptions
+        /// </summary>
+        /// <param name="module">Module calling function</param>
+        /// <param name="courotine">Delay passed to called function</param>
+        /// <param name="name">Courotine name</param>
+        /// <returns>Courotine handle returned by called function</returns>
         public static MEC.CoroutineHandle RunCoroutine(this Module module, IEnumerator<float> courotine, string name = "RunCoroutine")
         {
             courotine.RerouteExceptions((ex) =>
@@ -59,8 +74,13 @@ namespace Gamer.Utilities
             });
             return MEC.Timing.RunCoroutine(courotine);
         }
-
-        public static MEC.CoroutineHandle RunCoroutine(IEnumerator<float> courotine, string name = "RunCoroutine")
+        /// <summary>
+        /// Calls <see cref="MEC.Timing.RunCoroutine(IEnumerator{float})"/> and reroutes exceptions
+        /// </summary>
+        /// <param name="courotine">Delay passed to called function</param>
+        /// <param name="name">Courotine name</param>
+        /// <returns>Courotine handle returned by called function</returns>
+        public static MEC.CoroutineHandle RunCoroutine(IEnumerator<float> courotine, string name)
         {
             courotine.RerouteExceptions((ex) =>
             {

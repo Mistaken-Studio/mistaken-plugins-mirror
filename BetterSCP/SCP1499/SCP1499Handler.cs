@@ -5,8 +5,6 @@ using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
-using Interactables.Interobjects;
-using Interactables.Interobjects.DoorUtils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -326,7 +324,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         {
             if (ev.Door.GetNametag() != "SCP1499Chamber")
                 return;
-            if(ev.Door.NetworkTargetState)
+            if (ev.Door.NetworkTargetState)
             {
                 ev.IsAllowed = false;
                 return;

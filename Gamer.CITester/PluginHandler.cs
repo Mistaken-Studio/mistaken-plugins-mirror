@@ -5,15 +5,10 @@ using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
 using Gamer.Utilities;
 using HarmonyLib;
-using MEC;
 using Mirror;
-using NPCS;
 using RemoteAdmin;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.CITester
@@ -25,14 +20,14 @@ namespace Gamer.CITester
         public override void OnDisabled()
         {
             IdleMode.PauseIdleMode = false;
-            
+
             base.OnDisabled();
         }
 
         public override void OnEnabled()
         {
             IdleMode.PauseIdleMode = true;
-            
+
 
             Exiled.Events.Events.DisabledPatchesHashSet.Add(typeof(PlayerPositionManager).GetMethod("TransmitData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance));
             Exiled.Events.Events.DisabledPatchesHashSet.Add(typeof(PlayableScps.Scp096).GetMethod(nameof(PlayableScps.Scp096.AddTarget)));
@@ -71,7 +66,7 @@ namespace Gamer.CITester
 
         private void Server_RestartingRound()
         {
-            if(success)
+            if (success)
             {
                 Log.Info("!! Test was successful !!");
                 this.CallDelayed(1, () => Environment.Exit(0), "Quit");
@@ -227,7 +222,7 @@ namespace Gamer.CITester
     {
         public bool IsEnabled { get; set; } = false;
     }
-
+#pragma warning disable IDE0060 // Usuń nieużywany parametr
     [HarmonyPatch(typeof(Player), "get_IPAddress")]
     internal static class PlayerIPPatch
     {
