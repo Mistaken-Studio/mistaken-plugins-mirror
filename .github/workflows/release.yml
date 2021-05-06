@@ -54,7 +54,7 @@ jobs:
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
-          %GITHUB_WORKSPACE%/CI-Builder.exe %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
+          "%GITHUB_WORKSPACE%/CI Builder.exe" %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
         shell: cmd
       
       - name: Upload a Build Artifact
