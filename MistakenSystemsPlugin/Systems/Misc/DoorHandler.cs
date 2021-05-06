@@ -44,7 +44,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
             }
-            this.CallDelayed(2.9f, () => 
+            this.CallDelayed(2.7f, () => 
             {
                 if ((type == DoorType.GateA || type == DoorType.GateB) && ev.Door.NetworkTargetState)
                 {
