@@ -28,10 +28,10 @@ namespace Gamer.Mistaken.Systems.Patches
                         return false;
                     }
                 }
-                Timing.CallDelayed(0.5f, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                 {
                     __instance.ShowHint(msg, duration);
-                });
+                }, "HintPatch");
                 return false;
             }
             Tries.Remove(message);

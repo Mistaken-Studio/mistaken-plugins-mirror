@@ -67,20 +67,20 @@ namespace Gamer.Mistaken.Systems.End
                 Log.Warn("Joined player is null");
                 return;
             }
-            Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 if (ZombiesThatLeft.Any(item => item.UserId == ev.Player.UserId))
                 {
                     var info = ZombiesThatLeft.Find(item => item.UserId == ev.Player.UserId);
                     ZombiesThatLeft.Remove(info);
                     ev.Player.Role = RoleType.Scp0492;
-                    Timing.CallDelayed(1, () =>
+                    this.CallDelayed(1, () =>
                     {
                         ev.Player.Health = info.HP;
                         ev.Player.Position = info.Position;
-                    });
+                    }, "ZombiesThatLeftLate");
                 }
-            });
+            }, "ZombiesThatLeft");
         }
 
         private void Server_RestartingRound()

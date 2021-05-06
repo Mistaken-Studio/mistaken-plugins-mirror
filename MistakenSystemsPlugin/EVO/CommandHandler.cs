@@ -72,10 +72,10 @@ namespace Gamer.Mistaken.EVO
                         {
                             SetRequests.Add(player.UserId, id);
                             Handler.GetAllRanks(player.UserId);
-                            MEC.Timing.CallDelayed(5, () =>
+                            Gamer.Utilities.BetterCourotines.CallDelayed(5, () =>
                             {
                                 Handler.RefreshRank(player.UserId);
-                            });
+                            }, "EVO.RefreshPostSet");
                             success = true;
                             return new string[] { "Done" };
                         }

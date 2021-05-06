@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Systems.Misc;
+using Gamer.Utilities;
 
 namespace Gamer.Mistaken.Ranks
 {
@@ -102,10 +103,10 @@ namespace Gamer.Mistaken.Ranks
                                 {
                                     ev.Items.Add(ItemType.GunProject90);
                                     ev.Items.Remove(ItemType.GunMP7);
-                                    MEC.Timing.CallDelayed(5, () =>
+                                    this.CallDelayed(5, () =>
                                     {
                                         ev.Player.Ammo.amount[(int)Exiled.API.Enums.AmmoType.Nato9] = 50;
-                                    });
+                                    }, "GiveAmmo");
                                 }
                                 if (15 >= num2)
                                 {
@@ -150,19 +151,19 @@ namespace Gamer.Mistaken.Ranks
                                 {
                                     ev.Items.Add(ItemType.GunE11SR);
                                     ev.Items.Remove(ItemType.GunMP7);
-                                    MEC.Timing.CallDelayed(5, () =>
+                                    this.CallDelayed(5, () =>
                                     {
                                         ev.Player.Ammo.amount[(int)Exiled.API.Enums.AmmoType.Nato556] = 80;
-                                    });
+                                    }, "GiveAmmo");
                                 }
                                 else if (45 >= num1)
                                 {
                                     ev.Items.Add(ItemType.GunProject90);
                                     ev.Items.Remove(ItemType.GunMP7);
-                                    MEC.Timing.CallDelayed(5, () =>
+                                    this.CallDelayed(5, () =>
                                     {
                                         ev.Player.Ammo.amount[(int)Exiled.API.Enums.AmmoType.Nato9] = 100;
-                                    });
+                                    }, "GiveAmmo");
                                 }
                                 if (30 >= num2)
                                 {

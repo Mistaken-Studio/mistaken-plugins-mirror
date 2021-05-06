@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
 using System;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Gamer.Mistaken.Systems.End
         public override string Name => "RoundLog";
         public override void OnEnable()
         {
-            MEC.Timing.CallDelayed(1, () =>
+            this.CallDelayed(1.5f, () =>
             {
                 Exiled.Events.Handlers.Player.Banned += this.Handle<Exiled.Events.EventArgs.BannedEventArgs>((ev) => Player_Banned(ev));
                 Exiled.Events.Handlers.Player.Kicked += this.Handle<Exiled.Events.EventArgs.KickedEventArgs>((ev) => Player_Kicked(ev));
@@ -56,7 +57,7 @@ namespace Gamer.Mistaken.Systems.End
                 Exiled.Events.Handlers.Map.GeneratorActivated += this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => Map_GeneratorActivated(ev));
                 Exiled.Events.Handlers.Map.ExplodingGrenade += this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
                 Exiled.Events.Handlers.CustomEvents.OnBroadcast += this.Handle<Exiled.Events.EventArgs.BroadcastEventArgs>((ev) => CustomEvents_OnBroadcast(ev));
-            });
+            }, "LateEnable");
         }
         public override void OnDisable()
         {

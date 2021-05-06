@@ -52,7 +52,7 @@ namespace Gamer.SNAV
                 Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Ignore(player);
                 RequireUpdate.Add(player);
                 UpdateInterface(player);
-                Timing.RunCoroutine(IUpdateInterface(player));
+                Instance.RunCoroutine(IUpdateInterface(player), "SNav.IUpdateInterface");
             }
             /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
@@ -90,7 +90,7 @@ namespace Gamer.SNAV
                 Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Ignore(player);
                 RequireUpdate.Add(player);
                 UpdateInterface(player);
-                Timing.RunCoroutine(IUpdateInterface(player));
+                Instance.RunCoroutine(IUpdateInterface(player), "SNav.IUpdateInterface");
             }
             /// <inheritdoc/>
             public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
@@ -490,10 +490,12 @@ namespace Gamer.SNAV
         /// <inheritdoc/>
         public override string Name => "SNavHandler";
         private static new __Log Log;
+        private static SNavHandler Instance;
         /// <inheritdoc/>
         public SNavHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;
+            Instance = this;
             new SNavClasicItem();
             new SNavUltimateItem();
         }
@@ -559,12 +561,12 @@ namespace Gamer.SNAV
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(DoRoundLoop());
+            this.RunCoroutine(DoRoundLoop(), "DoRoundLoop");
         }
-        private static IEnumerator<float> DoRoundLoop()
+        private IEnumerator<float> DoRoundLoop()
         {
             var initOne = SpawnSNAV(true, Vector3.zero);
-            MEC.Timing.CallDelayed(5, () => initOne.Delete());
+            this.CallDelayed(5, () => initOne.Delete(), "Remove SNav");
             yield return Timing.WaitForSeconds(1);
             foreach (var item in PluginHandler.Config.SNavUltimateSpawns)
             {
@@ -697,7 +699,7 @@ namespace Gamer.SNAV
                 {
                     if (!MapPlus.Rooms.Any(r => r.Type == RoomType.HczEzCheckpoint))
                     {
-                        MEC.Timing.CallDelayed(1, Server_WaitingForPlayers);
+                        this.CallDelayed(1, Server_WaitingForPlayers, "Retry.Server_WaitingForPlayers");
                         return;
                     }
                     var room = MapPlus.Rooms.First(r => r.Type == RoomType.HczEzCheckpoint);
@@ -875,7 +877,7 @@ namespace Gamer.SNAV
                 Log.Error("CatchId: 0");
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
-                MEC.Timing.CallDelayed(5, Server_WaitingForPlayers);
+                this.CallDelayed(5, Server_WaitingForPlayers, "Retry.Server_WaitingForPlayers");
             }
         }
 

@@ -23,7 +23,7 @@ namespace Gamer.Mistaken.CassieRoom
         //public override bool Enabled => false;
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
-            Timing.RunCoroutine(Loop());
+            this.RunCoroutine(Loop(), "Loop");
         }
 
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
@@ -236,10 +236,10 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . This is a test message", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    MEC.Timing.CallDelayed(5, () =>
+                    this.CallDelayed(5, () =>
                     {
                         ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
-                    });
+                    }, "TestButtonCooldown");
                     return false;
                 });
                 //Warhead Start
@@ -247,14 +247,14 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Warhead engaged", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    MEC.Timing.CallDelayed(6, () =>
+                    this.CallDelayed(6, () =>
                     {
                         Warhead.Start();
-                        MEC.Timing.CallDelayed(2 * 60, () =>
+                        this.CallDelayed(2 * 60, () =>
                         {
                             ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
-                        });
-                    });
+                        }, "WarheadStartCooldown");
+                    }, "DelayWarheadStart");
                     return false;
                 });
                 //Warhead Stop
@@ -264,14 +264,14 @@ namespace Gamer.Mistaken.CassieRoom
                         return false;
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Warhead disengaged", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    MEC.Timing.CallDelayed(6, () =>
+                    this.CallDelayed(6, () =>
                     {
                         Warhead.Stop();
-                        MEC.Timing.CallDelayed(2 * 60, () =>
+                        this.CallDelayed(2 * 60, () =>
                         {
                             ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
-                        });
-                    });
+                        }, "WarheadStopCooldown");
+                    }, "DelayWarheadStop");
                     return false;
                 });
                 WarheadStopButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);

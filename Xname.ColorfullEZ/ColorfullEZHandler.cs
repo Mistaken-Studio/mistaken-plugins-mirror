@@ -28,7 +28,7 @@ namespace Xname.ColorfullEZ
         public ColorfullEZHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
             Log = base.Log;
-            Timing.RunCoroutine(Loop());
+            this.RunCoroutine(Loop(), "Loop");
         }
 
         private IEnumerator<float> Loop()
@@ -305,7 +305,7 @@ namespace Xname.ColorfullEZ
         /// Removes all old generated keycards if present. Generates Colorfull Entrance Zone.
         /// </summary>
         /// <param name="card">Card Type</param>
-        public static void Generate(ItemType card) => Timing.RunCoroutine(generate(card));
+        public static void Generate(ItemType card) => Gamer.Utilities.BetterCourotines.RunCoroutine(generate(card), "ColorfulEZ.generate");
         private static IEnumerator<float> generate(ItemType card)
         {
             Clear();

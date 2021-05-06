@@ -107,7 +107,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
 
         private void Server_RoundStarted()
         {
-            MEC.Timing.RunCoroutine(UpdateGeneratorsTimer());
+            this.RunCoroutine(UpdateGeneratorsTimer(), "UpdateGeneratorsTimer");
         }
 
         private IEnumerator<float> UpdateGeneratorsTimer()

@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using MEC;
 using System.Collections.Generic;
 
@@ -31,7 +32,7 @@ namespace Gamer.Mistaken.BetterRP
         {
             if (PluginHandler.Config.Type != MSP_ServerType.HARD_RP)
                 return;
-            MEC.Timing.CallDelayed(1, () =>
+            this.CallDelayed(1, () =>
             {
                 ev.Player.DisplayNickname = NicknameManager.GenerateNickname(ev.NewRole, "OMEGA", ev.Player.Id.ToString());
                 if (ev.Player.DisplayNickname == "default")
@@ -39,17 +40,17 @@ namespace Gamer.Mistaken.BetterRP
                 ev.Player.ClearBroadcasts();
                 if (ev.Player.DisplayNickname != null)
                     ev.Player.Broadcast(10, $"Nazywasz się: {ev.Player.DisplayNickname}");
-            });
+            }, "Escaping");
         }
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
             if (PluginHandler.Config.Type != MSP_ServerType.HARD_RP)
                 return;
-            MEC.Timing.CallDelayed(1, () =>
+            this.CallDelayed(1, () =>
             {
                 ev.Target.DisplayNickname = null;
-            });
+            }, "Dying");
         }
 
         private int ChaosRespawnId { get; set; } = 0;
@@ -79,7 +80,7 @@ namespace Gamer.Mistaken.BetterRP
                         TeamCharlie.Add(ev.Players[i]);
                 }
 
-                Timing.CallDelayed(1, () =>
+                this.CallDelayed(1, () =>
                 {
                     var unit = commander.ReferenceHub.characterClassManager.NetworkCurUnitName;
                     commander.DisplayNickname = $"{unit}-1";
@@ -106,7 +107,7 @@ namespace Gamer.Mistaken.BetterRP
                     NorthwoodLib.Pools.ListPool<Player>.Shared.Return(TeamAlfa);
                     NorthwoodLib.Pools.ListPool<Player>.Shared.Return(TeamBravo);
                     NorthwoodLib.Pools.ListPool<Player>.Shared.Return(TeamCharlie);
-                });
+                }, "Respawning");
             }
             else if (ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency && ev.Players.Count > 0)
             {
@@ -133,7 +134,7 @@ namespace Gamer.Mistaken.BetterRP
             }
             else
             {
-                MEC.Timing.CallDelayed(5, () =>
+                this.CallDelayed(5, () =>
                 {
                     if (!ev.Player.Nickname.Contains("-") || ev.Player.Nickname.Contains("D-") || (ev.NewRole != RoleType.ChaosInsurgency && ev.Player.Nickname.Contains("CHAOS")) || (ev.NewRole == RoleType.ChaosInsurgency && !ev.Player.Nickname.Contains("CHAOS")))
                     {
@@ -141,7 +142,7 @@ namespace Gamer.Mistaken.BetterRP
                         ev.Player.ClearBroadcasts();
                         ev.Player.Broadcast(10, $"Nazywasz się: {ev.Player.DisplayNickname}");
                     }
-                });
+                }, "ChangeRole");
             }
         }
     }

@@ -174,7 +174,7 @@ namespace Gamer.Mistaken.Ban2
                     {
                         BanData data = new BanData(Sender, reason, target, duration, baseDur, textTime, loud);
                         AwaitingBans.Add(data);
-                        Timing.CallDelayed(15, () => AwaitingBans.Remove(data));
+                        Gamer.Utilities.BetterCourotines.CallDelayed(15, () => AwaitingBans.Remove(data), "Ban2.RemoveAwaitingBan");
 
                         return StyleBanConfirm(pid, target, baseDur, duration, type, reason, confirmationReason);
                     }

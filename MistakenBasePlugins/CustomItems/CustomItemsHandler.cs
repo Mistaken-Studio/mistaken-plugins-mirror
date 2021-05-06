@@ -145,7 +145,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                 return;
             if (customItem.Size == Vector3.one)
                 return;
-            MEC.Timing.CallDelayed(0.1f, () =>
+            this.CallDelayed(0.1f, () =>
             {
                 if (ev.Pickup == null || ev.Pickup.gameObject == null)
                     return;
@@ -158,7 +158,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                     modOther = ev.Pickup.weaponMods.Other
                 }, ev.Pickup.position, ev.Pickup.rotation, customItem.Size);
                 ev.Pickup.Delete();
-            });
+            }, "ItemDropped");
         }
 
         private void Player_ReloadingWeapon(Exiled.Events.EventArgs.ReloadingWeaponEventArgs ev)
@@ -231,7 +231,7 @@ namespace Gamer.Mistaken.Base.CustomItems
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(DoRoundLoop());
+            this.RunCoroutine(DoRoundLoop(), "DoRoundLoop");
         }
 
         private IEnumerator<float> DoRoundLoop()

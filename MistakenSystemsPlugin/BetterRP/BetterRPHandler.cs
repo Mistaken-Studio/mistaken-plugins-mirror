@@ -63,7 +63,7 @@ namespace Gamer.Mistaken.BetterRP
             {
                 List<Inventory.SyncItemInfo> Items = NorthwoodLib.Pools.ListPool<Inventory.SyncItemInfo>.Shared.Rent(ev.Player.Inventory.items);
                 ev.Player.ClearInventory();
-                MEC.Timing.CallDelayed(1, () =>
+                this.CallDelayed(1, () =>
                 {
                     foreach (var item in Items)
                     {
@@ -97,7 +97,7 @@ namespace Gamer.Mistaken.BetterRP
                             ev.Player.AddItem(item);
                     }
                     NorthwoodLib.Pools.ListPool<Inventory.SyncItemInfo>.Shared.Return(Items);
-                });
+                }, "Escaping");
             }
         }
 
@@ -146,7 +146,7 @@ namespace Gamer.Mistaken.BetterRP
             else if (ev.Item == ItemType.Painkillers)
             {
                 UsedPills.Add(ev.Player.Id);
-                Timing.CallDelayed(30, () => UsedPills.Remove(ev.Player.Id));
+                this.CallDelayed(30, () => UsedPills.Remove(ev.Player.Id), "RemoveUsedPils");
                 if (UsedPills.Where(i => i == ev.Player.Id).Count() > 3)
                     ev.Player.EnableEffect<CustomPlayerEffects.Poisoned>(30);
             }
@@ -186,7 +186,7 @@ namespace Gamer.Mistaken.BetterRP
             {
                 if (!AdrenalineNotReady.Contains(ev.Target.Id) && ev.Attacker?.Team != ev.Target?.Team)
                 {
-                    Timing.CallDelayed(0.1f, () =>
+                    this.CallDelayed(0.1f, () =>
                     {
                         ev.Target.SetGUI("adrenalin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, "You feel <color=yellow>adrenaline</color> hitting", 5);
                         var pec = ev.Target.ReferenceHub.playerEffectsController;
@@ -201,7 +201,7 @@ namespace Gamer.Mistaken.BetterRP
                         ev.Target.ArtificialHealth += 7;
                         if (cola.Intensity < 1)
                             cola.Intensity = 1;
-                        MEC.Timing.CallDelayed(6, () =>
+                        this.CallDelayed(6, () =>
                         {
                             if (!ev.Target.IsConnected)
                                 return;
@@ -215,14 +215,14 @@ namespace Gamer.Mistaken.BetterRP
                                 ev.Target.EnableEffect<CustomPlayerEffects.Scp207>(oldColaDurationValue);
                                 pec.ChangeEffectIntensity<CustomPlayerEffects.Scp207>(oldColaIntensityValue);
                             }
-                        });
+                        }, "Restore");
 
-                    });
+                    }, "Adrenalin");
                     AdrenalineNotReady.Add(ev.Target.Id);
-                    Timing.CallDelayed(90, () =>
+                    this.CallDelayed(90, () =>
                     {
                         AdrenalineNotReady.Remove(ev.Target.Id);
-                    });
+                    }, "Ready Adrenalin");
                 }
             }
             if (
@@ -340,14 +340,14 @@ namespace Gamer.Mistaken.BetterRP
             }
             else if (ev.NewRole == RoleType.Spectator)
             {
-                MEC.Timing.CallDelayed(0.2f, () =>
+                this.CallDelayed(0.2f, () =>
                 {
                     var effectsManager = ev.Player.ReferenceHub.playerEffectsController;
                     foreach (var item in effectsManager.AllEffects)
                     {
                         item.Value.ServerDisable();
                     }
-                });
+                }, "ClearEffects");
             }
             if (ev.Items.Contains(ItemType.KeycardO5))
             {
@@ -375,8 +375,8 @@ namespace Gamer.Mistaken.BetterRP
         {
             if (!PluginHandler.Config.IsRP()) return;
             HealthEffects.Clear();
-            Timing.RunCoroutine(DoAmbients());
-            Timing.RunCoroutine(DoHeathEffects());
+            this.RunCoroutine(DoAmbients(), "DoAmbients");
+            this.RunCoroutine(DoHeathEffects(), "DoHeathEffects");
             RoundModifiersManager.Instance.ExecuteFags();
         }
 

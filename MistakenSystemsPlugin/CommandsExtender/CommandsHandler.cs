@@ -48,7 +48,7 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Server_RoundStarted()
         {
-            Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 foreach (var item in SwapSCPCommand.SwapCooldown.ToArray())
                 {
@@ -64,7 +64,7 @@ namespace Gamer.Mistaken.CommandsExtender
                         }
                     }
                 }
-            });
+            }, "RoundStart");
         }
 
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
@@ -131,7 +131,7 @@ namespace Gamer.Mistaken.CommandsExtender
                         if (p == null)
                             continue;
                         p.Role = data.Role;
-                        Timing.CallDelayed(0.5f, () =>
+                        this.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
                                 return;
@@ -144,7 +144,7 @@ namespace Gamer.Mistaken.CommandsExtender
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
-                        });
+                        }, "PlayerLeft");
                     }
                 }
                 TalkCommand.Active.Remove(ev.Player.UserId);

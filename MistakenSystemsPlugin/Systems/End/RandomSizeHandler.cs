@@ -1,4 +1,5 @@
 ﻿using Gamer.Diagnostics;
+using Gamer.Utilities;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.End
@@ -23,7 +24,7 @@ namespace Gamer.Mistaken.Systems.End
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null) return;
-            MEC.Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 if (ev.Player.Team == Team.SCP || ev.Player.Team == Team.TUT || ev.Player.Team == Team.RIP)
                 {
@@ -34,7 +35,7 @@ namespace Gamer.Mistaken.Systems.End
                 float diff = UnityEngine.Random.Range(0, 0.06f);
                 if (diff != 0)
                     ev.Player.Scale = new Vector3(1 + (diff / 2), 1 - diff, 1 + (diff / 2));
-            });
+            }, "ChangeRole");
         }
     }
 }

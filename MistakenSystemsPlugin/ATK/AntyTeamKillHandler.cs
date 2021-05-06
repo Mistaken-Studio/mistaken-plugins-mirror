@@ -228,7 +228,7 @@ namespace Gamer.Mistaken.ATK
             }
             Log.Debug("ATK Execute Code: 1", Debug);
             TKGreneadedPlayers.Add(userId, tkTargets.ToArray());
-            MEC.Timing.CallDelayed(5, () => TKGreneadedPlayers.Remove(userId));
+            this.CallDelayed(5, () => TKGreneadedPlayers.Remove(userId), "ExploadingGrenade");
         }
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
@@ -273,18 +273,18 @@ namespace Gamer.Mistaken.ATK
             if (!LastDead.ContainsKey(ev.Target.UserId))
             {
                 LastDead.Add(ev.Target.UserId, ev.Target.Team);
-                MEC.Timing.CallDelayed(10, () =>
+                this.CallDelayed(10, () =>
                 {
                     LastDead.Remove(ev.Target.UserId);
-                });
+                }, "RemoveLastDead");
             }
             if (!AntiDuplicateTK.Contains(ev.Target.UserId))
             {
                 AntiDuplicateTK.Add(ev.Target.UserId);
-                MEC.Timing.CallDelayed(2, () =>
+                this.CallDelayed(2, () =>
                 {
                     AntiDuplicateTK.Remove(ev.Target.UserId);
-                });
+                }, "Remove DuplicateTK");
             }
         }
         public static readonly HashSet<string> AntiDuplicateTK = new HashSet<string>();
@@ -362,11 +362,11 @@ namespace Gamer.Mistaken.ATK
             if (!Punishing.Contains(killerUserId))
             {
                 Punishing.Add(killerUserId);
-                MEC.Timing.CallDelayed(5, () =>
+                this.CallDelayed(5, () =>
                 {
                     PunishPlayer(killerUserId);
                     Punishing.Remove(killerUserId);
-                });
+                }, "Punish");
             }
         }
 

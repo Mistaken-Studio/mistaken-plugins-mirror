@@ -113,6 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterCourotines.cs" />
     <Compile Include="DoorUtils.cs" />
     <Compile Include="IBetterCommand.cs" />
     <Compile Include="IPermissionLocked.cs" />

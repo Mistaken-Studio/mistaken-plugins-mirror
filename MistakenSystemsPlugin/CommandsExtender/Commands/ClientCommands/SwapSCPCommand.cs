@@ -110,14 +110,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 var data = new KeyValuePair<int, KeyValuePair<int, RoleType>>(player.Id, new KeyValuePair<int, RoleType>(target.Id, role));
                 RoleRequests.Add(data);
                 target.Broadcast("Swap SCP", 15, $"{player.Nickname} chcię się z tobą zamienić SCP, jeżeli się zgodzisz to zostaniesz <b>{player.Role}</b>\nWpisz \".swapscp yes\" lub \".swapscp no\" w konsoli(~) aby się zamienić lub aby tego nie robić");
-                MEC.Timing.CallDelayed(15, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(15, () =>
                 {
                     if (RoleRequests.Contains(data))
                     {
                         player.Broadcast("Swap SCP", 5, "Czas minął");
                         RoleRequests.Remove(data);
                     }
-                });
+                }, "SawpSCP");
                 return new string[] { "Prośba zamiany wysłana" };
             }
             else

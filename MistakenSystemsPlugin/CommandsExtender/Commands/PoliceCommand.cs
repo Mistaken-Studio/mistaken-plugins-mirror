@@ -45,7 +45,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             else
                 PoliceMode.Remove(player.UserId);
             if (start)
-                Timing.RunCoroutine(Execute(player));
+                Gamer.Utilities.BetterCourotines.RunCoroutine(Execute(player), "Police.Execute");
             _s = true;
             return new string[] { "Done" };
         }

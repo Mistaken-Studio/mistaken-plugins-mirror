@@ -30,7 +30,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(Execute());
+            this.RunCoroutine(Execute(), "Execute");
         }
 
         public static bool SpawnSamsara { get; private set; } = false;
@@ -45,12 +45,13 @@ namespace Gamer.Mistaken.Systems.End
                     yield break;
                 SpawnSamsara = true;
                 Systems.Utilities.API.Map.RespawnLock = true;
+                Respawning.RespawnManager.Singleton._curSequence = Respawning.RespawnManager.RespawnSequencePhase.RespawnCooldown;
                 Respawning.RespawnManager.Singleton._timeForNextSequence = (float)Respawning.RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds + 30;
-                MEC.Timing.CallDelayed(30 + 17, () =>
+                this.CallDelayed(30 + 17, () =>
                 {
                     if (startRoundId == RoundPlus.RoundId)
                         SpawnAsSamsara();
-                });
+                }, "SpawnSamsaraWithChance");
             }
             else
                 yield return Timing.WaitForSeconds(30 * 60);
@@ -98,7 +99,7 @@ namespace Gamer.Mistaken.Systems.End
             RoundLogger.Log("TAU-5", "SPAWN", $"{player.PlayerToString()} was spawned as TAU-5 Samsara");
             player.Role = RoleType.NtfCommander;
             player.ReferenceHub.characterClassManager.NetworkCurUnitName = unit;
-            MEC.Timing.CallDelayed(0.5f, () =>
+            Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
             {
                 var items = player.Inventory.items;
                 for (int i = 0; i < items.Count; i++)
@@ -107,7 +108,7 @@ namespace Gamer.Mistaken.Systems.End
                         items.RemoveAt(i);
                 }
                 player.AddItem(ItemType.KeycardO5);
-                MEC.Timing.CallDelayed(0.5f, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                 {
                     player.Health *= 5;
                     player.ArtificialHealth = 50;
@@ -118,12 +119,12 @@ namespace Gamer.Mistaken.Systems.End
                     player.Ammo[(int)AmmoType.Nato762] = 500;
                     player.Inventory.items.ModifyDuration(player.Inventory.items.FindIndex(i => i.id == ItemType.WeaponManagerTablet), 5000);
                     Systems.Shield.ShieldedManager.Add(new Shield.Shielded(player, 50, 0.25f, 30, 0, -1));
-                    MEC.Timing.CallDelayed(8f, () =>
+                    Gamer.Utilities.BetterCourotines.CallDelayed(8f, () =>
                     {
                         player.SetGUI("tau-5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", 10);
-                    });
-                });
-            });
+                    }, "Samsara.SpawnAsGUI");
+                }, "Samsara.SpawnAsLate");
+            }, "Samsara.SpawnAs");
         }
     }
 }

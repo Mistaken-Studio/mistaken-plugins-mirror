@@ -1,5 +1,6 @@
 ﻿using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.Staff;
+using Gamer.Utilities;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.API;
@@ -19,7 +20,7 @@ namespace Gamer.Mistaken.LOFH
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
 
-            MEC.Timing.CallDelayed(10, () =>
+            this.CallDelayed(10, () =>
             {
                 SSL.Client.Send(MessageType.BLACKLIST_GET_REQUEST, null).GetResponseDataCallback((response) =>
                 {
@@ -32,7 +33,7 @@ namespace Gamer.Mistaken.LOFH
                             LOFH.WarningFlags.Add(item.UserId, item);
                     }
                 });
-            });
+            }, "RequestBlacklist");
         }
         public override void OnDisable()
         {
@@ -58,7 +59,7 @@ namespace Gamer.Mistaken.LOFH
             else
                 LOFH.Country[ev.UserId] = ev.Country;
 
-            MEC.Timing.CallDelayed(1, () =>
+            this.CallDelayed(1, () =>
             {
                 if (!LOFH.ThreatLevelDatas.ContainsKey(ev.UserId))
                 {
@@ -75,7 +76,7 @@ namespace Gamer.Mistaken.LOFH
                         LOFH.ThreatLevelDatas.Add(ev.UserId, data);
                     }, wFlag, reason, ev.Country);
                 }
-            });
+            }, "ThreatLevel");
         }
     }
 }

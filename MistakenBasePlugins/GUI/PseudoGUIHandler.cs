@@ -10,13 +10,15 @@ namespace Gamer.Mistaken.Base.GUI
     /// <inheritdoc/>
     public class PseudoGUIHandler : Module
     {
+        private static PseudoGUIHandler Instance;
         /// <inheritdoc/>
         public override bool IsBasic => true;
         //public override bool Enabled => false;
         /// <inheritdoc/>
         public PseudoGUIHandler(PluginHandler p) : base(p)
         {
-            Timing.RunCoroutine(DoLoop());
+            Instance = this;
+            this.RunCoroutine(DoLoop(), "DoLoop");
         }
         /// <inheritdoc/>
         public override string Name => "PseudoGUI";
@@ -64,11 +66,11 @@ namespace Gamer.Mistaken.Base.GUI
             uint localId = SetId++;
             SetIds[key] = localId;
             Set(player, key, type, content);
-            Timing.CallDelayed(duration, () =>
+            Instance.CallDelayed(duration, () =>
             {
                 //if (localId == SetIds[key])
                 Set(player, key, type, null);
-            });
+            }, "Set");
         }
         internal static void Set(Player player, string key, Position type, string content)
         {

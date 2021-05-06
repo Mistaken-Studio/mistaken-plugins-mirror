@@ -29,10 +29,10 @@ namespace Gamer.Mistaken.Systems.Patches
                 DeathTime = DateTime.Now
             };
             Ragdolls.Add(item);
-            MEC.Timing.CallDelayed(30, () =>
+            Gamer.Utilities.BetterCourotines.CallDelayed(30, () =>
             {
                 Ragdolls.Remove(item);
-            });
+            }, "RagdollsPatch Remove");
             return false;
         }
 

@@ -47,11 +47,11 @@ namespace Gamer.Mistaken.Systems.Shield
             return result != null;
         }
 
-        private static void Server_RoundStarted()
+        private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(ExecuteCycle());
+            this.RunCoroutine(ExecuteCycle(), "ExecuteCycle");
         }
-        private static void Server_RestartingRound()
+        private void Server_RestartingRound()
         {
             foreach (var item in Shieldeds.ToArray())
                 item.Disable();

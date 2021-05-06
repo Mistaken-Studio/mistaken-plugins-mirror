@@ -20,7 +20,7 @@ namespace Gamer.Mistaken.Systems.Patches
             if (!Targets.ContainsKey(content))
             {
                 Targets.Add(content, NorthwoodLib.Pools.ListPool<string>.Shared.Rent());
-                MEC.Timing.CallDelayed(2, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(2, () =>
                 {
                     var tmp = content.Split('~');
                     var admin = "SYSTEM"; //tmp.Length == 1 || !tmp.Contains(" ~") || !tmp.Contains("'~'") ? "SYSTEM" : tmp.Last();
@@ -32,7 +32,7 @@ namespace Gamer.Mistaken.Systems.Patches
 
                     NorthwoodLib.Pools.ListPool<string>.Shared.Return(Targets[content]);
                     Targets.Remove(content);
-                });
+                }, "BroadcastTargetReplayPatch");
             }
             var userId = ReferenceHub.GetHub(conn?.identity?.gameObject)?.characterClassManager?.UserId;
             if (!string.IsNullOrWhiteSpace(userId))
@@ -50,7 +50,7 @@ namespace Gamer.Mistaken.Systems.Patches
             if (!Targets.ContainsKey(data))
             {
                 Targets.Add(data, NorthwoodLib.Pools.ListPool<string>.Shared.Rent());
-                MEC.Timing.CallDelayed(2, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(2, () =>
                 {
                     var tmp = data.Split('~');
                     var admin = "SYSTEM"; //tmp.Length == 1 || !tmp.Contains(" ~") || !tmp.Contains("'~'") ? "SYSTEM" : tmp.Last();
@@ -62,7 +62,7 @@ namespace Gamer.Mistaken.Systems.Patches
 
                     NorthwoodLib.Pools.ListPool<string>.Shared.Return(Targets[data]);
                     Targets.Remove(data);
-                });
+                }, "BroadcastTargetAddElementPatch");
             }
             if (conn?.identity?.gameObject == null)
                 return true;

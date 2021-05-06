@@ -16,7 +16,7 @@ namespace Gamer.Mistaken.Subtitles
         public static readonly HashSet<string> IgnoredSubtitles = new HashSet<string>();
         internal SubtitlesHandler(PluginHandler plugin) : base(plugin)
         {
-            Timing.RunCoroutine(Loop());
+            this.RunCoroutine(Loop(), "Loop");
         }
 
         private IEnumerator<float> Loop()

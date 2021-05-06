@@ -47,7 +47,7 @@ namespace Gamer.Mistaken.Base
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(DoRoundLoop());
+            this.RunCoroutine(DoRoundLoop(), "DoRoundLoop");
         }
         private IEnumerator<float> DoRoundLoop()
         {
@@ -89,11 +89,11 @@ namespace Gamer.Mistaken.Base
                 var tmp = CustomInfoStaffOnly[player].Values.ToList();
                 tmp.AddRange(CustomInfo[player].Values);
                 string for_staff = string.Join("\n", tmp);
-                MEC.Timing.CallDelayed(1, () =>
+                this.CallDelayed(1, () =>
                 {
                     foreach (var p in RealPlayers.List.Where(p => p.IsStaff()))
                         p.SetPlayerInfoForTargetOnly(player, for_staff);
-                });
+                }, "Update");
             }
         }
         /// <summary>
