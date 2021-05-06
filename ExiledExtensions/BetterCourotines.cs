@@ -19,11 +19,9 @@ namespace Gamer.Utilities
         {
             return MEC.Timing.CallDelayed(delay, () =>
             {
-                var start = DateTime.Now;
                 try
                 {
                     action();
-                    MasterHandler.LogTime(module.Name, name, start, DateTime.Now);
                 }
                 catch(System.Exception ex)
                 {
@@ -38,11 +36,9 @@ namespace Gamer.Utilities
         {
             return MEC.Timing.CallDelayed(delay, () =>
             {
-                var start = DateTime.Now;
                 try
                 {
                     action();
-                    MasterHandler.LogTime("Rouge", name, start, DateTime.Now);
                 }
                 catch (System.Exception ex)
                 {
@@ -55,9 +51,6 @@ namespace Gamer.Utilities
 
         public static MEC.CoroutineHandle RunCoroutine(this Module module, IEnumerator<float> courotine, string name = "RunCoroutine")
         {
-            DateTime start = DateTime.Now;
-            courotine.Prepend(() => start = DateTime.Now);
-            courotine.Append(() => MasterHandler.LogTime(module.Name, name, start, DateTime.Now));
             courotine.RerouteExceptions((ex) =>
             {
                 MasterHandler.LogError(ex, module, name);
@@ -69,9 +62,6 @@ namespace Gamer.Utilities
 
         public static MEC.CoroutineHandle RunCoroutine(IEnumerator<float> courotine, string name = "RunCoroutine")
         {
-            DateTime start = DateTime.Now;
-            courotine.Prepend(() => start = DateTime.Now);
-            courotine.Append(() => MasterHandler.LogTime("Rouge", name, start, DateTime.Now));
             courotine.RerouteExceptions((ex) =>
             {
                 MasterHandler.LogError(ex, null, name);
