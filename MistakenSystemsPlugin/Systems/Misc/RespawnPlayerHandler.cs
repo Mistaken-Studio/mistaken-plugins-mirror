@@ -79,6 +79,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     spectators[0].Role = currentSCP.Role;
                     if (currentSCP.Role == RoleType.Scp079)
                     {
+                        spectators[0].MaxEnergy = currentSCP.MaxEnergy;
                         spectators[0].Energy = currentSCP.Energy;
                         spectators[0].Level = currentSCP.Level;
                         spectators[0].Experience = currentSCP.Experience;
@@ -86,7 +87,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     }
                     else
                     {
-                        Timing.CallDelayed(1, () =>
+                        Timing.CallDelayed(.5f, () =>
                         {
                             spectators[0].Position = currentSCP.Position + Vector3.up;
                         });
