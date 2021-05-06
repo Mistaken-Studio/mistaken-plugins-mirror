@@ -102,7 +102,7 @@ namespace Gamer.CustomClasses
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = ItemType.KeycardSeniorGuard,
-                    durability = 1.001f
+                    durability = 001000f
                 });
                 player.AddItem(ItemType.Disarmer);
                 player.AddItem(ItemType.Radio);
@@ -112,7 +112,7 @@ namespace Gamer.CustomClasses
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = ItemType.WeaponManagerTablet,
-                    durability = 1.301f
+                    durability = 301000f
                 });
                 Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
                 player.SetGUI("Guard_Commander", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{ClassDescription}", 20);
@@ -125,6 +125,7 @@ namespace Gamer.CustomClasses
                 base.OnDie(player);
                 Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", null, false);
                 player.SetGUI("Guard_Commander_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"{player.PlayerToString()} is no longer Guard Commander");
             }
         }
         private bool HasCommanderEscorted = false;
