@@ -31,12 +31,12 @@ namespace Gamer.Mistaken.Systems.InfoMessage
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
 
-        private static void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.Player == null)
                 return;
             if (ev.NewRole.GetSide() == Exiled.API.Enums.Side.Scp)
-                Timing.RunCoroutine(UpdateSCPs(ev.Player));
+                this.RunCoroutine(UpdateSCPs(ev.Player), "UpdateSCPs");
             SpawnTimes[ev.Player] = DateTime.Now;
         }
 

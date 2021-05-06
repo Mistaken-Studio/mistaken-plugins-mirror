@@ -63,7 +63,7 @@ namespace Gamer.Mistaken.Base.Staff
             if (ev.Player == null)
             {
                 Log.Warn("Player is null");
-                MEC.Timing.CallDelayed(5, () =>
+                this.CallDelayed(5, () =>
                 {
                     foreach (var player in RealPlayers.List.Where(p => p.Group?.Permissions != 0))
                     {
@@ -76,7 +76,7 @@ namespace Gamer.Mistaken.Base.Staff
                         player.Group.KickPower = 0;
                         RoundLogger.Log("STAFF", "REVOKE", $"Revoked staff permissions for {ev.Player.PlayerToString()}");
                     }
-                });
+                }, "ChangingGroup");
                 return;
             }
             if (ev.Player.AuthenticationType == Exiled.API.Enums.AuthenticationType.Northwood)

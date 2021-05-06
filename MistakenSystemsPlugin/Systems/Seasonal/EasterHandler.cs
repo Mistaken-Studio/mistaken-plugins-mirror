@@ -116,11 +116,11 @@ namespace Gamer.Mistaken.Systems.Seasonal
                 GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
 
                 gameObject.transform.localScale = Size;
-                MEC.Timing.CallDelayed(2, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(2, () =>
                 {
                     gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     Mirror.NetworkServer.Spawn(gameObject);
-                });
+                }, "EasterHandler.Spawn");
                 var pickup = gameObject.GetComponent<Pickup>();
                 pickup.SetupPickup(ItemType.SCP018, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), basePos, Quaternion.identity);
                 Eggs[pickup] = this;

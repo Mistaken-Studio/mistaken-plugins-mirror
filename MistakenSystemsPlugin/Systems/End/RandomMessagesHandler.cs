@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using MEC;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -51,7 +52,7 @@ namespace Gamer.Mistaken.Systems.End
                 return;
             LastUsed.Clear();
             CurrentId++;
-            Timing.RunCoroutine(AutoMessage(CurrentId));
+            this.RunCoroutine(AutoMessage(CurrentId), "AutoMessage");
         }
 
         public int CurrentId = 0;

@@ -1,4 +1,5 @@
 ﻿using Gamer.Diagnostics;
+using Gamer.Utilities;
 using System;
 
 namespace Gamer.Mistaken.Systems.Seasonal
@@ -25,10 +26,10 @@ namespace Gamer.Mistaken.Systems.Seasonal
                 return;
             if (ev.NewRole == RoleType.Spectator)
                 return;
-            MEC.Timing.CallDelayed(0.25f, () =>
+            this.CallDelayed(0.25f, () =>
             {
                 ev.Player.Scale = new UnityEngine.Vector3(UnityEngine.Random.Range(0.25f, 1.1f), UnityEngine.Random.Range(0.5f, 1f), UnityEngine.Random.Range(0.25f, 1.1f));
-            });
+            }, "ChangingRole");
         }
 
         private const string EnableDate = "01.04";

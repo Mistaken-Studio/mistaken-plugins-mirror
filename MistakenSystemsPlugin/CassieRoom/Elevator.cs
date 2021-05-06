@@ -23,7 +23,7 @@ namespace Gamer.Mistaken.CassieRoom
         public Elevator(PluginHandler plugin) : base(plugin)
         {
             Log = base.Log;
-            Timing.RunCoroutine(Loop());
+            this.RunCoroutine(Loop(), "Loop");
         }
 
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
@@ -130,7 +130,7 @@ namespace Gamer.Mistaken.CassieRoom
             if (ev.Door == DoorUp || ev.Door == DoorDown)
             {
                 ev.IsAllowed = false;
-                Timing.RunCoroutine(MoveElevator());
+                this.RunCoroutine(MoveElevator(), "MoveElevator");
             }
         }
 

@@ -17,10 +17,11 @@ namespace Gamer.Mistaken.Systems.Pets
         public PetsHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;
+            Instance = this;
         }
 
         //public override bool Enabled => false;
-
+        private static PetsHandler Instance;
         public override string Name => "Pets";
         public override void OnEnable()
         {
@@ -101,7 +102,7 @@ namespace Gamer.Mistaken.Systems.Pets
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            MEC.Timing.CallDelayed(0.5f, () =>
+            this.CallDelayed(0.5f, () =>
             {
                 bool hasLivePet = AlivePets.TryGetValue(ev.Player.UserId, out NPCS.Npc pet);
                 if (ev.NewRole == RoleType.Spectator && hasLivePet)
@@ -123,12 +124,12 @@ namespace Gamer.Mistaken.Systems.Pets
                 }
                 //else if (ev.NewRole == RoleType.Scp173)
                 //    Timing.RunCoroutine(SyncSCP173Speed(ev.Player, pet));
-            });
+            }, "ChangingRole");
         }
         public static readonly HashSet<int> PetsIds = new HashSet<int>();
         public static void RefreshPets(Player player)
         {
-            MEC.Timing.CallDelayed(0.5f, () =>
+            Instance.CallDelayed(0.5f, () =>
             {
                 if (!player.IsAlive)
                     return;
@@ -140,7 +141,7 @@ namespace Gamer.Mistaken.Systems.Pets
                     value.Kill(false);
                     AlivePets.Remove(player.UserId);
                 }
-            });
+            }, "RefreshPets");
         }
 
         private static IEnumerator<float> SyncSCP173Speed(Player player, NPCS.Npc pet)
@@ -215,7 +216,7 @@ namespace Gamer.Mistaken.Systems.Pets
             npc.AIEnabled = true;
             npc.Follow(player);
             npc.DisableRun = true;
-            MEC.Timing.CallDelayed(0.5f, () =>
+            Instance.CallDelayed(0.5f, () =>
             {
                 try
                 {
@@ -244,14 +245,14 @@ namespace Gamer.Mistaken.Systems.Pets
                     }
                     AlivePets.Add(player.UserId, npc);
                     if (player.Role == RoleType.Scp173)
-                        Timing.RunCoroutine(SyncSCP173Speed(player, npc));
+                        Instance.RunCoroutine(SyncSCP173Speed(player, npc), "SyncSCP173Speed");
                 }
                 catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
-            });
+            }, "CreateFolowingNPC");
             return npc;
         }
 

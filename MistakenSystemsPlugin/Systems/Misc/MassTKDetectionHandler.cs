@@ -99,7 +99,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Log.Debug("MTKD Execute Code: 1", Debug);
             GreneadedPlayers.Add(userId, ev.TargetToDamages.Keys.ToArray());
             GreneadedDeadPlayers.Add(userId, 0);
-            MEC.Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 var value = GreneadedDeadPlayers[userId];
                 Log.Info($"Detected Greneade TK, {value} killed");
@@ -121,7 +121,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         if (DeathInfo.TryGetValue(player, out (RoleType Role, Vector3 Position) deathInfo))
                         {
                             player.Role = deathInfo.Role;
-                            MEC.Timing.CallDelayed(0.2f, () => player.Position = deathInfo.Position);
+                            this.CallDelayed(0.2f, () => player.Position = deathInfo.Position, "ExploadingGrenade.SetPos");
                         }
                     }
                 }
@@ -131,7 +131,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 GreneadedDeadPlayers.Remove(userId);
                 GreneadedPlayers.Remove(userId);
-            });
+            }, "ExploadingGrenade");
         }
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)

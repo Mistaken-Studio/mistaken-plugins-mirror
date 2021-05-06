@@ -41,7 +41,7 @@ namespace Gamer.Mistaken.Systems.End
         private void Server_RoundStarted()
         {
             if ((DateTime.Now.Day == 31 && DateTime.Now.Month == 12 && DateTime.Now.Hour >= 20) || (DateTime.Now.Day == 1 && DateTime.Now.Month == 1 && DateTime.Now.Hour < 2))
-                Timing.RunCoroutine(Loop());
+                this.RunCoroutine(Loop(), "Loop");
         }
         private static readonly HashSet<GameObject> Grenades = new HashSet<GameObject>();
         private IEnumerator<float> Loop()

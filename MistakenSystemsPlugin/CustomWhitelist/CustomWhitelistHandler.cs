@@ -22,7 +22,7 @@ namespace Gamer.Mistaken.CustomWhitelist
 
         public Handler(PluginHandler plugin) : base(plugin)
         {
-            MEC.Timing.CallDelayed(5, () => ReloadData());
+            this.CallDelayed(5, () => ReloadData(), "ReloadData");
 
             plugin.RegisterTranslation("cwhitelist_deny_whitelist_pl", "Nie jesteś na whiteliście!   Jeżeli chcesz się na nią dostać wejdź na naszego discorda(discord.mistaken.pl w przeglądarce) po więcej informacji");
             plugin.RegisterTranslation("cwhitelist_deny_serverfull_pl", "Server jest pełen!   {current_players}/{max_players}");
@@ -165,7 +165,7 @@ namespace Gamer.Mistaken.CustomWhitelist
         {
             if (!PluginHandler.Config.WhitelistEnabled)
                 return;
-            Timing.CallDelayed(5, () =>
+            Gamer.Utilities.BetterCourotines.CallDelayed(5, () =>
             {
                 SSL.Client.Send(MessageType.WHITELIST_SL_REQUEST, null).GetResponseDataCallback((result) =>
                 {
@@ -174,7 +174,7 @@ namespace Gamer.Mistaken.CustomWhitelist
                     var data = (string[])result.Payload.Deserialize(0, 0, out _, false, typeof(string[]));
                     Whitelist = data.ToHashSet() ?? new HashSet<string>();
                 });
-            });
+            }, "CustomWhitelistHandler.ReloadData");
         }
     }
 }

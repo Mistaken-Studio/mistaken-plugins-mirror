@@ -42,11 +42,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         case "-vi":
                         case "--vision":
                             {
-                                MEC.Timing.CallDelayed(1, () =>
+                                Gamer.Utilities.BetterCourotines.CallDelayed(1, () =>
                                 {
                                     player.ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Visuals939>();
                                     player.ReferenceHub.playerEffectsController.ChangeEffectIntensity<CustomPlayerEffects.Visuals939>(1);
-                                });
+                                }, "Tut 939 Vision");
                                 break;
                             }
                         case "-n":
@@ -73,7 +73,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 player.IsGodModeEnabled = false;
                 player.IsBypassModeEnabled = false;
                 player.NoClipEnabled = false;
-                MEC.Timing.CallDelayed(1, () => player.ReferenceHub.playerEffectsController.DisableEffect<CustomPlayerEffects.Visuals939>());
+                Gamer.Utilities.BetterCourotines.CallDelayed(1, () => player.ReferenceHub.playerEffectsController.DisableEffect<CustomPlayerEffects.Visuals939>(), "Tut Disable 939");
             }
 
             success = true;

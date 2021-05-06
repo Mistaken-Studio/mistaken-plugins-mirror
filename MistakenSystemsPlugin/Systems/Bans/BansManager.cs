@@ -34,7 +34,7 @@ namespace Gamer.Mistaken.Systems.Bans
             if (Requesting.Contains(userId))
                 return;
             Requesting.Add(userId);
-            MEC.Timing.CallDelayed(15, () => Requesting.Remove(userId));
+            Gamer.Utilities.BetterCourotines.CallDelayed(15, () => Requesting.Remove(userId), "BansManager.GetBansFromDB");
             if (PluginHandler.IsSSLSleepMode)
             {
                 using (var client = new WebClient())

@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using MEC;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +34,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP173
 
         private void Server_RoundStarted()
         {
-            Timing.RunCoroutine(LockStart());
+            this.RunCoroutine(LockStart(), "LockStart");
         }
 
         private IEnumerator<float> LockStart()

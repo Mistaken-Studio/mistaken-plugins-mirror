@@ -3,6 +3,7 @@
 
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Utilities;
 using MEC;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,10 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
 {
     internal class SCP0492Handler : Diagnostics.Module
     {
+        private static SCP0492Handler Instance;
         public SCP0492Handler(PluginHandler p) : base(p)
         {
+            Instance = this;
         }
 
         public override bool Enabled => false;
@@ -43,7 +46,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP0492
                 Log.Debug("Not Test server");
         }
 
-        public static void Spawn(Room room) => Timing.RunCoroutine(SpawnNPCZombie(room));
+        public static void Spawn(Room room) => Instance.RunCoroutine(SpawnNPCZombie(room), "SpawnNPCZombie");
 
         private static IEnumerator<float> SpawnNPCZombie(Room room)
         {

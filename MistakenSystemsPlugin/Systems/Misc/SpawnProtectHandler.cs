@@ -56,8 +56,8 @@ namespace Gamer.Mistaken.Systems.Misc
                 var pid = ev.Player.Id;
                 var isEscape = IsEscape(ev.Player);
                 SpawnKillProtected.Add(new KeyValuePair<int, bool>(pid, !isEscape));
-                Timing.RunCoroutine(RemoveFromSpawnKillDetection(ev.Player, isEscape ? 4 : 8));
-                MEC.Timing.CallDelayed(8, () => SpawnKillProtected.RemoveAll(i => i.Key == pid));
+                this.RunCoroutine(RemoveFromSpawnKillDetection(ev.Player, isEscape ? 4 : 8), "RemoveFromSpawnKillDetection");
+                this.CallDelayed(8, () => SpawnKillProtected.RemoveAll(i => i.Key == pid), "RemoveSpawnProtect");
             }
         }
 

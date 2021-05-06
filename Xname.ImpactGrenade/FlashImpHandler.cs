@@ -3,6 +3,7 @@ using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
+using Gamer.Utilities;
 using Grenades;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace Xname.ImpactGrenade
         {
             if (ev.Type == Exiled.API.Enums.GrenadeType.Flashbang && ev.Player.CurrentItem.durability != 149000f)
             {
-                MEC.Timing.CallDelayed(1f, () =>
+                this.CallDelayed(1f, () =>
                 {
                     if (ev.Player.GetEffectActive<CustomPlayerEffects.Scp268>())
                         ev.Player.DisableEffect<CustomPlayerEffects.Scp268>();
@@ -50,7 +51,7 @@ namespace Xname.ImpactGrenade
                     grenade.GetComponent<Rigidbody>().AddForce(new Vector3(grenade.NetworkserverVelocities.linear.x * 1.5f, grenade.NetworkserverVelocities.linear.y / 2f, grenade.NetworkserverVelocities.linear.z * 1.5f), ForceMode.VelocityChange);
                     ev.Player.RemoveItem(ev.Player.CurrentItem);
                     grenade.gameObject.AddComponent<ImpComponent>();
-                });
+                }, "ThrowingGrenade");
                 ev.IsAllowed = false;
             }
         }

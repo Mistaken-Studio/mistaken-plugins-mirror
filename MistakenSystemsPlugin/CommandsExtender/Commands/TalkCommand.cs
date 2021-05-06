@@ -52,7 +52,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
                         p.Role = data.Role;
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
-                        Timing.CallDelayed(0.5f, () =>
+                        Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
                                 return;
@@ -71,7 +71,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
-                        });
+                        }, "TalkRestore");
                     }
                 }
                 Active.Remove(player.UserId);
@@ -100,22 +100,22 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
                     p.DisableAllEffects();
-                    Timing.CallDelayed(0.5f, () =>
+                    Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                     {
                         WarpCommand.ExecuteWarp(p, pos);
                         if (!p.IsStaff())
                         {
                             p.EnableEffect<CustomPlayerEffects.Ensnared>();
-                            Timing.CallDelayed(0.5f, () =>
+                            Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                             {
                                 p.Position += GetPosByCounter(counter++);
-                            });
+                            }, "TalkTeleport");
                         }
-                    });
+                    }, "TalkEnable");
 
                 }
                 Active.Add(player.UserId, targets);
-                Timing.RunCoroutine(ShowHint(player));
+                Gamer.Utilities.BetterCourotines.RunCoroutine(ShowHint(player), "Talk.ShowHint");
             }
 
             success = true;

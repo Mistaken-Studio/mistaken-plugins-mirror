@@ -107,7 +107,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 player.EnableEffect<CustomPlayerEffects.Amnesia>(15);
                 player.EnableEffect<CustomPlayerEffects.Ensnared>(11);
                 target.SetGUI("u500", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Używam <color=yellow>SCP 500</color> na {target.Nickname}", 9);
-                Timing.CallDelayed(10, () =>
+                Gamer.Utilities.BetterCourotines.CallDelayed(10, () =>
                 {
                     if (player.Role == originalRole)
                     {
@@ -143,7 +143,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         target.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
                         target.SetSessionVar(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE, false);
                         target.ClearInventory();
-                        Timing.CallDelayed(0.5f, () =>
+                        Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                         {
                             Misc.SpawnProtectHandler.SpawnKillProtected.RemoveAll(i => i.Key == target.Id);
                             target.Position = pos + Vector3.up;
@@ -156,9 +156,9 @@ namespace Gamer.Mistaken.Systems.Misc
                             target.EnableEffect<CustomPlayerEffects.Concussed>(15);
                             target.EnableEffect<CustomPlayerEffects.Flashed>(5);
                             RoundLogger.Log("RESURECT", "RESURECT", $"Resurected {target.PlayerToString()}");
-                        });
+                        }, "Resurect.Respawn");
                     }
-                });
+                }, "Resurection.Resurect");
                 return true;
             }
             else
@@ -176,7 +176,7 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Player_ChangingItem(Exiled.Events.EventArgs.ChangingItemEventArgs ev)
         {
             if (ev.NewItem.id == ItemType.SCP500)
-                Timing.RunCoroutine(Interface(ev.Player));
+                this.RunCoroutine(Interface(ev.Player), "Interface");
         }
 
         private IEnumerator<float> Interface(Player player)

@@ -21,7 +21,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 string message = "TIME OUT";
                 if (args.Length > 1)
                     message = string.Join(" ", args.Skip(1));
-                MEC.Timing.RunCoroutine(DoTimer(player, time, message));
+                Gamer.Utilities.BetterCourotines.RunCoroutine(DoTimer(player, time, message), "Timer.DoTimer");
                 success = true;
                 return new string[] { "Done" };
             }

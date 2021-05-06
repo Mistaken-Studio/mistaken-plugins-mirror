@@ -74,18 +74,18 @@ namespace Gamer.CITester
             if(success)
             {
                 Log.Info("!! Test was successful !!");
-                MEC.Timing.CallDelayed(1, () => Environment.Exit(0));
+                this.CallDelayed(1, () => Environment.Exit(0), "Quit");
             }
             else
             {
                 Log.Error("!! Test FAILED !!");
-                MEC.Timing.CallDelayed(1, () => Environment.Exit(1));
+                this.CallDelayed(1, () => Environment.Exit(1), "Quit");
             }
         }
         private bool success = false;
         private void Server_RoundStarted()
         {
-            Timing.CallDelayed(1, () =>
+            this.CallDelayed(1, () =>
             {
                 try
                 {
@@ -118,7 +118,7 @@ namespace Gamer.CITester
                     if (player2.IsAlive)
                         throw new Exception("Player 2 did not die|2");
                     Round.IsLocked = false;
-                    MEC.Timing.CallDelayed(1, () =>
+                    this.CallDelayed(1, () =>
                     {
                         try
                         {
@@ -133,7 +133,7 @@ namespace Gamer.CITester
                             Log.Error(ex.StackTrace);
                             MasterHandler.LogError(ex, this, "RoundStart");
                         }
-                    });
+                    }, "RoundStart2");
                 }
                 catch (System.Exception ex)
                 {
@@ -142,14 +142,14 @@ namespace Gamer.CITester
                     MasterHandler.LogError(ex, this, "RoundStart");
                     Round.IsLocked = false;
                 }
-            });
+            }, "RoundStart1");
         }
 
         private void Server_WaitingForPlayers()
         {
             SpawnTestObject("76561198134629649@steam");
             SpawnTestObject("barwa@northwood");
-            Timing.CallDelayed(1f, () =>
+            this.CallDelayed(1f, () =>
             {
                 try
                 {
@@ -164,7 +164,7 @@ namespace Gamer.CITester
                     MasterHandler.LogError(ex, this, "WaitingForPlayers");
                     Round.IsLocked = false;
                 }
-            });
+            }, "WaitingForPlayers");
         }
 
         private static int testSubjectId = 2;
@@ -184,7 +184,7 @@ namespace Gamer.CITester
             obj.GetComponent<NicknameSync>().Network_myNickSync = $"Test subject ({testSubjectId})";
             NetworkServer.Spawn(obj);
             PlayerManager.AddPlayer(obj, CustomNetworkManager.slots);
-            Timing.CallDelayed(0.1f, delegate ()
+            this.CallDelayed(0.1f, delegate ()
             {
                 try
                 {
@@ -218,7 +218,7 @@ namespace Gamer.CITester
                     Log.Error(ex);
                     MasterHandler.LogError(ex, this, "SpawningDummy");
                 }
-            });
+            }, "SpawnTestSubject");
             return testSubjectId;
         }
     }

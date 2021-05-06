@@ -19,9 +19,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
     {
         private static PluginHandler StaticPlugin;
         private static new __Log Log;
+        private static SCP1499Handler Instance;
         /// <inheritdoc/>
         public SCP1499Handler(PluginHandler plugin) : base(plugin)
         {
+            Instance = this;
             Log = base.Log;
             new SCP1499CustomItem();
             StaticPlugin = plugin;
@@ -122,7 +124,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                     Cooldown = DateTime.Now.AddSeconds(CooldownLength);
                     if (Target == default)
                         Target = new Vector3(0, 1002, 0);
-                    MEC.Timing.RunCoroutine(Use1499(player, Target, EnablePocket, Damage, ReturnFlash, SlowPocketTime));
+                    Instance.RunCoroutine(Use1499(player, Target, EnablePocket, Damage, ReturnFlash, SlowPocketTime), "SCP1499.Use1499");
                     return ThrowFlash;
                 }
                 catch (System.Exception ex)
@@ -136,7 +138,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             /// <inheritdoc/>
             public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
             {
-                MEC.Timing.RunCoroutine(UpdateFlashCooldown(player));
+                Instance.RunCoroutine(UpdateFlashCooldown(player), "SCP1499.UpdateFlashCooldown");
                 player.SetGUI("scp1499", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "Trzymasz <color=yellow>SCP 1499</color>");
             }
 
@@ -282,14 +284,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
                 {
                     ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.GrenadeFlash));
                     var pos = ev.Player.Position;
-                    MEC.Timing.CallDelayed(1, () =>
+                    this.CallDelayed(1, () =>
                     {
                         MapPlus.Spawn(new Inventory.SyncItemInfo
                         {
                             id = ItemType.GrenadeFlash,
                             durability = 149000f,
                         }, ev.Player.Role == RoleType.Spectator ? pos : ev.Player.Position, Quaternion.identity, new Vector3(1.5f, 0.5f, 1.5f));
-                    });
+                    }, "ChanginRole");
                 }
             }
         }
@@ -297,16 +299,16 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
         private void Server_RoundStarted()
         {
             var positionToSpawn = new Vector3(-26, 1020, -44);
-            MEC.Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 var tmp = ItemType.GrenadeFlash.Spawn(149000f, Vector3.zero);
-                MEC.Timing.CallDelayed(5, () => tmp.Delete());
+                this.CallDelayed(5, () => tmp.Delete(), "RoundStart2");
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
                     id = ItemType.GrenadeFlash,
                     durability = 149000f,
                 }, positionToSpawn, Quaternion.identity, new Vector3(1.5f, 0.5f, 1.5f));
-            });
+            }, "RoundStart1");
 
 
             Rooms = MapPlus.Rooms.ToArray();

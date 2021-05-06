@@ -251,7 +251,7 @@ namespace Gamer.CustomClasses
         {
             HasCommanderEscorted = false;
             IsCommanderNow = false;
-            MEC.Timing.CallDelayed(60 * 6, () =>
+            this.CallDelayed(60 * 6, () =>
             {
                 if (!HasCommanderEscorted)
                 {
@@ -259,8 +259,8 @@ namespace Gamer.CustomClasses
                         item.SetGUI("GuardCommander_Access", Mistaken.Base.GUI.PseudoGUIHandler.Position.TOP, "Dostałeś <color=yellow>informację</color> przez pager: Aktywowano protokuł <color=yellow>GB-12</color>, od teraz jesteś <color=yellow>autoryzowany</color> do otwierania Gatów bez kogoś obok oraz do otwierania <color=yellow>generatorów</color>.", 10);
                     HasCommanderEscorted = true;
                 }
-            });
-            MEC.Timing.CallDelayed(1.2f, () =>
+            }, "RoundStart1");
+            this.CallDelayed(1.2f, () =>
             {
                 try
                 {
@@ -278,7 +278,7 @@ namespace Gamer.CustomClasses
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
-            });
+            }, "RoundStart2");
         }
         /// <inheritdoc/>
         public class GuardCommanderKeycard : CustomItem

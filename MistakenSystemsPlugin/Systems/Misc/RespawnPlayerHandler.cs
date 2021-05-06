@@ -87,10 +87,10 @@ namespace Gamer.Mistaken.Systems.Misc
                     }
                     else
                     {
-                        Timing.CallDelayed(.5f, () =>
+                        Gamer.Utilities.BetterCourotines.CallDelayed(.5f, () =>
                         {
                             spectators[0].Position = currentSCP.Position + Vector3.up;
-                        });
+                        }, "Respawn.SetPos");
                         spectators[0].Health = currentSCP.Health;
                         spectators[0].ArtificialHealth = currentSCP.ArtificialHealth;
                         spectators[0].MaxArtificialHealth = currentSCP.MaxArtificialHealth;

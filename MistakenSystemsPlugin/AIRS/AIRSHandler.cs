@@ -83,7 +83,7 @@ namespace Gamer.Mistaken.AIRS
             RoundLogger.Log("AIRS", "REPORT", $"{ev.Target.PlayerToString()} was reportd by {ev.Issuer.PlayerToString()} for \"{ev.Reason}\"");
             int id = ev.Target.Id;
             AlreadyReported.Add(id);
-            MEC.Timing.CallDelayed(60, () => AlreadyReported.Remove(id));
+            this.CallDelayed(60, () => AlreadyReported.Remove(id), "LocalReporting");
             ev.IsAllowed = ReportHandler.ExecuteReport(ev.Issuer.ReferenceHub, ev.Target.ReferenceHub, ref reason);
             ev.Reason = reason;
         }

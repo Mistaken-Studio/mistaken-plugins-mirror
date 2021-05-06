@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Utilities;
 using MEC;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,7 +91,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            Timing.CallDelayed(1, () =>
+            this.CallDelayed(1, () =>
             {
                 foreach (var element in ReusableItems)
                 {
@@ -100,14 +101,14 @@ namespace Gamer.Mistaken.Systems.Misc
                             item.durability = element.Uses;
                     }
                 }
-            });
+            }, "ChangingRole");
         }
 
         private void Server_RoundStarted()
         {
             UsingMedical.Clear();
 
-            MEC.Timing.CallDelayed(5, () =>
+            this.CallDelayed(5, () =>
             {
                 foreach (var pickup in Pickup.Instances.ToArray())
                 {
@@ -117,7 +118,7 @@ namespace Gamer.Mistaken.Systems.Misc
                             pickup.Networkdurability = item.Uses;
                     }
                 }
-            });
+            }, "RoundStarted");
         }
 
         private void Player_ChangingItem(Exiled.Events.EventArgs.ChangingItemEventArgs ev)
@@ -128,7 +129,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     if (ev.NewItem.durability < 1 || ev.NewItem.durability > item.Uses)
                         ev.Player.Inventory.items.ModifyDuration(ev.Player.Inventory.items.FindIndex(i => i.uniq == ev.NewItem.uniq), item.Uses);
-                    Timing.RunCoroutine(InformUsesLeft(ev.Player));
+                    this.RunCoroutine(InformUsesLeft(ev.Player), "InformUsesLeft");
                 }
             }
         }
