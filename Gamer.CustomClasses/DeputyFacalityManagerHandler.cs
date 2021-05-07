@@ -7,6 +7,7 @@ using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Systems.Misc;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System;
 using System.Collections.Generic;
@@ -95,7 +96,7 @@ namespace Gamer.CustomClasses
 
             public override string ClassName => "Zastępca Dyrektora Placówki";
 
-            public override string ClassDescription => "";
+            public override string ClassDescription => "Twoim zadaniem jest pomoc ochronie w odeskortowaniu <color=yellow>naukowców</color>";
 
             public override RoleType Role => RoleType.Scientist;
             public override void Spawn(Player player)
@@ -114,6 +115,10 @@ namespace Gamer.CustomClasses
                     durability = 1000f
                 });
                 ArmorHandler.LiteArmor.Give(player, 25);
+                Mistaken.Base.CustomInfoHandler.Set(player, "DFM", "<color=#bd1a47><b>Zastępca Dyrektora Placówki</b></color>", false);
+                player.SetGUI("DFM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#bd1a47>Zastępcą Dyrektora Placowki</color></size><br>{ClassDescription}", 20);
+                player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#bd1a47>Zastępca Dyrektora Placówki</color>");
+                RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"Spawned {player.PlayerToString()} as Deputy Facility Manager");
             }
 
         }
@@ -128,6 +133,16 @@ namespace Gamer.CustomClasses
 
             public override int Durability => 001;
 
+            /// <inheritdoc/>
+            public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                player.SetGUI("DFM_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=#bd1a47>Zastępcy Dyrektora Placówki</color>");
+            }
+            /// <inheritdoc/>
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                player.SetGUI("DFM_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            }
         }
     }
 }
