@@ -21,6 +21,7 @@ namespace Gamer.CustomClasses
         public ZoneManagerHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
             new ZoneManager();
+            new ZoneManagerKeycard();
         }
 
         public override string Name => "Zone Manager";
