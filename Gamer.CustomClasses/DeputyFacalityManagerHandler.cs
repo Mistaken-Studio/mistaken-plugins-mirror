@@ -6,6 +6,7 @@ using Gamer.API.CustomClass;
 using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Systems.Misc;
 using Gamer.Utilities;
 using System;
 using System.Collections.Generic;
@@ -103,7 +104,7 @@ namespace Gamer.CustomClasses
                 player.SetSessionVar(ClassSessionVarType, true);
                 foreach(var item in player.Inventory.items)
                 {
-                    if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
+                    if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor || item.id == ItemType.Coin)
                         player.RemoveItem(item);
                 }
                 player.AddItem(new Inventory.SyncItemInfo
@@ -111,6 +112,7 @@ namespace Gamer.CustomClasses
                     id = ItemType.KeycardFacilityManager,
                     durability = 1000f
                 });
+                ArmorHandler.LiteArmor.Give(player, 25);
             }
 
         }
