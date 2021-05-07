@@ -121,6 +121,11 @@ namespace Gamer.CustomClasses
                     durability = 1000,
                     id = ItemType.KeycardZoneManager
                 });
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    id = ItemType.WeaponManagerTablet,
+                    durability = 301000f
+                });
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
                 Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>", false);
