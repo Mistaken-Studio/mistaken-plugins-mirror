@@ -52,7 +52,7 @@ namespace Gamer.Mistaken.Systems.Patches
             foreach (var item in GameObject.FindObjectsOfType(typeof(GameObject)))
             {
                 var go = item as GameObject;
-                if (item.name == "LookingTarget")
+                if (item.name == "LookingTarget" || item.name.Contains("InRage"))
                 {
                     if (!go.activeSelf)
                         continue;
