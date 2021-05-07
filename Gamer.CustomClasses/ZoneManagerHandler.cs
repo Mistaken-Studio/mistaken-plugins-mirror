@@ -75,8 +75,9 @@ namespace Gamer.CustomClasses
                     ZoneManager.Instance.Spawn(RealPlayers.List.First());
                 else
                 {
-                    var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-                    if (scientists.Count < 2)
+                    //var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
+                    var scientists = RealPlayers.List.ToList();
+                    if (scientists.Count < 2 )
                         return;
                     scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER, false)).ToList();
                     ZoneManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
