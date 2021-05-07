@@ -112,15 +112,15 @@ namespace Gamer.CustomClasses
                     if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
                     {
                         player.RemoveItem(item);
-                        player.AddItem(new Inventory.SyncItemInfo
-                        {
-                            durability = 1000,
-                            id = ItemType.KeycardZoneManager
-                        });
                     }
                     else if (item.id == ItemType.Radio)
                         hasRadio = true;
                 }
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    durability = 1000,
+                    id = ItemType.KeycardZoneManager
+                });
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
                 Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>", false);
