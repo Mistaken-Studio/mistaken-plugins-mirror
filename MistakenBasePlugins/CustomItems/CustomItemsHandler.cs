@@ -64,6 +64,9 @@ namespace Gamer.Mistaken.Base.CustomItems
                 return;
             foreach (var customItem in CustomItem.CustomItemTypes)
                 customItem.OnForceclass(ev.Target);
+            CustomItem citem;
+            if ((citem = GetCustomItem(ev.Target.CurrentItem)) != null)
+                citem.OnStopHolding(ev.Target, ev.Target.CurrentItem);
         }
 
         private void Player_Handcuffing(Exiled.Events.EventArgs.HandcuffingEventArgs ev)
