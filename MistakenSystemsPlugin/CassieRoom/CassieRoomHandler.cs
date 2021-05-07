@@ -217,7 +217,7 @@ namespace Gamer.Mistaken.CassieRoom
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
-                //UpperDoor 
+                //UpperDoor
                 SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
                 SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
                 SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
