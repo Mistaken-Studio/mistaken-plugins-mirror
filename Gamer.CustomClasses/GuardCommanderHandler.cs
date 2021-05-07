@@ -251,8 +251,11 @@ namespace Gamer.CustomClasses
         {
             HasCommanderEscorted = false;
             IsCommanderNow = false;
+            var rid = RoundPlus.RoundId;
             this.CallDelayed(60 * 6, () =>
             {
+                if (rid != RoundPlus.RoundId)
+                    return;
                 if (!HasCommanderEscorted)
                 {
                     foreach (var item in GuardCommander.Instance.PlayingAsClass)
