@@ -83,8 +83,8 @@ namespace Gamer.CustomClasses
         internal static DoorVariant escapeLock;
         private void Server_RoundStarted()
         {
-            var scientists = RealPlayers.Get(RoleType.ClassD).ToList();
-            if (scientists.Count < 4 && false)
+            var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
+            if (scientists.Count < 4)
                 return;
             scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
             escapeLock = UnityEngine.Object.Instantiate(DoorUtils.GetPrefab(DoorUtils.DoorType.HCZ_BREAKABLE), new Vector3(170, 984, 20), Quaternion.identity);
@@ -98,21 +98,15 @@ namespace Gamer.CustomClasses
             (escapeLock as BreakableDoor)._brokenPrefab = null;
             escapeLock.gameObject.SetActive(false);
             DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
-            //170 984 20 0 0 0 1.7 1.5 1
-            Log.Debug("A");
             this.CallDelayed(1, () =>
             {
-                Log.Debug("B");
                 int rid = RoundPlus.RoundId;
-                this.CallDelayed(60 * 1/*2*/ - 10, () =>
+                this.CallDelayed(60 * 12 - 10, () =>
                 {
-                    Log.Debug("CCCCCCCCCCCCCCCCC");
                     if (rid != RoundPlus.RoundId)
                         return;
-                    Log.Debug("It's time");
                     foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
                     {
-                        Log.Debug($"Do it {item.Nickname}");
                         ObjectDestroyMessage msg = new ObjectDestroyMessage
                         {
                             netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
@@ -128,7 +122,7 @@ namespace Gamer.CustomClasses
                     }
 
                 }, "RemoveDoors");
-            }, "Yes");
+            }, "RoundStartLate");
         }
 
         public class DeputyFacalityManager : CustomClass
