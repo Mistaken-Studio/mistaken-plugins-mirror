@@ -58,6 +58,10 @@ namespace Gamer.CustomClasses
                     {
                         ev.Items.Add(ItemType.GunProject90);
                         ev.Items.Add(ItemType.SCP207);
+                        this.CallDelayed(1, () =>
+                        {
+                            ev.Player.Ammo[(int)AmmoType.Nato9] += 100;
+                        }, "GiveAmmo");
                     }
                 }
             }
