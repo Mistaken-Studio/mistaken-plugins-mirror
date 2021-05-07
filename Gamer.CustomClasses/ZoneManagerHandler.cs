@@ -6,46 +6,42 @@ using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
-using Scp914;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.CustomClasses
 {
-    class ZoneManagerHandler : Module
+    internal class ZoneManagerHandler : Module
     {
+        /// <inheritdoc/>
         public ZoneManagerHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
             new ZoneManager();
             new ZoneManagerKeycard();
         }
-
+        /// <inheritdoc/>
         public override string Name => "Zone Manager";
-
+        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
-
+        /// <inheritdoc/>
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(),"RoundStart");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-           
+
             Log.Debug(ev.Player.Nickname);
             Log.Debug(ev.IsEscaped);
             Log.Debug(ev.NewRole);
             Log.Debug(ZoneManager.Instance.PlayingAsClass.Contains(ev.Player));
-            if (ev.IsEscaped) 
+            if (ev.IsEscaped)
             {
                 if (ZoneManager.Instance.PlayingAsClass.Contains(ev.Player))
                 {
@@ -82,20 +78,26 @@ namespace Gamer.CustomClasses
                 }
             });
         }
+        /// <inheritdoc/>
         public class ZoneManager : CustomClass
         {
             public static ZoneManager Instance;
+            /// <summary>
+            /// Constructor
+            /// </summary>
             public ZoneManager()
             {
                 Instance = this;
             }
+            /// <inheritdoc/>
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_ZONE_MANAGER;
-
+            /// <inheritdoc/>
             public override string ClassName => "Zarządca Strefy";
-
+            /// <inheritdoc/>
             public override string ClassDescription => "TBF";
-
+            /// <inheritdoc/>
             public override RoleType Role => RoleType.Scientist;
+            /// <inheritdoc/>
             public override void Spawn(Player player)
             {
                 player.SetRole(RoleType.Scientist, true, false);
@@ -103,9 +105,9 @@ namespace Gamer.CustomClasses
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;
                 bool hasRadio = false;
-                foreach(var item in player.Inventory.items)
+                foreach (var item in player.Inventory.items)
                 {
-                    if(item.id== ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
+                    if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
                     {
                         player.RemoveItem(item);
                         player.AddItem(new Inventory.SyncItemInfo
@@ -117,13 +119,16 @@ namespace Gamer.CustomClasses
                     if (item.id == ItemType.Radio)
                         hasRadio = true;
                 }
-                if(!hasRadio)
+                if (!hasRadio)
                     player.AddItem(ItemType.Radio);
             }
         }
         /// <inheritdoc/>
         public class ZoneManagerKeycard : CustomItem
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
             public ZoneManagerKeycard() => base.Register();
             /// <inheritdoc/>
             public override string ItemName => "Karta Zarządcy Strefy";
