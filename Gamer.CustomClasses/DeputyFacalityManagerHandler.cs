@@ -117,6 +117,11 @@ namespace Gamer.CustomClasses
                     id = ItemType.KeycardFacilityManager,
                     durability = 1000f
                 });
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    id = ItemType.WeaponManagerTablet,
+                    durability = 401000f
+                });
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
                 ArmorHandler.LiteArmor.Give(player, 25);
