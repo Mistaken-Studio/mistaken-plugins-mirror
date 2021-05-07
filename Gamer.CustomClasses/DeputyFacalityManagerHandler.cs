@@ -99,30 +99,33 @@ namespace Gamer.CustomClasses
             scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
             DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
             //170 984 20 0 0 0 1.7 1.5 1
-            int rid = RoundPlus.RoundId;
-            this.CallDelayed(60 * 1/*2*/ - 10, () =>
+            this.CallDelayed(1, () =>
             {
-                if (rid != RoundPlus.RoundId)
-                    return;
-                Log.Debug("It's time");
-                foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
+                int rid = RoundPlus.RoundId;
+                this.CallDelayed(60 * 1/*2*/ - 10, () =>
                 {
-                    Log.Debug($"Do it {item.Nickname}");
-                    ObjectDestroyMessage msg = new ObjectDestroyMessage
+                    if (rid != RoundPlus.RoundId)
+                        return;
+                    Log.Debug("It's time");
+                    foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
                     {
-                        netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
-                    };
-                    NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(item.ReferenceHub.networkIdentity, msg);
-                    if (DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.ContainsKey(item.Connection.connectionId))
-                    {
-                        DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.Remove(item.Connection.connectionId);
-                        if (DeputyFacalityManager.removeFromVisList == null)
-                            DeputyFacalityManager.removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
-                        DeputyFacalityManager.removeFromVisList?.Invoke(item.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
+                        Log.Debug($"Do it {item.Nickname}");
+                        ObjectDestroyMessage msg = new ObjectDestroyMessage
+                        {
+                            netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
+                        };
+                        NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(item.ReferenceHub.networkIdentity, msg);
+                        if (DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.ContainsKey(item.Connection.connectionId))
+                        {
+                            DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.Remove(item.Connection.connectionId);
+                            if (DeputyFacalityManager.removeFromVisList == null)
+                                DeputyFacalityManager.removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                            DeputyFacalityManager.removeFromVisList?.Invoke(item.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
+                        }
                     }
-                }
-                
-            }, "RemoveDoors");
+
+                }, "RemoveDoors");
+            }, "Yes");
         }
 
         public class DeputyFacalityManager : CustomClass
