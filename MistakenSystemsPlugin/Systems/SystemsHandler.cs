@@ -194,7 +194,6 @@ namespace Gamer.Mistaken.Systems
             SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
             SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
             SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f + 4.5f));
-
         }
         public void SpawnKeycard(ItemType keycardType, Vector3 size, Vector3 rotation, Vector3 position)
         {
