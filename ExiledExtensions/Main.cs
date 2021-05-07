@@ -190,6 +190,7 @@ namespace Gamer.Utilities
             CI_SCP1499,
             CI_GRENADE_LAUNCHER,
             CI_GUARD_COMMANDER_KEYCARD,
+            CC_ZONE_MANAGER_KEYCARD,
             CC_GUARD_COMMANDER,
             CC_ZONE_MANAGER,
             CC_IGNORE_CHANGE_ROLE

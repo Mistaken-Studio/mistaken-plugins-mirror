@@ -1,8 +1,12 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Gamer.API.CustomClass;
+using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
+using Scp914;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +20,7 @@ namespace Gamer.CustomClasses
     {
         public ZoneManagerHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
-            new ZoneManger();
+            new ZoneManager();
         }
 
         public override string Name => "Zone Manager";
@@ -39,10 +43,10 @@ namespace Gamer.CustomClasses
             Log.Debug(ev.Player.Nickname);
             Log.Debug(ev.IsEscaped);
             Log.Debug(ev.NewRole);
-            Log.Debug(ZoneManger.Instance.PlayingAsClass.Contains(ev.Player));
+            Log.Debug(ZoneManager.Instance.PlayingAsClass.Contains(ev.Player));
             if (ev.IsEscaped) 
             {
-                if (ZoneManger.Instance.PlayingAsClass.Contains(ev.Player))
+                if (ZoneManager.Instance.PlayingAsClass.Contains(ev.Player))
                 {
                     if (ev.NewRole == RoleType.NtfScientist)
                     {
@@ -67,20 +71,20 @@ namespace Gamer.CustomClasses
             MEC.Timing.CallDelayed(1.2f, () =>
             {
                 if (Mistaken.Base.Version.Debug)
-                    ZoneManger.Instance.Spawn(RealPlayers.List.First());
+                    ZoneManager.Instance.Spawn(RealPlayers.List.First());
                 else
                 {
                     var scientist = RealPlayers.Get(RoleType.Scientist).ToArray();
                     if (scientist.Length < 2)
                         return;
-                    ZoneManger.Instance.Spawn(scientist[UnityEngine.Random.Range(0, scientist.Length)]);
+                    ZoneManager.Instance.Spawn(scientist[UnityEngine.Random.Range(0, scientist.Length)]);
                 }
             });
         }
-        public class ZoneManger : CustomClass
+        public class ZoneManager : CustomClass
         {
-            public static ZoneManger Instance;
-            public ZoneManger()
+            public static ZoneManager Instance;
+            public ZoneManager()
             {
                 Instance = this;
             }
@@ -96,20 +100,46 @@ namespace Gamer.CustomClasses
                 player.SetRole(RoleType.Scientist,true, false);
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
-                player.Position = Exiled.API.Features.Map.Rooms.Where(x => x.Type == Exiled.API.Enums.RoomType.HczChkpA || x.Type == Exiled.API.Enums.RoomType.HczChkpB).First().Position + Vector3.up;
+                player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;
                 bool hasRadio = false;
                 foreach(var item in player.Inventory.items)
                 {
                     if(item.id== ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
                     {
                         player.RemoveItem(item);
-                        player.AddItem(ItemType.KeycardZoneManager);
+                        player.AddItem(new Inventory.SyncItemInfo
+                        {
+                            durability = 1000,
+                            id = ItemType.KeycardZoneManager
+                        });
                     }
                     if (item.id == ItemType.Radio)
                         hasRadio = true;
                 }
                 if(!hasRadio)
                     player.AddItem(ItemType.Radio);
+            }
+        }
+        /// <inheritdoc/>
+        public class ZoneManagerKeycard : CustomItem
+        {
+            /// <inheritdoc/>
+            public override string ItemName => "Karta Zarządcy Strefy";
+            /// <inheritdoc/>
+            public override Main.SessionVarType SessionVarType => Main.SessionVarType.CC_ZONE_MANAGER_KEYCARD;
+            /// <inheritdoc/>
+            public override ItemType Item => ItemType.KeycardZoneManager;
+            /// <inheritdoc/>
+            public override int Durability => 001;
+            /// <inheritdoc/>
+            public override void OnStartHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                player.SetGUI("ZM_Keycard", PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Trzymasz</color> kartę <color=#217a7b>Zarządcy Strefy</color>");
+            }
+            /// <inheritdoc/>
+            public override void OnStopHolding(Player player, Inventory.SyncItemInfo item)
+            {
+                player.SetGUI("ZM_Keycard", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }
     }
