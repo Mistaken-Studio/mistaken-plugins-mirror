@@ -175,6 +175,8 @@ namespace Gamer.Utilities
         public enum SessionVarType
         {
 #pragma warning disable CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
+            RUN_SPEED,
+            WALK_SPEED,
             TALK,
             ITEM_LESS_CLSSS_CHANGE,
             HIDDEN,
