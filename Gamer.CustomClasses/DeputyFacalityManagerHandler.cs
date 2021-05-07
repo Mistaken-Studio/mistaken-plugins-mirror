@@ -104,16 +104,26 @@ namespace Gamer.CustomClasses
                 player.Role = RoleType.Scientist;
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
-                foreach(var item in player.Inventory.items)
+                bool hasRadio = false;
+                foreach (var item in player.Inventory.items.ToArray())
                 {
                     if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor || item.id == ItemType.Coin)
                         player.RemoveItem(item);
+                    else if (item.id == ItemType.Radio)
+                        hasRadio = true;
                 }
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = ItemType.KeycardFacilityManager,
                     durability = 1000f
                 });
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    id = ItemType.WeaponManagerTablet,
+                    durability = 401000f
+                });
+                if (!hasRadio)
+                    player.AddItem(ItemType.Radio);
                 ArmorHandler.LiteArmor.Give(player, 25);
                 Mistaken.Base.CustomInfoHandler.Set(player, "DFM", "<color=#bd1a47><b>Zastępca Dyrektora Placówki</b></color>", false);
                 player.SetGUI("DFM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#bd1a47>Zastępcą Dyrektora Placowki</color></size><br>{ClassDescription}", 20);

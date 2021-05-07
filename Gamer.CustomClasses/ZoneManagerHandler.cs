@@ -107,20 +107,20 @@ namespace Gamer.CustomClasses
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;
                 bool hasRadio = false;
-                foreach (var item in player.Inventory.items)
+                foreach (var item in player.Inventory.items.ToArray())
                 {
                     if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor)
                     {
                         player.RemoveItem(item);
-                        player.AddItem(new Inventory.SyncItemInfo
-                        {
-                            durability = 1000,
-                            id = ItemType.KeycardZoneManager
-                        });
                     }
                     else if (item.id == ItemType.Radio)
                         hasRadio = true;
                 }
+                player.AddItem(new Inventory.SyncItemInfo
+                {
+                    durability = 1000,
+                    id = ItemType.KeycardZoneManager
+                });
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
                 Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>", false);
