@@ -67,7 +67,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 Map.Doors.First(d => d.Type() == DoorType.EscapeSecondary).NetworkTargetState = ev.Door.NetworkTargetState;
             else if (type == DoorType.EscapeSecondary)
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
-            else if ((type == DoorType.GateA || type == DoorType.GateB) && ev.Door.NetworkTargetState)
+            else if ((type == DoorType.GateA || type == DoorType.GateB) && !ev.Door.NetworkTargetState)
             {
                 //if (type == DoorType.GateA)
                 //    IgnoreGateA = true;
