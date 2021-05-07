@@ -5,6 +5,7 @@ using Gamer.API.CustomClass;
 using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System.Linq;
 using UnityEngine;
@@ -71,17 +72,12 @@ namespace Gamer.CustomClasses
         {
             MEC.Timing.CallDelayed(1.2f, () =>
             {
-                if (Mistaken.Base.Version.Debug)
-                    ZoneManager.Instance.Spawn(RealPlayers.List.First());
-                else
-                {
-                    //var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-                    var scientists = RealPlayers.List.ToList();
-                    if (scientists.Count < 2 )
-                        return;
-                    scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER, false)).ToList();
-                    ZoneManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
-                }
+                //var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
+                var scientists = RealPlayers.List.ToList();
+                if (scientists.Count < 2)
+                    return;
+                scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER, false)).ToList();
+                ZoneManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
             });
         }
         /// <inheritdoc/>
@@ -98,7 +94,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_ZONE_MANAGER;
             /// <inheritdoc/>
-            public override string ClassName => "Zarządca Strefy";
+            public override string ClassName => "Zarządca Strefy Podwyższonego Ryzyka";
             /// <inheritdoc/>
             public override string ClassDescription => "TBF";
             /// <inheritdoc/>
@@ -127,6 +123,10 @@ namespace Gamer.CustomClasses
                 }
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
+                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>", false);
+                player.SetGUI("ZM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#217a7b>Zarządcą Strefy Podwyższonego Ryzyka</color></size><br>{ClassDescription}", 20);
+                player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#217a7b>Zarządca Strefy Podwyższonego Ryzyka</color>");
+                RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"Spawned {player.PlayerToString()} as Zone Manager");
             }
         }
         /// <inheritdoc/>
