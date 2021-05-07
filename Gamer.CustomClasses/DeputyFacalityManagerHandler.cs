@@ -95,7 +95,7 @@ namespace Gamer.CustomClasses
 
             public override string ClassName => "Zastępca Dyrektora Placówki";
 
-            public override string ClassDescription => "Twoim zadaniem jest pomoc ochronie w odeskortowaniu <color=yellow>naukowców</color>";
+            public override string ClassDescription => "Twoim zadaniem jest pomoc ochronie w odeskortowaniu <color=yellow>naukowców</color><br>Nie możesz uciec przed dekontaminacją LCZ";
 
             public override RoleType Role => RoleType.Scientist;
             public override void Spawn(Player player)
