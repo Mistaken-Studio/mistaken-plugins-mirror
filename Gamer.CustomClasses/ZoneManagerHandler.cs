@@ -128,6 +128,14 @@ namespace Gamer.CustomClasses
                 player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#217a7b>Zarządca Strefy Podwyższonego Ryzyka</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"Spawned {player.PlayerToString()} as Zone Manager");
             }
+
+            public override void OnDie(Player player)
+            {
+                base.OnDie(player);
+                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", null, false);
+                player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"{player.PlayerToString()} is no longer Zone Manager");
+            }
         }
         /// <inheritdoc/>
         public class ZoneManagerKeycard : CustomItem

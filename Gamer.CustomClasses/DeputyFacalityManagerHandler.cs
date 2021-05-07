@@ -101,7 +101,7 @@ namespace Gamer.CustomClasses
             public override RoleType Role => RoleType.Scientist;
             public override void Spawn(Player player)
             {
-                player.SetRole(RoleType.Scientist, true, false);
+                player.Role = RoleType.Scientist;
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 foreach(var item in player.Inventory.items)
@@ -121,6 +121,13 @@ namespace Gamer.CustomClasses
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"Spawned {player.PlayerToString()} as Deputy Facility Manager");
             }
 
+            public override void OnDie(Player player)
+            {
+                base.OnDie(player);
+                Mistaken.Base.CustomInfoHandler.Set(player, "DFM", null, false);
+                player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+                RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"{player.PlayerToString()} is no longer Deputy Facility Manager");
+            }
         }
         public class DeputyFacalityManagerKeycard : CustomItem
         {
