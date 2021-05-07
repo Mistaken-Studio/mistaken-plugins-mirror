@@ -83,6 +83,11 @@ namespace Gamer.CustomClasses
         internal static DoorVariant escapeLock;
         private void Server_RoundStarted()
         {
+            var scientists = RealPlayers.Get(RoleType.ClassD).ToList();
+            if (scientists.Count < 4 && false)
+                return;
+            scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
+            DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
             escapeLock = UnityEngine.Object.Instantiate(DoorUtils.GetPrefab(DoorUtils.DoorType.HCZ_BREAKABLE), new Vector3(170, 984, 20), Quaternion.identity);
             GameObject.Destroy(escapeLock.GetComponent<DoorEventOpenerExtension>());
             if (escapeLock.TryGetComponent<Scp079Interactable>(out var scp079Interactable))
@@ -93,11 +98,6 @@ namespace Gamer.CustomClasses
             escapeLock.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (escapeLock as BreakableDoor)._brokenPrefab = null;
             escapeLock.gameObject.SetActive(false);
-            var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-            if (scientists.Count < 4 && false)
-                return;
-            scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
-            DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
             //170 984 20 0 0 0 1.7 1.5 1
             Log.Debug("A");
             this.CallDelayed(1, () =>
