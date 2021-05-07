@@ -116,7 +116,7 @@ namespace Gamer.CustomClasses
                             id = ItemType.KeycardZoneManager
                         });
                     }
-                    if (item.id == ItemType.Radio)
+                    else if (item.id == ItemType.Radio)
                         hasRadio = true;
                 }
                 if (!hasRadio)
