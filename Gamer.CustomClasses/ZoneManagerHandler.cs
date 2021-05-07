@@ -72,8 +72,7 @@ namespace Gamer.CustomClasses
         {
             MEC.Timing.CallDelayed(1.2f, () =>
             {
-                //var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-                var scientists = RealPlayers.List.ToList();
+                var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
                 if (scientists.Count < 2)
                     return;
                 scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER, false)).ToList();

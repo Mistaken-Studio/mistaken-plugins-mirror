@@ -80,10 +80,9 @@ namespace Gamer.CustomClasses
 
         private void Server_RoundStarted()
         {
-            //var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-            var scientists = RealPlayers.List.ToList();
-           // if (scientists.Count < 4)
-            //    return;
+            var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
+            if (scientists.Count < 4)
+                return;
             scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
             DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
         }
