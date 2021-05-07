@@ -100,14 +100,14 @@ namespace Gamer.CustomClasses
             DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
             //170 984 20 0 0 0 1.7 1.5 1
             int rid = RoundPlus.RoundId;
-            this.CallDelayed(60 * 12, () =>
+            this.CallDelayed(60 * 1/*2*/ - 10, () =>
             {
                 if (rid != RoundPlus.RoundId)
                     return;
-                if (DeputyFacalityManager.removeFromVisList == null)
-                    DeputyFacalityManager.removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                Log.Debug("It's time");
                 foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
                 {
+                    Log.Debug($"Do it {item.Nickname}");
                     ObjectDestroyMessage msg = new ObjectDestroyMessage
                     {
                         netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
