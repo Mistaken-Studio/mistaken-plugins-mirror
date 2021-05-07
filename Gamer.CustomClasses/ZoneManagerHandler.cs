@@ -98,7 +98,7 @@ namespace Gamer.CustomClasses
             public override RoleType Role => RoleType.Scientist;
             public override void Spawn(Player player)
             {
-                player.SetRole(RoleType.Scientist,true, false);
+                player.SetRole(RoleType.Scientist, true, false);
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;
@@ -124,6 +124,7 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public class ZoneManagerKeycard : CustomItem
         {
+            public ZoneManagerKeycard() => base.Register();
             /// <inheritdoc/>
             public override string ItemName => "Karta Zarządcy Strefy";
             /// <inheritdoc/>
