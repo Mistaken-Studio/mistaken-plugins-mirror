@@ -9,16 +9,20 @@ using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Systems.Misc;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
+using Interactables.Interobjects;
+using Interactables.Interobjects.DoorUtils;
+using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.CustomClasses
 {
-    class DeputyFacalityManagerHandler : Module
+    class DeputyFacalityManagerHandler : Diagnostics.Module
     {
         public DeputyFacalityManagerHandler(PluginHandler p) : base(p)
         {
@@ -52,7 +56,6 @@ namespace Gamer.CustomClasses
             }
         }
 
-
         private void Player_InteractingDoor(InteractingDoorEventArgs ev)
         {
             if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is DeputyFacalityManagerKeycard deputyFacilityManagerKeycard) || MapPlus.IsLCZDecontaminated())
@@ -77,14 +80,49 @@ namespace Gamer.CustomClasses
                 return;
             }
         }
-
+        internal static DoorVariant escapeLock;
         private void Server_RoundStarted()
         {
             var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
             if (scientists.Count < 4)
                 return;
             scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
+            escapeLock = UnityEngine.Object.Instantiate(DoorUtils.GetPrefab(DoorUtils.DoorType.HCZ_BREAKABLE), new Vector3(170, 984, 20), Quaternion.identity);
+            GameObject.Destroy(escapeLock.GetComponent<DoorEventOpenerExtension>());
+            if (escapeLock.TryGetComponent<Scp079Interactable>(out var scp079Interactable))
+                GameObject.Destroy(scp079Interactable);
+            escapeLock.transform.localScale = new Vector3(1.7f, 1.5f, 1f);
+            if (escapeLock is BasicDoor door)
+                door._portalCode = 1;
+            escapeLock.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+            (escapeLock as BreakableDoor)._brokenPrefab = null;
+            escapeLock.gameObject.SetActive(false);
             DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
+            this.CallDelayed(1, () =>
+            {
+                int rid = RoundPlus.RoundId;
+                this.CallDelayed(60 * 12 - 10, () =>
+                {
+                    if (rid != RoundPlus.RoundId)
+                        return;
+                    foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
+                    {
+                        ObjectDestroyMessage msg = new ObjectDestroyMessage
+                        {
+                            netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
+                        };
+                        NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(item.ReferenceHub.networkIdentity, msg);
+                        if (DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.ContainsKey(item.Connection.connectionId))
+                        {
+                            DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.Remove(item.Connection.connectionId);
+                            if (DeputyFacalityManager.removeFromVisList == null)
+                                DeputyFacalityManager.removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                            DeputyFacalityManager.removeFromVisList?.Invoke(item.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
+                        }
+                    }
+
+                }, "RemoveDoors");
+            }, "RoundStartLate");
         }
 
         public class DeputyFacalityManager : CustomClass
@@ -128,14 +166,39 @@ namespace Gamer.CustomClasses
                 player.SetGUI("DFM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#bd1a47>Zastępcą Dyrektora Placowki</color></size><br>{ClassDescription}", 20);
                 player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#bd1a47>Zastępca Dyrektora Placówki</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"Spawned {player.PlayerToString()} as Deputy Facility Manager");
-            }
 
+                MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
+                if (sendSpawnMessage != null)
+                {
+                    if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                        return;
+                    sendSpawnMessage.Invoke(null, new object[]
+                    {
+                        DeputyFacalityManagerHandler.escapeLock.netIdentity,
+                        player.Connection
+                    });
+                }
+            }
+            internal static MethodInfo removeFromVisList = null;
             public override void OnDie(Player player)
             {
                 base.OnDie(player);
                 Mistaken.Base.CustomInfoHandler.Set(player, "DFM", null, false);
                 player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"{player.PlayerToString()} is no longer Deputy Facility Manager");
+
+                ObjectDestroyMessage msg = new ObjectDestroyMessage
+                {
+                    netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
+                };
+                NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                if (DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.ContainsKey(player.Connection.connectionId))
+                {
+                    DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.Remove(player.Connection.connectionId);
+                    if (removeFromVisList == null)
+                        removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                    removeFromVisList?.Invoke(player.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
+                }
             }
         }
         public class DeputyFacalityManagerKeycard : CustomItem
