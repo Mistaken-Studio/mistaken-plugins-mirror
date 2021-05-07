@@ -4,7 +4,6 @@ using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
-using LightContainmentZoneDecontamination;
 using MEC;
 using Mirror;
 using System;
@@ -218,10 +217,10 @@ namespace Gamer.Mistaken.CassieRoom
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
-                //UpperDoor
-                SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
-                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
-                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
+                //UpperDoor 
+                SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
+                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
+                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
                 SpawnItem(keycardType, new Vector3(190f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
                 SpawnItem(keycardType, new Vector3(188f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(70, 500, 2));
                 SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
