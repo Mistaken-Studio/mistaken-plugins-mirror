@@ -24,7 +24,7 @@ namespace Gamer.CustomClasses
             new DeputyFacalityManagerKeycard();
             new DeputyFacalityManager();
         }
-        public override string Name => throw new NotImplementedException();
+        public override string Name => "DeputyFacalityManager";
 
         public override void OnDisable()
         {
