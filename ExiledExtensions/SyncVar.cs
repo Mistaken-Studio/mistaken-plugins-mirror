@@ -40,14 +40,10 @@ namespace Gamer.Utilities
         /// <param name="sprintSpeed">Running speed</param>
         public static void SetSpeed(this Player player, float walkSpeed, float sprintSpeed)
         {
-            //MirrorExtensions.SendFakeSyncVar(player, Server.Host.ReferenceHub.networkIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.NetworkHumanWalkSpeedMultiplier), walkSpeed);
-            //MirrorExtensions.SendFakeSyncVar(player, Server.Host.ReferenceHub.networkIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.NetworkHumanSprintSpeedMultiplier), sprintSpeed);
-            SendCustomSync(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), (writer) =>
-            {
-                writer.WritePackedUInt64(6UL);
-                writer.WriteSingle(walkSpeed);
-                writer.WriteSingle(sprintSpeed);
-            });
+            MirrorExtensions.SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), walkSpeed);
+            player.SetSessionVar(Main.SessionVarType.WALK_SPEED, walkSpeed);
+            MirrorExtensions.SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), sprintSpeed);
+            player.SetSessionVar(Main.SessionVarType.RUN_SPEED, sprintSpeed);
         }
 
         //Only for internal for Speed

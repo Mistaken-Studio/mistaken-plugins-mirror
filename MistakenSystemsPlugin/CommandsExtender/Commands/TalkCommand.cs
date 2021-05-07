@@ -50,7 +50,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             continue;
                         p.DisableAllEffects();
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
+                        p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                         p.Role = data.Role;
+                        p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
                         Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                         {
@@ -97,8 +99,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     if (p == null || !p.IsConnected)
                         continue;
                     p.SetSessionVar(Main.SessionVarType.TALK, true);
+                    p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
                     SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
                     p.Role = RoleType.Tutorial;
+                    p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();
                     Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                     {

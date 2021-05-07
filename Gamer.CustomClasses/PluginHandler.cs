@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Enums;
+using Exiled.API.Features;
 using Gamer.API;
 
 namespace Gamer.CustomClasses
@@ -13,6 +14,8 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public override string Prefix => "cc";
         /// <inheritdoc/>
+        public override PluginPriority Priority => PluginPriority.Highest;
+        /// <inheritdoc/>
         public static string PluginName => Instance.Name;
         /// <summary>
         /// PluginHandler Instance
@@ -21,8 +24,10 @@ namespace Gamer.CustomClasses
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            new CustomClassesHandler(this);
             new GuardCommanderHandler(this);
+            new ZoneManagerHandler(this);
+            new DeputyFacalityManagerHandler(this);
+            new CustomClassesHandler(this);
 
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();

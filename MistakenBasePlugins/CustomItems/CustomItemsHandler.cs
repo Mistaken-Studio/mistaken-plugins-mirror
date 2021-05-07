@@ -38,6 +38,7 @@ namespace Gamer.Mistaken.Base.CustomItems
             Exiled.Events.Handlers.Scp914.UpgradingItems += this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
             Exiled.Events.Handlers.Player.Handcuffing += this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
             Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
+            Exiled.Events.Handlers.Player.Dying += this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => Player_Dying(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -56,6 +57,16 @@ namespace Gamer.Mistaken.Base.CustomItems
             Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
             Exiled.Events.Handlers.Player.Handcuffing -= this.Handle<Exiled.Events.EventArgs.HandcuffingEventArgs>((ev) => Player_Handcuffing(ev));
             Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
+            Exiled.Events.Handlers.Player.Dying -= this.Handle<Exiled.Events.EventArgs.DyingEventArgs>((ev) => Player_Dying(ev));
+        }
+
+        private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
+        {
+            if (!ev.Target.IsHuman)
+                return;
+            CustomItem citem = GetCustomItem(ev.Target.CurrentItem);
+            if (citem != null)
+                citem.OnStopHolding(ev.Target, ev.Target.CurrentItem);
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)

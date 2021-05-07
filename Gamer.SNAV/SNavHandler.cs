@@ -603,7 +603,7 @@ namespace Gamer.SNAV
                 yield return Timing.WaitForSeconds(0.1f);
             }
 
-            //yield return Timing.WaitForSeconds(300);
+            yield return Timing.WaitForSeconds(300);
             int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
