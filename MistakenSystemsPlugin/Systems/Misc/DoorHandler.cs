@@ -5,6 +5,7 @@ using Gamer.Diagnostics;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
+using MEC;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,13 +25,39 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.Shooting -= this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
+
+        private void Server_RoundStarted()
+        {
+            GateA = Map.Doors.First(d => d.Type() == DoorType.GateA);
+            GateB = Map.Doors.First(d => d.Type() == DoorType.GateB);
+            this.RunCoroutine(DoRoundLoop(), "RoundLoop");
+        }
+
+        private IEnumerator<float> DoRoundLoop()
+        {
+            yield return Timing.WaitForSeconds(1);
+            while(Round.IsStarted)
+            {
+                yield return Timing.WaitForSeconds(1);
+                if (!IgnoreGateA && GateA.NetworkTargetState && GateA.NetworkActiveLocks == 0)
+                    GateA.NetworkTargetState = false;
+                if (!IgnoreGateB && GateB.NetworkTargetState && GateB.NetworkActiveLocks == 0)
+                    GateB.NetworkTargetState = false;
+            }
+        }
+        private static DoorVariant GateA;
+        private static bool IgnoreGateA;
+        private static DoorVariant GateB;
+        private static bool IgnoreGateB;
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (!ev.IsAllowed)
@@ -40,29 +67,39 @@ namespace Gamer.Mistaken.Systems.Misc
                 Map.Doors.First(d => d.Type() == DoorType.EscapeSecondary).NetworkTargetState = ev.Door.NetworkTargetState;
             else if (type == DoorType.EscapeSecondary)
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
-            else if (type == DoorType.GateA || type == DoorType.GateB)
+            else if (type == DoorType.GateA || type == DoorType.GateB && ev.Door.NetworkTargetState)
             {
-                this.CallDelayed(2.7f, () =>
-                {
-                    if (ev.Door.NetworkTargetState)
-                    {
+                //if (type == DoorType.GateA)
+                //    IgnoreGateA = true;
+                //else
+                //    IgnoreGateB = true;
+                //this.CallDelayed(2.7f, () =>
+                //{
+                    //if (ev.Door.NetworkTargetState)
+                    //{
+                        if (type == DoorType.GateA)
+                            IgnoreGateA = true;
+                        else
+                            IgnoreGateB = true;
                         ev.Door.ServerChangeLock(DoorLockReason.SpecialDoorFeature, true);
                         this.CallDelayed(15f, () =>
                         {
                             ev.Door.ServerChangeLock(DoorLockReason.SpecialDoorFeature, false);
-                            TryClosingGate(ev.Door);
+                            if (type == DoorType.GateA)
+                                IgnoreGateA = true;
+                            else
+                                IgnoreGateB = true;
                         }, "Closing Gate");
-                    }
-                });
+                    //}
+                    //else
+                    //{
+                    //    if (type == DoorType.GateA)
+                    //        IgnoreGateA = true;
+                    //    else
+                    //        IgnoreGateB = true;
+                    //}
+                //});
             }
-        }
-
-        private void TryClosingGate(DoorVariant door)
-        {
-            if (door.NetworkActiveLocks == 0)
-                door.NetworkTargetState = false;
-            else
-                this.CallDelayed(1, () => TryClosingGate(door), "TryClosingGateDelayed");
         }
 
         public static readonly Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
