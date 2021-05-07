@@ -90,7 +90,7 @@ namespace Gamer.CustomClasses
         public class DeputyFacalityManager : CustomClass
         {
             public static DeputyFacalityManager Instance;
-            public DeputyFacalityManager() => Instance = this;
+            public DeputyFacalityManager() : base() => Instance = this;
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER;
 
             public override string ClassName => "Zastępca Dyrektora Placówki";
@@ -119,13 +119,14 @@ namespace Gamer.CustomClasses
         }
         public class DeputyFacalityManagerKeycard : CustomItem
         {
+            public DeputyFacalityManagerKeycard() => base.Register();
             public override string ItemName => "Karta Zastępcy Dyrektora Placówki";
 
             public override Main.SessionVarType SessionVarType => Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD;
 
             public override ItemType Item => ItemType.KeycardFacilityManager;
 
-            public override int Durability => 1;
+            public override int Durability => 001;
 
         }
     }

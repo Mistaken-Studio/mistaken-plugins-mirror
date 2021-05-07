@@ -232,6 +232,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 case "cc_gc":
                     API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassSessionVarType == Main.SessionVarType.CC_GUARD_COMMANDER).Spawn(player);
                     break;
+                case "cc_zm":
+                    API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassSessionVarType == Main.SessionVarType.CC_ZONE_MANAGER).Spawn(player);
+                    break;
+                case "cc_dfm":
+                    API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassSessionVarType == Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER).Spawn(player);
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
