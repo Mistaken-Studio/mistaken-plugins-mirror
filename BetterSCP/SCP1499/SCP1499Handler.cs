@@ -299,7 +299,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             var positionToSpawn = new Vector3(-26, 1020, -44);
             this.CallDelayed(5, () =>
             {
-                var tmp = ItemType.GrenadeFlash.Spawn(149000f, Vector3.zero);
+                var tmp = MapPlus.Spawn(new Inventory.SyncItemInfo
+                {
+                    id = ItemType.GrenadeFlash,
+                    durability = 149000f,
+                }, Vector3.zero, Quaternion.identity, new Vector3(1.5f, 0.5f, 1.5f));
                 this.CallDelayed(5, () => tmp.Delete(), "RoundStart2");
                 MapPlus.Spawn(new Inventory.SyncItemInfo
                 {
