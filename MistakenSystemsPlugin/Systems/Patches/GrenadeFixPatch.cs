@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.Systems.Patches
     [HarmonyPatch(typeof(Grenades.FragGrenade), nameof(Grenades.FragGrenade.ServersideExplosion))]
     static class GrenadeFixPatch3
     {
-        internal static readonly List<GameObject> disabledLookingList = new List<GameObject>();
+        internal static readonly List<GameObject> disabledGoList = new List<GameObject>();
         public static bool Prefix(FragGrenade __instance)
         {
             foreach (var item in GameObject.FindObjectsOfType(typeof(GameObject)))
@@ -56,7 +56,7 @@ namespace Gamer.Mistaken.Systems.Patches
                 {
                     if (!go.activeSelf)
                         continue;
-                    disabledLookingList.Add(go);
+                    disabledGoList.Add(go);
                     go.SetActive(false);
                 }
             }
@@ -103,7 +103,7 @@ namespace Gamer.Mistaken.Systems.Patches
 
         public static void Postfix(FragGrenade __instance)
         {
-            foreach (var item in disabledLookingList)
+            foreach (var item in disabledGoList)
                 item.SetActive(true);
         }
     }
