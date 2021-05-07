@@ -94,16 +94,19 @@ namespace Gamer.CustomClasses
             (escapeLock as BreakableDoor)._brokenPrefab = null;
             escapeLock.gameObject.SetActive(false);
             var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-            if (scientists.Count < 4)
+            if (scientists.Count < 4 && false)
                 return;
             scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
             DeputyFacalityManager.Instance.Spawn(scientists[UnityEngine.Random.Range(0, scientists.Count)]);
             //170 984 20 0 0 0 1.7 1.5 1
+            Log.Debug("A");
             this.CallDelayed(1, () =>
             {
+                Log.Debug("B");
                 int rid = RoundPlus.RoundId;
                 this.CallDelayed(60 * 1/*2*/ - 10, () =>
                 {
+                    Log.Debug("CCCCCCCCCCCCCCCCC");
                     if (rid != RoundPlus.RoundId)
                         return;
                     Log.Debug("It's time");
