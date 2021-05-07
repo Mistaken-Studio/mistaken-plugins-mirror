@@ -242,8 +242,8 @@ namespace Gamer.Mistaken.CassieRoom
                 collider.size = new Vector3(20, 2, 20);
             }
             #endregion
-            #region To remove
-            SpawnButton(new Vector3(-16.3f, 1020, -48.7f), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "", (ev) =>
+            #region move to functionality on release
+            SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
             {
                 return false;
             }, new Vector3(0.5f, 0.5f, 0.5f));
