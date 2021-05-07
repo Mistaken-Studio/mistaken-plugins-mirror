@@ -103,7 +103,7 @@ namespace Gamer.CustomClasses
                 player.SetRole(RoleType.Scientist, true, false);
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
-                foreach(var item in player.Inventory.items)
+                foreach(var item in player.Inventory.items.ToArray())
                 {
                     if (item.id == ItemType.KeycardScientist || item.id == ItemType.KeycardScientistMajor || item.id == ItemType.Coin)
                         player.RemoveItem(item);
