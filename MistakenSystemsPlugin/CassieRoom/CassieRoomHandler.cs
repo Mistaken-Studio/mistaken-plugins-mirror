@@ -224,6 +224,12 @@ namespace Gamer.Mistaken.CassieRoom
                 collider.size = new Vector3(20, 2, 20);
             }
             #endregion
+            #region To remove
+            SpawnButton(new Vector3(-16.3f, 1020, -48.7f), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "", (ev) =>
+            {
+                return false;
+            }, new Vector3(0.5f, 0.5f, 0.5f));
+            #endregion
             return;
             #region Functionality
             {
@@ -283,9 +289,9 @@ namespace Gamer.Mistaken.CassieRoom
             #endregion
         }
 
-        public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation, string name, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool> onCall)
+        public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation, string name, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool> onCall, Vector3 size = default)
         {
-            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, Vector3.one);
+            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, size == default ? Vector3.one : size);
             (door as BreakableDoor)._brokenPrefab = null;
             door.NetworkTargetState = true;
             DoorCallbacks[door] = onCall;
