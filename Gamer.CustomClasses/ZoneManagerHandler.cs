@@ -72,7 +72,11 @@ namespace Gamer.CustomClasses
             MEC.Timing.CallDelayed(1.2f, () =>
             {
                 if (Mistaken.Base.Version.Debug)
-                    ZoneManager.Instance.Spawn(RealPlayers.List.First());
+                {
+                    var tmp = RealPlayers.List.First();
+                    tmp.Role = RoleType.Scientist;
+                    ZoneManager.Instance.Spawn(tmp);
+                }
                 else
                 {
                     var scientist = RealPlayers.Get(RoleType.Scientist).ToArray();
