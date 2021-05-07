@@ -37,25 +37,32 @@ namespace Gamer.Mistaken.Systems.Misc
                 return;
             var type = ev.Door.Type();
             if (type == DoorType.EscapePrimary)
-            {
                 Map.Doors.First(d => d.Type() == DoorType.EscapeSecondary).NetworkTargetState = ev.Door.NetworkTargetState;
-            }
             else if (type == DoorType.EscapeSecondary)
-            {
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
-            }
-            this.CallDelayed(2.7f, () => 
+            else if (type == DoorType.GateA || type == DoorType.GateB)
             {
-                if ((type == DoorType.GateA || type == DoorType.GateB) && ev.Door.NetworkTargetState)
+                this.CallDelayed(2.7f, () =>
                 {
-                    ev.Door.ServerChangeLock(DoorLockReason.Warhead, true);
-                    this.CallDelayed(15f, () =>
+                    if (ev.Door.NetworkTargetState)
                     {
-                        ev.Door.NetworkTargetState = false;
-                        ev.Door.ServerChangeLock(DoorLockReason.Warhead, false);
-                    }, "Closing Gate");
-                }
-            });
+                        ev.Door.ServerChangeLock(DoorLockReason.SpecialDoorFeature, true);
+                        this.CallDelayed(15f, () =>
+                        {
+                            ev.Door.ServerChangeLock(DoorLockReason.SpecialDoorFeature, false);
+                            TryClosingGate(ev.Door);
+                        }, "Closing Gate");
+                    }
+                });
+            }
+        }
+
+        private void TryClosingGate(DoorVariant door)
+        {
+            if (door.NetworkActiveLocks == 0)
+                door.NetworkTargetState = false;
+            else
+                this.CallDelayed(1, () => TryClosingGate(door), "TryClosingGateDelayed");
         }
 
         public static readonly Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
