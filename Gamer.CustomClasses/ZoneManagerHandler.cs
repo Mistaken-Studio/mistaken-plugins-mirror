@@ -95,7 +95,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override string ClassName => "Zarządca Strefy Podwyższonego Ryzyka";
             /// <inheritdoc/>
-            public override string ClassDescription => "TBF";
+            public override string ClassDescription => "";
             /// <inheritdoc/>
             public override RoleType Role => RoleType.Scientist;
             /// <inheritdoc/>
