@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Release with params
+name: Release PTB
 
 on: 
  workflow_dispatch:
@@ -54,7 +54,7 @@ jobs:
           echo ---------
           echo %GITHUB_SHA%
           echo ---------
-          "%GITHUB_WORKSPACE%/CI Builder.exe" %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% false ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
+          "%GITHUB_WORKSPACE%/CI Builder.exe" %GITHUB_REF%/PTB %GITHUB_SHA% %GITHUB_RUN_NUMBER% true ${{ github.event.inputs.version }} ${{ github.event.inputs.name }}
         shell: cmd
       - name: Remove artifacts
         uses: Mistaken-Studio/delete-artifacts-action@1.1.2
@@ -113,7 +113,7 @@ jobs:
           name: 'Publisher.exe'
     - name: Create release
       run: |
-        "%GITHUB_WORKSPACE%/CI Publisher.exe" ${{ github.event.inputs.version }} %GITHUB_SHA% false ${{ github.event.inputs.name }}
+        "%GITHUB_WORKSPACE%/CI Publisher.exe" ${{ github.event.inputs.version }} %GITHUB_SHA% true ${{ github.event.inputs.name }}
       shell: cmd
     - name: Bump version
       uses: EndBug/add-and-commit@v7.2.0
