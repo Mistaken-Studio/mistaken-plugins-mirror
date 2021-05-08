@@ -2,6 +2,7 @@
 using NPCS;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Components
@@ -101,7 +102,7 @@ namespace Gamer.Mistaken.Systems.Components
             }
         }
 
-        private readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
+        public readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
         private void OnTriggerEnter(Collider other)
         {
             if (!other.GetComponent<CharacterClassManager>())
