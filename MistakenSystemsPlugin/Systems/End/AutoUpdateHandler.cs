@@ -158,7 +158,7 @@ namespace Gamer.Mistaken.Systems.End
 
         private static async void Update(Release release, GitHubClient github, bool ptb)
         {
-            MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName})", Broadcast.BroadcastFlags.AdminChat);
+            MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName}{(ptb ? " (PTB)" : "")})", Broadcast.BroadcastFlags.AdminChat);
             foreach (var item in release.Assets)
             {
                 if (item.Name == "plugins.tar.gz")
