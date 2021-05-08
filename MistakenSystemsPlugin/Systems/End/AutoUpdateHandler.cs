@@ -112,9 +112,9 @@ namespace Gamer.Mistaken.Systems.End
                 RequestRestart = true;
                 ServerConsole.EnterCommand("rnr", out _);
             }
-            else
+            else if(Base.PluginHandler.Config.IsPTBServer)
             {
-                var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
+                var release = (await github.Repository.Release.GetAll("Mistaken-Studio", "SL-Plugin", new ApiOptions { PageCount = 1, PageSize = 1 })).FirstOrDefault();
                 
                 if (!File.Exists(VersionPath))
                 {
@@ -126,11 +126,27 @@ namespace Gamer.Mistaken.Systems.End
                     var version = File.ReadAllText(VersionPath);
                     if (version != release.TagName)
                     {
-                        if (!release.Prerelease || (release.Prerelease && Base.PluginHandler.Config.IsPTBServer))
-                        {
-                            RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
-                            Update(release, github);
-                        }
+                        RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName} ({(release.Prerelease ? "PTB" : " Normal")})");
+                        Update(release, github);
+                    }
+                }
+            }
+            else
+            {
+                var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
+
+                if (!File.Exists(VersionPath))
+                {
+                    File.Create(VersionPath).Close();
+                    File.WriteAllText(VersionPath, release.TagName);
+                }
+                else
+                {
+                    var version = File.ReadAllText(VersionPath);
+                    if (version != release.TagName)
+                    {
+                        RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
+                        Update(release, github);
                     }
                 }
             }
