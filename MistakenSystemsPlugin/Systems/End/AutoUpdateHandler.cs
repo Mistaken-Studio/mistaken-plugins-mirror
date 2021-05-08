@@ -127,7 +127,7 @@ namespace Gamer.Mistaken.Systems.End
                     if (version != release.TagName)
                     {
                         RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName} ({(release.Prerelease ? "PTB" : " Normal")})");
-                        Update(release, github, release.Prerelease);
+                        Update(release, github);
                     }
                 }
             }
@@ -146,7 +146,7 @@ namespace Gamer.Mistaken.Systems.End
                     if (version != release.TagName)
                     {
                         RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
-                        Update(release, github, false);
+                        Update(release, github);
                     }
                 }
             }
@@ -156,9 +156,9 @@ namespace Gamer.Mistaken.Systems.End
             _ = CheckUpdate();
         }
 
-        private static async void Update(Release release, GitHubClient github, bool ptb)
+        private static async void Update(Release release, GitHubClient github)
         {
-            MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName}{(ptb ? " (PTB)" : "")})", Broadcast.BroadcastFlags.AdminChat);
+            MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName}{(release.Prerelease ? " (PTB)" : "")})", Broadcast.BroadcastFlags.AdminChat);
             foreach (var item in release.Assets)
             {
                 if (item.Name == "plugins.tar.gz")
@@ -166,7 +166,7 @@ namespace Gamer.Mistaken.Systems.End
                     var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate();
-                    if(!ptb)
+                    if(!Base.PluginHandler.Config.IsPTBServer)
                         RequestServersRestart();
                     else
                     {
