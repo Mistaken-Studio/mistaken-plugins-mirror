@@ -103,7 +103,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 default:
                     return new string[] { "Nieznany SCP", GetUsage() };
             }
-
+            if(player.Role == role)
+            {
+                _s = false;
+                return new string[] { "Już jesteś tym SCP" };
+            }
             if (RealPlayers.List.Any(p => p.Role == role))
             {
                 var target = RealPlayers.List.First(p => p.Role == role);
