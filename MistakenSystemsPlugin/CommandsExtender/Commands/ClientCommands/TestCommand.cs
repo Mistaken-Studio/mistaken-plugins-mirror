@@ -2,6 +2,7 @@
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Mistaken.Base.Staff;
+using Gamer.Mistaken.Systems.End;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -9,6 +10,7 @@ using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
@@ -237,6 +239,17 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     break;
                 case "cc_dfm":
                     API.CustomClass.CustomClass.CustomClasses.First(i => i.ClassSessionVarType == Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER).Spawn(player);
+                    break;
+                case "update":
+                    Task.Run(async () =>
+                    {
+                        await AutoUpdateHandler.CheckUpdate();
+                        if (AutoUpdateHandler.RequestRestart)
+                        {
+                            ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                            PlayerStats.StaticChangeLevel(true);
+                        }
+                    });
                     break;
             }
             success = true;
