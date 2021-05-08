@@ -310,7 +310,7 @@ namespace Gamer.Mistaken.CassieRoom
                         {
                             CamperPoints[player] -= 5;
                             value -= 1 * 5;
-                            player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
+                            //player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
                             if (!CamperEffects.TryGetValue(player, out var effects))
                                 continue;
                             if (value < 360) // 3 Min
