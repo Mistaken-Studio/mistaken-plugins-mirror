@@ -107,6 +107,10 @@ namespace Gamer.CustomClasses
                         return;
                     foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
                     {
+                        if(!item.IsConnected)
+                        {
+
+                        }
                         ObjectDestroyMessage msg = new ObjectDestroyMessage
                         {
                             netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
@@ -120,6 +124,7 @@ namespace Gamer.CustomClasses
                             DeputyFacalityManager.removeFromVisList?.Invoke(item.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
                         }
                     }
+                    GameObject.Destroy(DeputyFacalityManagerHandler.escapeLock);
 
                 }, "RemoveDoors");
             }, "RoundStartLate");
