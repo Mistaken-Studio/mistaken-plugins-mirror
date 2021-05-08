@@ -509,7 +509,10 @@ namespace Gamer.Mistaken.CassieRoom
                 foreach (var item in InElevator.ToArray())
                 {
                     if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
+                    {
                         item.Position += Offset;
+                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} UP ({item.Position})");
+                    }
                 }
                 foreach (var item in Pickup.Instances)
                 {
@@ -534,7 +537,10 @@ namespace Gamer.Mistaken.CassieRoom
                 foreach (var item in InElevator.ToArray())
                 {
                     if (item.IsConnected && item.IsAlive && item.Position.y > 1010)
+                    {
                         item.Position -= Offset;
+                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Down ({item.Position})");
+                    }
                 }
                 foreach (var item in Pickup.Instances)
                 {
