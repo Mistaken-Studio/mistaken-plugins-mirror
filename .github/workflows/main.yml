@@ -60,6 +60,10 @@ jobs:
           echo ---------
           "%GITHUB_WORKSPACE%/CI Builder.exe" %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% true
         shell: cmd
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '1 minute'
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
