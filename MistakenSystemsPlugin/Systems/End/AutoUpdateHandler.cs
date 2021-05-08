@@ -127,7 +127,7 @@ namespace Gamer.Mistaken.Systems.End
                     if (version != release.TagName)
                     {
                         RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName} ({(release.Prerelease ? "PTB" : " Normal")})");
-                        Update(release, github);
+                        Update(release, github, release.Prerelease);
                     }
                 }
             }
@@ -146,7 +146,7 @@ namespace Gamer.Mistaken.Systems.End
                     if (version != release.TagName)
                     {
                         RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
-                        Update(release, github);
+                        Update(release, github, false);
                     }
                 }
             }
@@ -156,7 +156,7 @@ namespace Gamer.Mistaken.Systems.End
             _ = CheckUpdate();
         }
 
-        private static async void Update(Release release, GitHubClient github)
+        private static async void Update(Release release, GitHubClient github, bool ptb)
         {
             MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName})", Broadcast.BroadcastFlags.AdminChat);
             foreach (var item in release.Assets)
@@ -166,7 +166,12 @@ namespace Gamer.Mistaken.Systems.End
                     var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate();
-                    RequestServersRestart();
+                    if(!ptb)
+                        RequestServersRestart();
+                    else
+                    {
+                        ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                    }
                     File.WriteAllText(VersionPath, release.TagName);
                 }
             }
