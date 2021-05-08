@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -57,7 +58,6 @@ namespace Gamer.Mistaken.CassieRoom
                 yield return Timing.WaitForSeconds(1);
             }
         }
-
         internal void SyncFor(Player player)
         {
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
@@ -107,6 +107,9 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
 
         public override void OnEnable()
@@ -114,6 +117,28 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
+        }
+
+        private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
+        {
+            CamperPoints[ev.Target] = 0;
+            if (CamperEffects.ContainsKey(ev.Target))
+                CamperEffects[ev.Target].Clear();
+        }
+
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        {
+            CamperPoints[ev.Player] = 0;
+            if (CamperEffects.ContainsKey(ev.Player))
+                CamperEffects[ev.Player].Clear();
+        }
+
+        private void Server_RoundStarted()
+        {
+            this.RunCoroutine(DoRoundLoop(), "RoundLoop");
         }
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
@@ -178,6 +203,180 @@ namespace Gamer.Mistaken.CassieRoom
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.GunE11SR, 40, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 4, 3, 4), gameObject.transform.position, gameObject.transform.rotation);
 
+
+            //Spawn Killer
+            inRange = Systems.Components.InRage.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), (x) => Log.Debug($"{x.Nickname} entered"), (x) => Log.Debug($"{x.Nickname} left"));
+        }
+        private Systems.Components.InRage inRange;
+        private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
+        private readonly Dictionary<Player, HashSet<Type>> CamperEffects = new Dictionary<Player, HashSet<Type>>();
+        private IEnumerator<float> DoRoundLoop()
+        {
+            yield return Timing.WaitForSeconds(1);
+            while(Round.IsStarted)
+            {
+                yield return Timing.WaitForSeconds(5);
+                foreach (var player in RealPlayers.List)
+                {
+                    if (player.IsDead)
+                        continue;
+                    if (!CamperPoints.TryGetValue(player, out int value))
+                    {
+                        CamperPoints[player] = 0;
+                        value = 0;
+                    }
+                    if (inRange.ColliderInArea.Contains(player.GameObject))
+                    {
+                        if (!CamperEffects.TryGetValue(player, out var effects))
+                        {
+                            effects = new HashSet<Type>();
+                            CamperEffects[player] = effects;
+                        }
+                        CamperPoints[player] += 2 * 5;
+                        value += 2 * 5;
+                        //player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
+                        if(value >= 120) // 1 Min
+                        {
+                            if (!player.GetEffectActive<CustomPlayerEffects.Deafened>())
+                            {
+                                effects.Add(typeof(CustomPlayerEffects.Deafened));
+                                player.EnableEffect<CustomPlayerEffects.Deafened>();
+                            }
+                            if (!player.GetEffectActive<CustomPlayerEffects.Disabled>())
+                            {
+                                effects.Add(typeof(CustomPlayerEffects.Disabled));
+                                player.EnableEffect<CustomPlayerEffects.Disabled>();
+
+                                player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Nie czuję się za dobrze.", 5);
+                            }
+
+                            if(value >= 180) // 1.5 Min
+                            {
+                                if (!player.GetEffectActive<CustomPlayerEffects.Concussed>())
+                                {
+                                    effects.Add(typeof(CustomPlayerEffects.Concussed));
+                                    player.EnableEffect<CustomPlayerEffects.Concussed>();
+
+                                    player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Zaczyna mnie boleć głowa.", 5);
+                                }
+
+                                if(value >= 240) // 2 Min
+                                {
+                                    if (!player.GetEffectActive<CustomPlayerEffects.Blinded>())
+                                    {
+                                        effects.Add(typeof(CustomPlayerEffects.Blinded));
+                                        player.EnableEffect<CustomPlayerEffects.Blinded>();
+                                    }
+                                    if (!player.GetEffectActive<CustomPlayerEffects.Exhausted>())
+                                    {
+                                        effects.Add(typeof(CustomPlayerEffects.Exhausted));
+                                        player.EnableEffect<CustomPlayerEffects.Exhausted>();
+
+                                        player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Jestem taki zmęczony.", 5);
+                                    }
+
+                                    if(value >= 360) // 3 Min
+                                    {
+                                        if (!player.GetEffectActive<CustomPlayerEffects.Hemorrhage>())
+                                        {
+                                            effects.Add(typeof(CustomPlayerEffects.Hemorrhage));
+                                            player.EnableEffect<CustomPlayerEffects.Hemorrhage>();
+                                        }
+                                        if (!player.GetEffectActive<CustomPlayerEffects.Asphyxiated>())
+                                        {
+                                            effects.Add(typeof(CustomPlayerEffects.Asphyxiated));
+                                            player.EnableEffect<CustomPlayerEffects.Asphyxiated>();
+                                        }
+                                        if (!player.GetEffectActive<CustomPlayerEffects.Amnesia>())
+                                        {
+                                            effects.Add(typeof(CustomPlayerEffects.Amnesia));
+                                            player.EnableEffect<CustomPlayerEffects.Amnesia>();
+                                        }
+                                        if (!player.GetEffectActive<CustomPlayerEffects.Bleeding>())
+                                        {
+                                            effects.Add(typeof(CustomPlayerEffects.Bleeding));
+                                            player.EnableEffect<CustomPlayerEffects.Bleeding>();
+
+                                            player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Tracę czucie w nogach.", 5);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (value > 0)
+                        {
+                            CamperPoints[player] -= 5;
+                            value -= 1 * 5;
+                            //player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
+                            if (!CamperEffects.TryGetValue(player, out var effects))
+                                continue;
+                            if (value < 360) // 3 Min
+                            {
+                                if (effects.Contains(typeof(CustomPlayerEffects.Hemorrhage)))
+                                {
+                                    effects.Remove(typeof(CustomPlayerEffects.Hemorrhage));
+                                    player.DisableEffect<CustomPlayerEffects.Hemorrhage>();
+                                }
+                                if (effects.Contains(typeof(CustomPlayerEffects.Asphyxiated)))
+                                {
+                                    effects.Remove(typeof(CustomPlayerEffects.Asphyxiated));
+                                    player.DisableEffect<CustomPlayerEffects.Asphyxiated>();
+                                }
+                                if (effects.Contains(typeof(CustomPlayerEffects.Amnesia)))
+                                {
+                                    effects.Remove(typeof(CustomPlayerEffects.Amnesia));
+                                    player.DisableEffect<CustomPlayerEffects.Amnesia>();
+                                }
+                                if (effects.Contains(typeof(CustomPlayerEffects.Bleeding)))
+                                {
+                                    effects.Remove(typeof(CustomPlayerEffects.Bleeding));
+                                    player.DisableEffect<CustomPlayerEffects.Bleeding>();
+                                }
+
+                                if (value < 240) // 2 Min
+                                {
+                                    if (effects.Contains(typeof(CustomPlayerEffects.Blinded)))
+                                    {
+                                        effects.Remove(typeof(CustomPlayerEffects.Blinded));
+                                        player.DisableEffect<CustomPlayerEffects.Blinded>();
+                                    }
+                                    if (effects.Contains(typeof(CustomPlayerEffects.Exhausted)))
+                                    {
+                                        effects.Remove(typeof(CustomPlayerEffects.Exhausted));
+                                        player.DisableEffect<CustomPlayerEffects.Exhausted>();
+                                    }
+
+                                    if (value < 180) // 1.5 Min
+                                    {
+                                        if (effects.Contains(typeof(CustomPlayerEffects.Concussed)))
+                                        {
+                                            effects.Remove(typeof(CustomPlayerEffects.Concussed));
+                                            player.DisableEffect<CustomPlayerEffects.Concussed>();
+                                        }
+
+                                        if (value < 120) // 1 Min
+                                        {
+                                            if (effects.Contains(typeof(CustomPlayerEffects.Deafened)))
+                                            {
+                                                effects.Remove(typeof(CustomPlayerEffects.Deafened));
+                                                player.DisableEffect<CustomPlayerEffects.Deafened>();
+                                            }
+                                            if (effects.Contains(typeof(CustomPlayerEffects.Disabled)))
+                                            {
+                                                effects.Remove(typeof(CustomPlayerEffects.Disabled));
+                                                player.DisableEffect<CustomPlayerEffects.Disabled>();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public static DoorVariant SpawnElevator(Vector3 offset)
@@ -256,7 +455,6 @@ namespace Gamer.Mistaken.CassieRoom
             });
             return elevatorDoor;
         }
-
         public static DoorVariant Spawn1499ContainmentChamber()
         {
             ItemType keycardType = ItemType.KeycardNTFLieutenant;
