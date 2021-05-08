@@ -108,6 +108,8 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
 
         public override void OnEnable()
@@ -116,6 +118,22 @@ namespace Gamer.Mistaken.CassieRoom
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
+        }
+
+        private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
+        {
+            CamperPoints[ev.Target] = 0;
+            if (CamperEffects.ContainsKey(ev.Target))
+                CamperEffects[ev.Target].Clear();
+        }
+
+        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        {
+            CamperPoints[ev.Player] = 0;
+            if (CamperEffects.ContainsKey(ev.Player))
+                CamperEffects[ev.Player].Clear();
         }
 
         private void Server_RoundStarted()
@@ -217,7 +235,7 @@ namespace Gamer.Mistaken.CassieRoom
                         CamperPoints[player] += 2 * 5;
                         value += 2 * 5;
                         player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
-                        if(value > 120) // 1 Min
+                        if(value >= 120) // 1 Min
                         {
                             if (!player.GetEffectActive<CustomPlayerEffects.Deafened>())
                             {
@@ -230,7 +248,7 @@ namespace Gamer.Mistaken.CassieRoom
                                 player.EnableEffect<CustomPlayerEffects.Disabled>();
                             }
 
-                            if(value > 180) // 1.5 Min
+                            if(value >= 180) // 1.5 Min
                             {
                                 if (!player.GetEffectActive<CustomPlayerEffects.Concussed>())
                                 {
@@ -238,7 +256,7 @@ namespace Gamer.Mistaken.CassieRoom
                                     player.EnableEffect<CustomPlayerEffects.Concussed>();
                                 }
 
-                                if(value > 240) // 2 Min
+                                if(value >= 240) // 2 Min
                                 {
                                     if (!player.GetEffectActive<CustomPlayerEffects.Blinded>())
                                     {
@@ -251,7 +269,7 @@ namespace Gamer.Mistaken.CassieRoom
                                         player.EnableEffect<CustomPlayerEffects.Exhausted>();
                                     }
 
-                                    if(value > 360) // 3 Min
+                                    if(value >= 360) // 3 Min
                                     {
                                         if (!player.GetEffectActive<CustomPlayerEffects.Hemorrhage>())
                                         {
