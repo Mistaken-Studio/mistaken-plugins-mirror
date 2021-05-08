@@ -205,7 +205,7 @@ namespace Gamer.Mistaken.CassieRoom
 
 
             //Spawn Killer
-            inRange = Systems.Components.InRage.Spawn(new Vector3(-20, 1019, -43), new Vector3(10, 5, 10), (x) => Log.Debug($"{x.Nickname} entered"), (x) => Log.Debug($"{x.Nickname} left"));
+            inRange = Systems.Components.InRage.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), (x) => Log.Debug($"{x.Nickname} entered"), (x) => Log.Debug($"{x.Nickname} left"));
         }
         private Systems.Components.InRage inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
@@ -234,7 +234,7 @@ namespace Gamer.Mistaken.CassieRoom
                         }
                         CamperPoints[player] += 2 * 5;
                         value += 2 * 5;
-                        player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
+                        //player.SetGUI("Test", PseudoGUIHandler.Position.TOP, "Value: " + value);
                         if(value >= 120) // 1 Min
                         {
                             if (!player.GetEffectActive<CustomPlayerEffects.Deafened>())
@@ -246,6 +246,8 @@ namespace Gamer.Mistaken.CassieRoom
                             {
                                 effects.Add(typeof(CustomPlayerEffects.Disabled));
                                 player.EnableEffect<CustomPlayerEffects.Disabled>();
+
+                                player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Nie czuję się za dobrze.", 5);
                             }
 
                             if(value >= 180) // 1.5 Min
@@ -254,6 +256,8 @@ namespace Gamer.Mistaken.CassieRoom
                                 {
                                     effects.Add(typeof(CustomPlayerEffects.Concussed));
                                     player.EnableEffect<CustomPlayerEffects.Concussed>();
+
+                                    player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Zaczyna mnie boleć głowa.", 5);
                                 }
 
                                 if(value >= 240) // 2 Min
@@ -267,6 +271,8 @@ namespace Gamer.Mistaken.CassieRoom
                                     {
                                         effects.Add(typeof(CustomPlayerEffects.Exhausted));
                                         player.EnableEffect<CustomPlayerEffects.Exhausted>();
+
+                                        player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Jestem taki zmęczony.", 5);
                                     }
 
                                     if(value >= 360) // 3 Min
@@ -290,6 +296,8 @@ namespace Gamer.Mistaken.CassieRoom
                                         {
                                             effects.Add(typeof(CustomPlayerEffects.Bleeding));
                                             player.EnableEffect<CustomPlayerEffects.Bleeding>();
+
+                                            player.SetGUI("Tower_Bad", PseudoGUIHandler.Position.MIDDLE, "Tracę czucie w nogach.", 5);
                                         }
                                     }
                                 }
