@@ -155,6 +155,8 @@ namespace Gamer.Mistaken.Systems.End
         private void Server_WaitingForPlayers()
         {
             RoundLogger.Log("GAME EVENT", "ROUND READY", $"Waiting for players to join");
+            RoundLogger.Log("VERSION", "PLUGIN VERSION", $"Version: {Base.Version.CurrentVersion}");
+            RoundLogger.Log("VERSION", "DEBUG", $"Debug mode: {Base.Version.Debug}");
         }
         private void Server_RoundEnded(Exiled.Events.EventArgs.RoundEndedEventArgs ev)
         {
