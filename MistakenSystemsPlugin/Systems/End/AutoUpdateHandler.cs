@@ -112,9 +112,9 @@ namespace Gamer.Mistaken.Systems.End
                 RequestRestart = true;
                 ServerConsole.EnterCommand("rnr", out _);
             }
-            else
+            else if(Base.PluginHandler.Config.IsPTBServer)
             {
-                var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
+                var release = (await github.Repository.Release.GetAll("Mistaken-Studio", "SL-Plugin", new ApiOptions { PageCount = 1, PageSize = 1 })).FirstOrDefault();
                 
                 if (!File.Exists(VersionPath))
                 {
@@ -126,11 +126,27 @@ namespace Gamer.Mistaken.Systems.End
                     var version = File.ReadAllText(VersionPath);
                     if (version != release.TagName)
                     {
-                        if (!release.Prerelease || (release.Prerelease && Base.PluginHandler.Config.IsPTBServer))
-                        {
-                            RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
-                            Update(release, github, release.Prerelease);
-                        }
+                        RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName} ({(release.Prerelease ? "PTB" : " Normal")})");
+                        Update(release, github);
+                    }
+                }
+            }
+            else
+            {
+                var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
+
+                if (!File.Exists(VersionPath))
+                {
+                    File.Create(VersionPath).Close();
+                    File.WriteAllText(VersionPath, release.TagName);
+                }
+                else
+                {
+                    var version = File.ReadAllText(VersionPath);
+                    if (version != release.TagName)
+                    {
+                        RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
+                        Update(release, github);
                     }
                 }
             }
@@ -140,9 +156,9 @@ namespace Gamer.Mistaken.Systems.End
             _ = CheckUpdate();
         }
 
-        private static async void Update(Release release, GitHubClient github, bool ptb)
+        private static async void Update(Release release, GitHubClient github)
         {
-            MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName})", Broadcast.BroadcastFlags.AdminChat);
+            MapPlus.Broadcast("AUTO UPDATE", 10, $"Update of Mistaken.Plugins detected ({release.TagName}{(release.Prerelease ? " (PTB)" : "")})", Broadcast.BroadcastFlags.AdminChat);
             foreach (var item in release.Assets)
             {
                 if (item.Name == "plugins.tar.gz")
@@ -150,8 +166,12 @@ namespace Gamer.Mistaken.Systems.End
                     var responseRaw = await github.Connection.Get<byte[]>(new Uri(item.Url), new System.Collections.Generic.Dictionary<string, string>(), "application/octet-stream");
                     File.WriteAllBytes(Paths.Plugins + "/Extracted/plugins.tar.gz", responseRaw.Body);
                     UpdateLate();
-                    if(!ptb)
+                    if(!Base.PluginHandler.Config.IsPTBServer)
                         RequestServersRestart();
+                    else
+                    {
+                        ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                    }
                     File.WriteAllText(VersionPath, release.TagName);
                 }
             }
