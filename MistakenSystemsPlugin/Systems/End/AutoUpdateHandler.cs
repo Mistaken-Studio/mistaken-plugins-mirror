@@ -152,6 +152,10 @@ namespace Gamer.Mistaken.Systems.End
                     UpdateLate();
                     if(!ptb)
                         RequestServersRestart();
+                    else
+                    {
+                        ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+                    }
                     File.WriteAllText(VersionPath, release.TagName);
                 }
             }
