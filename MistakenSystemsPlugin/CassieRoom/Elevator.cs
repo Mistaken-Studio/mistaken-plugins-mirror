@@ -187,7 +187,7 @@ namespace Gamer.Mistaken.CassieRoom
 
 
             //Spawn Killer
-            inRange = Systems.Components.InRage.Spawn(new Vector3(-2, 1019, -43), new Vector3(10, 5, 10));
+            inRange = Systems.Components.InRage.Spawn(new Vector3(-2, 1019, -43), new Vector3(10, 5, 10), (x) => Log.Debug($"{x.Nickname} entered"), (x) => Log.Debug($"{x.Nickname} left"));
         }
         private Systems.Components.InRage inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
