@@ -83,8 +83,8 @@ namespace Gamer.CustomClasses
         internal static DoorVariant escapeLock;
         private void Server_RoundStarted()
         {
-            var scientists = RealPlayers.Get(RoleType.Scientist).ToList();
-            if (scientists.Count < 4)
+            var scientists = RealPlayers.Get(RoleType.ClassD).ToList();
+            if (scientists.Count < 4 && false)
                 return;
             scientists = scientists.Where(x => !x.GetSessionVar(Main.SessionVarType.CC_ZONE_MANAGER, false)).ToList();
             escapeLock = UnityEngine.Object.Instantiate(DoorUtils.GetPrefab(DoorUtils.DoorType.HCZ_BREAKABLE), new Vector3(170, 984, 20), Quaternion.identity);
