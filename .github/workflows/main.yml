@@ -56,10 +56,14 @@ jobs:
           echo ---------
           "%GITHUB_WORKSPACE%/CI Builder.exe" %GITHUB_REF% %GITHUB_SHA% %GITHUB_RUN_NUMBER% true
         shell: cmd
-      - name: Remove old artifacts
-        uses: c-hive/gha-remove-artifacts@v1
+      - name: Delete Artifacts
+        # You may pin to the exact commit or the version.
+        # uses: jimschubert/delete-artifacts-action@5e12816fde69c33b3374ee9d14d0e97137064bce
+        uses: jimschubert/delete-artifacts-action@v1
         with:
-          age: '1 minute'
+          artifact_name: plugins.tar.gz
+          active_duration: 10m
+          log_level: debug
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.3
         with:
