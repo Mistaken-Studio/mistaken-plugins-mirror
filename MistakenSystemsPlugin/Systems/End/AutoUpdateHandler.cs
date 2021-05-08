@@ -115,6 +115,7 @@ namespace Gamer.Mistaken.Systems.End
             else
             {
                 var release = await github.Repository.Release.GetLatest("Mistaken-Studio", "SL-Plugin");
+                
                 if (!File.Exists(VersionPath))
                 {
                     File.Create(VersionPath).Close();
@@ -125,8 +126,11 @@ namespace Gamer.Mistaken.Systems.End
                     var version = File.ReadAllText(VersionPath);
                     if (version != release.TagName)
                     {
-                        RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
-                        Update(release, github);
+                        if (!release.Prerelease || (release.Prerelease && Base.PluginHandler.Config.IsPTBServer))
+                        {
+                            RoundLoggerSystem.RoundLogger.Log("AUTO UPDATE", "UPDATE", $"Updating from {version} to {release.TagName}");
+                            Update(release, github);
+                        }
                     }
                 }
             }
