@@ -11,13 +11,16 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Gamer.Mistaken.Systems.End
 {
     internal class AutoUpdateHandler : Module
     {
+        private static __Log Log;
         public AutoUpdateHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
             //this.Enabled = false;
         }
         public override string Name => "AutoUpdate";
@@ -64,7 +67,7 @@ namespace Gamer.Mistaken.Systems.End
         public static bool RequestRestart = false;
 
         private static readonly string VersionPath = Paths.Configs + "/PluginsVersion.txt";
-        private async void Server_RestartingRound()
+        internal static async Task CheckUpdate()
         {
             if (!Gamer.Mistaken.Utilities.APILib.API.GetGithubKey(out string githubKey))
                 return;
@@ -127,6 +130,10 @@ namespace Gamer.Mistaken.Systems.End
                     }
                 }
             }
+        }
+        internal void Server_RestartingRound()
+        {
+            _ = CheckUpdate();
         }
 
         private static async void Update(Release release, GitHubClient github)
