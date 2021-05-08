@@ -114,7 +114,7 @@ namespace Gamer.Mistaken.Systems.End
             }
             else if(Base.PluginHandler.Config.IsPTBServer)
             {
-                var release = (await github.Repository.Release.GetAll("Mistaken-Studio", "SL-Plugin", new ApiOptions { PageCount = 1, PageSize = 1 })).FirstOrDefault();
+                var release = (await github.Repository.Release.GetAll("Mistaken-Studio", "SL-Plugin")).OrderByDescending(i => i.PublishedAt.GetValueOrDefault().UtcDateTime.Ticks).First();
                 
                 if (!File.Exists(VersionPath))
                 {
