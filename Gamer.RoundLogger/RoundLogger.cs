@@ -73,7 +73,8 @@ namespace Gamer.RoundLoggerSystem
         /// <param name="message">Message</param>
         public static void Log(string module, string type, string message)
         {
-            Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {type}] {message}", ConsoleColor.DarkYellow);
+            if(module != "LOGGER")
+                Exiled.API.Features.Log.SendRaw($"[ROUND LOG] [{module}: {type}] {message}", ConsoleColor.DarkYellow);
             Logs.Add(new LogMessage(DateTime.Now, type, module, message.Replace("\n", "\\n")));
         }
         /// <summary>
