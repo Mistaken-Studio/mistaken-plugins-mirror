@@ -38,12 +38,12 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (!ev.IsAllowed)
             {
-                Log.Debug("MTKD Skip Code: 2", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 2");
                 return;
             }
             if (!ev.IsFrag)
             {
-                Log.Debug("MTKD Skip Code: 3", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 3");
                 return;
             }
             var frag = ev.Grenade.GetComponent<FragGrenade>();
@@ -72,7 +72,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     return;
                 if (ev.Thrower == null)
                 {
-                    Log.Debug("MTKD Skip Code: 1", Debug);
+                    RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 1");
                     return;
                 }
                 userId = ev.Thrower.UserId;
@@ -83,20 +83,20 @@ namespace Gamer.Mistaken.Systems.Misc
                 ev.TargetToDamages.Remove(item.Key);
             if (ev.TargetToDamages.Count == 0 || (ev.TargetToDamages.Count == 1 && ev.Thrower != null && ev.TargetToDamages.ContainsKey(ev.Thrower)))
             {
-                Log.Debug("MTKD Skip Code: 4", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 4");
                 return;
             }
             if (ev.TargetToDamages.Any(i => i.Key.Side != frag.TeamWhenThrown.GetSide() || (i.Key.Role == RoleType.ClassD && frag.TeamWhenThrown == Team.CDP)))
             {
-                Log.Debug("MTKD Skip Code: 5", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 5");
                 return;
             }
             if (GreneadedPlayers.ContainsKey(userId))
             {
-                Log.Debug("MTKD Skip Code: 6", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 6");
                 return;
             }
-            Log.Debug("MTKD Execute Code: 1", Debug);
+            RoundLogger.Log("MASS TK", "EXECUTE", "MTKD Execute Code: 1");
             GreneadedPlayers.Add(userId, ev.TargetToDamages.Keys.ToArray());
             GreneadedDeadPlayers.Add(userId, 0);
             this.CallDelayed(5, () =>
@@ -106,7 +106,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 RoundLogger.Log("MASS TK", "DETECTED", $"{name} team killed {value} players");
                 if (value > 3)
                 {
-                    Log.Debug("MTKD Execute Code: 3", Debug);
+                    RoundLogger.Log("MASS TK", "EXECUTE", "MTKD Execute Code: 3");
                     MapPlus.Broadcast("MassTK Detection System", 10, $"Detected Grenade Mass TeamKill ({value}) by {nick}\nRespawning team killed players", Broadcast.BroadcastFlags.AdminChat);
                     MapPlus.Broadcast("MassTK Detection System", 10, "Wykryto MassTK, respienie graczy ...", Broadcast.BroadcastFlags.Normal);
                     RoundLogger.Log("MASS TK", "RESPAWN", $"Respawning {value} players");
@@ -114,10 +114,10 @@ namespace Gamer.Mistaken.Systems.Misc
                     {
                         if (player == null || player.IsAlive)
                         {
-                            Log.Debug("MTKD Skip Code: 7", Debug);
+                            RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 7");
                             return;
                         }
-                        Log.Debug($"MTKD Spawning {player.Nickname}", Debug);
+                        RoundLogger.Log("MASS TK", "RESPAWN", $"Spawning {player.Nickname}");
                         if (DeathInfo.TryGetValue(player, out (RoleType Role, Vector3 Position) deathInfo))
                         {
                             player.Role = deathInfo.Role;
@@ -127,7 +127,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
                 else
                 {
-                    Log.Debug("MTKD Skip Code: 8", Debug);
+                    RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 8");
                 }
                 GreneadedDeadPlayers.Remove(userId);
                 GreneadedPlayers.Remove(userId);
@@ -138,7 +138,7 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (!ev.IsAllowed)
             {
-                Log.Debug("MTKD Skip Code: 10", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 10");
                 return;
             }
             if (DeathInfo.ContainsKey(ev.Target))
@@ -146,12 +146,12 @@ namespace Gamer.Mistaken.Systems.Misc
             DeathInfo.Add(ev.Target, (ev.Target.Role, ev.Target.Position));
             if (ev.HitInformation.GetDamageType() != DamageTypes.Grenade)
             {
-                Log.Debug($"MTKD Skip Code: 11 | {ev.HitInformation.GetDamageName()}", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", $"MTKD Skip Code: 11 | {ev.HitInformation.GetDamageType()}");
                 return;
             }
             if (ev.Target.Id == ev.Killer.Id && !GreneadedPlayers.Any(i => i.Value.Contains(ev.Target)))
             {
-                Log.Debug("MTKD Skip Code: 12", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 12");
                 return;
             }
             Player[] players;
@@ -166,7 +166,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (!GreneadedPlayers.TryGetValue(ev.Killer.UserId, out players))
                 {
-                    Log.Debug("MTKD Skip Code: 13", Debug);
+                    RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 13");
                     Log.Debug($"Keys: {string.Join(", ", GreneadedPlayers.Keys)}", Debug);
                     Log.Debug($"Values: {string.Join(", ", GreneadedPlayers.Values.Select(i => i.Length))}", Debug);
                     return;
@@ -175,12 +175,12 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             if (!players.Contains(ev.Target))
             {
-                Log.Debug("MTKD Skip Code: 14", Debug);
+                RoundLogger.Log("MASS TK", "SKIP", "MTKD Skip Code: 14");
                 foreach (var item in players)
                     Log.Debug($"- {item.Nickname}", Debug);
                 return;
             }
-            Log.Debug("MTKD Execute Code: 2", Debug);
+            RoundLogger.Log("MASS TK", "EXECUTE", "MTKD Execute Code: 2");
             GreneadedDeadPlayers[userId]++;
         }
     }
