@@ -159,12 +159,12 @@ namespace Gamer.Mistaken.ATK
         {
             if (!ev.IsAllowed)
             {
-                Log.Debug("ATK Skip Code: 2", Debug);
+                RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 2");
                 return;
             }
             if (!ev.IsFrag)
             {
-                Log.Debug("ATK Skip Code: 3", Debug);
+                RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 3");
                 return;
             }
             var frag = ev.Grenade.GetComponent<FragGrenade>();
@@ -193,40 +193,47 @@ namespace Gamer.Mistaken.ATK
                     return;
                 if (ev.Thrower == null)
                 {
-                    Log.Debug("ATK Skip Code: 1", Debug);
+                    RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 1");
                     return;
                 }
                 userId = ev.Thrower.UserId;
                 name = ev.Thrower.PlayerToString();
                 nick = ev.Thrower.GetDisplayName();
             }
+            foreach (var item in ev.TargetToDamages.ToArray())
+            {
+                if (item.Key.IsDead)
+                    ev.TargetToDamages.Remove(item.Key);
+            }
             if (ev.TargetToDamages.Count == 0 || (ev.TargetToDamages.Count == 1 && ev.Thrower != null && ev.TargetToDamages.ContainsKey(ev.Thrower)))
             {
-                Log.Debug("ATK Skip Code: 4", Debug);
+                RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 4");
                 return;
             }
-            if (ev.TargetToDamages.Any(i => i.Key.Side != frag.TeamWhenThrown.GetSide() || (i.Key.Role == RoleType.ClassD && frag.TeamWhenThrown == Team.CDP)))
+            if (!ev.TargetToDamages.Any(i => i.Key.Side == frag.TeamWhenThrown.GetSide() && !(i.Key.Role == RoleType.ClassD && frag.TeamWhenThrown == Team.CDP)))
             {
-                Log.Debug("ATK Skip Code: 5", Debug);
+                RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 5");
                 return;
             }
             var tkTargets = new List<Player>();
             foreach (var item in ev.TargetToDamages.ToArray())
             {
+                if (item.Key == ev.Thrower)
+                    continue;
                 if (IsTeamkill(frag.TeamWhenThrown, item.Key.Team))
                     tkTargets.Add(item.Key);
             }
             if (TKGreneadedPlayers.ContainsKey(userId))
             {
-                Log.Debug("ATK Skip Code: 6", Debug);
+                RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 6");
                 return;
             }
-            if (tkTargets.Count == 0 || (tkTargets.Count == 1 && ev.Thrower != null && tkTargets.Contains(ev.Thrower)))
+            if (tkTargets.Count == 0)
             {
-                Log.Debug("ATK Skip Code: 7", Debug);
+                RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 7");
                 return;
             }
-            Log.Debug("ATK Execute Code: 1", Debug);
+            RoundLogger.Log("TK", "GRENADE", "ATK Execute Code: 1");
             TKGreneadedPlayers.Add(userId, tkTargets.ToArray());
             this.CallDelayed(5, () => TKGreneadedPlayers.Remove(userId), "ExploadingGrenade");
         }
@@ -485,7 +492,7 @@ namespace Gamer.Mistaken.ATK
         {
             if (!Round.IsStarted)
             {
-                Log.Debug("[ATK] Outside of round");
+                Log.Debug("Outside of round");
                 return;
             }
             TeamKillsCounter.TryGetValue(Killer.UserId, out int num);
@@ -502,7 +509,7 @@ namespace Gamer.Mistaken.ATK
         {
             if (!Round.IsStarted)
             {
-                Log.Debug("[ATK] Outside of round");
+                Log.Debug("Outside of round");
                 return;
             }
             TeamKillsCounter.TryGetValue(killerUserId, out int num);
