@@ -46,5 +46,9 @@ namespace Gamer.Mistaken.Base
         /// Is Experimental Server
         /// </summary>
         public bool IsExperimentalServer { get; set; } = false;
+        /// <summary>
+        /// Is Public Test Beta Server
+        /// </summary>
+        public bool IsPTBServer { get; set; } = false;
     }
 }
