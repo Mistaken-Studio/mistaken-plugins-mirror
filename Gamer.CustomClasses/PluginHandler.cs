@@ -27,6 +27,7 @@ namespace Gamer.CustomClasses
             new GuardCommanderHandler(this);
             new ZoneManagerHandler(this);
             new DeputyFacalityManagerHandler(this);
+            new ClassDHandler(this);
             new CustomClassesHandler(this);
 
             Diagnostics.Module.OnEnable(this);

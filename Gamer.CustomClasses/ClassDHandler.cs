@@ -31,19 +31,28 @@ namespace Gamer.CustomClasses
 
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
         }
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
         }
 
-        private void Player_ChangingRole(ChangingRoleEventArgs ev)
+        private void Player_ChangedRole(ChangedRoleEventArgs ev)
         {
-            if(ev.NewRole != RoleType.ClassD)
+            if(ev.Player.Role != RoleType.ClassD)
             {
                 ev.Player.SetSessionVar(Main.SessionVarType.RUN_SPEED, ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier);
                 ev.Player.SetSessionVar(Main.SessionVarType.WALK_SPEED, ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier);
+            }
+            else
+            {
+                int rand = UnityEngine.Random.Range(-10, 10);
+                Log.Debug(rand);
+                ev.Player.MaxHealth -= rand * 2;
+                ev.Player.Health = ev.Player.MaxHealth;
+                ev.Player.SetSessionVar(Main.SessionVarType.RUN_SPEED, ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier * (1 + rand));
+                ev.Player.SetSessionVar(Main.SessionVarType.WALK_SPEED, ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier * (1 + rand));
             }
         }
     }
