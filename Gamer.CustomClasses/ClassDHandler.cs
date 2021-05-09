@@ -42,6 +42,7 @@ namespace Gamer.CustomClasses
         {
             if(ev.Player.Role != RoleType.ClassD)
             {
+                ev.Player.SetSpeed(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier, ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier);
                 ev.Player.SetSessionVar(Main.SessionVarType.RUN_SPEED, ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier);
                 ev.Player.SetSessionVar(Main.SessionVarType.WALK_SPEED, ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier);
             }
@@ -51,6 +52,7 @@ namespace Gamer.CustomClasses
                 Log.Debug(rand);
                 ev.Player.MaxHealth -= rand * 2;
                 ev.Player.Health = ev.Player.MaxHealth;
+                ev.Player.SetSpeed(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier * (1 + rand), ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier * (1 + rand));
                 ev.Player.SetSessionVar(Main.SessionVarType.RUN_SPEED, ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier * (1 + rand));
                 ev.Player.SetSessionVar(Main.SessionVarType.WALK_SPEED, ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier * (1 + rand));
             }
