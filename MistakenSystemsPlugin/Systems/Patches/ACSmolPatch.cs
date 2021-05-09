@@ -81,7 +81,6 @@ namespace Gamer.Mistaken.Systems.Patches
             sprintSpeed = Math.Max(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier, sprintSpeed);
             float walkSpeed = player.GetSessionVar<float>(Main.SessionVarType.WALK_SPEED, ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier);
             walkSpeed = Math.Max(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier, walkSpeed);
-            Log.Debug(walkSpeed);
             __instance.curRole = __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass);
             __instance.IsSneaking = __instance._hub.animationController.MoveState == PlayerMovementState.Sneaking;
             speed = (__instance.staminaController.AllowMaxSpeed ? __instance.curRole.runSpeed : __instance.curRole.walkSpeed);

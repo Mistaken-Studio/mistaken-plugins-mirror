@@ -50,7 +50,7 @@ namespace Gamer.CustomClasses
                 Log.Debug(rand);
                 ev.Player.MaxHealth -= rand * 2;
                 ev.Player.Health = ev.Player.MaxHealth;
-                ev.Player.SetSpeed(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier * (1 + rand), ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier * (1 + rand));
+                ev.Player.SetSpeed(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier * (1f + rand * 0.1f), ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier * (1f + rand * 0.1f));
             }
         }
     }
