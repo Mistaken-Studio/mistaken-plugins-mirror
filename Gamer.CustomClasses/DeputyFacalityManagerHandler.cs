@@ -107,10 +107,8 @@ namespace Gamer.CustomClasses
                         return;
                     foreach (var item in DeputyFacalityManager.Instance.PlayingAsClass)
                     {
-                        if(!item.IsConnected)
-                        {
-
-                        }
+                        if (!item.IsConnected)
+                            continue;
                         ObjectDestroyMessage msg = new ObjectDestroyMessage
                         {
                             netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
