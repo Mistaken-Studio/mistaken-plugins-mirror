@@ -44,7 +44,9 @@ namespace Gamer.Mistaken.Systems.Components
             }
         }
 
+#pragma warning disable IDE0051 // Usuń nieużywane prywatne składowe
         private void OnTriggerEnter(Collider other)
+#pragma warning restore IDE0051 // Usuń nieużywane prywatne składowe
         {
             if (!other.GetComponent<CharacterClassManager>())
                 return;

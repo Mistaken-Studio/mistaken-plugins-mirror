@@ -17,7 +17,7 @@ namespace Gamer.Mistaken.Systems.End
 {
     internal class AutoUpdateHandler : Module
     {
-        private static __Log Log;
+        private static new __Log Log;
         public AutoUpdateHandler(PluginHandler p) : base(p)
         {
             Log = base.Log;

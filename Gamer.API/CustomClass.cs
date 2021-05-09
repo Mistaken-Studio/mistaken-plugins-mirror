@@ -73,6 +73,9 @@ namespace Gamer.API
                 PlayingAsClass.Remove(player);
                 player.SetSessionVar(ClassSessionVarType, false);
             }
+            /// <summary>
+            /// Called on round restart
+            /// </summary>
             public virtual void OnRestart()
             {
                 PlayingAsClass.Clear();
