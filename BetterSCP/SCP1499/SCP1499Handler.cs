@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             Exiled.Events.Handlers.CustomEvents.OnRequestPickItem += this.Handle<Exiled.Events.EventArgs.PickItemRequestEventArgs>((ev) => CustomEvents_OnRequestPickItem(ev));
             Exiled.Events.Handlers.Player.ReceivingEffect += this.Handle<Exiled.Events.EventArgs.ReceivingEffectEventArgs>((ev) => Player_ReceivingEffect(ev));
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Scp079.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Scp079_InteractingDoor(ev));
+            Exiled.Events.Handlers.Scp079.TriggeringDoor += this.Handle<Exiled.Events.EventArgs.TriggeringDoorEventArgs>((ev) => Scp079_TriggeringDoor(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -57,21 +57,16 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             Exiled.Events.Handlers.CustomEvents.OnRequestPickItem -= this.Handle<Exiled.Events.EventArgs.PickItemRequestEventArgs>((ev) => CustomEvents_OnRequestPickItem(ev));
             Exiled.Events.Handlers.Player.ReceivingEffect -= this.Handle<Exiled.Events.EventArgs.ReceivingEffectEventArgs>((ev) => Player_ReceivingEffect(ev));
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Scp079.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Scp079_InteractingDoor(ev));
+            Exiled.Events.Handlers.Scp079.TriggeringDoor -= this.Handle<Exiled.Events.EventArgs.TriggeringDoorEventArgs>((ev) => Scp079_TriggeringDoor(ev));
         }
 
-        private void Scp079_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
+        private void Scp079_TriggeringDoor(Exiled.Events.EventArgs.TriggeringDoorEventArgs ev)
         {
-            if (ev.Door.Type() == Exiled.API.Enums.DoorType.Scp012Bottom)
+            if (ev.Door.GetNametag() == "SCP1499Chamber")
             {
-                if (ev.Player.Energy < 110)
-                {
+                if (ev.Door.NetworkTargetState)
                     ev.IsAllowed = false;
-                    ev.Player.ReferenceHub.scp079PlayerScript.RpcNotEnoughMana(110, ev.Player.Energy);
-                    return;
-                }
-                ev.Player.Energy -= 110;
-                ev.Player.ReferenceHub.scp079PlayerScript.AddExperience(50);
+                ev.AuxiliaryPowerCost = 110;
             }
         }
 

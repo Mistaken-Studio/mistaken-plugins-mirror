@@ -22,14 +22,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Scp079.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Scp079_InteractingDoor(ev));
+            Exiled.Events.Handlers.Scp079.TriggeringDoor += this.Handle<Exiled.Events.EventArgs.TriggeringDoorEventArgs>((ev) => Scp079_TriggeringDoor(ev));
         }
         public override void OnDisable()
         {
             Gamer.Mistaken.Systems.InfoMessage.InfoMessageManager.WelcomeMessages.Remove(RoleType.Scp079);
 
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Scp079.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Scp079_InteractingDoor(ev));
+            Exiled.Events.Handlers.Scp079.TriggeringDoor -= this.Handle<Exiled.Events.EventArgs.TriggeringDoorEventArgs>((ev) => Scp079_TriggeringDoor(ev));
         }
 
         public static void GainXP(Player player, float ap)
@@ -99,7 +99,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
         }
 
 
-        private void Scp079_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
+        private void Scp079_TriggeringDoor(Exiled.Events.EventArgs.TriggeringDoorEventArgs ev)
         {
             if (ev.Door.NetworkTargetState && ev.Door.NetworkActiveLocks != 0 && Gamer.Mistaken.BetterRP.RoundModifiersManager.Instance.ActiveEvents != BetterRP.RoundModifiersManager.RandomEvents.NONE)
                 ev.IsAllowed = false;
