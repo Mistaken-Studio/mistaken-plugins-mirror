@@ -76,6 +76,8 @@ namespace Gamer.Mistaken.Systems.GUI
         private int RespawnQueueSeed = -1;
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
         {
+            ev.ShuffleList = false;
+
             if (Respawning.RespawnWaveGenerator.SpawnableTeams.TryGetValue(ev.NextKnownTeam, out Respawning.SpawnableTeam spawnableTeam) || ev.NextKnownTeam == Respawning.SpawnableTeamType.None)
             {
                 int num = Respawning.RespawnTickets.Singleton.GetAvailableTickets(ev.NextKnownTeam);
