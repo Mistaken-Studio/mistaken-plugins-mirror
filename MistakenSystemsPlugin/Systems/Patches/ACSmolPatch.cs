@@ -36,13 +36,11 @@ namespace Gamer.Mistaken.Systems.Patches
                 case "R.2":
                 case "S.1":
                     {
+                        return true;
                         Log.Debug($"[ACSmolPatch] Code: {anticheatCode}", DEBUG);
                         var player = Player.Get(__instance.gameObject);
                         if (player == null)
                             return true;
-                        if (player.ReferenceHub.characterClassManager.AliveTime < 5)
-                            return false;
-                        return true;
                         if (
                             player.GetSessionVar<float>(Main.SessionVarType.RUN_SPEED, ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier) 
                             != ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier || 
