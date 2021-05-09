@@ -163,7 +163,10 @@ namespace Gamer.Mistaken.CassieRoom
         public static readonly Vector3 Offset = new Vector3(-8.77f, 18.56f, 0.9f);
         private void Server_WaitingForPlayers()
         {
+            Moving = false;
             networkIdentities.Clear();
+            InElevator.Clear();
+            ElevatorUp = true;
 
             DoorDown = SpawnElevator(Vector3.zero);
             DoorUp = SpawnElevator(Offset);
@@ -205,9 +208,9 @@ namespace Gamer.Mistaken.CassieRoom
 
 
             //Spawn Killer
-            inRange = Systems.Components.InRage.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), (x) => Log.Debug($"{x.Nickname} entered"), (x) => Log.Debug($"{x.Nickname} left"));
+            inRange = Systems.Components.InRange.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), null, null);
         }
-        private Systems.Components.InRage inRange;
+        private Systems.Components.InRange inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
         private readonly Dictionary<Player, HashSet<Type>> CamperEffects = new Dictionary<Player, HashSet<Type>>();
         private IEnumerator<float> DoRoundLoop()
@@ -446,13 +449,20 @@ namespace Gamer.Mistaken.CassieRoom
             var collider = obj.AddComponent<BoxCollider>();
             obj.transform.position = new Vector3(-16.58f, 1004f, -41f) + offset;
             collider.size = new Vector3(4, 2, 5);
-            var inRange = Systems.Components.InRage.Spawn(new Vector3(-16.58f, 1002.7f, -41f) + offset, new Vector3(3f, 4, 4f), (p) =>
-            {
-                InElevator.Add(p);
-            }, (p) =>
-            {
-                InElevator.Remove(p);
-            });
+            var inRange = Systems.Components.InRange.Spawn(
+                new Vector3(-16.58f, 1002.7f, -41f) + offset, 
+                new Vector3(3f, 4, 4f), 
+                (p) => 
+                { 
+                    InElevator.Add(p);
+                    Log.Debug($"{p.Nickname} entered");
+                }, 
+                (p) => 
+                {
+                    InElevator.Remove(p);
+                    Log.Debug($"{p.Nickname} exited");
+                }
+            );
             return elevatorDoor;
         }
         public static DoorVariant Spawn1499ContainmentChamber()
@@ -516,8 +526,10 @@ namespace Gamer.Mistaken.CassieRoom
                     if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
                     {
                         item.Position += Offset;
-                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} UP ({item.Position})");
+                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Up ({item.Position})");
                     }
+                    else
+                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Up ({item.Position})");
                 }
                 foreach (var item in Pickup.Instances)
                 {
@@ -551,6 +563,8 @@ namespace Gamer.Mistaken.CassieRoom
                         item.Position -= Offset;
                         RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Down ({item.Position})");
                     }
+                    else
+                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Down ({item.Position})");
                 }
                 foreach (var item in Pickup.Instances)
                 {

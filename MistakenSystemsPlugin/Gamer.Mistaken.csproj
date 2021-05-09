@@ -256,8 +256,8 @@
     <Compile Include="Suicide\SuicideHandler.cs" />
     <Compile Include="Systems\Bans\BansAnalizer.cs" />
     <Compile Include="Systems\Components\Escape.cs" />
-    <Compile Include="Systems\Components\InRageBall.cs" />
-    <Compile Include="Systems\Components\InRage.cs" />
+    <Compile Include="Systems\Components\InRangeBall.cs" />
+    <Compile Include="Systems\Components\InRange.cs" />
     <Compile Include="Systems\Components\Killer.cs" />
     <Compile Include="Systems\End\RoundLogHandler.cs" />
     <Compile Include="Systems\End\OverwatchHandler.cs" />

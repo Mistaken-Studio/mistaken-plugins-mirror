@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Components
 {
-    public class InRage : MonoBehaviour
+    public class InRange : MonoBehaviour
     {
         public bool AllowNPCs = false;
         public Action<Player> OnEnter;
@@ -19,7 +19,7 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject(nameof(InRage), typeof(InRage), typeof(BoxCollider))
+                    prefab = new GameObject(nameof(InRange), typeof(InRange), typeof(BoxCollider))
                     {
                         layer = Layer
                     };
@@ -30,12 +30,12 @@ namespace Gamer.Mistaken.Systems.Components
             }
         }
         private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
-        public static InRage Spawn(Vector3 pos, Vector3 size, Action<Player> onEnter = null, Action<Player> onExit = null)
+        public static InRange Spawn(Vector3 pos, Vector3 size, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
             {
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
-                var component = obj.GetComponent<InRage>();
+                var component = obj.GetComponent<InRange>();
                 component.OnEnter = onEnter;
                 component.OnExit = onExit;
                 obj.GetComponent<BoxCollider>().size = size;
@@ -49,14 +49,14 @@ namespace Gamer.Mistaken.Systems.Components
                 return null;
             }
         }
-        public static InRage Spawn(Transform parrent, Vector3 offset, Vector3 size, Action<Player> onEnter = null, Action<Player> onExit = null)
+        public static InRange Spawn(Transform parrent, Vector3 offset, Vector3 size, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
             {
                 var obj = GameObject.Instantiate(Prefab, parrent);
                 obj.transform.localPosition = offset;
                 obj.transform.rotation = Quaternion.identity;
-                var component = obj.GetComponent<InRage>();
+                var component = obj.GetComponent<InRange>();
                 component.OnEnter = onEnter;
                 component.OnExit = onExit;
                 obj.GetComponent<BoxCollider>().size = size;

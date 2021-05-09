@@ -19,7 +19,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             if (player.Role != RoleType.NtfCommander)
                 return new string[] { "Nie jesteś dowódcą" };
             if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
-                return new string[] { "Tesle są już wyłączone" };
+                return new string[] { "Tesle są już włączone" };
             if (AlreadyUsed.Contains(player.UserId))
                 return new string[] { "Możesz użyć .taslaOff lub .teslaOn tylko raz na runde" };
             Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
