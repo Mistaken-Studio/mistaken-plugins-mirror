@@ -235,7 +235,7 @@ namespace Gamer.Mistaken.ATK
             }
             RoundLogger.Log("TK", "GRENADE", "ATK Execute Code: 1");
             TKGreneadedPlayers.Add(userId, tkTargets.ToArray());
-            this.CallDelayed(5, () => TKGreneadedPlayers.Remove(userId), "ExploadingGrenade");
+            this.CallDelayed(.1f, () => TKGreneadedPlayers.Remove(userId), "ExploadingGrenade");
         }
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
