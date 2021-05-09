@@ -508,6 +508,11 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 foreach (var item in InElevator.ToArray())
                 {
+                    if (item == null)
+                    {
+                        InElevator.RemoveAll(i => i == null);
+                        continue;
+                    }
                     if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
                     {
                         item.Position += Offset;
@@ -536,6 +541,11 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 foreach (var item in InElevator.ToArray())
                 {
+                    if (item == null)
+                    {
+                        InElevator.RemoveAll(i => i == null);
+                        continue;
+                    }
                     if (item.IsConnected && item.IsAlive && item.Position.y > 1010)
                     {
                         item.Position -= Offset;
