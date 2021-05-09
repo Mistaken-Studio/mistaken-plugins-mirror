@@ -314,7 +314,7 @@ namespace Gamer.Mistaken.CassieRoom
             door.NetworkTargetState = true;
             DoorCallbacks[door] = onCall;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
-            Systems.Components.InRage.Spawn(pos, Vector3.one * 2, (p) =>
+            Systems.Components.InRange.Spawn(pos, Vector3.one * 2, (p) =>
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, name);
             }, (p) =>

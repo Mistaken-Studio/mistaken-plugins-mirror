@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Components
 {
-    public class InRageBall : MonoBehaviour
+    public class InRangeBall : MonoBehaviour
     {
         public bool AllowNPCs = false;
         public Action<Player> OnEnter;
@@ -18,7 +18,7 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject(nameof(InRageBall), typeof(InRageBall), typeof(CapsuleCollider));
+                    prefab = new GameObject(nameof(InRangeBall), typeof(InRangeBall), typeof(CapsuleCollider));
                     prefab.layer = Layer;
                     var collider = prefab.GetComponent<CapsuleCollider>();
                     collider.isTrigger = true;
@@ -26,13 +26,13 @@ namespace Gamer.Mistaken.Systems.Components
                 return prefab;
             }
         }
-        private static readonly int Layer = LayerMask.GetMask("TransparentFX"/*, "Ignore Raycast"*/);
-        public static InRageBall Spawn(Vector3 pos, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
+        private static readonly int Layer = LayerMask.GetMask("TransparentFX", "Ignore Raycast");
+        public static InRangeBall Spawn(Vector3 pos, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
             {
                 var obj = GameObject.Instantiate(Prefab, pos, Quaternion.identity);
-                var component = obj.GetComponent<InRageBall>();
+                var component = obj.GetComponent<InRangeBall>();
                 component.OnEnter = onEnter;
                 component.OnExit = onExit;
                 var collider = obj.GetComponent<CapsuleCollider>();
@@ -48,14 +48,14 @@ namespace Gamer.Mistaken.Systems.Components
                 return null;
             }
         }
-        public static InRageBall Spawn(Transform parrent, Vector3 offset, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
+        public static InRangeBall Spawn(Transform parrent, Vector3 offset, float radius, float height, Action<Player> onEnter = null, Action<Player> onExit = null)
         {
             try
             {
                 var obj = GameObject.Instantiate(Prefab, parrent);
                 obj.transform.localPosition = offset;
                 obj.transform.rotation = Quaternion.identity;
-                var component = obj.GetComponent<InRageBall>();
+                var component = obj.GetComponent<InRangeBall>();
                 component.OnEnter = onEnter;
                 component.OnExit = onExit;
                 var collider = obj.GetComponent<CapsuleCollider>();
