@@ -187,6 +187,7 @@ namespace Gamer.CITester
                     Exiled.Events.Handlers.Player.OnJoined(new Exiled.Events.EventArgs.JoinedEventArgs(player));
                     Player.Dictionary.Add(obj, player);
                     player.IsVerified = true;
+                    ccm.NetworkIsVerified = true;
                     ccm.UserId = userId;
                     Exiled.Events.Handlers.Player.OnVerified(new Exiled.Events.EventArgs.VerifiedEventArgs(player));
                     //Npc.Dictionary.Add(obj, null);
