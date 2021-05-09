@@ -104,6 +104,7 @@ namespace Gamer.CITester
                     if (!player1.IsAlive)
                         throw new Exception("Player 1 died when he shouldn't");
                     player1.EnableEffect<Bleeding>();
+                    Log.Debug(player1.referenceHub.playerEffectsController.GetEffect<Bleeding>()?.Hub?.characterClassManager?.IsVerified ?? false);
                     if (!player1.GetEffectActive<Bleeding>())
                         throw new Exception("Player 1 don't have bleeding effect when he should");
                     player2.DisplayNickname = "Test";
