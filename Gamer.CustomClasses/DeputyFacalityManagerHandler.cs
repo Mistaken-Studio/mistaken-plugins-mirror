@@ -24,8 +24,10 @@ namespace Gamer.CustomClasses
 {
     class DeputyFacalityManagerHandler : Diagnostics.Module
     {
+        private static new __Log Log;
         public DeputyFacalityManagerHandler(PluginHandler p) : base(p)
         {
+            Log = base.Log;
             new DeputyFacalityManagerKeycard();
             new DeputyFacalityManager();
         }
@@ -122,7 +124,8 @@ namespace Gamer.CustomClasses
                             DeputyFacalityManager.removeFromVisList?.Invoke(item.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
                         }
                     }
-                    GameObject.Destroy(DeputyFacalityManagerHandler.escapeLock);
+                    GameObject.Destroy(DeputyFacalityManagerHandler.escapeLock.gameObject);
+                    DeputyFacalityManagerHandler.escapeLock = null;
 
                 }, "RemoveDoors");
             }, "RoundStartLate");
@@ -189,20 +192,28 @@ namespace Gamer.CustomClasses
                 Mistaken.Base.CustomInfoHandler.Set(player, "DFM", null, false);
                 player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"{player.PlayerToString()} is no longer Deputy Facility Manager");
-                if (DeputyFacalityManagerHandler.escapeLock != null)
+                try
                 {
-                    ObjectDestroyMessage msg = new ObjectDestroyMessage
+                    if (DeputyFacalityManagerHandler.escapeLock != null)
                     {
-                        netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
-                    };
-                    NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
-                    if (DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.ContainsKey(player.Connection.connectionId))
-                    {
-                        DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.Remove(player.Connection.connectionId);
-                        if (removeFromVisList == null)
-                            removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
-                        removeFromVisList?.Invoke(player.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
+                        ObjectDestroyMessage msg = new ObjectDestroyMessage
+                        {
+                            netId = DeputyFacalityManagerHandler.escapeLock.netIdentity.netId
+                        };
+                        NetworkServer.SendToClientOfPlayer<ObjectDestroyMessage>(player.ReferenceHub.networkIdentity, msg);
+                        if (DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.ContainsKey(player.Connection.connectionId))
+                        {
+                            DeputyFacalityManagerHandler.escapeLock.netIdentity.observers.Remove(player.Connection.connectionId);
+                            if (removeFromVisList == null)
+                                removeFromVisList = typeof(NetworkConnection).GetMethod("RemoveFromVisList", BindingFlags.NonPublic | BindingFlags.Instance);
+                            removeFromVisList?.Invoke(player.Connection, new object[] { DeputyFacalityManagerHandler.escapeLock.netIdentity, true });
+                        }
                     }
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
                 }
             }
         }
