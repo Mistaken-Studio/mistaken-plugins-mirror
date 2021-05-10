@@ -124,6 +124,7 @@ namespace Gamer.Mistaken.Systems.Patches
             foreach (Scp079PlayerScript scp079PlayerScript in Scp079PlayerScript.instances)
             {
                 ps.HurtPlayer(new PlayerStats.HitInfo(1000001f, "WORLD", DamageTypes.Recontainment, 0), scp079PlayerScript.gameObject, true, true);
+                Respawning.RespawnTickets.Singleton.GrantTickets(SpawnableTeamType.NineTailedFox, 4);
             }
             Log.Debug("Recontain 79: 13");
             Recontained = true;

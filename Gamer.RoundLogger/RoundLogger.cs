@@ -82,7 +82,7 @@ namespace Gamer.RoundLoggerSystem
         /// </summary>
         /// <param name="player">Player</param>
         /// <returns><paramref name="player"/> string version</returns>
-        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role})";
+        public static string PlayerToString(this Player player) => player == null ? null : $"{player.Nickname} (ID: {player.Id}|UID: {player.UserId}|Class: {player.Role}|Item: {player.CurrentItem.id})";
 
         private static void RegisterTypes(string type)
         {

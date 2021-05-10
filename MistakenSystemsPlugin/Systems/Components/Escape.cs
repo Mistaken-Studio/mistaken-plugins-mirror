@@ -15,8 +15,10 @@ namespace Gamer.Mistaken.Systems.Components
             {
                 if (prefab == null)
                 {
-                    prefab = new GameObject("Escape", typeof(Escape), typeof(BoxCollider));
-                    prefab.layer = Layer;
+                    prefab = new GameObject("Escape", typeof(Escape), typeof(BoxCollider))
+                    {
+                        layer = Layer
+                    };
                     var collider = prefab.GetComponent<BoxCollider>();
                     collider.isTrigger = true;
                 }
