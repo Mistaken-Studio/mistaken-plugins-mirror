@@ -30,7 +30,7 @@ namespace Gamer.Mistaken.LOFH
         public static string RoleToColor(RoleType role, bool ovrm)
         {
             if (ovrm)
-                return "#008080";
+                return "#00264d";//"#008080";
             switch (role)
             {
                 case RoleType.ChaosInsurgency:
