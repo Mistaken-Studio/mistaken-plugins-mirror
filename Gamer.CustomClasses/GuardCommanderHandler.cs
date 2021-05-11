@@ -76,6 +76,8 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override RoleType Role => RoleType.NtfCommander;
             /// <inheritdoc/>
+            public override string Color => "blue";
+            /// <inheritdoc/>
             public override void Spawn(Player player)
             {
                 PlayingAsClass.Add(player);

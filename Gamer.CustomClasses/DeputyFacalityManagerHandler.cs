@@ -142,6 +142,8 @@ namespace Gamer.CustomClasses
             public override string ClassDescription => "Twoim zadaniem jest pomoc ochronie w odeskortowaniu <color=yellow>naukowców</color><br>Nie możesz uciec przed dekontaminacją LCZ";
 
             public override RoleType Role => RoleType.Scientist;
+            /// <inheritdoc/>
+            public override string Color => "#bd1a47";
             public override void Spawn(Player player)
             {
                 player.Role = RoleType.Scientist;

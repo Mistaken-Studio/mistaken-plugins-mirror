@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Gamer.API.CustomClass;
 using Gamer.Utilities;
 using HarmonyLib;
 using Mirror;
@@ -17,7 +18,15 @@ namespace Gamer.Mistaken.LOFH
     internal static class LOFHPatch
     {
         public static readonly HashSet<string> DisabledFor = new HashSet<string>();
-
+        public static string RoleToColor(Player player)
+        {
+            foreach (var item in CustomClass.CustomClasses)
+            {
+                if (item.PlayingAsClass.Contains(player))
+                    return item.Color;
+            }
+            return RoleToColor(player.Role, player.IsOverwatchEnabled);
+        }
         public static string RoleToColor(RoleType role, bool ovrm)
         {
             if (ovrm)
@@ -424,7 +433,7 @@ namespace Gamer.Mistaken.LOFH
                                             {
                                                 text3,
                                                 text4,
-                                                $"<color={RoleToColor(player.Role, ovrm)}>",
+                                                $"<color={RoleToColor(player)}>",
                                                 "(",
                                                 queryProcessor.PlayerId,
                                                 ") ",

@@ -48,6 +48,10 @@ namespace Gamer.API
             /// </summary>
             public abstract RoleType Role { get; }
             /// <summary>
+            /// Custom Class Color
+            /// </summary>
+            public abstract string Color { get; }
+            /// <summary>
             /// Called when resurecting
             /// </summary>
             /// <param name="player">Player that is beeing resurected</param>
