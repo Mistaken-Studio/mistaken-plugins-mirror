@@ -364,10 +364,13 @@ namespace Gamer.Mistaken.LOFH
                                                         }
                                                     }
                                                 }
+                                                bool silent = (query.Length > 3 && query[3] == "SILENT");
                                                 stringBuilder.Append("</color>");
-                                                sender.RaReply($"{query[0].ToUpper()}:PLAYER#<size={textSize}%>{stringBuilder}</size>", true, true, "PlayerInfo");
+                                                sender.RaReply($"{query[0].ToUpper()}:PLAYER#<size={textSize}%>{stringBuilder}</size>", true, !silent, "PlayerInfo");
                                                 sender.RaReply("PlayerInfoQR#" + (string.IsNullOrEmpty(characterClassManager.UserId) ? "(no User ID)" : characterClassManager.UserId), true, false, "PlayerInfo");
                                                 NorthwoodLib.Pools.StringBuilderPool.Shared.Return(stringBuilder);
+                                                if(!silent)
+                                                    LOFH.LastSelectedPlayer[senderPlayer] = q;
                                             }
                                         }
                                         return false;
