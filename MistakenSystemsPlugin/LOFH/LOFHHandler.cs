@@ -1,9 +1,13 @@
-﻿using Gamer.Diagnostics;
+﻿using Exiled.API.Features;
+using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
+using MEC;
 using MistakenSocket.Client.SL;
 using MistakenSocket.Shared;
 using MistakenSocket.Shared.API;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gamer.Mistaken.LOFH
 {
@@ -19,6 +23,7 @@ namespace Gamer.Mistaken.LOFH
         {
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Server.RestartingRound += this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
 
             this.CallDelayed(10, () =>
             {
@@ -39,6 +44,26 @@ namespace Gamer.Mistaken.LOFH
         {
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
             Exiled.Events.Handlers.Server.RestartingRound -= this.Handle(() => Server_RestartingRound(), "RoundRestart");
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+        }
+
+        private void Server_RoundStarted()
+        {
+            this.RunCoroutine(DoRoundLoop(), "RoundLoop");
+        }
+
+        private IEnumerator<float> DoRoundLoop()
+        {
+            yield return Timing.WaitForSeconds(1);
+            while(Round.IsStarted)
+            {
+                yield return Timing.WaitForSeconds(3);
+                foreach (var player in RealPlayers.List.Where(p => p.RemoteAdminAccess))
+                {
+                    if (LOFH.LastSelectedPlayer.TryGetValue(player, out string query))
+                        LOFHPatch.Prefix(query + " SILENT", player.Sender);
+                }
+            }
         }
 
         private void Server_RestartingRound()

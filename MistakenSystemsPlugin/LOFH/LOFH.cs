@@ -7,6 +7,8 @@ namespace Gamer.Mistaken.LOFH
 {
     public static class LOFH
     {
+        internal static Dictionary<Player, string> LastSelectedPlayer = new Dictionary<Player, string>();
+
         internal static Dictionary<string, Flag> Flags { get; } = new Dictionary<string, Flag>();
         internal static Dictionary<string, Prefix> Prefixes { get; } = new Dictionary<string, Prefix>();
 

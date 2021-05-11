@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using Gamer.API.CustomClass;
 using Gamer.Utilities;
 using HarmonyLib;
 using Mirror;
@@ -17,11 +18,19 @@ namespace Gamer.Mistaken.LOFH
     internal static class LOFHPatch
     {
         public static readonly HashSet<string> DisabledFor = new HashSet<string>();
-
+        public static string RoleToColor(Player player)
+        {
+            foreach (var item in CustomClass.CustomClasses)
+            {
+                if (item.PlayingAsClass.Contains(player))
+                    return item.Color;
+            }
+            return RoleToColor(player.Role, player.IsOverwatchEnabled);
+        }
         public static string RoleToColor(RoleType role, bool ovrm)
         {
             if (ovrm)
-                return "#008080";
+                return "#00264d";//"#008080";
             switch (role)
             {
                 case RoleType.ChaosInsurgency:
@@ -311,10 +320,21 @@ namespace Gamer.Mistaken.LOFH
                                                     }
                                                     else
                                                     {
-                                                        stringBuilder.Append("\nClass: " + (characterClassManager.Classes.CheckBounds(characterClassManager.CurClass) ? characterClassManager.CurRole.fullName : "None"));
+                                                        var player = Player.Get(hub);
+                                                        bool set = false;
+                                                        foreach (var item in CustomClass.CustomClasses)
+                                                        {
+                                                            if (item.PlayingAsClass.Contains(player))
+                                                            {
+                                                                set = true;
+                                                                stringBuilder.Append($"\nClass: <color={item.Color}>{item.ClassName}</color>");
+                                                            }
+                                                        }
+                                                        if(!set)
+                                                            stringBuilder.Append("\nClass: " + (characterClassManager.Classes.CheckBounds(characterClassManager.CurClass) ? characterClassManager.CurRole.fullName : "None"));
                                                         if (hub.characterClassManager.NetworkCurClass != RoleType.Spectator)
                                                         {
-                                                            var room = Player.Get(hub).CurrentRoom;
+                                                            var room = player.CurrentRoom;
                                                             stringBuilder.Append("\nHP: " + hub.playerStats.HealthToString());
                                                             stringBuilder.Append($"\nAHP: {hub.playerStats.NetworksyncArtificialHealth}/{hub.playerStats.NetworkmaxArtificialHealth}");
                                                             stringBuilder.Append("\nPosition: " + string.Format("[{0}; {1}; {2}]", hub.playerMovementSync.RealModelPosition.x, hub.playerMovementSync.RealModelPosition.y, hub.playerMovementSync.RealModelPosition.z));
@@ -344,10 +364,13 @@ namespace Gamer.Mistaken.LOFH
                                                         }
                                                     }
                                                 }
+                                                bool silent = (query.Length > 3 && query[3] == "SILENT");
                                                 stringBuilder.Append("</color>");
-                                                sender.RaReply($"{query[0].ToUpper()}:PLAYER#<size={textSize}%>{stringBuilder}</size>", true, true, "PlayerInfo");
+                                                sender.RaReply($"{query[0].ToUpper()}:PLAYER#<size={textSize}%>{stringBuilder}</size>", true, !silent, "PlayerInfo");
                                                 sender.RaReply("PlayerInfoQR#" + (string.IsNullOrEmpty(characterClassManager.UserId) ? "(no User ID)" : characterClassManager.UserId), true, false, "PlayerInfo");
                                                 NorthwoodLib.Pools.StringBuilderPool.Shared.Return(stringBuilder);
+                                                if(!silent)
+                                                    LOFH.LastSelectedPlayer[senderPlayer] = q;
                                             }
                                         }
                                         return false;
@@ -390,7 +413,7 @@ namespace Gamer.Mistaken.LOFH
                                     string text3 = $"\n{MenuSystem.GetMenu(senderPlayer, out bool GeneratePlayerList)}";
                                     if (GeneratePlayerList)
                                     {
-                                        foreach (Player player in RealPlayers.List)
+                                        foreach (Player player in RealPlayers.List.OrderBy(i => i.Id))
                                         {
                                             if (player == null)
                                                 continue;
@@ -424,7 +447,7 @@ namespace Gamer.Mistaken.LOFH
                                             {
                                                 text3,
                                                 text4,
-                                                $"<color={RoleToColor(player.Role, ovrm)}>",
+                                                $"<color={RoleToColor(player)}>",
                                                 "(",
                                                 queryProcessor.PlayerId,
                                                 ") ",

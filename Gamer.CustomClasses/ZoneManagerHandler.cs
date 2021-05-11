@@ -99,6 +99,8 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override RoleType Role => RoleType.Scientist;
             /// <inheritdoc/>
+            public override string Color => "#217a7b";
+            /// <inheritdoc/>
             public override void Spawn(Player player)
             {
                 player.SetRole(RoleType.Scientist, true, false);
