@@ -320,10 +320,21 @@ namespace Gamer.Mistaken.LOFH
                                                     }
                                                     else
                                                     {
-                                                        stringBuilder.Append("\nClass: " + (characterClassManager.Classes.CheckBounds(characterClassManager.CurClass) ? characterClassManager.CurRole.fullName : "None"));
+                                                        var player = Player.Get(hub);
+                                                        bool set = false;
+                                                        foreach (var item in CustomClass.CustomClasses)
+                                                        {
+                                                            if (item.PlayingAsClass.Contains(player))
+                                                            {
+                                                                set = true;
+                                                                stringBuilder.Append($"\nClass: <color={item.Color}>{item.ClassName}</color>");
+                                                            }
+                                                        }
+                                                        if(!set)
+                                                            stringBuilder.Append("\nClass: " + (characterClassManager.Classes.CheckBounds(characterClassManager.CurClass) ? characterClassManager.CurRole.fullName : "None"));
                                                         if (hub.characterClassManager.NetworkCurClass != RoleType.Spectator)
                                                         {
-                                                            var room = Player.Get(hub).CurrentRoom;
+                                                            var room = player.CurrentRoom;
                                                             stringBuilder.Append("\nHP: " + hub.playerStats.HealthToString());
                                                             stringBuilder.Append($"\nAHP: {hub.playerStats.NetworksyncArtificialHealth}/{hub.playerStats.NetworkmaxArtificialHealth}");
                                                             stringBuilder.Append("\nPosition: " + string.Format("[{0}; {1}; {2}]", hub.playerMovementSync.RealModelPosition.x, hub.playerMovementSync.RealModelPosition.y, hub.playerMovementSync.RealModelPosition.z));
@@ -399,7 +410,7 @@ namespace Gamer.Mistaken.LOFH
                                     string text3 = $"\n{MenuSystem.GetMenu(senderPlayer, out bool GeneratePlayerList)}";
                                     if (GeneratePlayerList)
                                     {
-                                        foreach (Player player in RealPlayers.List)
+                                        foreach (Player player in RealPlayers.List.OrderBy(i => i.Id))
                                         {
                                             if (player == null)
                                                 continue;
