@@ -226,7 +226,8 @@ namespace Gamer.Mistaken.Base.CustomItems
             if (ev.NewRole != RoleType.Spectator)
             {
                 var cItem = GetCustomItem(ev.Player.CurrentItem);
-                cItem.OnStopHolding(ev.Player, ev.Player.CurrentItem);
+                if(cItem != null)
+                    cItem.OnStopHolding(ev.Player, ev.Player.CurrentItem);
             }
         }
 
