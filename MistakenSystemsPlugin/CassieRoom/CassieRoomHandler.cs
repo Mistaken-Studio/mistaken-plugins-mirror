@@ -361,7 +361,7 @@ namespace Gamer.Mistaken.CassieRoom
 
                 //188 992.46 -91 180 0 0 10 0.001 10
                 SpawnItem(ItemType.SCP018, new Vector3(188, 993, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
-                InRangeBall.Spawn(new Vector3(188, 993, -91), 5, 1, 
+                InRangeBall.Spawn(new Vector3(188, 992.46f, -91), 1, 1, 
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
