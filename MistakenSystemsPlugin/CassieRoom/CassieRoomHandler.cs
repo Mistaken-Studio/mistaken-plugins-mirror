@@ -162,10 +162,10 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                     if (!ev.IsAllowed)
                         return;
-                    mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                    mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     MEC.Timing.CallDelayed(30f, () =>
                     {
-                        mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                     });
                 }
             }
