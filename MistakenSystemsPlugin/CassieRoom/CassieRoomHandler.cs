@@ -48,6 +48,15 @@ namespace Gamer.Mistaken.CassieRoom
                             LoadedAll.Remove(player);
                         }
                     }
+
+                    if(mainDoor.NetworkTargetState)
+                    {
+                        if(((PluginDoorLockReason)mainDoor.NetworkActiveLocks | PluginDoorLockReason.COOLDOWN) != 0)
+                        {
+                            mainDoor.NetworkTargetState = false;
+                        }
+                    }
+
                     Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "Loop", start, DateTime.Now);
                 }
                 catch (System.Exception ex)
@@ -138,7 +147,7 @@ namespace Gamer.Mistaken.CassieRoom
         public enum PluginDoorLockReason : ushort
         {
             COOLDOWN = 512,
-            NO_CLOSE_ENOUGHT = 1024,
+            NOT_CLOSE_ENOUGHT = 1024,
             REQUIREMENTS_NOT_MET = 2048,
         }
 
@@ -364,8 +373,19 @@ namespace Gamer.Mistaken.CassieRoom
                 InRangeBall.Spawn(new Vector3(188, 992.46f, -91), 1, 1, 
                     (player) =>
                     {
-                        player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
+
                     }, 
+                    (player) =>
+                    {
+
+                    }
+                );
+
+                InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(10, 10),
+                    (player) =>
+                    {
+                        player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
+                    },
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, null);
