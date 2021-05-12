@@ -589,6 +589,7 @@ namespace Gamer.SNAV
                 Log.Debug(ev.Generator.transform.position + Vector3.up);
                 MapPlus.Spawn(snav, ev.Generator.transform.position + Vector3.up, Quaternion.identity, Vector3.one);
                 Generators.Remove(ev.Generator);
+#error Respienie SNava nie działa, sprawdzić debugi
             }
         }
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
@@ -600,6 +601,7 @@ namespace Gamer.SNAV
                 Log.Debug(ev.Generator.transform.position + Vector3.up);
                 MapPlus.Spawn(snav, ev.Generator.transform.position + Vector3.up, Quaternion.identity, Vector3.one);
                 Generators.Remove(ev.Generator);
+#error Respienie SNava nie działa, sprawdzić debugi
             }
         }
 
