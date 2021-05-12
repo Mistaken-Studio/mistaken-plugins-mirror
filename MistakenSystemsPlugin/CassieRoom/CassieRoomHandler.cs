@@ -241,7 +241,7 @@ namespace Gamer.Mistaken.CassieRoom
                 mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
                 mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
-                mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.SpecialDoorFeature;
+                mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
                 //UpperDoor
                 SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
