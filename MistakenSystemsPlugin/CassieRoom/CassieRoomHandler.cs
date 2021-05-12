@@ -358,7 +358,7 @@ namespace Gamer.Mistaken.CassieRoom
                         CassieRoomOpenButton.NetworkTargetState = false;
                         mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                         CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
-                        if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks | PluginDoorLockReason.BLOCKED_BY_SOMETHING) == 0)
+                        if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.BLOCKED_BY_SOMETHING) == 0)
                             mainDoor.NetworkTargetState = false;
                     });
                     return false;
@@ -378,7 +378,7 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                 );
                 InRange isSomeoneInside = null;
-                isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(25, 10, 25),
+                isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
@@ -387,11 +387,15 @@ namespace Gamer.Mistaken.CassieRoom
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, null);
-                        MEC.Timing.CallDelayed(5, () =>
+                        this.CallDelayed(5, () =>
                         {
                             if (isSomeoneInside.ColliderInArea.Count == 0)
+                            {
                                 mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
-                        });
+                                //if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & (PluginDoorLockReason.REQUIREMENTS_NOT_MET | PluginDoorLockReason.COOLDOWN)) == 0)
+                                //    mainDoor.NetworkTargetState = false;
+                            }
+                        }, "Unlock doors");
                     }
                 );
             }
