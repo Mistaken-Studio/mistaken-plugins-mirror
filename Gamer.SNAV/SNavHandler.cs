@@ -541,6 +541,245 @@ namespace Gamer.SNAV
             }
         }
 
+        public static string[] GenerateSurfaceSNav(bool Ultimate = false)
+        {
+            var tmp =
+@"    
+             <color=gatea_color>._.</color>                                                          <color=escape_color>.______.</color>
+         <color=gatea_color>.___| |___.</color>                                                      <color=escape_color>|      |</color>
+         <color=gatea_color>|         |</color>                                                      <color=escape_color>|_|‾‾ ‾|</color>
+       <color=gatea_color>|‾  GATE  A |</color>                                                      <color=escape_color>|ESCAPE|</color>
+       <color=gatea_color>`‾|         |</color>                                                      <color=escape_color>| |____|</color>
+          <color=gatea_color>‾‾|   |‾‾`</color>                                                      <color=escape_color>| |___.</color>
+            <color=gatea_color>|   |</color>                                                         <color=escape_color>|___. |</color>
+            <color=gatea_color>|   |</color>                                                             <color=escape_color>| |________.</color>
+       <color=gatea_color>.____|   |_____.</color>                                                       <color=escape_color>|________. |</color>
+       <color=gatea_color>|              |</color>                                                                <color=escape_color>| |</color>
+       <color=gatea_color>`‾‾‾‾<color=gateahole_color>|   |</color>‾‾‾<color=gateahole_color>| |</color>     <color=nuke_color>._____.</color>                                                    <color=escape_color>| |</color>
+            <color=gateahole_color>|   |   | |     <color=nuke_color>|NUKE |</color>                                                    <color=escape_color>: :</color>
+            <color=gateahole_color>|   |   | |     <color=nuke_color>|_. ._|</color>                                                    <color=escape_color>| |</color>
+       <color=gateahole_color>.____|   |___|_|_______| |_______.</color>                                            <color=escape_color>._| |_.</color>
+       <color=gateahole_color>|                      | |   |   |</color><color=gateb_color>   ._|‾|                  </color><color=helipad_color>._________________</color><color=escape_color>|     |</color>
+       <color=gateahole_color>|                      | |   |   |</color><color=gateb_color>   |   |__________________</color><color=helipad_color>|                       |</color>
+<color=gateahole_color>|‾‾‾‾‾‾‾‾‾‾‾|   |‾‾‾\ ‾‾‾‾‾‾‾‾` `‾‾‾|‾‾‾|</color><color=gateb_color>‾‾‾|   GATE B             </color><color=helipad_color>                        |</color>
+<color=gateahole_color>|           |   |    ‾‾‾‾‾‾‾        |   |</color><color=gateb_color>   `‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾</color><color=helipad_color>                        |</color>
+<color=gateahole_color>| CAR ENTRY |   |                   |   |</color><color=gateb_color>                          </color><color=helipad_color>        HELIPAD         |</color>
+<color=gateahole_color>|           |   |                   |   |</color><color=gateb_color>                          </color><color=helipad_color>                        |</color>
+<color=gateahole_color>|___________|   |___________________|   |</color><color=gateb_color>__________________________</color><color=helipad_color>.                       |</color>
+       <color=gateahole_color>|                                |</color><color=gateb_color>                          </color><color=helipad_color>|                       |</color>
+       <color=gateahole_color>|                                |</color><color=gateb_color>                          </color><color=helipad_color>`‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾</color><color=cassieroom_color>|     |</color>
+       <color=gateahole_color>`‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾`</color>                                            <color=cassieroom_color>|     |</color>
+                                                                                     <color=cassieroom_color>|     |</color>
+                                                                                     <color=cassieroom_color>`‾‾‾‾‾`</color>
+";
+            if (Ultimate)
+            {
+                tmp = tmp.Replace("gatea_color", GateA ? "red" : "green");
+                tmp = tmp.Replace("gateahole_color", GateAHole ? "red" : "green");
+                tmp = tmp.Replace("nuke_color", Nuke ? "red" : "green");
+                tmp = tmp.Replace("gateb_color", GateB ? "red" : "green");
+                tmp = tmp.Replace("helipad_color", Helipad ? "red" : "green");
+                tmp = tmp.Replace("escape_color", Escape ? "red" : "green");
+                tmp = tmp.Replace("cassieroom_color", CassieRoom ? "red" : "green");
+
+                return tmp.Split('\n');
+            }
+            else
+            {
+                tmp = tmp.Replace("gatea_color", "green");
+                tmp = tmp.Replace("gateahole_color", "green");
+                tmp = tmp.Replace("nuke_color", "green");
+                tmp = tmp.Replace("gateb_color", "green");
+                tmp = tmp.Replace("helipad_color", "green");
+                tmp = tmp.Replace("escape_color", "green");
+                tmp = tmp.Replace("cassieroom_color", "green");
+
+                return tmp.Split('\n');
+            }
+        }
+
+        public static string[] GenerateEZ_HCZSNav(Room currentRoom, bool Ultimate = false)
+        {
+            var rooms = EZ_HCZRooms;
+            string[] toWrite = new string[rooms.GetLength(0) * 3];
+            for (int z = 0; z < rooms.GetLength(0); z++)
+            {
+                for (int x = 0; x < rooms.GetLength(1); x++)
+                {
+                    string color = "green";
+                    string Name = "  END  ";
+                    var room = rooms[z, x];
+                    var tmp = GetRoomString(GetRoomType(room));
+                    if (room == null)
+                    {
+                        toWrite[(z * 3) + 0] += tmp[0];
+                        toWrite[(z * 3) + 1] += tmp[1];
+                        toWrite[(z * 3) + 2] += tmp[2];
+                        continue;
+                    }
+                    if (currentRoom == room)
+                        color = "white";
+                    else if (Warhead.IsInProgress)
+                    {
+                        if (room.Type == RoomType.HczNuke || room.Type == RoomType.EzGateA || room.Type == RoomType.EzGateB || room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
+                            color = "red";
+                    }
+                    else if (MapPlus.IsLCZDecontaminated(35))
+                    {
+                        if (room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
+                            color = "red";
+                    }
+                    if (Generator079.Generators.Any(g => g.CurRoom == room.Name && g.NetworkremainingPowerup > 0f))
+                    {
+                        var gen = Generator079.Generators.Find(g => g.CurRoom == room.Name);
+                        if (gen.NetworkisTabletConnected)
+                            color = "yellow";
+                        else
+                            color = "blue";
+                    }
+                    if (Ultimate)
+                    {
+                        if (LastScan.Contains(room) && currentRoom != room)
+                            color = "red";
+
+                        switch (room.Type)
+                        {
+                            case RoomType.EzGateA:
+                                Name = "GATE  A";
+                                break;
+                            case RoomType.EzGateB:
+                                Name = "GATE  B";
+                                break;
+                            case RoomType.Hcz106:
+                                Name = "SCP 106";
+                                break;
+                            case RoomType.Hcz079:
+                                Name = "SCP 079";
+                                break;
+                            case RoomType.Hcz096:
+                                Name = "SCP 096";
+                                break;
+                            case RoomType.Lcz012:
+                                Name = "SCP 012";
+                                break;
+                            case RoomType.Lcz914:
+                                Name = "SCP 914";
+                                break;
+                            case RoomType.Lcz173:
+                                Name = "SCP 173";
+                                break;
+                            case RoomType.LczGlassBox:
+                                Name = "SCP 372";
+                                break;
+                            case RoomType.LczCafe:
+                                Name = "   PC  ";
+                                break;
+                            case RoomType.LczArmory:
+                                Name = "ARMORY ";
+                                break;
+                        }
+                    }
+
+
+                    toWrite[(z * 3) + 0] += $"<color={color}>" + tmp[0] + "</color>";
+                    toWrite[(z * 3) + 1] += $"<color={color}>" + tmp[1].Replace("  END  ", Name) + "</color>";
+                    toWrite[(z * 3) + 2] += $"<color={color}>" + tmp[2] + "</color>";
+                }
+            }
+            return toWrite;
+        }
+
+        public static string[] GenerateLCZSNav(Room currentRoom, bool Ultimate = false)
+        {
+            var rooms = LCZRooms;
+            string[] toWrite = new string[rooms.GetLength(0) * 3];
+            for (int z = 0; z < rooms.GetLength(0); z++)
+            {
+                for (int x = 0; x < rooms.GetLength(1); x++)
+                {
+                    string color = "green";
+                    string Name = "  END  ";
+                    var room = rooms[z, x];
+                    var tmp = GetRoomString(GetRoomType(room));
+                    if (room == null)
+                    {
+                        toWrite[(z * 3) + 0] += tmp[0];
+                        toWrite[(z * 3) + 1] += tmp[1];
+                        toWrite[(z * 3) + 2] += tmp[2];
+                        continue;
+                    }
+                    if (currentRoom == room)
+                        color = "white";
+                    else if (Warhead.IsInProgress)
+                    {
+                        if (room.Type == RoomType.HczNuke || room.Type == RoomType.EzGateA || room.Type == RoomType.EzGateB || room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
+                            color = "red";
+                    }
+                    else if (MapPlus.IsLCZDecontaminated(35))
+                    {
+                        if (room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
+                            color = "red";
+                    }
+                    if (Generator079.Generators.Any(g => g.CurRoom == room.Name && g.NetworkremainingPowerup > 0f))
+                    {
+                        var gen = Generator079.Generators.Find(g => g.CurRoom == room.Name);
+                        if (gen.NetworkisTabletConnected)
+                            color = "yellow";
+                        else
+                            color = "blue";
+                    }
+                    if (Ultimate)
+                    {
+                        if (LastScan.Contains(room) && currentRoom != room)
+                            color = "red";
+
+                        switch (room.Type)
+                        {
+                            case RoomType.EzGateA:
+                                Name = "GATE  A";
+                                break;
+                            case RoomType.EzGateB:
+                                Name = "GATE  B";
+                                break;
+                            case RoomType.Hcz106:
+                                Name = "SCP 106";
+                                break;
+                            case RoomType.Hcz079:
+                                Name = "SCP 079";
+                                break;
+                            case RoomType.Hcz096:
+                                Name = "SCP 096";
+                                break;
+                            case RoomType.Lcz012:
+                                Name = "SCP 012";
+                                break;
+                            case RoomType.Lcz914:
+                                Name = "SCP 914";
+                                break;
+                            case RoomType.Lcz173:
+                                Name = "SCP 173";
+                                break;
+                            case RoomType.LczGlassBox:
+                                Name = "SCP 372";
+                                break;
+                            case RoomType.LczCafe:
+                                Name = "   PC  ";
+                                break;
+                            case RoomType.LczArmory:
+                                Name = "ARMORY ";
+                                break;
+                        }
+                    }
+
+
+                    toWrite[(z * 3) + 0] += $"<color={color}>" + tmp[0] + "</color>";
+                    toWrite[(z * 3) + 1] += $"<color={color}>" + tmp[1].Replace("  END  ", Name) + "</color>";
+                    toWrite[(z * 3) + 2] += $"<color={color}>" + tmp[2] + "</color>";
+                }
+            }
+            return toWrite;
+        }
+
         private void Player_ActivatingWorkstation(Exiled.Events.EventArgs.ActivatingWorkstationEventArgs ev)
         {
             if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
@@ -973,147 +1212,21 @@ __|  /‾‾‾‾|   '  |
             }
             else if (player.Position.y > 800)
             {
-                var tmp =
-@"    
-             <color=gatea_color>._.</color>                                                          <color=escape_color>.______.</color>
-         <color=gatea_color>.___| |___.</color>                                                      <color=escape_color>|      |</color>
-         <color=gatea_color>|         |</color>                                                      <color=escape_color>|_|‾‾ ‾|</color>
-       <color=gatea_color>|‾  GATE  A |</color>                                                      <color=escape_color>|ESCAPE|</color>
-       <color=gatea_color>`‾|         |</color>                                                      <color=escape_color>| |____|</color>
-          <color=gatea_color>‾‾|   |‾‾`</color>                                                      <color=escape_color>| |___.</color>
-            <color=gatea_color>|   |</color>                                                         <color=escape_color>|___. |</color>
-            <color=gatea_color>|   |</color>                                                             <color=escape_color>| |________.</color>
-       <color=gatea_color>.____|   |_____.</color>                                                       <color=escape_color>|________. |</color>
-       <color=gatea_color>|              |</color>                                                                <color=escape_color>| |</color>
-       <color=gatea_color>`‾‾‾‾<color=gateahole_color>|   |</color>‾‾‾<color=gateahole_color>| |</color>     <color=nuke_color>._____.</color>                                                    <color=escape_color>| |</color>
-            <color=gateahole_color>|   |   | |     <color=nuke_color>|NUKE |</color>                                                    <color=escape_color>: :</color>
-            <color=gateahole_color>|   |   | |     <color=nuke_color>|_. ._|</color>                                                    <color=escape_color>| |</color>
-       <color=gateahole_color>.____|   |___|_|_______| |_______.</color>                                            <color=escape_color>._| |_.</color>
-       <color=gateahole_color>|                      | |   |   |</color><color=gateb_color>   ._|‾|                  </color><color=helipad_color>._________________</color><color=escape_color>|     |</color>
-       <color=gateahole_color>|                      | |   |   |</color><color=gateb_color>   |   |__________________</color><color=helipad_color>|                       |</color>
-<color=gateahole_color>|‾‾‾‾‾‾‾‾‾‾‾|   |‾‾‾\ ‾‾‾‾‾‾‾‾` `‾‾‾|‾‾‾|</color><color=gateb_color>‾‾‾|   GATE B             </color><color=helipad_color>                        |</color>
-<color=gateahole_color>|           |   |    ‾‾‾‾‾‾‾        |   |</color><color=gateb_color>   `‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾</color><color=helipad_color>                        |</color>
-<color=gateahole_color>| CAR ENTRY |   |                   |   |</color><color=gateb_color>                          </color><color=helipad_color>        HELIPAD         |</color>
-<color=gateahole_color>|           |   |                   |   |</color><color=gateb_color>                          </color><color=helipad_color>                        |</color>
-<color=gateahole_color>|___________|   |___________________|   |</color><color=gateb_color>__________________________</color><color=helipad_color>.                       |</color>
-       <color=gateahole_color>|                                |</color><color=gateb_color>                          </color><color=helipad_color>|                       |</color>
-       <color=gateahole_color>|                                |</color><color=gateb_color>                          </color><color=helipad_color>`‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾</color><color=cassieroom_color>|     |</color>
-       <color=gateahole_color>`‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾`</color>                                            <color=cassieroom_color>|     |</color>
-                                                                                     <color=cassieroom_color>|     |</color>
-                                                                                     <color=cassieroom_color>`‾‾‾‾‾`</color>
-";
-                if (Ultimate)
-                {
-                    tmp = tmp.Replace("gatea_color", GateA ? "red" : "green");
-                    tmp = tmp.Replace("gateahole_color", GateAHole ? "red" : "green");
-                    tmp = tmp.Replace("nuke_color", Nuke ? "red" : "green");
-                    tmp = tmp.Replace("gateb_color", GateB ? "red" : "green");
-                    tmp = tmp.Replace("helipad_color", Helipad ? "red" : "green");
-                    tmp = tmp.Replace("escape_color", Escape ? "red" : "green");
-                    tmp = tmp.Replace("cassieroom_color", CassieRoom ? "red" : "green");
-
-                    toWrite = tmp.Split('\n');
-                }
-                else
-                {
-                    tmp = tmp.Replace("gatea_color", "green");
-                    tmp = tmp.Replace("gateahole_color", "green");
-                    tmp = tmp.Replace("nuke_color", "green");
-                    tmp = tmp.Replace("gateb_color", "green");
-                    tmp = tmp.Replace("helipad_color", "green");
-                    tmp = tmp.Replace("escape_color", "green");
-                    tmp = tmp.Replace("cassieroom_color", "green");
-
-                    toWrite = tmp.Split('\n');
-                }
+                toWrite = GenerateSurfaceSNav();
             }
             else
             {
-                var rooms = GetRooms(player.Position.y);
-                toWrite = new string[rooms.GetLength(0) * 3];
-                for (int z = 0; z < rooms.GetLength(0); z++)
+                switch(player.CurrentRoom.Position.y)
                 {
-                    for (int x = 0; x < rooms.GetLength(1); x++)
-                    {
-                        string color = "green";
-                        string Name = "  END  ";
-                        var room = rooms[z, x];
-                        var tmp = GetRoomString(GetRoomType(room));
-                        if (room == null)
-                        {
-                            toWrite[(z * 3) + 0] += tmp[0];
-                            toWrite[(z * 3) + 1] += tmp[1];
-                            toWrite[(z * 3) + 2] += tmp[2];
-                            continue;
-                        }
-                        if (player.CurrentRoom == room)
-                            color = "white";
-                        else if (Warhead.IsInProgress)
-                        {
-                            if (room.Type == RoomType.HczNuke || room.Type == RoomType.EzGateA || room.Type == RoomType.EzGateB || room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
-                                color = "red";
-                        }
-                        else if (MapPlus.IsLCZDecontaminated(35))
-                        {
-                            if (room.Type == RoomType.LczChkpA || room.Type == RoomType.LczChkpB)
-                                color = "red";
-                        }
-                        if (Generator079.Generators.Any(g => g.CurRoom == room.Name && g.NetworkremainingPowerup > 0f))
-                        {
-                            var gen = Generator079.Generators.Find(g => g.CurRoom == room.Name);
-                            if (gen.NetworkisTabletConnected)
-                                color = "yellow";
-                            else
-                                color = "blue";
-                        }
-                        if (Ultimate)
-                        {
-                            if (LastScan.Contains(room) && player.CurrentRoom.GetHashCode() != room.GetHashCode())
-                                color = "red";
-
-                            switch (room.Type)
-                            {
-                                case RoomType.EzGateA:
-                                    Name = "GATE  A";
-                                    break;
-                                case RoomType.EzGateB:
-                                    Name = "GATE  B";
-                                    break;
-                                case RoomType.Hcz106:
-                                    Name = "SCP 106";
-                                    break;
-                                case RoomType.Hcz079:
-                                    Name = "SCP 079";
-                                    break;
-                                case RoomType.Hcz096:
-                                    Name = "SCP 096";
-                                    break;
-                                case RoomType.Lcz012:
-                                    Name = "SCP 012";
-                                    break;
-                                case RoomType.Lcz914:
-                                    Name = "SCP 914";
-                                    break;
-                                case RoomType.Lcz173:
-                                    Name = "SCP 173";
-                                    break;
-                                case RoomType.LczGlassBox:
-                                    Name = "SCP 372";
-                                    break;
-                                case RoomType.LczCafe:
-                                    Name = "   PC  ";
-                                    break;
-                                case RoomType.LczArmory:
-                                    Name = "ARMORY ";
-                                    break;
-                            }
-                        }
-
-
-                        toWrite[(z * 3) + 0] += $"<color={color}>" + tmp[0] + "</color>";
-                        toWrite[(z * 3) + 1] += $"<color={color}>" + tmp[1].Replace("  END  ", Name) + "</color>";
-                        toWrite[(z * 3) + 2] += $"<color={color}>" + tmp[2] + "</color>";
-                    }
+                    case float x when x > -100 && x < 100:
+                        toWrite = GenerateLCZSNav(player.CurrentRoom, Ultimate);
+                        break;
+                    case float x when x > -1100 && x < -900:
+                        toWrite = GenerateEZ_HCZSNav(player.CurrentRoom, Ultimate);
+                        break;
+                    default:
+                        toWrite = new string[] { "ERROR, UNKNOWN ROOM: " + player.CurrentRoom.Position.y };
+                        break;
                 }
             }
             var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);

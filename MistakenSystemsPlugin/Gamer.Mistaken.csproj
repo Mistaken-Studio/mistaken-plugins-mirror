@@ -378,6 +378,10 @@
       <Project>{4bffbb2d-a061-4e50-a8b0-99cbfbfb7184}</Project>
       <Name>Gamer.RoundLogger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gamer.SNAV\Gamer.SNAV.csproj">
+      <Project>{ad248350-0fa1-475b-ad05-5e518c32ea12}</Project>
+      <Name>Gamer.SNAV</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MistakenBasePlugins\Gamer.Mistaken.Base.csproj">
       <Project>{6eecbfa8-dbcb-47cd-9c23-ff15bc11b40c}</Project>
       <Name>Gamer.Mistaken.Base</Name>

@@ -21,6 +21,7 @@ namespace Gamer.Mistaken.CassieRoom
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
             this.RunCoroutine(Loop(), "Loop");
+            this.RunCoroutine(UpdateSNav(), "UpdateSNav");
         }
 
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
@@ -57,6 +58,55 @@ namespace Gamer.Mistaken.CassieRoom
                     Log.Error(ex.StackTrace);
                 }
                 yield return Timing.WaitForSeconds(1);
+            }
+        }
+        private IEnumerator<float> UpdateSNav()
+        {
+            while (true)
+            {
+                try
+                {
+                    var start = DateTime.Now;
+                    foreach (var gameObject in SNavSurface.ColliderInArea)
+                    {
+                        if (gameObject == null)
+                            continue;
+                        var player = Player.Get(gameObject);
+                        if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                            continue;
+                        string[] toWrite = SNAV.SNavHandler.GenerateSurfaceSNav(true);
+                        var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+                        list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+                        while (list.Count < 64)
+                            list.Insert(0, "");
+                        list.Insert(0, "SURFACE");
+                        player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", 11);
+                    }
+
+                    foreach (var gameObject in SNavEZHCZ.ColliderInArea)
+                    {
+                        if (gameObject == null)
+                            continue;
+                        var player = Player.Get(gameObject);
+                        if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                            continue;
+                        string[] toWrite = SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
+                        var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+                        list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+                        while (list.Count < 64)
+                            list.Insert(0, "");
+                        list.Insert(0, "<color=yellow>Entrance Zone</color> & <color=yellow>Heavy Containment Zone</color>");
+                        player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", 11);
+                    }
+
+                    Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "UpdateSNav", start, DateTime.Now);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+                yield return Timing.WaitForSeconds(5);
             }
         }
 
@@ -182,6 +232,9 @@ namespace Gamer.Mistaken.CassieRoom
         private DoorVariant CassieRoomOpenButton;
         private DoorVariant mainDoor;
         internal static DoorVariant TeslaIndicator;
+
+        private static InRangeBall SNavSurface;
+        private static InRangeBall SNavEZHCZ;
         private void Server_WaitingForPlayers()
         {
             networkIdentities.Clear();
@@ -363,11 +416,21 @@ namespace Gamer.Mistaken.CassieRoom
 
                 //188 992.46 -91 180 0 0 10 0.001 10
                 SpawnItem(ItemType.SCP018, new Vector3(188, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
-                InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
+                SNavSurface = InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
                     (player) =>
                     {
 
                     }, 
+                    (player) =>
+                    {
+
+                    }
+                );
+                SNavEZHCZ = InRangeBall.Spawn(new Vector3(192, 993, -91), 1, 1,
+                    (player) =>
+                    {
+
+                    },
                     (player) =>
                     {
 

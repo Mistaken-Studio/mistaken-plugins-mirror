@@ -89,7 +89,7 @@ namespace Gamer.Mistaken.Systems.Components
             ColliderInArea.Remove(ev.Target.GameObject);
         }
 
-        private readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
+        public readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
         private void OnTriggerEnter(Collider other)
         {
             if (!other.GetComponent<CharacterClassManager>())
