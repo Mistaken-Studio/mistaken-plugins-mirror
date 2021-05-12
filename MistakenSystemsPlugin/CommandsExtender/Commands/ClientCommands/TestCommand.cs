@@ -173,7 +173,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         Mirror.NetworkServer.Spawn(gameObject);
                         keycard = gameObject.GetComponent<Pickup>();
                         keycard.SetupPickup(ItemType.SCP018, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-                        return new string[] { door.transform.position.x + "", door.transform.position.y + "", door.transform.position.z + "" };
+                        return new string[] { keycard.transform.position.x + "", keycard.transform.position.y + "", keycard.transform.position.z + "" };
                     }
                 case "light":
                     {

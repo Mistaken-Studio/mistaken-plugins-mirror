@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Systems.Components;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -329,6 +330,18 @@ namespace Gamer.Mistaken.CassieRoom
                     });
                     return false;
                 }, new Vector3(0.5f, 0.5f, 0.5f));
+
+                //188 992.46 -91 180 0 0 10 0.001 10
+                InRangeBall.Spawn(new Vector3(188, 993, -91), 5, 1, 
+                    (player) =>
+                    {
+                        player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
+                    }, 
+                    (player) =>
+                    {
+                        player.SetGUI("__test", PseudoGUIHandler.Position.TOP, null);
+                    }
+                );
             }
             #endregion
         }
