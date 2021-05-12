@@ -223,6 +223,12 @@ namespace Gamer.Mistaken.Base.CustomItems
                 return;
             foreach (var customItem in CustomItem.CustomItemTypes)
                 customItem.OnForceclass(ev.Player);
+            if (ev.NewRole != RoleType.Spectator)
+            {
+                var cItem = GetCustomItem(ev.Player.CurrentItem);
+                if(cItem != null)
+                    cItem.OnStopHolding(ev.Player, ev.Player.CurrentItem);
+            }
         }
 
         private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)

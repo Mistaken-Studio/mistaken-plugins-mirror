@@ -52,6 +52,8 @@ namespace Gamer.Mistaken.Systems.Pets
             if (AlivePets.TryGetValue(ev.Target.UserId, out NPCS.Npc pet))
             {
                 pet.VisibleForRoles.Clear();
+                foreach (var item in Enum.GetValues(typeof(RoleType)))
+                    pet.VisibleForRoles.Add((RoleType)item);
             }
         }
 

@@ -97,7 +97,8 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
 
         private void Player_EscapingPocketDimension(Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs ev)
         {
-            if (ev.Player.IsNPC())
+
+            if (ev.Player.IsNPC() || ev.Player.IsScp)
             {
                 ev.IsAllowed = false;
                 return;
