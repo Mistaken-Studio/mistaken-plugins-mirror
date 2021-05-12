@@ -194,6 +194,12 @@ namespace Gamer.Mistaken.Systems
             SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
             SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
             SpawnKeycard(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f + 4.5f));
+
+            //9.3 266 5.5 0 90 0 1 1 1
+            MapPlus.Spawn(new Inventory.SyncItemInfo
+            {
+                id = ItemType.KeycardScientistMajor
+            }, Map.Rooms.First(i => i.Type == RoomType.Hcz049).GetByRoomOffset(new Vector3(9.3f, 266, 5.5f)), Quaternion.Euler(0, 90, 0), Vector3.one);
         }
         public void SpawnKeycard(ItemType keycardType, Vector3 size, Vector3 rotation, Vector3 position)
         {
