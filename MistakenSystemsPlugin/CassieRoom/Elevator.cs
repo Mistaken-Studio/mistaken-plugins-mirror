@@ -209,6 +209,12 @@ namespace Gamer.Mistaken.CassieRoom
 
             //Spawn Killer
             inRange = Systems.Components.InRange.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), null, null);
+
+            //Lights
+            //-19.5 1021.5 -52 -20 180 0 .01 .01 .01
+            SpawnItem(ItemType.GunE11SR, new Vector3(-19.5f, 1021.5f, -52), new Vector3(-20, 180, 0), Vector3.one * 0.01f);
+            //-13.2 1021.5 -45.5 -20 90 0 .01 .01 .01
+            SpawnItem(ItemType.GunE11SR, new Vector3(-13.2f, 1021.5f, -45.5f), new Vector3(-20, 90, 0), Vector3.one * 0.01f);
         }
         private Systems.Components.InRange inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
