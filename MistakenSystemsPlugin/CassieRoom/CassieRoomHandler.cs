@@ -226,7 +226,7 @@ namespace Gamer.Mistaken.CassieRoom
                     if (!ev.IsAllowed)
                         return;
                     mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    MEC.Timing.CallDelayed(30f, () =>
+                    MEC.Timing.CallDelayed(5f, () =>
                     {
                         mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                     });
@@ -415,7 +415,7 @@ namespace Gamer.Mistaken.CassieRoom
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     CassieRoomOpenButton.NetworkTargetState = true;
-                    MEC.Timing.CallDelayed(30f, () =>
+                    MEC.Timing.CallDelayed(3f, () =>
                     {
                         CassieRoomOpenButton.NetworkTargetState = false;
                         mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
