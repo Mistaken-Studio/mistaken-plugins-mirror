@@ -51,7 +51,7 @@ namespace Gamer.Mistaken.CassieRoom
 
                     if(mainDoor.NetworkTargetState)
                     {
-                        if(((PluginDoorLockReason)mainDoor.NetworkActiveLocks | PluginDoorLockReason.COOLDOWN) != 0)
+                        if(((PluginDoorLockReason)mainDoor.NetworkActiveLocks | PluginDoorLockReason.COOLDOWN) == 0)
                         {
                             mainDoor.NetworkTargetState = false;
                         }
@@ -381,7 +381,7 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                 );
 
-                InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(10, 10),
+                InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(10, 10, 10),
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
