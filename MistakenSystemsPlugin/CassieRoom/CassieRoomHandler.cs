@@ -360,7 +360,6 @@ namespace Gamer.Mistaken.CassieRoom
                         CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                         if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.BLOCKED_BY_SOMETHING) == 0)
                             mainDoor.NetworkTargetState = false;
-                        Log.Debug("AAAAAAA");
                     });
                     return false;
                 }, new Vector3(0.5f, 0.5f, 0.5f));
@@ -391,11 +390,7 @@ namespace Gamer.Mistaken.CassieRoom
                         this.CallDelayed(5, () =>
                         {
                             if (isSomeoneInside.ColliderInArea.Count == 0)
-                            {
                                 mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
-                                //if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & (PluginDoorLockReason.REQUIREMENTS_NOT_MET | PluginDoorLockReason.COOLDOWN)) == 0)
-                                //    mainDoor.NetworkTargetState = false;
-                            }
                         }, "Unlock doors");
                     }
                 );
