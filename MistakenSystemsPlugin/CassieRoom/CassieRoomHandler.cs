@@ -162,10 +162,10 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                     if (!ev.IsAllowed)
                         return;
-                    mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
+                    mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     MEC.Timing.CallDelayed(30f, () =>
                     {
-                        mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                     });
                 }
             }
@@ -381,16 +381,16 @@ namespace Gamer.Mistaken.CassieRoom
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
                     (player) =>
                     {
-                        player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
                         mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, true);
                     },
                     (player) =>
                     {
-                        player.SetGUI("__test", PseudoGUIHandler.Position.TOP, null);
                         this.CallDelayed(5, () =>
                         {
                             if (isSomeoneInside.ColliderInArea.Count == 0)
                                 mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
+                            if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & (PluginDoorLockReason.REQUIREMENTS_NOT_MET | PluginDoorLockReason.COOLDOWN)) == 0)
+                                mainDoor.NetworkTargetState = false;
                         }, "Unlock doors");
                     }
                 );
