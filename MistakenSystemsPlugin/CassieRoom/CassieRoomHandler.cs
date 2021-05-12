@@ -466,8 +466,8 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                 );
                 var obj = new GameObject();
-                obj.transform.position = new Vector3(188, 1005, -85);
-                obj.AddComponent<BoxCollider>().size = new Vector3(23, 10, 23);
+                obj.transform.position = new Vector3(188, 1004, -85);
+                obj.AddComponent<BoxCollider>().size = new Vector3(23, 1, 23);
             }
             #endregion
         }
