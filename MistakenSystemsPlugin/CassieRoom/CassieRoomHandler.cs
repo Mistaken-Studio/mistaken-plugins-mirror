@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Systems.Components;
 using Gamer.Utilities;
@@ -145,7 +146,31 @@ namespace Gamer.Mistaken.CassieRoom
         {
             if (ev.IsAllowed && DoorCallbacks.TryGetValue(ev.Door, out var callback))
                 ev.IsAllowed = callback(ev);
+            else if(ev.Door == mainDoor)
+            {
+                if (ev.Player.Role != RoleType.NtfCommander)
+                    ev.IsAllowed = false;
+                else
+                {
+                    if(!unlocked)
+                    {
+                        if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER) && CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem)?.SessionVarType == Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD)
+                            unlocked = true;
+                        else
+                            ev.IsAllowed = false;
+                    }
+                    if (!ev.IsAllowed)
+                        return;
+                    mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                    MEC.Timing.CallDelayed(3f, () =>
+                    {
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
+                    });
+                }
+            }
         }
+
+        private bool unlocked = false;
 
         public static readonly Dictionary<DoorVariant, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool>> DoorCallbacks = new Dictionary<DoorVariant, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool>>();
 
@@ -216,7 +241,7 @@ namespace Gamer.Mistaken.CassieRoom
                 mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
                 mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
-                mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+                mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.SpecialDoorFeature;
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
                 //UpperDoor
                 SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
@@ -324,14 +349,18 @@ namespace Gamer.Mistaken.CassieRoom
 
                 CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "", (ev) =>
                 {
+                    mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
+                    CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     MEC.Timing.CallDelayed(3f, () =>
                     {
-
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
+                        CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                     });
                     return false;
                 }, new Vector3(0.5f, 0.5f, 0.5f));
 
                 //188 992.46 -91 180 0 0 10 0.001 10
+                SpawnItem(ItemType.SCP018, new Vector3(188, 993, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
                 InRangeBall.Spawn(new Vector3(188, 993, -91), 5, 1, 
                     (player) =>
                     {
