@@ -465,6 +465,9 @@ namespace Gamer.Mistaken.CassieRoom
                         }, "Unlock doors");
                     }
                 );
+                var obj = new GameObject();
+                obj.transform.position = new Vector3(188, 1005, -85);
+                obj.AddComponent<BoxCollider>().size = new Vector3(23, 10, 23);
             }
             #endregion
         }
