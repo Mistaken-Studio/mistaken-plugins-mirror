@@ -1,28 +1,10 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Extensions;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using Gamer.API.CustomClass;
-using Gamer.API.CustomItem;
+﻿using Exiled.Events.EventArgs;
 using Gamer.Diagnostics;
-using Gamer.Mistaken.Base.GUI;
-using Gamer.Mistaken.Systems.Misc;
-using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
-using Interactables.Interobjects;
-using Interactables.Interobjects.DoorUtils;
-using Mirror;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Gamer.CustomClasses
 {
-    class ClassDHandler : Diagnostics.Module
+    internal class ClassDHandler : Diagnostics.Module
     {
         public ClassDHandler(PluginHandler p) : base(p)
         {
@@ -40,7 +22,7 @@ namespace Gamer.CustomClasses
 
         private void Player_ChangedRole(ChangedRoleEventArgs ev)
         {
-            if(ev.Player.Role != RoleType.ClassD)
+            if (ev.Player.Role != RoleType.ClassD)
             {
                 ev.Player.SetSpeed(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier, ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier);
             }
