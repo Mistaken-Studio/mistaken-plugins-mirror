@@ -388,9 +388,11 @@ namespace Gamer.Mistaken.CassieRoom
                         this.CallDelayed(5, () =>
                         {
                             if (isSomeoneInside.ColliderInArea.Count == 0)
+                            {
                                 mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
-                            if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & (PluginDoorLockReason.REQUIREMENTS_NOT_MET | PluginDoorLockReason.COOLDOWN)) == 0)
-                                mainDoor.NetworkTargetState = false;
+                                if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.REQUIREMENTS_NOT_MET) != 0)
+                                    mainDoor.NetworkTargetState = false;
+                            }
                         }, "Unlock doors");
                     }
                 );
