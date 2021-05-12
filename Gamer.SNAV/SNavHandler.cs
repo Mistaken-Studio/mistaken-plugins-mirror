@@ -500,21 +500,29 @@ namespace Gamer.SNAV
             new SNavUltimateItem();
         }
         /// <inheritdoc/>
-        public override void OnEnable()
-        {
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Player.InsertingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
-            Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
-        }
-        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InsertingGeneratorTablet -= this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
+            Exiled.Events.Handlers.Player.EjectingGeneratorTablet -= this.Handle<Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs>((ev) => Player_EjectingGeneratorTablet(ev));
             Exiled.Events.Handlers.Player.ActivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
+            Exiled.Events.Handlers.Map.GeneratorActivated -= this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => Map_GeneratorActivated(ev));
+            Exiled.Events.Handlers.Player.DeactivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs>((ev) => Player_DeactivatingWorkstation(ev));
         }
+        /// <inheritdoc/>
+        public override void OnEnable()
+        {
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.InsertingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
+            Exiled.Events.Handlers.Player.EjectingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs>((ev) => Player_EjectingGeneratorTablet(ev));
+            Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
+            Exiled.Events.Handlers.Map.GeneratorActivated += this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => Map_GeneratorActivated(ev));
+            Exiled.Events.Handlers.Player.DeactivatingWorkstation += this.Handle<Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs>((ev) => Player_DeactivatingWorkstation(ev));
+        }
+
+
         /// <summary>
         /// Spawns SNAV
         /// </summary>
@@ -540,22 +548,53 @@ namespace Gamer.SNAV
                 }, pos, Quaternion.identity, new Vector3(2.0f, .50f, .50f));
             }
         }
-
+        private static readonly Dictionary<WorkStation, Inventory.SyncItemInfo> Workstations = new Dictionary<WorkStation, Inventory.SyncItemInfo>();
         private void Player_ActivatingWorkstation(Exiled.Events.EventArgs.ActivatingWorkstationEventArgs ev)
         {
-            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
+            if (!ev.IsAllowed)
+                return;
+            var first = ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet);
+            if (first.durability >= 301000f)
+                Workstations[ev.Workstation] = first;
+        }
+        private void Player_DeactivatingWorkstation(Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            if (Workstations.TryGetValue(ev.Workstation, out var snav))
             {
-                ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
-                ev.IsAllowed = false;
+                ev.Player.AddItem(snav);
+                Workstations.Remove(ev.Workstation);
             }
         }
 
+        private static readonly Dictionary<Generator079, Inventory.SyncItemInfo> Generators = new Dictionary<Generator079, Inventory.SyncItemInfo>();
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
-            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
+            if (!ev.IsAllowed)
+                return;
+            var first = ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet);
+            if (first.durability >= 301000f)
+                Generators[ev.Generator] = first;
+        }
+        private void Player_EjectingGeneratorTablet(Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            if(Generators.TryGetValue(ev.Generator, out var snav))
             {
-                ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
-                ev.IsAllowed = false;
+                MapPlus.Spawn(snav, ev.Generator.transform.position + Vector3.up, Quaternion.identity, Vector3.one);
+                Generators.Remove(ev.Generator);
+            }
+        }
+        private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            if (Generators.TryGetValue(ev.Generator, out var snav))
+            {
+                MapPlus.Spawn(snav, ev.Generator.transform.position + Vector3.up, Quaternion.identity, Vector3.one);
+                Generators.Remove(ev.Generator);
             }
         }
 
