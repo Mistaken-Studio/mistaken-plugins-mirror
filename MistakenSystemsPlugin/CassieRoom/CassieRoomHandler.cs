@@ -163,7 +163,7 @@ namespace Gamer.Mistaken.CassieRoom
                     if (!ev.IsAllowed)
                         return;
                     mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
-                    MEC.Timing.CallDelayed(3f, () =>
+                    MEC.Timing.CallDelayed(30f, () =>
                     {
                         mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     });
@@ -387,13 +387,11 @@ namespace Gamer.Mistaken.CassieRoom
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, null);
-                        if(isSomeoneInside.ColliderInArea.Count == 0)
+                        MEC.Timing.CallDelayed(5, () =>
                         {
-                            MEC.Timing.CallDelayed(5, () =>
-                            {
+                            if (isSomeoneInside.ColliderInArea.Count == 0)
                                 mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
-                            });
-                        }
+                        });
                     }
                 );
             }
