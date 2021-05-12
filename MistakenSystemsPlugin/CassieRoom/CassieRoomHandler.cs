@@ -49,14 +49,6 @@ namespace Gamer.Mistaken.CassieRoom
                         }
                     }
 
-                    if(mainDoor.NetworkTargetState)
-                    {
-                        if(((PluginDoorLockReason)mainDoor.NetworkActiveLocks | PluginDoorLockReason.COOLDOWN) == 0)
-                        {
-                            mainDoor.NetworkTargetState = false;
-                        }
-                    }
-
                     Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "Loop", start, DateTime.Now);
                 }
                 catch (System.Exception ex)
@@ -147,7 +139,7 @@ namespace Gamer.Mistaken.CassieRoom
         public enum PluginDoorLockReason : ushort
         {
             COOLDOWN = 512,
-            NOT_CLOSE_ENOUGHT = 1024,
+            BLOCKED_BY_SOMETHING = 1024,
             REQUIREMENTS_NOT_MET = 2048,
         }
 
@@ -360,13 +352,18 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
+                    CassieRoomOpenButton.NetworkTargetState = true;
                     MEC.Timing.CallDelayed(30f, () =>
                     {
+                        CassieRoomOpenButton.NetworkTargetState = false;
                         mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                         CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                        if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks | PluginDoorLockReason.BLOCKED_BY_SOMETHING) == 0)
+                            mainDoor.NetworkTargetState = false;
                     });
                     return false;
                 }, new Vector3(0.5f, 0.5f, 0.5f));
+                CassieRoomOpenButton.NetworkTargetState = false;
 
                 //188 992.46 -91 180 0 0 10 0.001 10
                 SpawnItem(ItemType.SCP018, new Vector3(188, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
@@ -380,15 +377,23 @@ namespace Gamer.Mistaken.CassieRoom
 
                     }
                 );
-
-                InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(10, 10, 10),
+                InRange isSomeoneInside = null;
+                isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(25, 10, 25),
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, "In Range");
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, true);
                     },
                     (player) =>
                     {
                         player.SetGUI("__test", PseudoGUIHandler.Position.TOP, null);
+                        if(isSomeoneInside.ColliderInArea.Count == 0)
+                        {
+                            MEC.Timing.CallDelayed(5, () =>
+                            {
+                                mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
+                            });
+                        }
                     }
                 );
             }
