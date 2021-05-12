@@ -369,8 +369,8 @@ namespace Gamer.Mistaken.CassieRoom
                 }, new Vector3(0.5f, 0.5f, 0.5f));
 
                 //188 992.46 -91 180 0 0 10 0.001 10
-                SpawnItem(ItemType.SCP018, new Vector3(188, 993, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
-                InRangeBall.Spawn(new Vector3(188, 992.46f, -91), 1, 1, 
+                SpawnItem(ItemType.SCP018, new Vector3(188, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
+                InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
                     (player) =>
                     {
 
