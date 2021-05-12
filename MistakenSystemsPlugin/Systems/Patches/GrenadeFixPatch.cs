@@ -84,7 +84,11 @@ namespace Gamer.Mistaken.Systems.Patches
                                 {
                                     if (Physics.Linecast(position, transform.position, out var _hit, __instance.hurtLayerMask))
                                     {
-                                        player.SendConsoleMessage($"[GRENADE] Blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})", "red");
+                                        if (!(_hit.collider.name == "PlyCenter"))
+                                        {
+                                            player.SendConsoleMessage($"[GRENADE] Blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})", "red");
+                                            RoundLoggerSystem.RoundLogger.Log("GRENADE", "BLOCK", $"Grenade was blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})");
+                                        }
                                         break;
                                     }
                                 }
