@@ -67,37 +67,9 @@ namespace Gamer.Mistaken.CassieRoom
                 try
                 {
                     var start = DateTime.Now;
-                    foreach (var gameObject in SNavSurface.ColliderInArea)
-                    {
-                        if (gameObject == null)
-                            continue;
-                        var player = Player.Get(gameObject);
-                        if (player.ReferenceHub.networkIdentity.connectionToClient == null)
-                            continue;
-                        string[] toWrite = SNAV.SNavHandler.GenerateSurfaceSNav(true);
-                        var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
-                        list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
-                        while (list.Count < 64)
-                            list.Insert(0, "");
-                        list.Insert(0, "SURFACE");
-                        player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", 11);
-                    }
 
-                    foreach (var gameObject in SNavEZHCZ.ColliderInArea)
-                    {
-                        if (gameObject == null)
-                            continue;
-                        var player = Player.Get(gameObject);
-                        if (player.ReferenceHub.networkIdentity.connectionToClient == null)
-                            continue;
-                        string[] toWrite = SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
-                        var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
-                        list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
-                        while (list.Count < 64)
-                            list.Insert(0, "");
-                        list.Insert(0, "<color=yellow>Entrance Zone</color> & <color=yellow>Heavy Containment Zone</color>");
-                        player.ShowHint("<voffset=25em><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>", 11);
-                    }
+                    UpdateSNavSurface();
+                    UpdateSNavEZHCZ();
 
                     Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "UpdateSNav", start, DateTime.Now);
                 }
@@ -109,7 +81,48 @@ namespace Gamer.Mistaken.CassieRoom
                 yield return Timing.WaitForSeconds(5);
             }
         }
-
+        private void UpdateSNavSurface()
+        {
+            if (SNavSurface.ColliderInArea.Count > 0)
+            {
+                string[] toWrite = SNAV.SNavHandler.GenerateSurfaceSNav(true);
+                var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+                list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+                while (list.Count < 65)
+                    list.Insert(0, "");
+                string msg = "<voffset=25em><color=yellow>SURFACE</color><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>";
+                foreach (var gameObject in SNavSurface.ColliderInArea)
+                {
+                    if (gameObject == null)
+                        continue;
+                    var player = Player.Get(gameObject);
+                    if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                        continue;
+                    player.ShowHint(msg, 6);
+                }
+            }
+        }
+        private void UpdateSNavEZHCZ()
+        {
+            if (SNavEZHCZ.ColliderInArea.Count > 0)
+            {
+                string[] toWrite = SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
+                var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+                list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+                while (list.Count < 65)
+                    list.Insert(0, "");
+                string msg = "<voffset=25em><color=yellow>Entrance Zone</color> & <color=yellow>Heavy Containment Zone</color><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>";
+                foreach (var gameObject in SNavEZHCZ.ColliderInArea)
+                {
+                    if (gameObject == null)
+                        continue;
+                    var player = Player.Get(gameObject);
+                    if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                        continue;
+                    player.ShowHint(msg, 6);
+                }
+            }
+        }
         internal void SyncFor(Player player)
         {
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
@@ -417,24 +430,13 @@ namespace Gamer.Mistaken.CassieRoom
                 //188 992.46 -91 180 0 0 10 0.001 10
                 SpawnItem(ItemType.SCP018, new Vector3(188, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
                 SNavSurface = InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
-                    (player) =>
-                    {
-
-                    }, 
-                    (player) =>
-                    {
-
-                    }
+                    (player) => UpdateSNavSurface(), 
+                    null
                 );
+                SpawnItem(ItemType.SCP018, new Vector3(192, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
                 SNavEZHCZ = InRangeBall.Spawn(new Vector3(192, 993, -91), 1, 1,
-                    (player) =>
-                    {
-
-                    },
-                    (player) =>
-                    {
-
-                    }
+                    (player) => UpdateSNavEZHCZ(),
+                    null
                 );
                 InRange isSomeoneInside = null;
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
