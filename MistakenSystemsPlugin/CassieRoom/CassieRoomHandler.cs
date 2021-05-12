@@ -351,7 +351,7 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    MEC.Timing.CallDelayed(3f, () =>
+                    MEC.Timing.CallDelayed(30f, () =>
                     {
                         mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                         CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
