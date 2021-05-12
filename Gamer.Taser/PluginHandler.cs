@@ -36,6 +36,9 @@ namespace Gamer.Taser
         /// On hit cooldown
         /// </summary>
         public float TaserHitCooldown = 90f;
-        //public float TaserMissCooldown = 60f;
+        /// <summary>
+        /// On miss cooldown
+        /// </summary>
+       public float TaserMissCooldown = 45f;
     }
 }
