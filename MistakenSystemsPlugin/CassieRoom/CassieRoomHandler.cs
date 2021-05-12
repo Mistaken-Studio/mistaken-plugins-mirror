@@ -430,13 +430,21 @@ namespace Gamer.Mistaken.CassieRoom
                 //188 992.46 -91 180 0 0 10 0.001 10
                 SpawnItem(ItemType.SCP018, new Vector3(188, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
                 SNavSurface = InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
-                    (player) => UpdateSNavSurface(), 
-                    null
+                    (player) => 
+                    {
+                        Base.GUI.PseudoGUIHandler.Ignore(player);
+                        UpdateSNavSurface();
+                    },
+                    (player) => Base.GUI.PseudoGUIHandler.StopIgnore(player)
                 );
                 SpawnItem(ItemType.SCP018, new Vector3(192, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
                 SNavEZHCZ = InRangeBall.Spawn(new Vector3(192, 993, -91), 1, 1,
-                    (player) => UpdateSNavEZHCZ(),
-                    null
+                    (player) =>
+                    {
+                        Base.GUI.PseudoGUIHandler.Ignore(player);
+                        UpdateSNavEZHCZ();
+                    },
+                    (player) => Base.GUI.PseudoGUIHandler.StopIgnore(player)
                 );
                 InRange isSomeoneInside = null;
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
