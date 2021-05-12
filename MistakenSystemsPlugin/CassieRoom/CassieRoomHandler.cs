@@ -347,7 +347,7 @@ namespace Gamer.Mistaken.CassieRoom
                     return false;
                 });
 
-                CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "", (ev) =>
+                CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
                 {
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
