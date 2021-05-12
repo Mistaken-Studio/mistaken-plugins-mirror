@@ -240,7 +240,6 @@ namespace Gamer.Mistaken.CassieRoom
                 ItemType keycardType = ItemType.KeycardContainmentEngineer;
                 //MainDoor
                 mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
-                mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
@@ -261,9 +260,6 @@ namespace Gamer.Mistaken.CassieRoom
                     SpawnItem(keycardType, Pos - new Vector3(1.65f, 0, 0), Rot, new Vector3(Size.x * 9, Size.y * 410, Size.z * 2));
                     Log.Debug("Spawned Door");
                 }
-
-                //View blocker
-                SpawnItem(ItemType.KeycardO5, new Vector3(190f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
 
                 var obj = new GameObject();
                 var collider = obj.AddComponent<BoxCollider>();
