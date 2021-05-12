@@ -565,6 +565,9 @@ namespace Gamer.SNAV
             {
                 ev.Player.AddItem(snav);
                 Workstations.Remove(ev.Workstation);
+                ev.IsAllowed = false;
+                ev.Workstation.NetworkisTabletConnected = false;
+                ev.Workstation.Network_playerConnected = null;
             }
         }
 
