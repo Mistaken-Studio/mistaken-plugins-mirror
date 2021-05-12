@@ -360,6 +360,7 @@ namespace Gamer.Mistaken.CassieRoom
                         CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                         if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.BLOCKED_BY_SOMETHING) == 0)
                             mainDoor.NetworkTargetState = false;
+                        Log.Debug("AAAAAAA");
                     });
                     return false;
                 }, new Vector3(0.5f, 0.5f, 0.5f));
