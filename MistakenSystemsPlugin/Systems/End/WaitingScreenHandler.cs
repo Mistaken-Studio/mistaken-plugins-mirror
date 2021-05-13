@@ -67,7 +67,10 @@ namespace Gamer.Mistaken.Systems.End
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             if (!Round.IsStarted)
-                ev.Player.Position = startPos;
+            {
+                this.CallDelayed(0.2f, () => ev.Player.Position = startPos, "UpdatePos");
+                ev.Player.Position = Map.Doors.First(d => d.Type() == DoorType.HID).transform.position;
+            }
         }
 
         private IEnumerator<float> WaitingForPlayers()
