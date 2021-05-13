@@ -64,6 +64,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override void Spawn(Player player)
             {
+                player.InfoArea &= ~PlayerInfoArea.Role;
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.SetRole(this.Role, true, false);
