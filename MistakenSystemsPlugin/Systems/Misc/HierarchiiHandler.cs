@@ -36,17 +36,17 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            if(ev.Player.Team == Team.MTF)
-            {
-                foreach (var item in RealPlayers.List)
-                {
-                    item.SendFakeSyncVar(ev.Player.Connection.identity, typeof());
-                }
-            }   
+            foreach (var item in RealPlayers.List.Where(p => p != ev.Player))
+                ev.Player.SendFakeSyncVar(item.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
         }
 
         private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
         {
+            if (ev.Player.Team == Team.MTF)
+            {
+                foreach (var item in RealPlayers.List.Where(p => p != ev.Player))
+                    item.SendFakeSyncVar(ev.Player.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+            }
             if (ev.Player.IsAlive)
                 UpdateAll();
         }
