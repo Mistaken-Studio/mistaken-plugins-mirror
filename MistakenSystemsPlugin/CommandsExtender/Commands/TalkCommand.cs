@@ -63,7 +63,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                 if (!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
                                     p.Position = data.Pos;
                             }
-
                             p.Health = data.HP;
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
@@ -77,6 +76,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             Log.Debug("[TALK] " + data.UnitType);
                             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
+                            Log.Debug("E");
                         }, "TalkRestore");
                     }
                 }

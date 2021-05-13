@@ -123,7 +123,7 @@ namespace Gamer.Mistaken.CommandsExtender
             {
                 foreach (var playerId in players)
                 {
-                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
+                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, string UnitName, byte UnitType) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -143,6 +143,8 @@ namespace Gamer.Mistaken.CommandsExtender
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = data.UnitName;
+                            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         }, "PlayerLeft");
                     }
                 }
