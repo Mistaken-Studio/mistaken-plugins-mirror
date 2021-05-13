@@ -186,7 +186,7 @@ namespace Gamer.Mistaken.Systems
         }
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
         {
-            //Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");
+            Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");
         }
 
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
@@ -304,7 +304,7 @@ namespace Gamer.Mistaken.Systems
                 this.RunCoroutine(DoRoundLoop(), "DoRoundLoop");
             //System.IO.File.WriteAllLines(Paths.Configs + "/cassie_words.txt", NineTailedFoxAnnouncer.singleton.voiceLines.Select(i => $"\"{i.apiName}\","));
 
-            //Map.ChangeUnitColor(0, "#888");
+            Map.ChangeUnitColor(0, "#888");
         }
         private IEnumerator<float> DoRoundLoop()
         {
