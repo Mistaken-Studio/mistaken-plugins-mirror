@@ -218,7 +218,8 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 if(Vector3.Distance(hid.transform.position, item.transform.position) < 10)
                 {
-                    item.transform.position = new Vector3(-18, 1020, -39);
+                    item.transform.position = new Vector3(-18, 1019.5f, -39);
+                    item.transform.rotation = Quaternion.identity;
                 }
             }
         }
