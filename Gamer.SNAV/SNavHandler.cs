@@ -505,9 +505,7 @@ namespace Gamer.SNAV
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InsertingGeneratorTablet -= this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
-            Exiled.Events.Handlers.Player.EjectingGeneratorTablet -= this.Handle<Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs>((ev) => Player_EjectingGeneratorTablet(ev));
             Exiled.Events.Handlers.Player.ActivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
-            Exiled.Events.Handlers.Map.GeneratorActivated -= this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => Map_GeneratorActivated(ev));
             Exiled.Events.Handlers.Player.DeactivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs>((ev) => Player_DeactivatingWorkstation(ev));
         }
         /// <inheritdoc/>
@@ -516,9 +514,7 @@ namespace Gamer.SNAV
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InsertingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
-            Exiled.Events.Handlers.Player.EjectingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs>((ev) => Player_EjectingGeneratorTablet(ev));
             Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
-            Exiled.Events.Handlers.Map.GeneratorActivated += this.Handle<Exiled.Events.EventArgs.GeneratorActivatedEventArgs>((ev) => Map_GeneratorActivated(ev));
             Exiled.Events.Handlers.Player.DeactivatingWorkstation += this.Handle<Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs>((ev) => Player_DeactivatingWorkstation(ev));
         }
 
@@ -571,36 +567,13 @@ namespace Gamer.SNAV
             }
         }
 
-        private static readonly Dictionary<Generator079, Inventory.SyncItemInfo> Generators = new Dictionary<Generator079, Inventory.SyncItemInfo>();
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
             if (!ev.IsAllowed)
                 return;
             var first = ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet);
             if (first.durability >= 301000f)
-                Generators[ev.Generator] = first;
-        }
-        private void Player_EjectingGeneratorTablet(Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs ev)
-        {
-            if (!ev.IsAllowed)
-                return;
-            if(Generators.TryGetValue(ev.Generator, out var snav))
-            {
-                MapPlus.Spawn(snav, ev.Generator.tabletEjectionPoint.position, ev.Generator.tabletEjectionPoint.rotation, Vector3.one);
-                Generators.Remove(ev.Generator);
-                ev.Generator.NetworkisTabletConnected = false;
-            }
-        }
-        private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
-        {
-            if (!ev.IsAllowed)
-                return;
-            if (Generators.TryGetValue(ev.Generator, out var snav))
-            {
-                MapPlus.Spawn(snav, ev.Generator.tabletEjectionPoint.position, ev.Generator.tabletEjectionPoint.rotation, Vector3.one);
-                Generators.Remove(ev.Generator);
-                ev.Generator.NetworkisTabletConnected = false;
-            }
+                GeneratorPatch.Generators[ev.Generator] = first;
         }
 
         private void Server_RoundStarted()
