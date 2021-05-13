@@ -13,14 +13,14 @@ using UnityEngine;
 
 namespace Gamer.Mistaken.Systems.Misc
 {
-    public class HierarchiiHandler : Module
+    public class HierarchyHandler : Module
     {
-        public HierarchiiHandler(PluginHandler p) : base(p)
+        public HierarchyHandler(PluginHandler p) : base(p)
         {
         }
 
 
-        public override string Name => "Hierarchii";
+        public override string Name => "Hierarchy";
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
@@ -36,7 +36,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            foreach (var item in RealPlayers.List.Where(p => p != ev.Player))
+            foreach (var item in RealPlayers.List.Where(p => p != ev.Player && p.Connection != null))
                 ev.Player.SendFakeSyncVar(item.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
         }
 
@@ -44,8 +44,12 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             if (ev.Player.Team == Team.MTF)
             {
-                foreach (var item in RealPlayers.List.Where(p => p != ev.Player))
-                    item.SendFakeSyncVar(ev.Player.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+                this.CallDelayed(1, () =>
+                {
+                    foreach (var item in RealPlayers.List.Where(p => p != ev.Player && p.Connection != null))
+                        item.SendFakeSyncVar(ev.Player.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+
+                }, "LateForceNoBaseGameHierarchy");
             }
             if (ev.Player.IsAlive)
                 UpdateAll();
@@ -66,9 +70,12 @@ namespace Gamer.Mistaken.Systems.Misc
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
                         continue;
                     }
+
                     CustomInfoHandler.SetTarget(p, "hierarchii", GetDiff(player, p), player);
                     if (p.Team == Team.MTF)
                         CustomInfoHandler.SetTarget(p, "unit", "Unit: " + player.UnitName, player);
+                    else
+                        CustomInfoHandler.SetTarget(p, "unit", null, player);
                 }
             }
         }
