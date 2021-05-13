@@ -129,7 +129,7 @@ namespace Gamer.CustomClasses
                 });
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
-                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>", false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>");
                 player.SetGUI("ZM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#217a7b>Zarządcą Strefy Podwyższonego Ryzyka</color></size><br>{ClassDescription}", 20);
                 player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#217a7b>Zarządca Strefy Podwyższonego Ryzyka</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"Spawned {player.PlayerToString()} as Zone Manager");
@@ -138,7 +138,7 @@ namespace Gamer.CustomClasses
             public override void OnDie(Player player)
             {
                 base.OnDie(player);
-                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", null, false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", null);
                 player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"{player.PlayerToString()} is no longer Zone Manager");
             }

@@ -173,7 +173,7 @@ namespace Gamer.Mistaken.Systems.GUI
                     }
                     player.SetGUI("admin", Base.GUI.PseudoGUIHandler.Position.BOTTOM, $"<size=50%>{infoMessage}</size>");
 
-                    Base.CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>", false);
+                    Base.CustomInfoHandler.Set(player, "FLAGS", customInfoMessage == "" ? null : $"<color=red>{customInfoMessage.Trim('|').Trim()}</color>");
                 }
                 Diagnostics.MasterHandler.LogTime("InformerHandler", "Update", start, DateTime.Now);
             }

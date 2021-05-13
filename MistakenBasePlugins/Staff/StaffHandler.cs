@@ -50,7 +50,7 @@ namespace Gamer.Mistaken.Base.Staff
                 if (cgea.IsAllowed && ev.Player.Group != cgea.NewGroup)
                     ev.Player.Group = cgea.NewGroup;
             }
-            CustomInfoHandler.Set(ev.Player, "STAFF", $"Player Id: <b>{ev.Player.Id}</b>", true);
+            CustomInfoHandler.SetStaff(ev.Player, "STAFF", $"Player Id: <b>{ev.Player.Id}</b>");
         }
 
         private void Player_ChangingGroup(Exiled.Events.EventArgs.ChangingGroupEventArgs ev)

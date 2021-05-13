@@ -347,12 +347,12 @@ namespace Gamer.Mistaken.Systems
                 {
                     if (item.Role != RoleType.Scp049)
                     {
-                        Base.CustomInfoHandler.Set(item, "cuff", null, false);
+                        Base.CustomInfoHandler.Set(item, "cuff", null);
                         break;
                     }
                     if (wasCuffed != item.IsCuffed)
                         break;
-                    Base.CustomInfoHandler.Set(item, "cuff", item.IsCuffed ? "<color=red><b>CUFFED</b></color>" : null, false);
+                    Base.CustomInfoHandler.Set(item, "cuff", item.IsCuffed ? "<color=red><b>CUFFED</b></color>" : null);
                     //Dodać aby Spekci widzieli że jest skuty, np ranga z new linem i w new linie wiadomość, ale jeszcze gdy gracz wejdzie, umrze, zrespi
                     wasCuffed = item.IsCuffed;
                 }

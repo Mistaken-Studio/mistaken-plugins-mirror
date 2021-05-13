@@ -299,6 +299,7 @@
     <Compile Include="LOFH\LOFH.cs" />
     <Compile Include="LOFH\LOFHHandler.cs" />
     <Compile Include="LOFH\LOFHPatch.cs" />
+    <Compile Include="Systems\Misc\HierarchiiHandler.cs" />
     <Compile Include="Systems\Misc\DoorHandler.cs" />
     <Compile Include="Systems\Misc\MassTKDetectionHandler.cs" />
     <Compile Include="Systems\NicknameFixer\NicknameFixerHandler.cs" />

@@ -112,8 +112,8 @@ namespace Gamer.Mistaken.Systems.End
                 {
                     player.Health *= 5;
                     player.ArtificialHealth = 50;
-                    player.CustomInfo = "Tau-5 Samsara";
-                    Base.CustomInfoHandler.Set(player, "TAU-5", "Tau-5 Samsara", false);
+                    //player.CustomInfo = "Tau-5 Samsara";
+                    Base.CustomInfoHandler.Set(player, "TAU-5", "Tau-5 Samsara");
                     player.Ammo[(int)AmmoType.Nato556] = 500;
                     player.Ammo[(int)AmmoType.Nato9] = 500;
                     player.Ammo[(int)AmmoType.Nato762] = 500;
