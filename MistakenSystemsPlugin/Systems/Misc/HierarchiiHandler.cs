@@ -51,12 +51,14 @@ namespace Gamer.Mistaken.Systems.Misc
                         continue;
                     if (p.Team != Team.MTF && p.Team != Team.RSC)
                     {
+                        if(p.Team != Team.MTF)
+                            CustomInfoHandler.SetTarget(p, "unit", null, player);
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
-                        CustomInfoHandler.SetTarget(p, "unit", null, player);
                         continue;
                     }
                     CustomInfoHandler.SetTarget(p, "hierarchii", GetDiff(player, p), player);
-                    CustomInfoHandler.SetTarget(p, "unit", player.UnitName, player);
+                    if (p.Team == Team.MTF)
+                        CustomInfoHandler.SetTarget(p, "unit", player.UnitName, player);
                 }
             }
         }
