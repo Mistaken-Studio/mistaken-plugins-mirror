@@ -586,9 +586,9 @@ namespace Gamer.SNAV
                 return;
             if(Generators.TryGetValue(ev.Generator, out var snav))
             {
-                Log.Debug(ev.Generator.transform.position + Vector3.up * 2 - ev.Generator.transform.forward);
-                MapPlus.Spawn(snav, ev.Generator.transform.position + Vector3.up * 2 - ev.Generator.transform.forward, Quaternion.identity, Vector3.one);
+                MapPlus.Spawn(snav, ev.Generator.tabletEjectionPoint.position, ev.Generator.tabletEjectionPoint.rotation, Vector3.one);
                 Generators.Remove(ev.Generator);
+                ev.Generator.NetworkisTabletConnected = false;
             }
         }
         private void Map_GeneratorActivated(Exiled.Events.EventArgs.GeneratorActivatedEventArgs ev)
@@ -597,9 +597,9 @@ namespace Gamer.SNAV
                 return;
             if (Generators.TryGetValue(ev.Generator, out var snav))
             {
-                Log.Debug(ev.Generator.transform.position + Vector3.up * 2 - ev.Generator.transform.forward);
-                MapPlus.Spawn(snav, ev.Generator.transform.position + Vector3.up * 2 - ev.Generator.transform.forward, Quaternion.identity, Vector3.one);
+                MapPlus.Spawn(snav, ev.Generator.tabletEjectionPoint.position, ev.Generator.tabletEjectionPoint.rotation, Vector3.one);
                 Generators.Remove(ev.Generator);
+                ev.Generator.NetworkisTabletConnected = false;
             }
         }
 
