@@ -55,6 +55,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.Role = data.Role;
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
+                        Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
                         Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
