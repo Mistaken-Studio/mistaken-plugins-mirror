@@ -63,8 +63,12 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private string GetDiff(Player player1, Player player2)
         {
-            int player1Lvl = GetHierarchiiLevel(player1);
-            int player2Lvl = GetHierarchiiLevel(player2);
+            if (player1.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5) || player2.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5))
+                return "Ten sam poziom uprawnień";
+
+            int player1Lvl = GetHierarchiiLevel(player1, player2);
+            int player2Lvl = GetHierarchiiLevel(player2, player1);
+
             if (player1Lvl > player2Lvl)
                 return "Wydawaj rozkazy";
             else if (player1Lvl == player2Lvl)
@@ -75,7 +79,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 return $"Wykryto błąd ({player1Lvl})|({player2Lvl})";
         }
 
-        private int GetHierarchiiLevel(Player player)
+        private int GetHierarchiiLevel(Player player, Player compared)
         {
             int lvl = 0;
             switch (player.Role)
@@ -93,14 +97,35 @@ namespace Gamer.Mistaken.Systems.Misc
                 case RoleType.NtfCommander:
                     lvl = 400;
                     break;
+
+                case RoleType.Scientist:
+                    if(compared.Role == RoleType.Scientist)
+                    {
+                        if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER))
+                            return 999;
+                        else if (compared.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER))
+                            return -999;
+
+                        if (player.GetSessionVar<bool>(Main.SessionVarType.CC_ZONE_MANAGER))
+                            return 998;
+                        else if (compared.GetSessionVar<bool>(Main.SessionVarType.CC_ZONE_MANAGER))
+                            return -998;
+
+                        return 0;
+                    }
+                    break;
             }
             if (player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                 lvl = 500;
+            else if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER) && Map.IsLCZDecontaminated)
+                lvl = 501;
             else
             {
                 int index = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == player.UnitName);
                 lvl += 99 - index;
             }
+
+
             return lvl;
         }
 

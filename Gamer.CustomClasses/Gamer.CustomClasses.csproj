@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="CustomClassesHandler.cs" />
     <Compile Include="DeputyFacalityManagerHandler.cs" />
+    <Compile Include="TAU5Handler.cs" />
     <Compile Include="GuardCommanderHandler.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="AssemblyInfo.cs" />

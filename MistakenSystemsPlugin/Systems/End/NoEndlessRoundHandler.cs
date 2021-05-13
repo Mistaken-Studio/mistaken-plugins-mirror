@@ -1,12 +1,15 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Gamer.API.CustomClass;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using MEC;
+using Respawning;
+using Respawning.NamingRules;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,9 +33,10 @@ namespace Gamer.Mistaken.Systems.End
 
         private void Server_RoundStarted()
         {
+            Tau5CustomClass = CustomClass.CustomClasses.First(i => i.ClassSessionVarType == Main.SessionVarType.CC_TAU5);
             this.RunCoroutine(Execute(), "Execute");
         }
-
+        public static CustomClass Tau5CustomClass { get; private set; }
         public static bool SpawnSamsara { get; private set; } = false;
         private IEnumerator<float> Execute()
         {
@@ -40,7 +44,9 @@ namespace Gamer.Mistaken.Systems.End
             int startRoundId = RoundPlus.RoundId;
             if (UnityEngine.Random.Range(1, 101) < 25)
             {
-                yield return Timing.WaitForSeconds(UnityEngine.Random.Range(25, 31) * 60);
+                int rand = UnityEngine.Random.Range(25, 31);
+                RoundLogger.Log("TAU-5", "DECISION", $"TAU-5 will spawn in T-{rand} minutes");
+                yield return Timing.WaitForSeconds(rand * 60);
                 if (!Round.IsStarted || startRoundId != RoundPlus.RoundId)
                     yield break;
                 SpawnSamsara = true;
@@ -50,11 +56,14 @@ namespace Gamer.Mistaken.Systems.End
                 this.CallDelayed(30 + 17, () =>
                 {
                     if (startRoundId == RoundPlus.RoundId)
-                        SpawnAsSamsara();
+                        Spawn();
                 }, "SpawnSamsaraWithChance");
             }
             else
+            {
+                RoundLogger.Log("TAU-5", "DECISION", $"TAU-5 will not spawn");
                 yield return Timing.WaitForSeconds(30 * 60);
+            }
             yield return Timing.WaitForSeconds(300);
             if (!Round.IsStarted || startRoundId != RoundPlus.RoundId)
                 yield break;
@@ -66,8 +75,7 @@ namespace Gamer.Mistaken.Systems.End
             Warhead.Start();
             RoundLogger.Log("TAU-5", "WARHEAD", $"Warhead forced");
         }
-
-        public static void SpawnAsSamsara(List<Player> toSpawn = null)
+        public static void Spawn(List<Player> toSpawn = null)
         {
             var players = RealPlayers.Get(RoleType.Spectator).ToArray().Shuffle();
             if (toSpawn == null)
@@ -83,48 +91,18 @@ namespace Gamer.Mistaken.Systems.End
                 else if (toSpawn.Count < 8)
                     toSpawn.Add(player);
             }
-            Respawning.NamingRules.UnitNamingRules.TryGetNamingRule(Respawning.SpawnableTeamType.NineTailedFox, out Respawning.NamingRules.UnitNamingRule unitnamingrule);
-            unitnamingrule.GenerateNew(Respawning.SpawnableTeamType.NineTailedFox, out string unit);
-            Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#C00");
-            foreach (var player in toSpawn)
-                SpawnAsSamsara(player, unit);
-            string unitnumber = unit.Split('-')[1];
-            int scps = RealPlayers.List.Where(p => p.Team == Team.SCP && p.Role != RoleType.Scp0492).Count();
-            Cassie.GlitchyMessage($"MTFUNIT TAU 5 DESIGNATED NATO_{unit[0]} {unitnumber} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {scps} SCPSUBJECT{(scps == 1 ? "" : "S")}", 0.3f, 0.1f);
-            Systems.Utilities.API.Map.RespawnLock = true;
-        }
-
-        public static void SpawnAsSamsara(Player player, string unit)
-        {
-            RoundLogger.Log("TAU-5", "SPAWN", $"{player.PlayerToString()} was spawned as TAU-5 Samsara");
-            player.Role = RoleType.NtfCommander;
-            player.ReferenceHub.characterClassManager.NetworkCurUnitName = unit;
-            Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
+            string unitName = "ERROR-99";
+            if (UnitNamingRules.TryGetNamingRule(SpawnableTeamType.NineTailedFox, out var rule))
             {
-                var items = player.Inventory.items;
-                for (int i = 0; i < items.Count; i++)
-                {
-                    if (items[i].id.IsKeycard())
-                        items.RemoveAt(i);
-                }
-                player.AddItem(ItemType.KeycardO5);
-                Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
-                {
-                    player.Health *= 5;
-                    player.ArtificialHealth = 50;
-                    //player.CustomInfo = "Tau-5 Samsara";
-                    Base.CustomInfoHandler.Set(player, "TAU-5", "Tau-5 Samsara");
-                    player.Ammo[(int)AmmoType.Nato556] = 500;
-                    player.Ammo[(int)AmmoType.Nato9] = 500;
-                    player.Ammo[(int)AmmoType.Nato762] = 500;
-                    player.Inventory.items.ModifyDuration(player.Inventory.items.FindIndex(i => i.id == ItemType.WeaponManagerTablet), 5000);
-                    Systems.Shield.ShieldedManager.Add(new Shield.Shielded(player, 50, 0.25f, 30, 0, -1));
-                    Gamer.Utilities.BetterCourotines.CallDelayed(8f, () =>
-                    {
-                        player.SetGUI("tau-5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "<size=200%>Jesteś <color=blue>Tau-5 Samsara</color></size><br>Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>", 10);
-                    }, "Samsara.SpawnAsGUI");
-                }, "Samsara.SpawnAsLate");
-            }, "Samsara.SpawnAs");
+                rule.GenerateNew(SpawnableTeamType.NineTailedFox, out unitName);
+                Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#C00");
+            }
+            foreach (var player in toSpawn)
+                Tau5CustomClass.Spawn(player);
+            string unitnumber = unitName.Split('-')[1];
+            int scps = RealPlayers.List.Where(p => p.Team == Team.SCP && p.Role != RoleType.Scp0492).Count();
+            Cassie.GlitchyMessage($"MTFUNIT TAU 5 DESIGNATED NATO_{unitName[0]} {unitnumber} HASENTERED ALLREMAINING AWAITINGRECONTAINMENT {scps} SCPSUBJECT{(scps == 1 ? "" : "S")}", 0.3f, 0.1f);
+            Mistaken.Systems.Utilities.API.Map.RespawnLock = true;
         }
     }
 }
