@@ -34,7 +34,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             "jail5",
         });
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
-        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762)>();
+        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, string UnitName, byte UnitType)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, string UnitName, byte UnitType)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
@@ -42,7 +42,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 foreach (var playerId in players)
                 {
-                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
+                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, string UnitName, byte UnitType) data))
                     {
                         SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -72,6 +72,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = data.UnitName;
+                            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
                         }, "TalkRestore");
                     }
@@ -100,7 +102,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         continue;
                     p.SetSessionVar(Main.SessionVarType.TALK, true);
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
-                    SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
+                    SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762], p.ReferenceHub.characterClassManager.NetworkCurUnitName, p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType));
                     p.Role = RoleType.Tutorial;
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();
