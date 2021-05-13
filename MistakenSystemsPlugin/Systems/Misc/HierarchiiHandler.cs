@@ -25,20 +25,30 @@ namespace Gamer.Mistaken.Systems.Misc
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
+            Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+        }
+
+        private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
+        {
+            ev.Player.InfoArea =
+                   PlayerInfoArea.Badge |
+                   PlayerInfoArea.CustomInfo |
+                   PlayerInfoArea.Nickname |
+                   PlayerInfoArea.PowerStatus |
+                   PlayerInfoArea.Role;
+            Log.Debug("Updated");
         }
 
         private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
         {
             if (ev.Player.IsAlive)
-            {
-                ev.Player.InfoArea = PlayerInfoArea.Badge | PlayerInfoArea.CustomInfo | PlayerInfoArea.Nickname | PlayerInfoArea.PowerStatus | PlayerInfoArea.Role;
                 UpdateAll();
-            }
         }
 
         private void UpdateAll()
@@ -51,14 +61,14 @@ namespace Gamer.Mistaken.Systems.Misc
                         continue;
                     if (p.Team != Team.MTF && p.Team != Team.RSC)
                     {
-                        if(p.Team != Team.MTF)
+                        if (p.Team != Team.MTF)
                             CustomInfoHandler.SetTarget(p, "unit", null, player);
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
                         continue;
                     }
                     CustomInfoHandler.SetTarget(p, "hierarchii", GetDiff(player, p), player);
                     if (p.Team == Team.MTF)
-                        CustomInfoHandler.SetTarget(p, "unit", player.UnitName, player);
+                        CustomInfoHandler.SetTarget(p, "unit", "Unit: " + player.UnitName, player);
                 }
             }
         }
@@ -66,19 +76,19 @@ namespace Gamer.Mistaken.Systems.Misc
         private string GetDiff(Player player1, Player player2)
         {
             if (player1.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5) || player2.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5))
-                return "Ten sam poziom uprawnień";
+                return "<b>Ten sam poziom uprawnień</b>";
 
             int player1Lvl = GetHierarchiiLevel(player1, player2);
             int player2Lvl = GetHierarchiiLevel(player2, player1);
 
             if (player1Lvl > player2Lvl)
-                return "Wydawaj rozkazy";
+                return "<b>Wydawaj rozkazy</b>";
             else if (player1Lvl == player2Lvl)
-                return "Ten sam poziom uprawnień";
+                return "<b>Ten sam poziom uprawnień</b>";
             else if (player1Lvl < player2Lvl)
-                return "Wykonuj rozkazy";
+                return "<b>Wykonuj rozkazy</b>";
             else
-                return $"Wykryto błąd ({player1Lvl})|({player2Lvl})";
+                return $"<b>Wykryto błąd ({player1Lvl})|({player2Lvl})</b>";
         }
 
         private int GetHierarchiiLevel(Player player, Player compared)
@@ -115,8 +125,10 @@ namespace Gamer.Mistaken.Systems.Misc
 
                         return 0;
                     }
-                    break;
+                    return 0;
             }
+            if (compared.Role == RoleType.Scientist)
+                return 0;
             if (player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                 lvl = 500;
             else if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER) && Map.IsLCZDecontaminated)
@@ -126,7 +138,6 @@ namespace Gamer.Mistaken.Systems.Misc
                 int index = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == player.UnitName);
                 lvl += 99 - index;
             }
-
 
             return lvl;
         }
