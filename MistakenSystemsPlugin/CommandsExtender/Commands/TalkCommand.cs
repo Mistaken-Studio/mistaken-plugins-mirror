@@ -73,7 +73,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
                             p.ReferenceHub.characterClassManager.NetworkCurUnitName = data.UnitName;
+                            Log.Debug(data.UnitName);
                             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
+                            Log.Debug(data.UnitType);
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
                         }, "TalkRestore");
                     }
