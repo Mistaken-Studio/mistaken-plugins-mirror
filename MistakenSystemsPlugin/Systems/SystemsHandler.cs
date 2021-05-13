@@ -60,6 +60,7 @@ namespace Gamer.Mistaken.Systems
             new Misc.PlayerRoundStatisticsHandler(plugin);
             new Misc.MassTKDetectionHandler(plugin);
             new Misc.DoorHandler(plugin);
+            new Misc.HierarchiiHandler(plugin);
 
             new End.RandomSizeHandler(plugin); // OFF
             new End.RandomMessagesHandler(plugin);
