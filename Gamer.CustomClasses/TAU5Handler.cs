@@ -75,7 +75,7 @@ namespace Gamer.CustomClasses
                 player.AddItem(ItemType.Radio);
                 player.AddItem(ItemType.Medkit);
                 player.AddItem(ItemType.Medkit);
-                player.AddItem(ItemType.Adrenaline);
+                player.AddItem(ItemType.GrenadeFrag);
                 player.AddItem(new Inventory.SyncItemInfo
                 {
                     id = ItemType.WeaponManagerTablet,

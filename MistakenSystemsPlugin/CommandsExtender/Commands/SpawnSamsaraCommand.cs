@@ -17,7 +17,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
 
         public override string[] Execute(ICommandSender sender, string[] args, out bool _s)
         {
-            Systems.End.NoEndlessRoundHandler.SpawnAsSamsara(new System.Collections.Generic.List<Exiled.API.Features.Player>
+            Systems.End.NoEndlessRoundHandler.Spawn(new System.Collections.Generic.List<Exiled.API.Features.Player>
             {
                 sender.GetPlayer()
             });
