@@ -450,7 +450,7 @@ namespace Gamer.Mistaken.CassieRoom
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
                     (player) =>
                     {
-                        mainDoor.NetworkTargetState = true
+                        mainDoor.NetworkTargetState = true;
                         mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, true);
                     },
                     (player) =>
