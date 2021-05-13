@@ -68,7 +68,7 @@ namespace Gamer.Mistaken.Systems.End
         {
             if (!Round.IsStarted)
             {
-                this.CallDelayed(0.2f, () => ev.Player.Position = startPos, "UpdatePos");
+                this.CallDelayed(0.5f, () => ev.Player.Position = startPos, "UpdatePos");
                 ev.Player.Position = Map.Doors.First(d => d.Type() == DoorType.HID).transform.position;
             }
         }
