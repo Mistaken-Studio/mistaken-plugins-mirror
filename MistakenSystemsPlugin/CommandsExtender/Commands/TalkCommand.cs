@@ -81,6 +81,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                 p.ReferenceHub.characterClassManager.NetworkCurUnitName = array[data.UnitIndex];
                             }
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
+                            Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
+                            {
+                                Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
+                            }, "Test");
                         }, "TalkRestore");
                     }
                 }
