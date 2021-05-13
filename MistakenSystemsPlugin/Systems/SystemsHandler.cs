@@ -184,18 +184,6 @@ namespace Gamer.Mistaken.Systems
                 id = ItemType.KeycardScientistMajor
             }, Map.Rooms.First(i => i.Type == RoomType.Hcz049).GetByRoomOffset(new Vector3(9.3f, 266, 5.5f)), Quaternion.Euler(0, 90, 0), Vector3.one);
         }
-        public void SpawnKeycard(ItemType keycardType, Vector3 size, Vector3 rotation, Vector3 position)
-        {
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
-            gameObject.transform.position = position;
-            gameObject.transform.localScale = size;
-            gameObject.transform.rotation = Quaternion.Euler(rotation);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            Mirror.NetworkServer.Spawn(gameObject);
-            var keycard = gameObject.GetComponent<Pickup>();
-            keycard.SetupPickup(keycardType, 200f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            keycard.Locked = true;
-        }
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
         {
             Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");
