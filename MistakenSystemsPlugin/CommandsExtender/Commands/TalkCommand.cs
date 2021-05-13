@@ -8,6 +8,7 @@ using MEC;
 using Respawning;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
@@ -75,8 +76,12 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
                             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                             Log.Debug("[TALK] " + data.UnitIndex);
-                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName;
+                            int index = data.UnitIndex;
+                            string unit = RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
+                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = unit;
+                            //p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName;
                             Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
+                            Map.ChangeUnitColor(index, Regex.Replace(unit, "<[^>]*?>", string.Empty));
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
                         }, "TalkRestore");
                     }
