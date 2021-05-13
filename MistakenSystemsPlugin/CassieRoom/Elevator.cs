@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
@@ -8,6 +9,7 @@ using MEC;
 using Mirror;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -209,6 +211,16 @@ namespace Gamer.Mistaken.CassieRoom
 
             //Spawn Killer
             inRange = Systems.Components.InRange.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), null, null);
+
+            //Workstation
+            var hid = Map.Doors.First(i => i.Type() == Exiled.API.Enums.DoorType.HID);
+            foreach (var item in GameObject.FindObjectsOfType<WorkStation>())
+            {
+                if(Vector3.Distance(hid.transform.position, item.transform.position) < 10)
+                {
+                    item.transform.position = new Vector3(-18, 1020, -39);
+                }
+            }
         }
         private Systems.Components.InRange inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
