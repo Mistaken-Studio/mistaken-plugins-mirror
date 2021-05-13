@@ -37,11 +37,6 @@ namespace Gamer.CustomClasses
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-
-            Log.Debug(ev.Player.Nickname);
-            Log.Debug(ev.IsEscaped);
-            Log.Debug(ev.NewRole);
-            Log.Debug(ZoneManager.Instance.PlayingAsClass.Contains(ev.Player));
             if (ev.IsEscaped)
             {
                 if (ZoneManager.Instance.PlayingAsClass.Contains(ev.Player))
