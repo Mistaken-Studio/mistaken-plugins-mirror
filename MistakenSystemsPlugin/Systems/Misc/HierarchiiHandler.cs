@@ -36,13 +36,13 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
-            ev.Player.InfoArea =
-                   PlayerInfoArea.Badge |
-                   PlayerInfoArea.CustomInfo |
-                   PlayerInfoArea.Nickname |
-                   PlayerInfoArea.PowerStatus |
-                   PlayerInfoArea.Role;
-            Log.Debug("Updated");
+            if(ev.Player.Team == Team.MTF)
+            {
+                foreach (var item in RealPlayers.List)
+                {
+                    item.SendFakeSyncVar(ev.Player.Connection.identity, typeof());
+                }
+            }   
         }
 
         private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
