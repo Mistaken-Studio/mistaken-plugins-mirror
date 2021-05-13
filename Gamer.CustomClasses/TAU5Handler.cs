@@ -56,7 +56,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override string ClassName => "Tau-5 Samsara Soldier";
             /// <inheritdoc/>
-            public override string ClassDescription => "Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color>";
+            public override string ClassDescription => "Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color><br><b>Karta O5 jest wbudowana w twoją rękę</b>, więc <color=yellow>możesz otwierać <b>wszystkie</b> drzwi nie używając karty</color>";
             /// <inheritdoc/>
             public override RoleType Role => RoleType.NtfCommander;
             /// <inheritdoc/>
