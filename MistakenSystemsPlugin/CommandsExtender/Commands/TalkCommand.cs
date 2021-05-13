@@ -72,9 +72,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                             Log.Debug("[TALK] " + data.UnitIndex);
                             p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName;
-                            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
+                            Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
                         }, "TalkRestore");
                     }
