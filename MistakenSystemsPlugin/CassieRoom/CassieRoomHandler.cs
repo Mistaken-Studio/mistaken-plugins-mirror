@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
@@ -212,16 +213,33 @@ namespace Gamer.Mistaken.CassieRoom
                 ev.IsAllowed = callback(ev);
             else if(ev.Door == mainDoor)
             {
-                if (ev.Player.Role != RoleType.NtfCommander)
+                if (ev.Player.CurrentItemIndex == -1 || !ev.Player.CurrentItem.id.IsKeycard() || ev.Player.CurrentItem.id == ItemType.KeycardChaosInsurgency)
                     ev.IsAllowed = false;
                 else
                 {
                     if(!unlocked)
                     {
-                        if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER) && CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem)?.SessionVarType == Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD)
-                            unlocked = true;
-                        else
+                        var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
+                        if (citem == null)
                             ev.IsAllowed = false;
+                        else
+                        {
+                            switch (citem.SessionVarType)
+                            {
+                                case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
+                                    unlocked = true;
+                                    break;
+                                case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
+                                    if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER))
+                                        ev.IsAllowed = false;
+                                    else
+                                        unlocked = true;
+                                    break;
+                                default:
+                                    ev.IsAllowed = false;
+                                    break;
+                            }
+                        }
                     }
                     if (!ev.IsAllowed)
                         return;
@@ -336,7 +354,7 @@ namespace Gamer.Mistaken.CassieRoom
             #region Functionality
             {
                 //Test Button
-                SpawnButton(new Vector3(181, 994, -75), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Test</color> button</size>", (ev) =>
+                /*SpawnButton(new Vector3(181, 994, -75), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Test</color> button</size>", (ev) =>
                 {
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . This is a test message", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
@@ -345,7 +363,7 @@ namespace Gamer.Mistaken.CassieRoom
                         ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                     }, "TestButtonCooldown");
                     return false;
-                });
+                });*/
                 //Warhead Start
                 WarheadStartButton = SpawnButton(new Vector3(181, 994, -79), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Start</color> a Warhead</size>", (ev) =>
                 {
@@ -412,6 +430,26 @@ namespace Gamer.Mistaken.CassieRoom
 
                 CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
                 {
+                    if (!Map.IsLCZDecontaminated)
+                        return false;
+                    if(!unlocked)
+                    {
+                        var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
+                        if (citem == null)
+                            return false;
+                        switch(citem.SessionVarType)
+                        {
+                            case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
+                                break;
+                            case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
+                                if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER))
+                                    return false;
+                                break;
+                            default:
+                                return false;
+                        }
+                    }
+                        
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     CassieRoomOpenButton.NetworkTargetState = true;

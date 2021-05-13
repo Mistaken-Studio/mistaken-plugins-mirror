@@ -197,7 +197,8 @@ namespace Gamer.Utilities
             CC_GUARD_COMMANDER,
             CC_ZONE_MANAGER,
             CC_DEPUTY_FACILITY_MANAGER,
-            CC_IGNORE_CHANGE_ROLE
+            CC_IGNORE_CHANGE_ROLE,
+            CI_GUARD_COMMANDER_KEYCARD_OWNER,
 #pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
         }
         /// <summary>
