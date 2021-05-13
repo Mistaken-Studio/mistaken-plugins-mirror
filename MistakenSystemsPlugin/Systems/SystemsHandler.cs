@@ -186,7 +186,7 @@ namespace Gamer.Mistaken.Systems
         }
         private void Map_AnnouncingNtfEntrance(Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs ev)
         {
-            Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");
+            //Map.ChangeUnitColor(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Count - 1, "#00F");
         }
 
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
@@ -197,7 +197,6 @@ namespace Gamer.Mistaken.Systems
                     LogManager.FlashLog[target.Id] = ev.Thrower;
             }
         }
-
         private void Server_RoundEnded(Exiled.Events.EventArgs.RoundEndedEventArgs ev)
         {
             foreach (var player in RealPlayers.List)
@@ -206,7 +205,6 @@ namespace Gamer.Mistaken.Systems
                     DisplayNameChangend.Add(player.UserId, player.DisplayNickname);
             }
         }
-
         private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
         {
             this.CallDelayed(5, () =>
@@ -232,7 +230,6 @@ namespace Gamer.Mistaken.Systems
                 }, "Decontaminating3");
             }, "Decontaminating2");
         }
-
         private void Server_SendingRemoteAdminCommand(Exiled.Events.EventArgs.SendingRemoteAdminCommandEventArgs ev)
         {
             string nameLower = ev.Name.ToLower();
@@ -259,7 +256,6 @@ namespace Gamer.Mistaken.Systems
                 ev.ReplyMessage = $"Missing permission: {PluginHandler.PluginName}.long_cassie\nTo use cassie longer than 15 seconds this permission is requied(cassie was {dur}s long)";
             }
         }
-
         public static Player LastIntercomUser;
         private static bool IntercomInfoTimeout = false;
         private void Player_IntercomSpeaking(Exiled.Events.EventArgs.IntercomSpeakingEventArgs ev)
@@ -273,7 +269,6 @@ namespace Gamer.Mistaken.Systems
             IntercomInfoTimeout = true;
             this.RunCoroutine(OffCooldown(), "OffCooldown");
         }
-
         private IEnumerator<float> OffCooldown()
         {
             yield return Timing.WaitForSeconds(1);
@@ -282,13 +277,11 @@ namespace Gamer.Mistaken.Systems
             yield return Timing.WaitForSeconds(1);
             IntercomInfoTimeout = false;
         }
-
         private void Player_EjectingGeneratorTablet(Exiled.Events.EventArgs.EjectingGeneratorTabletEventArgs ev)
         {
             if (Generators.TryGetValue(ev.Generator, out Side inserterSide) && ev.Player.Side == inserterSide)
                 ev.IsAllowed = false;
         }
-
         private readonly Dictionary<Generator079, Side> Generators = new Dictionary<Generator079, Side>();
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
@@ -298,7 +291,6 @@ namespace Gamer.Mistaken.Systems
                 Generators.Remove(ev.Generator);
             Generators.Add(ev.Generator, ev.Player.Side);
         }
-
         private void Server_RoundStarted()
         {
             Server.Host.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<FragGrenade>()
@@ -312,7 +304,7 @@ namespace Gamer.Mistaken.Systems
                 this.RunCoroutine(DoRoundLoop(), "DoRoundLoop");
             //System.IO.File.WriteAllLines(Paths.Configs + "/cassie_words.txt", NineTailedFoxAnnouncer.singleton.voiceLines.Select(i => $"\"{i.apiName}\","));
 
-            Map.ChangeUnitColor(0, "#888");
+            //Map.ChangeUnitColor(0, "#888");
         }
         private IEnumerator<float> DoRoundLoop()
         {
@@ -359,7 +351,6 @@ namespace Gamer.Mistaken.Systems
                 yield return Timing.WaitForSeconds(60);
             }
         }
-
         private IEnumerator<float> NoVoidFailling()
         {
             yield return Timing.WaitForSeconds(1);
@@ -384,7 +375,6 @@ namespace Gamer.Mistaken.Systems
                 yield return Timing.WaitForSeconds(30);
             }
         }
-
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (UnityEngine.Random.Range(0, 2) == 1 && (ev.NewRole == RoleType.NtfCadet || ev.NewRole == RoleType.FacilityGuard))
@@ -395,7 +385,6 @@ namespace Gamer.Mistaken.Systems
                     Cassie.DelayedGlitchyMessage("Spotted only 1 alive . There could be ChaosInsurgency", 25, 0.5f, 0.1f);
             }
         }
-
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
             if (ev.Attacker?.IsActiveDev() ?? false)
@@ -433,7 +422,6 @@ namespace Gamer.Mistaken.Systems
                     ev.IsAllowed = false;
             }
         }
-
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
             if (!ev.IsAllowed)
@@ -472,7 +460,6 @@ namespace Gamer.Mistaken.Systems
                 }, "Dying");
             }
         }
-
         private void DropBallAndGrenades(Player player)
         {
             var manager = player.GameObject.GetComponent<Grenades.GrenadeManager>();
@@ -489,7 +476,6 @@ namespace Gamer.Mistaken.Systems
                 player.RemoveItem(player.CurrentItem);
             }
         }
-
         private void SpawnGrenade(Player player, Grenades.GrenadeSettings settings, Grenades.GrenadeManager manager)
         {
             Grenades.Grenade component = GameObject.Instantiate(settings.grenadeInstance).GetComponent<Grenades.Grenade>();
@@ -501,7 +487,6 @@ namespace Gamer.Mistaken.Systems
             component.InitData(manager, player.ReferenceHub?.playerMovementSync?.PlayerVelocity ?? default, Vector3.down, 1);
             NetworkServer.Spawn(component.gameObject);
         }
-
         private void Player_Destroying(Exiled.Events.EventArgs.DestroyingEventArgs ev)
         {
             if (!ev.Player.IsReadyPlayer())
@@ -519,7 +504,6 @@ namespace Gamer.Mistaken.Systems
             if (Round.ElapsedTime.TotalSeconds < 30)
                 LeftOnStart[ev.Player.UserId] = ev.Player.Role;
         }
-
         private void AutoRoundRestart()
         {
 
@@ -540,15 +524,12 @@ namespace Gamer.Mistaken.Systems
             else
                 Log.Debug($"Server may or may be not empty but round is not started");
         }
-
         private void Player_TriggeringTesla(Exiled.Events.EventArgs.TriggeringTeslaEventArgs ev)
         {
             if (ev.Player.Role == RoleType.Tutorial)
                 ev.IsTriggerable = false;
         }
-
         public static readonly HashSet<string> JoinedButNotLeft = new HashSet<string>();
-
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             if (!ev.Player.IsVerified)
@@ -589,7 +570,6 @@ namespace Gamer.Mistaken.Systems
                 NewPlayers.Remove(ev.Player.Id);
             }, "FirstTimeJoined");
         }
-
         private void Player_InteractingElevator(Exiled.Events.EventArgs.InteractingElevatorEventArgs ev)
         {
             if (Logs.Commands.ElevatorLogCommand.Active.Contains(ev.Player.Id))
@@ -606,7 +586,6 @@ namespace Gamer.Mistaken.Systems
                 Logs.LogManager.ElevatorLogs.Add(ev.Lift.Type(), NorthwoodLib.Pools.ListPool<Logs.ElevatorLog>.Shared.Rent());
             Logs.LogManager.ElevatorLogs[ev.Lift.Type()].Add(new Logs.ElevatorLog(ev));
         }
-
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (Logs.Commands.DoorLogCommand.Active.Contains(ev.Player.Id))
@@ -625,7 +604,6 @@ namespace Gamer.Mistaken.Systems
             if (ev.Door.Type() == DoorType.Scp079Second)
                 this.RunCoroutine(SpawnPainKillers(), "SpawnPainKillers");
         }
-
         private void Server_RestartingRound()
         {
             RoundPlus.IncRoundId();
@@ -652,7 +630,6 @@ namespace Gamer.Mistaken.Systems
 
             spawnedPainKillers = false;
         }
-
         private bool spawnedPainKillers = false;
         public IEnumerator<float> SpawnPainKillers()
         {
