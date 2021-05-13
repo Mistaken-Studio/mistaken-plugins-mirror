@@ -105,7 +105,18 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         continue;
                     p.SetSessionVar(Main.SessionVarType.TALK, true);
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
-                    SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762], RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName), p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType));
+                    SavedInfo.Add(p.Id, (
+                        p.Position, 
+                        p.Role, 
+                        p.Health, 
+                        p.ArtificialHealth, 
+                        p.Inventory.items.ToArray(),
+                        p.Ammo[(int)AmmoType.Nato9], 
+                        p.Ammo[(int)AmmoType.Nato556], 
+                        p.Ammo[(int)AmmoType.Nato762], 
+                        RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName), 
+                        p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType)
+                    );
                     p.Role = RoleType.Tutorial;
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();

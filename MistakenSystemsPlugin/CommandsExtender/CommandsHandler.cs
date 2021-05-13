@@ -144,7 +144,7 @@ namespace Gamer.Mistaken.CommandsExtender
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
-                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName;
+                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName.Trim();
                             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         }, "PlayerLeft");
                     }
