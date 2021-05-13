@@ -213,7 +213,7 @@ namespace Gamer.Mistaken.CassieRoom
             inRange = Systems.Components.InRange.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), null, null);
 
             //Workstation
-            var hid = Map.Doors.First(i => i.Type() == Exiled.API.Enums.DoorType.HID);
+            /*var hid = Map.Doors.First(i => i.Type() == Exiled.API.Enums.DoorType.HID);
             foreach (var item in GameObject.FindObjectsOfType<WorkStation>())
             {
                 if(Vector3.Distance(hid.transform.position, item.transform.position) < 10)
@@ -221,7 +221,7 @@ namespace Gamer.Mistaken.CassieRoom
                     item.transform.position = new Vector3(-18, 1019.7f, -39);
                     item.transform.rotation = Quaternion.Euler(0, 180, 0);
                 }
-            }
+            }*/
         }
         private Systems.Components.InRange inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
