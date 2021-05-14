@@ -53,7 +53,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.DisableAllEffects();
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
+                        var old = Respawning.RespawnManager.CurrentSequence();
+                        Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
+                        Respawning.RespawnManager.Singleton._curSequence = old;
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
                         Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
@@ -122,7 +125,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName), 
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType)
                     );
+                    var old = Respawning.RespawnManager.CurrentSequence();
+                    Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                     p.Role = RoleType.Tutorial;
+                    Respawning.RespawnManager.Singleton._curSequence = old;
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();
                     Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>

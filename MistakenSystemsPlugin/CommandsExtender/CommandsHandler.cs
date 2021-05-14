@@ -130,7 +130,10 @@ namespace Gamer.Mistaken.CommandsExtender
                         Player p = RealPlayers.Get(playerId);
                         if (p == null)
                             continue;
+                        var old = Respawning.RespawnManager.CurrentSequence();
+                        Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
+                        Respawning.RespawnManager.Singleton._curSequence = old;
                         this.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
