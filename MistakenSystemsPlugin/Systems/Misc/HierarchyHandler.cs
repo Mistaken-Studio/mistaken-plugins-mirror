@@ -95,7 +95,7 @@ namespace Gamer.Mistaken.Systems.Misc
             int player1Lvl = GetHierarchiiLevel(player1, player2);
             int player2Lvl = GetHierarchiiLevel(player2, player1);
 
-            if (player1Lvl == player2Lvl && player1Lvl == -1)
+            if (player1Lvl == -1 || player2Lvl == -1)
                 return null;
             if (player1.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5) || player2.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5))
                 return "<b>Ten sam poziom uprawnień</b> (Tau5)";
@@ -143,13 +143,13 @@ namespace Gamer.Mistaken.Systems.Misc
 
                         return 0;
                     }
-                    if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER)/* && Map.IsLCZDecontaminated*/)
+                    if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER) && Map.IsLCZDecontaminated)
                         return 501;
                     return -1;
             }
             if (player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                 return 500;
-            if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER)/* && Map.IsLCZDecontaminated*/)
+            if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER) && Map.IsLCZDecontaminated)
                 return 501;
             if (compared.Role == RoleType.Scientist)
                 return -1;
