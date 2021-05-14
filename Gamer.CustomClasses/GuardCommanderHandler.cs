@@ -84,6 +84,7 @@ namespace Gamer.CustomClasses
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.SetRole(RoleType.NtfCommander, true, false);
+                HierarchyHandler.UpdateAll();
                 player.ClearInventory();
                 if (player.IsVIP(out var vipLevel))
                 {
@@ -118,7 +119,7 @@ namespace Gamer.CustomClasses
                     id = ItemType.WeaponManagerTablet,
                     durability = 301000f
                 });
-                Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>", false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", "<color=blue><b>Dowódca Ochrony</b></color>");
                 player.SetGUI("Guard_Commander", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=blue>Dowódcą Ochrony</color></size><br>{ClassDescription}", 20);
                 player.SetGUI("Guard_Commander_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=blue>Dowódca Ochrony</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"Spawned {player.PlayerToString()} as Guard Commander");
@@ -127,7 +128,7 @@ namespace Gamer.CustomClasses
             public override void OnDie(Player player)
             {
                 base.OnDie(player);
-                Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", null, false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "Guard_Commander", null);
                 player.SetGUI("Guard_Commander_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 RoundLogger.Log("CUSTOM CLASSES", "GUARD COMMANDER", $"{player.PlayerToString()} is no longer Guard Commander");
             }

@@ -5,6 +5,7 @@ using Gamer.API.CustomClass;
 using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Systems.Misc;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System.Linq;
@@ -107,6 +108,7 @@ namespace Gamer.CustomClasses
                 player.SetRole(RoleType.Scientist, true, false);
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
+                HierarchyHandler.UpdateAll();
                 player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;
                 bool hasRadio = false;
                 foreach (var item in player.Inventory.items.ToArray())
@@ -130,7 +132,7 @@ namespace Gamer.CustomClasses
                 });
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
-                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>", false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", "<color=#217a7b><b>Zarządca Strefy Podwyższonego Ryzyka</b></color>");
                 player.SetGUI("ZM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#217a7b>Zarządcą Strefy Podwyższonego Ryzyka</color></size><br>{ClassDescription}", 20);
                 player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#217a7b>Zarządca Strefy Podwyższonego Ryzyka</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"Spawned {player.PlayerToString()} as Zone Manager");
@@ -139,7 +141,7 @@ namespace Gamer.CustomClasses
             public override void OnDie(Player player)
             {
                 base.OnDie(player);
-                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", null, false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "ZM", null);
                 player.SetGUI("ZM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 RoundLogger.Log("CUSTOM CLASSES", "ZONE MANAGER", $"{player.PlayerToString()} is no longer Zone Manager");
             }
