@@ -67,7 +67,12 @@ namespace Gamer.CustomClasses
                 player.InfoArea &= ~PlayerInfoArea.Role;
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
-                player.SetRole(this.Role, true, false);
+                var old = Respawning.RespawnManager.CurrentSequence();
+                Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+                player.Role = this.Role;
+                player.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = 2;
+                player.UnitName = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Last().UnitName;
+                Respawning.RespawnManager.Singleton._curSequence = old;
                 player.ClearInventory();
                 //player.AddItem(ItemType.KeycardO5);
                 player.AddItem(ItemType.GunE11SR);
