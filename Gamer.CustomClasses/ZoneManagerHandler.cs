@@ -5,6 +5,7 @@ using Gamer.API.CustomClass;
 using Gamer.API.CustomItem;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Systems.Misc;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using System.Linq;
@@ -105,6 +106,7 @@ namespace Gamer.CustomClasses
             {
                 player.InfoArea &= ~PlayerInfoArea.Role;
                 player.SetRole(RoleType.Scientist, true, false);
+                HierarchyHandler.UpdateAll();
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;

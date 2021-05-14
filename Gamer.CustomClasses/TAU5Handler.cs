@@ -76,6 +76,7 @@ namespace Gamer.CustomClasses
                 player.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = 2;
                 player.UnitName = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Last().UnitName;
                 Respawning.RespawnManager.Singleton._curSequence = old;
+                HierarchyHandler.UpdateAll();
                 player.ClearInventory();
                 //player.AddItem(ItemType.KeycardO5);
                 player.AddItem(ItemType.GunE11SR);

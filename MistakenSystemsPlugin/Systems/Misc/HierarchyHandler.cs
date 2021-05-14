@@ -55,7 +55,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 UpdateAll();
         }
 
-        private void UpdateAll()
+        public static void UpdateAll()
         {
             foreach (var player in RealPlayers.List)
             {
@@ -80,7 +80,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
         }
 
-        private string GetDiff(Player player1, Player player2)
+        private static string GetDiff(Player player1, Player player2)
         {
             if (player1.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5) || player2.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5))
                 return "<b>Ten sam poziom uprawnień</b>";
@@ -98,7 +98,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 return $"<b>Wykryto błąd ({player1Lvl})|({player2Lvl})</b>";
         }
 
-        private int GetHierarchiiLevel(Player player, Player compared)
+        private static int GetHierarchiiLevel(Player player, Player compared)
         {
             int lvl = 0;
             switch (player.Role)

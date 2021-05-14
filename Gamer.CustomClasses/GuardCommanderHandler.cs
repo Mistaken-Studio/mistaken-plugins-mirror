@@ -84,6 +84,7 @@ namespace Gamer.CustomClasses
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.SetRole(RoleType.NtfCommander, true, false);
+                HierarchyHandler.UpdateAll();
                 player.ClearInventory();
                 if (player.IsVIP(out var vipLevel))
                 {

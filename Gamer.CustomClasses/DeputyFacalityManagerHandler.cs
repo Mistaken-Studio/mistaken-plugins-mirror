@@ -148,6 +148,7 @@ namespace Gamer.CustomClasses
             {
                 player.InfoArea &= ~PlayerInfoArea.Role;
                 player.Role = RoleType.Scientist;
+                HierarchyHandler.UpdateAll();
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 bool hasRadio = false;
