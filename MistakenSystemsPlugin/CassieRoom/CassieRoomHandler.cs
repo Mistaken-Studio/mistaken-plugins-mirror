@@ -230,7 +230,7 @@ namespace Gamer.Mistaken.CassieRoom
                                     unlocked = true;
                                     break;
                                 case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
-                                    if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER))
+                                    if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                                         ev.IsAllowed = false;
                                     else
                                         unlocked = true;
@@ -442,7 +442,7 @@ namespace Gamer.Mistaken.CassieRoom
                             case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
                                 break;
                             case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
-                                if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER))
+                                if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                                     return false;
                                 break;
                             default:
