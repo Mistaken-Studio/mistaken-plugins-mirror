@@ -103,6 +103,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override void Spawn(Player player)
             {
+                player.InfoArea &= ~PlayerInfoArea.Role;
                 player.SetRole(RoleType.Scientist, true, false);
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);

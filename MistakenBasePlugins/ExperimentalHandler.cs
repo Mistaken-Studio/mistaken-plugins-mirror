@@ -49,7 +49,7 @@ namespace Gamer.Mistaken.Base
         public override string[] Execute(CommandSystem.ICommandSender sender, string[] args, out bool success)
         {
             success = true;
-            return new string[] { "Version: " + Version.CurrentVersion, "Debug: " + Version.Debug };
+            return new string[] { "Version: " + Version.CurrentVersion, "Debug: " + Version.Debug,"Full commit SHA: "+ Version.commitSha, "Build timestamp: "+Version.buildTimeStamp, "Build Tools Version: " + Version.ciToolsVersion };
         }
     }
 }

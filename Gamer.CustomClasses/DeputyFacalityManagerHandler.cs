@@ -146,6 +146,7 @@ namespace Gamer.CustomClasses
             public override string Color => "#bd1a47";
             public override void Spawn(Player player)
             {
+                player.InfoArea &= ~PlayerInfoArea.Role;
                 player.Role = RoleType.Scientist;
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
