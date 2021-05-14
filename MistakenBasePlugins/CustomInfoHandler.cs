@@ -127,7 +127,12 @@ namespace Gamer.Mistaken.Base
                 return;
             ToUpdate.Add(player);
         }
-
+        /// <summary>
+        /// Set CustomInfo for Staff
+        /// </summary>
+        /// <param name="player">Player to set for</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
         public static void SetStaff(Player player, string key, string value)
         {
             if (!CustomInfoStaffOnly.ContainsKey(player))
@@ -140,7 +145,13 @@ namespace Gamer.Mistaken.Base
                 return;
             ToUpdate.Add(player);
         }
-
+        /// <summary>
+        /// Set CustomInfo for Staff
+        /// </summary>
+        /// <param name="player">Player to set for</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
+        /// <param name="target">Player that will see that info</param>
         public static void SetTarget(Player player, string key, string value, Player target)
         {
             if (!CustomInfoTargeted.ContainsKey(player))
