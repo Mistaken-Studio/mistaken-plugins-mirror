@@ -6,6 +6,7 @@ using Gamer.Mistaken.CommandsExtender.Commands;
 using Gamer.Mistaken.Systems.End;
 using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
+using Respawning;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -123,13 +124,19 @@ namespace Gamer.Mistaken.CommandsExtender
             {
                 foreach (var playerId in players)
                 {
-                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
+                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
                         if (p == null)
                             continue;
+                        var old = Respawning.RespawnManager.CurrentSequence();
+                        Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
+                        p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
+                        if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
+                            p.UnitName = array[data.UnitIndex];
+                        Respawning.RespawnManager.Singleton._curSequence = old;
                         this.CallDelayed(0.5f, () =>
                         {
                             if (!p.IsConnected)
@@ -143,6 +150,8 @@ namespace Gamer.Mistaken.CommandsExtender
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                            p.ReferenceHub.characterClassManager.NetworkCurUnitName = RespawnManager.Singleton.NamingManager.AllUnitNames[data.UnitIndex].UnitName.Trim();
+                            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         }, "PlayerLeft");
                     }
                 }

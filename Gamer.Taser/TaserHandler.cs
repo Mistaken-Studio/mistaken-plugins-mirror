@@ -109,7 +109,7 @@ namespace Gamer.Taser
                 {
                     if (player.GetEffectActive<CustomPlayerEffects.Scp268>())
                         player.DisableEffect<CustomPlayerEffects.Scp268>();
-                    Cooldowns[dur] = DateTime.Now.AddSeconds(Cooldown);
+                    Cooldowns[dur] = DateTime.Now.AddSeconds(PluginHandler.Config.TaserHitCooldown);
                     var targetPlayer = Player.Get(target);
                     if (targetPlayer != null)
                     {
@@ -159,11 +159,11 @@ namespace Gamer.Taser
                         }
                     }
                 }
+                Cooldowns[dur] = DateTime.Now.AddSeconds(PluginHandler.Config.TaserMissCooldown);
                 RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} didn't hit anyone");
                 return false;
             }
 
-            private const int Cooldown = 90;
             private readonly Dictionary<int, DateTime> Cooldowns = new Dictionary<int, DateTime>();
             private IEnumerator<float> UpdateInterface(Player player)
             {
@@ -178,7 +178,7 @@ namespace Gamer.Taser
                         Cooldowns.Add(dur, DateTime.Now);
                         time = DateTime.Now;
                     }
-                    var diff = ((Cooldown - (time - DateTime.Now).TotalSeconds) / Cooldown) * 100;
+                    var diff = ((PluginHandler.Config.TaserHitCooldown - (time - DateTime.Now).TotalSeconds) / PluginHandler.Config.TaserHitCooldown) * 100;
                     string bar = "";
                     for (int i = 1; i <= 20; i++)
                     {

@@ -500,21 +500,25 @@ namespace Gamer.SNAV
             new SNavUltimateItem();
         }
         /// <inheritdoc/>
-        public override void OnEnable()
-        {
-            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Player.InsertingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
-            Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
-        }
-        /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.InsertingGeneratorTablet -= this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
             Exiled.Events.Handlers.Player.ActivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
+            Exiled.Events.Handlers.Player.DeactivatingWorkstation -= this.Handle<Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs>((ev) => Player_DeactivatingWorkstation(ev));
         }
+        /// <inheritdoc/>
+        public override void OnEnable()
+        {
+            Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.InsertingGeneratorTablet += this.Handle<Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs>((ev) => Player_InsertingGeneratorTablet(ev));
+            Exiled.Events.Handlers.Player.ActivatingWorkstation += this.Handle<Exiled.Events.EventArgs.ActivatingWorkstationEventArgs>((ev) => Player_ActivatingWorkstation(ev));
+            Exiled.Events.Handlers.Player.DeactivatingWorkstation += this.Handle<Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs>((ev) => Player_DeactivatingWorkstation(ev));
+        }
+
+
         /// <summary>
         /// Spawns SNAV
         /// </summary>
@@ -540,23 +544,36 @@ namespace Gamer.SNAV
                 }, pos, Quaternion.identity, new Vector3(2.0f, .50f, .50f));
             }
         }
-
+        private static readonly Dictionary<WorkStation, Inventory.SyncItemInfo> Workstations = new Dictionary<WorkStation, Inventory.SyncItemInfo>();
         private void Player_ActivatingWorkstation(Exiled.Events.EventArgs.ActivatingWorkstationEventArgs ev)
         {
-            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
+            if (!ev.IsAllowed)
+                return;
+            var first = ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet);
+            if (first.durability >= 301000f)
+                Workstations[ev.Workstation] = first;
+        }
+        private void Player_DeactivatingWorkstation(Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            if (Workstations.TryGetValue(ev.Workstation, out var snav))
             {
-                ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do workstation", 5);
+                ev.Player.AddItem(snav);
+                Workstations.Remove(ev.Workstation);
                 ev.IsAllowed = false;
+                ev.Workstation.NetworkisTabletConnected = false;
+                ev.Workstation.Network_playerConnected = null;
             }
         }
 
         private void Player_InsertingGeneratorTablet(Exiled.Events.EventArgs.InsertingGeneratorTabletEventArgs ev)
         {
-            if (ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet).durability >= 301000f)
-            {
-                ev.Player.SetGUI("snavWarn", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, "Nie możesz włożyć <color=yellow>SNAV-a</color> do generatora", 5);
-                ev.IsAllowed = false;
-            }
+            if (!ev.IsAllowed)
+                return;
+            var first = ev.Player.Inventory.items.FirstOrDefault(i => i.id == ItemType.WeaponManagerTablet);
+            if (first.durability >= 301000f)
+                GeneratorPatch.Generators[ev.Generator] = first;
         }
 
         private void Server_RoundStarted()

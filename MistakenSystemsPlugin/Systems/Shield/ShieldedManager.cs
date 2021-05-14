@@ -60,7 +60,8 @@ namespace Gamer.Mistaken.Systems.Shield
         private static IEnumerator<float> ExecuteCycle()
         {
             yield return Timing.WaitForSeconds(1);
-            int rid = RoundPlus.RoundId; while (Round.IsStarted && rid == RoundPlus.RoundId)
+            int rid = RoundPlus.RoundId;
+            while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
                 foreach (var shielded in Shieldeds.ToArray())
                     shielded.DoRegenerationCicle();
@@ -115,6 +116,7 @@ namespace Gamer.Mistaken.Systems.Shield
 
         public Shielded(Player p, int maxShield, float regeneration, float safeTime = -1, float shieldDecay = -1, float shieldEffectivnes = -1)
         {
+            Log.Debug($"Enabling shield for {p.Nickname}");
             MaxShield = maxShield;
             Regeneration = regeneration;
             SafeTime = safeTime;
@@ -163,7 +165,6 @@ namespace Gamer.Mistaken.Systems.Shield
             {
                 if (ShieldDecay != -1)
                     player.ReferenceHub.playerStats.artificialHpDecay = originalShieldDecay;
-                Log.Debug($"Shield overflow for {player.Nickname} max is {MaxShield} but reached {player.ArtificialHealth}, originalDecay: {originalShieldDecay}");
                 return;
             }
             else
@@ -183,6 +184,7 @@ namespace Gamer.Mistaken.Systems.Shield
 
         internal void Disable()
         {
+            Log.Debug($"Disabling shield for {player.Nickname}");
             Exiled.Events.Handlers.Player.Left -= Player_Left;
             Exiled.Events.Handlers.Player.ChangingRole -= Player_ChangingRole;
             Exiled.Events.Handlers.Player.Hurting -= Player_Hurting;

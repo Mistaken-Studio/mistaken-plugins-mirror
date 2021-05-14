@@ -251,6 +251,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         }
                     });
                     break;
+                case "unit":
+                    player.UnitName = args[1];
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
