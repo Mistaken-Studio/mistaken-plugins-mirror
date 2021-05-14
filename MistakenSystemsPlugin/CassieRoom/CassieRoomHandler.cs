@@ -397,6 +397,8 @@ namespace Gamer.Mistaken.CassieRoom
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     this.CallDelayed(5, () =>
                     {
+                        if (Systems.Misc.BetterWarheadHandler.Warhead.StopLock)
+                            return;
                         Warhead.Stop();
                         this.CallDelayed(2 * 60, () =>
                         {
