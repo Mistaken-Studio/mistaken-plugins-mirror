@@ -9,9 +9,9 @@ namespace Xname.CE
         /// <inheritdoc/>
         public override string Author => "Xname";
         /// <inheritdoc/>
-        public override string Name => "ColorfullEZ";
+        public override string Name => "CombatExtended";
         /// <inheritdoc/>
-        public override string Prefix => "color_ez";
+        public override string Prefix => "ce";
         /// <inheritdoc/>
         public override void OnEnabled()
         {
