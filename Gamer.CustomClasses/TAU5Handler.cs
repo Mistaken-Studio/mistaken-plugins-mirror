@@ -57,7 +57,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override Main.SessionVarType ClassSessionVarType => Main.SessionVarType.CC_TAU5;
             /// <inheritdoc/>
-            public override string ClassName => "Tau-5 Samsara Soldier";
+            public override string ClassName => "Żołnierz Tau-5 Samsara";
             /// <inheritdoc/>
             public override string ClassDescription => "Twoje zadanie: <color=red>Zneutralizować wszystko poza personelem fundacji</color><br><b>Karta O5 jest wbudowana w twoją rękę</b>, więc <color=yellow>możesz otwierać <b>wszystkie</b> drzwi nie używając karty</color>";
             /// <inheritdoc/>
@@ -98,9 +98,9 @@ namespace Gamer.CustomClasses
                 player.ArtificialHealth = 50;
                 Mistaken.Systems.Shield.ShieldedManager.Add(new Mistaken.Systems.Shield.Shielded(player, 50, 0.25f, 30, 0, -1));
                 player.UnitName = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Last().UnitName;
-                Mistaken.Base.CustomInfoHandler.Set(player, "TAU5", "<color=#C00><b>Zołnierz Tau-5 Samsara</b></color>");
-                player.SetGUI("TAU5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#C00>Zołnierzem Tau-5 Samsara</color></size><br>{ClassDescription}", 20);
-                player.SetGUI("TAU5_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#C00>Zołnierz Tau-5 Samsara</color>");
+                Mistaken.Base.CustomInfoHandler.Set(player, "TAU5", "<color=#C00><b>Żołnierz Tau-5 Samsara</b></color>");
+                player.SetGUI("TAU5", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#C00>Żołnierzem Tau-5 Samsara</color></size><br>{ClassDescription}", 20);
+                player.SetGUI("TAU5_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#C00>Żołnierz Tau-5 Samsara</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "TAU-5", $"Spawned {player.PlayerToString()} as Tau-5 Samsara Soldier");
             }
 
