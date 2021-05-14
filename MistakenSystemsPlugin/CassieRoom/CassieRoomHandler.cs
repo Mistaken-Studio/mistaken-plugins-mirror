@@ -87,6 +87,8 @@ namespace Gamer.Mistaken.CassieRoom
         }
         private void UpdateSNavSurface()
         {
+            if (SNavSurface == null)
+                return;
             if (SNavSurface.ColliderInArea.Count > 0)
             {
                 string[] toWrite = SNAV.SNavHandler.GenerateSurfaceSNav(true);
@@ -108,6 +110,8 @@ namespace Gamer.Mistaken.CassieRoom
         }
         private void UpdateSNavEZHCZ()
         {
+            if (SNavEZHCZ == null)
+                return;
             if (SNavEZHCZ.ColliderInArea.Count > 0)
             {
                 string[] toWrite = SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
