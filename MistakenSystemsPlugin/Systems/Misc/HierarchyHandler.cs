@@ -88,17 +88,17 @@ namespace Gamer.Mistaken.Systems.Misc
         private static string GetDiff(Player player1, Player player2)
         {
             if (player1.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5) || player2.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5))
-                return "<b>Ten sam poziom uprawnień</b>";
+                return "<b>Ten sam poziom uprawnień</b> (Tau5)";
 
             int player1Lvl = GetHierarchiiLevel(player1, player2);
             int player2Lvl = GetHierarchiiLevel(player2, player1);
 
             if (player1Lvl > player2Lvl)
-                return "<b>Wydawaj rozkazy</b>";
+                return $"<b>Wydawaj rozkazy</b> ({player1Lvl})|({player2Lvl})";
             else if (player1Lvl == player2Lvl)
-                return "<b>Ten sam poziom uprawnień</b>";
+                return $"<b>Ten sam poziom uprawnień</b> ({player1Lvl})|({player2Lvl})";
             else if (player1Lvl < player2Lvl)
-                return "<b>Wykonuj rozkazy</b>";
+                return $"<b>Wykonuj rozkazy</b> ({player1Lvl})|({player2Lvl})";
             else
                 return $"<b>Wykryto błąd ({player1Lvl})|({player2Lvl})</b>";
         }
