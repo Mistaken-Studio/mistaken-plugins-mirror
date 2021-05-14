@@ -133,6 +133,9 @@ namespace Gamer.Mistaken.CommandsExtender
                         var old = Respawning.RespawnManager.CurrentSequence();
                         Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
+                        p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
+                        if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
+                            p.UnitName = array[data.UnitIndex];
                         Respawning.RespawnManager.Singleton._curSequence = old;
                         this.CallDelayed(0.5f, () =>
                         {
