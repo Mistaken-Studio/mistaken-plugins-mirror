@@ -35,12 +35,15 @@ namespace Gamer.CustomClasses
         {
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator += this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Player.InteractingLocker += this.Handle<Exiled.Events.EventArgs.InteractingLockerEventArgs>((ev) => Player_InteractingLocker(ev));
         }
+
         /// <inheritdoc/>
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
             Exiled.Events.Handlers.Player.UnlockingGenerator -= this.Handle<Exiled.Events.EventArgs.UnlockingGeneratorEventArgs>((ev) => Player_UnlockingGenerator(ev));
+            Exiled.Events.Handlers.Player.InteractingLocker -= this.Handle<Exiled.Events.EventArgs.InteractingLockerEventArgs>((ev) => Player_InteractingLocker(ev));
         }
         /// <inheritdoc/>
         public class Tau5Soldier : CustomClass
@@ -117,6 +120,13 @@ namespace Gamer.CustomClasses
         }
 
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
+        {
+            if (Tau5Soldier.Instance.PlayingAsClass.Contains(ev.Player))
+                ev.IsAllowed = true;
+        }
+
+
+        private void Player_InteractingLocker(Exiled.Events.EventArgs.InteractingLockerEventArgs ev)
         {
             if (Tau5Soldier.Instance.PlayingAsClass.Contains(ev.Player))
                 ev.IsAllowed = true;
