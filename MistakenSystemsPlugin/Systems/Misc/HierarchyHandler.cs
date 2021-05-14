@@ -52,7 +52,12 @@ namespace Gamer.Mistaken.Systems.Misc
                 }, "LateForceNoBaseGameHierarchy");
             }
             if (ev.Player.IsAlive)
-                UpdateAll();
+            {
+                this.CallDelayed(1, () =>
+                {
+                    UpdateAll();
+                }, "ChangedRoleLate");
+            }   
         }
 
         public static void UpdateAll()
