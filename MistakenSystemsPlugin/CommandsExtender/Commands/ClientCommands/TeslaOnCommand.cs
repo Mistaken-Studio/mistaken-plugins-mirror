@@ -25,6 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
             AlreadyUsed.Add(player.UserId);
             Cassie.Message("Tesla gates activated by order of NINETAILEDFOX COMMANDER");
+            CassieRoom.CassieRoomHandler.TeslaIndicator.NetworkTargetState = false;
             success = true;
             return new string[] { "Zrobione" };
         }

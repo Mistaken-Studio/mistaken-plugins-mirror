@@ -173,6 +173,7 @@ namespace Gamer.CustomClasses
                     if (Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(player.CurrentItem)?.ItemName == "Karta Dowódcy Ochrony")
                     {
                         GuardCommanderKeycard.Instance.CurrentOwner = player;
+                        player.SetSessionVar(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER, true);
                         GuardCommanderKeycard.Instance.OnStartHolding(player, player.CurrentItem);
                     }
                 }
@@ -328,6 +329,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
+                CurrentOwner.SetSessionVar(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER, false);
                 CurrentOwner = null;
                 return true;
             }

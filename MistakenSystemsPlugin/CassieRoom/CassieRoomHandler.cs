@@ -1,10 +1,12 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Systems.Components;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
-using LightContainmentZoneDecontamination;
 using MEC;
 using Mirror;
 using System;
@@ -20,6 +22,7 @@ namespace Gamer.Mistaken.CassieRoom
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
             this.RunCoroutine(Loop(), "Loop");
+            this.RunCoroutine(UpdateSNav(), "UpdateSNav");
         }
 
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
@@ -47,17 +50,87 @@ namespace Gamer.Mistaken.CassieRoom
                             LoadedAll.Remove(player);
                         }
                     }
+
                     Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "Loop", start, DateTime.Now);
                 }
                 catch (System.Exception ex)
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
+                    Gamer.Diagnostics.MasterHandler.LogError(ex, this, "Loop");
                 }
                 yield return Timing.WaitForSeconds(1);
             }
         }
+        private IEnumerator<float> UpdateSNav()
+        {
+            yield return Timing.WaitForSeconds(5);
+            while (true)
+            {
+                try
+                {
+                    var start = DateTime.Now;
 
+                    UpdateSNavSurface();
+                    UpdateSNavEZHCZ();
+
+                    Gamer.Diagnostics.MasterHandler.LogTime("CassieRoom", "UpdateSNav", start, DateTime.Now);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                    Gamer.Diagnostics.MasterHandler.LogError(ex, this, "UpdateSNav");
+                }
+                yield return Timing.WaitForSeconds(5);
+            }
+        }
+        private void UpdateSNavSurface()
+        {
+            if (SNavSurface == null)
+                return;
+            if (SNavSurface.ColliderInArea.Count > 0)
+            {
+                string[] toWrite = SNAV.SNavHandler.GenerateSurfaceSNav(true);
+                var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+                list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+                while (list.Count < 65)
+                    list.Insert(0, "");
+                string msg = "<voffset=25em><color=yellow>SURFACE</color><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>";
+                foreach (var gameObject in SNavSurface.ColliderInArea)
+                {
+                    if (gameObject == null)
+                        continue;
+                    var player = Player.Get(gameObject);
+                    if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                        continue;
+                    player.ShowHint(msg, 6);
+                }
+            }
+        }
+        private void UpdateSNavEZHCZ()
+        {
+            if (SNavEZHCZ == null)
+                return;
+            if (SNavEZHCZ.ColliderInArea.Count > 0)
+            {
+                string[] toWrite = SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
+                var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
+                list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
+                while (list.Count < 65)
+                    list.Insert(0, "");
+                string msg = "<voffset=25em><color=yellow>Entrance Zone</color> & <color=yellow>Heavy Containment Zone</color><color=green><size=25%><align=left><mspace=0.5em>" + string.Join("<br>", list) + "</mspace></align></size></color></voffset>";
+                foreach (var gameObject in SNavEZHCZ.ColliderInArea)
+                {
+                    if (gameObject == null)
+                        continue;
+                    var player = Player.Get(gameObject);
+                    if (player.ReferenceHub.networkIdentity.connectionToClient == null)
+                        continue;
+                    player.ShowHint(msg, 6);
+                }
+            }
+        }
         internal void SyncFor(Player player)
         {
             MethodInfo sendSpawnMessage = Server.SendSpawnMessage;
@@ -104,16 +177,16 @@ namespace Gamer.Mistaken.CassieRoom
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            //Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
-            //Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            Exiled.Events.Handlers.Warhead.Starting += this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
+            Exiled.Events.Handlers.Warhead.Stopping += this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            //Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
-            //Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
+            Exiled.Events.Handlers.Warhead.Starting -= this.Handle<Exiled.Events.EventArgs.StartingEventArgs>((ev) => Warhead_Starting(ev));
+            Exiled.Events.Handlers.Warhead.Stopping -= this.Handle<Exiled.Events.EventArgs.StoppingEventArgs>((ev) => Warhead_Stopping(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
         }
 
@@ -137,7 +210,7 @@ namespace Gamer.Mistaken.CassieRoom
         public enum PluginDoorLockReason : ushort
         {
             COOLDOWN = 512,
-            NO_CLOSE_ENOUGHT = 1024,
+            BLOCKED_BY_SOMETHING = 1024,
             REQUIREMENTS_NOT_MET = 2048,
         }
 
@@ -145,13 +218,61 @@ namespace Gamer.Mistaken.CassieRoom
         {
             if (ev.IsAllowed && DoorCallbacks.TryGetValue(ev.Door, out var callback))
                 ev.IsAllowed = callback(ev);
+            else if(ev.Door == mainDoor)
+            {
+                if (ev.Player.CurrentItemIndex == -1 || !ev.Player.CurrentItem.id.IsKeycard() || ev.Player.CurrentItem.id == ItemType.KeycardChaosInsurgency)
+                    ev.IsAllowed = false;
+                else
+                {
+                    if(!unlocked)
+                    {
+                        var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
+                        if (citem == null)
+                            ev.IsAllowed = false;
+                        else
+                        {
+                            switch (citem.SessionVarType)
+                            {
+                                case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
+                                    unlocked = true;
+                                    break;
+                                case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
+                                    if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
+                                        ev.IsAllowed = false;
+                                    else
+                                        unlocked = true;
+                                    break;
+                                default:
+                                    ev.IsAllowed = false;
+                                    break;
+                            }
+                        }
+                    }
+                    if (!ev.IsAllowed)
+                        return;
+                    mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
+                    MEC.Timing.CallDelayed(5f, () =>
+                    {
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                    });
+                }
+            }
         }
+
+        private bool unlocked = false;
 
         public static readonly Dictionary<DoorVariant, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool>> DoorCallbacks = new Dictionary<DoorVariant, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool>>();
 
         private DoorVariant WarheadStartButton;
         private DoorVariant WarheadStopButton;
+        private DoorVariant WarheadLockButton;
+        private DoorVariant TeslaToggleButton;
+        private DoorVariant CassieRoomOpenButton;
+        private DoorVariant mainDoor;
+        internal static DoorVariant TeslaIndicator;
 
+        private static InRangeBall SNavSurface;
+        private static InRangeBall SNavEZHCZ;
         private void Server_WaitingForPlayers()
         {
             networkIdentities.Clear();
@@ -211,16 +332,14 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 ItemType keycardType = ItemType.KeycardContainmentEngineer;
                 //MainDoor
-                var mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one, true);
-                mainDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
+                mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
-                mainDoor.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
+                mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                 Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
-                networkIdentities.Add(mainDoor.netIdentity);
                 //UpperDoor
-                SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, Vector3.one);
-                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, Vector3.one);
-                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, Vector3.one);
+                SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
+                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
+                SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
                 SpawnItem(keycardType, new Vector3(190f, 999.95f, -73f), new Vector3(0, 0, 0), new Vector3(20, 1020, 2));
                 SpawnItem(keycardType, new Vector3(188f, 1005f, -73f), new Vector3(0, 0, 0), new Vector3(70, 500, 2));
                 SpawnItem(keycardType, new Vector3(189f, 1005f, -84.5f), new Vector3(90, 90, 0), new Vector3(100, 2500, 2));
@@ -235,26 +354,16 @@ namespace Gamer.Mistaken.CassieRoom
                     Log.Debug("Spawned Door");
                 }
 
-                //View blocker
-                SpawnItem(ItemType.KeycardO5, new Vector3(190f, 994.7f, -73f), new Vector3(90, 0, 0), new Vector3(8, 4, 5));
-
                 var obj = new GameObject();
                 var collider = obj.AddComponent<BoxCollider>();
                 obj.transform.position = new Vector3(187f, 1005, -83f);
                 collider.size = new Vector3(20, 2, 20);
             }
             #endregion
-            #region move to functionality on release
-            SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
-            {
-                return false;
-            }, new Vector3(0.5f, 0.5f, 0.5f));
-            #endregion
-            return;
             #region Functionality
             {
                 //Test Button
-                SpawnButton(new Vector3(181, 994, -75), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Test</color> button</size>", (ev) =>
+                /*SpawnButton(new Vector3(181, 994, -75), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Test</color> button</size>", (ev) =>
                 {
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . This is a test message", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
@@ -263,13 +372,13 @@ namespace Gamer.Mistaken.CassieRoom
                         ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
                     }, "TestButtonCooldown");
                     return false;
-                });
+                });*/
                 //Warhead Start
                 WarheadStartButton = SpawnButton(new Vector3(181, 994, -79), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Start</color> a Warhead</size>", (ev) =>
                 {
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Warhead engaged", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    this.CallDelayed(6, () =>
+                    this.CallDelayed(5, () =>
                     {
                         Warhead.Start();
                         this.CallDelayed(2 * 60, () =>
@@ -282,11 +391,11 @@ namespace Gamer.Mistaken.CassieRoom
                 //Warhead Stop
                 WarheadStopButton = SpawnButton(new Vector3(181, 994, -83), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Stop</color> a Warhead</size>", (ev) =>
                 {
-                    if (Warhead.DetonationTimer < 10 + 6)
+                    if (Warhead.DetonationTimer < 10 + 5)
                         return false;
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Warhead disengaged", false, false);
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    this.CallDelayed(6, () =>
+                    this.CallDelayed(5, () =>
                     {
                         Warhead.Stop();
                         this.CallDelayed(2 * 60, () =>
@@ -297,18 +406,128 @@ namespace Gamer.Mistaken.CassieRoom
                     return false;
                 });
                 WarheadStopButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
-                //Delay Decontamination
-                WarheadStartButton = SpawnButton(new Vector3(181, 994, -87), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Delay</color> by <color=yellow>5 minutes</color> LCZ Decontamination</size>", (ev) =>
+                //Disable warhead
+                WarheadLockButton = SpawnButton(new Vector3(181, 994, -87), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Disable</color> Warhead</size>", (ev) =>
                 {
-                    Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . LIGHT CONTAINMENT ZONE DECONTAMINATION TIME INCREASED BY 5 MINUTES");
-                    ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    DecontaminationController.Singleton.NetworkRoundStartTime += 300;
+                    Systems.Misc.BetterWarheadHandler.Warhead.StartLock = true;
+                    Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . warhead is now in permanent lockdown");
+                    WarheadLockButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                     return false;
                 });
+                TeslaIndicator = SpawnIndicator(new Vector3(181, 994.5f, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90));
+                TeslaToggleButton = SpawnButton(new Vector3(181, 994, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Toggles</color> all Tesla gates</size><br><color=blue>Enabled</color> | <color=green>Disabled</color>", (ev) =>
+                {
+                    ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
+                    if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
+                    {
+                        Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
+                        TeslaIndicator.NetworkTargetState = true;
+                        Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Tesla gates are now deactivated");
+                    }
+                    else
+                    {
+                        Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
+                        TeslaIndicator.NetworkTargetState = false;
+                        Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Tesla gates are now activated");
+                    }
+                    MEC.Timing.CallDelayed(2 * 60, () =>
+                    {
+                        ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                    });
+                    return false;
+                });
+
+                CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
+                {
+                    //if (!Map.IsLCZDecontaminated)
+                    //    return false;
+                    if(!unlocked)
+                    {
+                        var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
+                        if (citem == null)
+                            return false;
+                        switch(citem.SessionVarType)
+                        {
+                            case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
+                                break;
+                            case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
+                                if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
+                                    return false;
+                                break;
+                            default:
+                                return false;
+                        }
+                    }
+                        
+                    mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
+                    CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
+                    CassieRoomOpenButton.NetworkTargetState = true;
+                    MEC.Timing.CallDelayed(3f, () =>
+                    {
+                        CassieRoomOpenButton.NetworkTargetState = false;
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
+                        CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, false);
+                        if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.BLOCKED_BY_SOMETHING) == 0)
+                            mainDoor.NetworkTargetState = false;
+                    });
+                    return false;
+                }, new Vector3(0.5f, 0.5f, 0.5f));
+                CassieRoomOpenButton.NetworkTargetState = false;
+
+                //188 992.46 -91 180 0 0 10 0.001 10
+                SpawnItem(ItemType.SCP018, new Vector3(188, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
+                SNavSurface = InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
+                    (player) => 
+                    {
+                        Base.GUI.PseudoGUIHandler.Ignore(player);
+                        UpdateSNavSurface();
+                    },
+                    (player) => Base.GUI.PseudoGUIHandler.StopIgnore(player)
+                );
+                SpawnItem(ItemType.SCP018, new Vector3(192, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
+                SNavEZHCZ = InRangeBall.Spawn(new Vector3(192, 993, -91), 1, 1,
+                    (player) =>
+                    {
+                        Base.GUI.PseudoGUIHandler.Ignore(player);
+                        UpdateSNavEZHCZ();
+                    },
+                    (player) => Base.GUI.PseudoGUIHandler.StopIgnore(player)
+                );
+                InRange isSomeoneInside = null;
+                isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
+                    (player) =>
+                    {
+                        mainDoor.NetworkTargetState = true;
+                        mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, true);
+                    },
+                    (player) =>
+                    {
+                        this.CallDelayed(5, () =>
+                        {
+                            if (isSomeoneInside.ColliderInArea.Count == 0)
+                            {
+                                mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
+                                if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.REQUIREMENTS_NOT_MET) != 0)
+                                    mainDoor.NetworkTargetState = false;
+                            }
+                        }, "Unlock doors");
+                    }
+                );
+                var obj = new GameObject();
+                obj.transform.position = new Vector3(188, 1004, -85);
+                obj.AddComponent<BoxCollider>().size = new Vector3(23, 1, 23);
             }
             #endregion
         }
-
+        public static DoorVariant SpawnIndicator(Vector3 pos, Vector3 buttonOffset, Vector3 rotation)
+        {
+            var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, Vector3.one);
+            (door as BreakableDoor)._brokenPrefab = null;
+            door.NetworkTargetState = false;
+            DoorCallbacks[door] = (ev) => false;
+            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            return door;
+        }
         public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation, string name, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool> onCall, Vector3 size = default)
         {
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, size == default ? Vector3.one : size);
@@ -323,7 +542,6 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
             });
-            networkIdentities.Add(door.netIdentity);
             return door;
         }
         public static DoorVariant SpawnDoor(string name, Vector3 pos, Vector3 rotation, Vector3 size)
