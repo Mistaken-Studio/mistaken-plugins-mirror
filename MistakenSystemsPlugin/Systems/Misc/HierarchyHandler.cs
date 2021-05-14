@@ -98,15 +98,15 @@ namespace Gamer.Mistaken.Systems.Misc
             if (player1Lvl == -1 || player2Lvl == -1)
                 return null;
             if (player1.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5) || player2.GetSessionVar<bool>(Main.SessionVarType.CC_TAU5))
-                return "<b>Ten sam poziom uprawnień</b> (Tau5)";
+                return "<b>Ten sam poziom uprawnień</b>";
             if (player1Lvl > player2Lvl)
-                return $"<b>Wydawaj rozkazy</b> ({player1Lvl})|({player2Lvl})";
+                return $"<b>Wydawaj rozkazy</b>";
             else if (player1Lvl == player2Lvl)
-                return $"<b>Ten sam poziom uprawnień</b> ({player1Lvl})|({player2Lvl})";
+                return $"<b>Ten sam poziom uprawnień</b>";
             else if (player1Lvl < player2Lvl)
-                return $"<b>Wykonuj rozkazy</b> ({player1Lvl})|({player2Lvl})";
-            else
-                return $"<b>Wykryto błąd ({player1Lvl})|({player2Lvl})</b>";
+                return $"<b>Wykonuj rozkazy</b>";
+            
+            return $"<b>Wykryto błąd (Niewykonalny kod się wykonał) ({player1Lvl})|({player2Lvl})</b>";
         }
 
         private static int GetHierarchiiLevel(Player player, Player compared)
