@@ -15,7 +15,7 @@ namespace Xname.CE
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            new CEHandler(this);
+            //new CEHandler(this);
 
             Gamer.Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
