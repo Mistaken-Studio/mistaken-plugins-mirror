@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="CEHandler.cs" />
     <Compile Include="PluginHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">
