@@ -106,9 +106,9 @@ namespace Gamer.CustomClasses
             {
                 player.InfoArea &= ~PlayerInfoArea.Role;
                 player.SetRole(RoleType.Scientist, true, false);
-                HierarchyHandler.UpdateAll();
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
+                HierarchyHandler.UpdateAll();
                 player.Position = Map.Rooms.Where(x => x.Type == RoomType.HczChkpA || x.Type == RoomType.HczChkpB).First().Position + Vector3.up;
                 bool hasRadio = false;
                 foreach (var item in player.Inventory.items.ToArray())
