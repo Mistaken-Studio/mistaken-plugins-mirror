@@ -105,6 +105,8 @@ namespace Gamer.Mistaken.Base
                 {
                     if (item.Value.Count == 0)
                         continue;
+                    if (!(player?.IsConnected ?? false))
+                        continue;
                     if (item.Key?.Connection?.identity == null)
                         continue;
                     var tmp = item.Value.Values.ToList();
