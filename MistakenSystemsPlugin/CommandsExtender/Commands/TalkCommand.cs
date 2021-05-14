@@ -59,8 +59,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                         if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.ReferenceHub.characterClassManager.NetworkCurUnitName = array[data.UnitIndex];
-                        Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
-                        Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType);
                         Respawning.RespawnManager.Singleton._curSequence = old;
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
