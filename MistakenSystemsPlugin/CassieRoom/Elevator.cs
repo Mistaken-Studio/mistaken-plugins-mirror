@@ -536,18 +536,26 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 foreach (var item in InElevator.ToArray())
                 {
-                    if (item == null)
+                    try
                     {
-                        InElevator.RemoveAll(i => i == null);
-                        continue;
+                        if (item == null)
+                        {
+                            InElevator.RemoveAll(i => i == null);
+                            continue;
+                        }
+                        if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
+                        {
+                            item.Position += Offset;
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Up ({item.Position})");
+                        }
+                        else
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Up ({item.Position})");
                     }
-                    if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
+                    catch(System.Exception ex)
                     {
-                        item.Position += Offset;
-                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Up ({item.Position})");
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
                     }
-                    else
-                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Up ({item.Position})");
                 }
                 foreach (var item in Pickup.Instances)
                 {
@@ -571,18 +579,26 @@ namespace Gamer.Mistaken.CassieRoom
             {
                 foreach (var item in InElevator.ToArray())
                 {
-                    if (item == null)
+                    try
                     {
-                        InElevator.RemoveAll(i => i == null);
-                        continue;
+                        if (item == null)
+                        {
+                            InElevator.RemoveAll(i => i == null);
+                            continue;
+                        }
+                        if (item.IsConnected && item.IsAlive && item.Position.y > 1010)
+                        {
+                            item.Position -= Offset;
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Down ({item.Position})");
+                        }
+                        else
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Down ({item.Position})");
                     }
-                    if (item.IsConnected && item.IsAlive && item.Position.y > 1010)
+                    catch (System.Exception ex)
                     {
-                        item.Position -= Offset;
-                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Down ({item.Position})");
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
                     }
-                    else
-                        RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Down ({item.Position})");
                 }
                 foreach (var item in Pickup.Instances)
                 {
