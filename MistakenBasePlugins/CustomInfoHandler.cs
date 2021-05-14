@@ -99,13 +99,28 @@ namespace Gamer.Mistaken.Base
             }
             if (CustomInfoTargeted[player].Count > 0)
             {
+                if (!(player?.IsConnected ?? false))
+                    return;
+                if (player?.Connection?.identity == null)
+                    return;
                 foreach (var item in CustomInfoTargeted[player])
                 {
                     if (item.Value.Count == 0)
                         continue;
+                    if (!(item.Key?.IsConnected ?? false))
+                        continue;
+                    if (item.Key?.Connection?.identity == null)
+                        continue;
                     var tmp = item.Value.Values.ToList();
                     tmp.AddRange(CustomInfo[player].Values);
-                    this.CallDelayed(1, () => item.Key.SetPlayerInfoForTargetOnly(player, string.Join("\n", tmp)), "Update");
+                    this.CallDelayed(1, () =>
+                    {
+                        if (!(item.Key?.IsConnected ?? false))
+                            return;
+                        if (item.Key?.Connection?.identity == null)
+                            return;
+                        item.Key.SetPlayerInfoForTargetOnly(player, string.Join("\n", tmp));
+                    }, "Update");
                 }
             }
         }
