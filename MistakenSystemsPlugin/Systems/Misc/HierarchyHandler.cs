@@ -93,6 +93,8 @@ namespace Gamer.Mistaken.Systems.Misc
             int player1Lvl = GetHierarchiiLevel(player1, player2);
             int player2Lvl = GetHierarchiiLevel(player2, player1);
 
+            if (player1Lvl == player2Lvl && player1Lvl == -1)
+                return null;
             if (player1Lvl > player2Lvl)
                 return $"<b>Wydawaj rozkazy</b> ({player1Lvl})|({player2Lvl})";
             else if (player1Lvl == player2Lvl)
@@ -137,10 +139,10 @@ namespace Gamer.Mistaken.Systems.Misc
 
                         return 0;
                     }
-                    return 0;
+                    return -1;
             }
             if (compared.Role == RoleType.Scientist)
-                return 0;
+                return -1;
             if (player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                 lvl = 500;
             else if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER) && Map.IsLCZDecontaminated)
