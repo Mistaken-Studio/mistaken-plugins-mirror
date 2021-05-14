@@ -78,7 +78,7 @@ namespace Gamer.Mistaken.Systems.Misc
 
                     CustomInfoHandler.SetTarget(p, "hierarchii", GetDiff(player, p), player);
                     if (p.Team == Team.MTF)
-                        CustomInfoHandler.SetTarget(p, "unit", "Unit: " + player.UnitName, player);
+                        CustomInfoHandler.SetTarget(p, "unit", "Unit: " + p.UnitName, player);
                     else
                         CustomInfoHandler.SetTarget(p, "unit", null, player);
                 }
