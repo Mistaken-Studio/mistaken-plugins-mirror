@@ -99,9 +99,13 @@ namespace Gamer.Mistaken.Base
             }
             if (CustomInfoTargeted[player].Count > 0)
             {
+                if (player?.Connection?.identity == null)
+                    return;
                 foreach (var item in CustomInfoTargeted[player])
                 {
                     if (item.Value.Count == 0)
+                        continue;
+                    if (item.Key?.Connection?.identity == null)
                         continue;
                     var tmp = item.Value.Values.ToList();
                     tmp.AddRange(CustomInfo[player].Values);
