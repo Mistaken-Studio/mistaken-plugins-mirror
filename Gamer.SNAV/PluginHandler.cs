@@ -21,6 +21,9 @@ namespace Gamer.SNAV
         {
             Config = base.Config;
 
+            var harmony = new HarmonyLib.Harmony("gamer.snav");
+            harmony.PatchAll();
+
             new SNavHandler(this);
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();

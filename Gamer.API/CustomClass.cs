@@ -67,6 +67,7 @@ namespace Gamer.API
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
                 player.Role = Role;
+                player.InfoArea &= ~PlayerInfoArea.Role;
             }
             /// <summary>
             /// Called when player playing as custom class dies
@@ -74,6 +75,7 @@ namespace Gamer.API
             /// <param name="player"></param>
             public virtual void OnDie(Player player)
             {
+                player.InfoArea |= PlayerInfoArea.Role;
                 PlayingAsClass.Remove(player);
                 player.SetSessionVar(ClassSessionVarType, false);
             }

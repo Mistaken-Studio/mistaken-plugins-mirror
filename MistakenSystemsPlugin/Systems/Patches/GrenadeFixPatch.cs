@@ -52,7 +52,7 @@ namespace Gamer.Mistaken.Systems.Patches
             foreach (var item in GameObject.FindObjectsOfType(typeof(GameObject)))
             {
                 var go = item as GameObject;
-                if (item.name == "LookingTarget" || item.name.Contains("InRage"))
+                if (item.name == "LookingTarget" || item.name.Contains("InRange"))
                 {
                     if (!go.activeSelf)
                         continue;
@@ -84,7 +84,11 @@ namespace Gamer.Mistaken.Systems.Patches
                                 {
                                     if (Physics.Linecast(position, transform.position, out var _hit, __instance.hurtLayerMask))
                                     {
-                                        player.SendConsoleMessage($"[GRENADE] Blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})", "red");
+                                        if (!(_hit.collider.name == "PlyCenter"))
+                                        {
+                                            player.SendConsoleMessage($"[GRENADE] Blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})", "red");
+                                            RoundLoggerSystem.RoundLogger.Log("GRENADE", "BLOCK", $"Grenade was blocked by {_hit.collider.name} ({_hit.collider.gameObject.layer})");
+                                        }
                                         break;
                                     }
                                 }

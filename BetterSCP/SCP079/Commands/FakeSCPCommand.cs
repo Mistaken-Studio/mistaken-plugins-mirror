@@ -45,7 +45,17 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                     {
                         if (args.Length == 0 || !int.TryParse(args[0], out int reason) || reason < 1 || reason > 5)
                         {
-                            return new string[] { ".fakescp [przyczyna] [scp]", "Podaj przyczynę śmierci:", "1. Tesla", "2. CI", "3. Klasa D", "4. Nieznany", "5. Zrekontaminowany" };
+                            return new string[] 
+                            { 
+                                ".fakescp [przyczyna] [scp]",
+                                "Podaj przyczynę śmierci:", 
+                                "1. Tesla", 
+                                "2. CI", 
+                                "3. Klasa D", 
+                                "4. Nieznany", 
+                                "5. Zrekontaminowany (Działa tylko na SCP-106)", 
+                                "6. Śmierć w Dekontaminacji LCZ" 
+                            };
                         }
                         args = args.Skip(1).ToArray();
                         if (args.Length == 0)
@@ -91,6 +101,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                                     break;
                                 case 5:
                                     Cassie.Message("SCP 1 0 6 RECONTAINED SUCCESSFULLY");
+                                    break;
+                                case 6:
+                                    Cassie.Message("SCP " + processedtonumber + " LOST IN DECONTAMINATION SEQUENCE");
                                     break;
                             }
 

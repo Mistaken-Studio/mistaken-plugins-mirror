@@ -273,22 +273,24 @@ namespace Gamer.Mistaken.CassieRoom
         {
             networkIdentities.Clear();
             #region Helipad
-            SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(18, 40, 0.05f), new Vector3(90, 90, 0), new Vector3(181f, 992.460f, -58.3f + 0.1f));
-            SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(30, 40, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.461f, -58.3f - 2f + 0.1f));
-            SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(30, 40, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.461f, -58.3f + 2f + 0.1f));
-            SpawnItem(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.45f, -58.3f + 0.1f));
-            SpawnItem(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 45, 0), new Vector3(181f, 992.451f, -58.3f + 0.1f));
-            SpawnItem(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 90, 0), new Vector3(181f, 992.452f, -58.3f + 0.1f));
-            SpawnItem(ItemType.KeycardGuard, new Vector3(26.25f, 1600, 0.05f), new Vector3(90, 135, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f));
+            {
+                SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(181f, 992.460f, -58.3f + 0.1f), new Vector3(90, 90, 0), new Vector3(18, 40, 0.05f));
+                SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(181f, 992.461f, -58.3f - 2f + 0.1f), new Vector3(90, 0, 0), new Vector3(30, 40, 0.05f));
+                SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(181f, 992.461f, -58.3f + 2f + 0.1f), new Vector3(90, 0, 0), new Vector3(30, 40, 0.05f));
+                SpawnItem(ItemType.KeycardGuard, new Vector3(181f, 992.45f, -58.3f + 0.1f), new Vector3(90, 0, 0), new Vector3(26.25f, 1600, 0.05f));
+                SpawnItem(ItemType.KeycardGuard, new Vector3(181f, 992.451f, -58.3f + 0.1f), new Vector3(90, 45, 0), new Vector3(26.25f, 1600, 0.05f));
+                SpawnItem(ItemType.KeycardGuard, new Vector3(181f, 992.452f, -58.3f + 0.1f), new Vector3(90, 90, 0), new Vector3(26.25f, 1600, 0.05f));
+                SpawnItem(ItemType.KeycardGuard, new Vector3(181f, 992.453f, -58.3f + 0.1f), new Vector3(90, 135, 0), new Vector3(26.25f, 1600, 0.05f));
 
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 90, 0), new Vector3(187.446f, 992.453f, -58.3f + 0.1f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 90, 0), new Vector3(174.56f, 992.453f, -58.3f + 0.1f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f - 6.45f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 0, 0), new Vector3(181f, 992.453f, -58.3f + 0.1f + 6.45f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f + 4.5f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, 45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f - 4.5f));
-            SpawnItem(ItemType.KeycardFacilityManager, new Vector3(24, 35, 0.05f), new Vector3(90, -45, 0), new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f + 4.5f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(187.446f, 992.453f, -58.3f + 0.1f), new Vector3(90, 90, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(174.56f, 992.453f, -58.3f + 0.1f), new Vector3(90, 90, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(181f, 992.453f, -58.3f + 0.1f - 6.45f), new Vector3(90, 0, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(181f, 992.453f, -58.3f + 0.1f + 6.45f), new Vector3(90, 0, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f + 4.5f), new Vector3(90, 45, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f - 4.5f), new Vector3(90, 45, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(187.446f - 1.86f, 992.453f, -58.3f + 0.1f - 4.5f), new Vector3(90, -45, 0), new Vector3(24, 35, 0.05f));
+                SpawnItem(ItemType.KeycardFacilityManager, new Vector3(174.56f + 1.86f, 992.453f, -58.3f + 0.1f + 4.5f), new Vector3(90, -45, 0), new Vector3(24, 35, 0.05f));
+            }
             #endregion
             #region Lights
             {

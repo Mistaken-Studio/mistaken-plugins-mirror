@@ -146,9 +146,11 @@ namespace Gamer.CustomClasses
             public override string Color => "#bd1a47";
             public override void Spawn(Player player)
             {
+                player.InfoArea &= ~PlayerInfoArea.Role;
                 player.Role = RoleType.Scientist;
                 PlayingAsClass.Add(player);
                 player.SetSessionVar(ClassSessionVarType, true);
+                HierarchyHandler.UpdateAll();
                 bool hasRadio = false;
                 foreach (var item in player.Inventory.items.ToArray())
                 {
@@ -170,7 +172,7 @@ namespace Gamer.CustomClasses
                 if (!hasRadio)
                     player.AddItem(ItemType.Radio);
                 ArmorHandler.LiteArmor.Give(player, 25);
-                Mistaken.Base.CustomInfoHandler.Set(player, "DFM", "<color=#bd1a47><b>Zastępca Dyrektora Placówki</b></color>", false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "DFM", "<color=#bd1a47><b>Zastępca Dyrektora Placówki</b></color>");
                 player.SetGUI("DFM", Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"<size=150%>Jesteś <color=#bd1a47>Zastępcą Dyrektora Placowki</color></size><br>{ClassDescription}", 20);
                 player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, "<color=yellow>Grasz</color> jako <color=#bd1a47>Zastępca Dyrektora Placówki</color>");
                 RoundLoggerSystem.RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"Spawned {player.PlayerToString()} as Deputy Facility Manager");
@@ -191,7 +193,7 @@ namespace Gamer.CustomClasses
             public override void OnDie(Player player)
             {
                 base.OnDie(player);
-                Mistaken.Base.CustomInfoHandler.Set(player, "DFM", null, false);
+                Mistaken.Base.CustomInfoHandler.Set(player, "DFM", null);
                 player.SetGUI("DFM_Info", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 RoundLogger.Log("CUSTOM CLASSES", "DEPUTY FACILITY MANAGER", $"{player.PlayerToString()} is no longer Deputy Facility Manager");
                 try

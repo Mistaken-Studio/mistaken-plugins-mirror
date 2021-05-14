@@ -1,4 +1,5 @@
-﻿using Exiled.API.Features;
+﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
@@ -8,6 +9,7 @@ using MEC;
 using Mirror;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
@@ -212,9 +214,19 @@ namespace Gamer.Mistaken.CassieRoom
 
             //Lights
             //-19.5 1021.5 -52 -20 180 0 .01 .01 .01
-            SpawnItem(ItemType.GunE11SR, new Vector3(-19.5f, 1021.5f, -52), new Vector3(-20, 180, 0), Vector3.one * 0.01f);
+            //SpawnItem(ItemType.GunE11SR, new Vector3(-19.5f, 1021.5f, -52), new Vector3(-20, 180, 0), Vector3.one * 0.01f);
             //-13.2 1021.5 -45.5 -20 90 0 .01 .01 .01
-            SpawnItem(ItemType.GunE11SR, new Vector3(-13.2f, 1021.5f, -45.5f), new Vector3(-20, 90, 0), Vector3.one * 0.01f);
+            //SpawnItem(ItemType.GunE11SR, new Vector3(-13.2f, 1021.5f, -45.5f), new Vector3(-20, 90, 0), Vector3.one * 0.01f);
+            //Workstation
+            /*var hid = Map.Doors.First(i => i.Type() == Exiled.API.Enums.DoorType.HID);
+            foreach (var item in GameObject.FindObjectsOfType<WorkStation>())
+            {
+                if(Vector3.Distance(hid.transform.position, item.transform.position) < 10)
+                {
+                    item.transform.position = new Vector3(-18, 1019.7f, -39);
+                    item.transform.rotation = Quaternion.Euler(0, 180, 0);
+                }
+            }*/
         }
         private Systems.Components.InRange inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();

@@ -5,8 +5,10 @@ using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
 using MEC;
+using Respawning;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CommandsExtender.Commands
@@ -34,7 +36,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             "jail5",
         });
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
-        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762)>();
+        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
@@ -42,7 +44,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 foreach (var playerId in players)
                 {
-                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762) data))
+                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
                     {
                         SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -51,7 +53,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.DisableAllEffects();
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
+                        var old = Respawning.RespawnManager.CurrentSequence();
+                        Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
+                        p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
+                        if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
+                            p.UnitName = array[data.UnitIndex];
+                        Respawning.RespawnManager.Singleton._curSequence = old;
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
                         Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
@@ -63,7 +71,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                 if (!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
                                     p.Position = data.Pos;
                             }
-
                             p.Health = data.HP;
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
@@ -100,8 +107,23 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         continue;
                     p.SetSessionVar(Main.SessionVarType.TALK, true);
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
-                    SavedInfo.Add(p.Id, (p.Position, p.Role, p.Health, p.ArtificialHealth, p.Inventory.items.ToArray(), p.Ammo[(int)AmmoType.Nato9], p.Ammo[(int)AmmoType.Nato556], p.Ammo[(int)AmmoType.Nato762]));
+                    SavedInfo.Add(p.Id, (
+                        p.Position, 
+                        p.Role, 
+                        p.Health, 
+                        p.ArtificialHealth, 
+                        p.Inventory.items.ToArray(),
+                        p.Ammo[(int)AmmoType.Nato9], 
+                        p.Ammo[(int)AmmoType.Nato556], 
+                        p.Ammo[(int)AmmoType.Nato762], 
+                        RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName), 
+                        p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType
+                        )
+                    );
+                    var old = Respawning.RespawnManager.CurrentSequence();
+                    Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                     p.Role = RoleType.Tutorial;
+                    Respawning.RespawnManager.Singleton._curSequence = old;
                     p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                     p.DisableAllEffects();
                     Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>

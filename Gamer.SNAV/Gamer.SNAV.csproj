@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\References\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
@@ -72,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneratorPatch.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="SNavHandler.cs" />
