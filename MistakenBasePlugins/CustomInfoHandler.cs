@@ -113,7 +113,14 @@ namespace Gamer.Mistaken.Base
                         continue;
                     var tmp = item.Value.Values.ToList();
                     tmp.AddRange(CustomInfo[player].Values);
-                    this.CallDelayed(1, () => item.Key.SetPlayerInfoForTargetOnly(player, string.Join("\n", tmp)), "Update");
+                    this.CallDelayed(1, () =>
+                    {
+                        if (!(item.Key?.IsConnected ?? false))
+                            return;
+                        if (item.Key?.Connection?.identity == null)
+                            return;
+                        item.Key.SetPlayerInfoForTargetOnly(player, string.Join("\n", tmp));
+                    }, "Update");
                 }
             }
         }
