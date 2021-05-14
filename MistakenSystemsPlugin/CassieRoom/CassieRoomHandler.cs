@@ -57,12 +57,14 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
+                    Gamer.Diagnostics.MasterHandler.LogError(ex, this, "Loop");
                 }
                 yield return Timing.WaitForSeconds(1);
             }
         }
         private IEnumerator<float> UpdateSNav()
         {
+            yield return Timing.WaitForSeconds(5);
             while (true)
             {
                 try
@@ -78,6 +80,7 @@ namespace Gamer.Mistaken.CassieRoom
                 {
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
+                    Gamer.Diagnostics.MasterHandler.LogError(ex, this, "UpdateSNav");
                 }
                 yield return Timing.WaitForSeconds(5);
             }
