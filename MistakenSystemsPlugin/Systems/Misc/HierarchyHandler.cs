@@ -143,21 +143,18 @@ namespace Gamer.Mistaken.Systems.Misc
 
                         return 0;
                     }
+                    if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER)/* && Map.IsLCZDecontaminated*/)
+                        return 501;
                     return -1;
             }
             if (player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
-                lvl = 500;
-            else if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER)/* && Map.IsLCZDecontaminated*/)
-                lvl = 501;
-            else if (compared.Role == RoleType.Scientist)
+                return 500;
+            if (player.GetSessionVar<bool>(Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER)/* && Map.IsLCZDecontaminated*/)
+                return 501;
+            if (compared.Role == RoleType.Scientist)
                 return -1;
-            else
-            {
-                int index = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == player.UnitName);
-                lvl += 99 - index;
-            }
-
-            return lvl;
+            int index = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == player.UnitName);
+            return lvl + 99 - index;
         }
 
         private void Server_RoundStarted()
