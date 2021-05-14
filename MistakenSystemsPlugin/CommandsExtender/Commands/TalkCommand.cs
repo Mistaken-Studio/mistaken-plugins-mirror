@@ -120,8 +120,6 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType
                         )
                     );
-                    Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurUnitName);
-                    Log.Debug("[TALK] " + p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType);
                     var old = Respawning.RespawnManager.CurrentSequence();
                     Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                     p.Role = RoleType.Tutorial;
