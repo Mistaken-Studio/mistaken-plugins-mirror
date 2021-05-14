@@ -21,19 +21,32 @@ namespace Gamer.Mistaken.Systems.Misc
 
 
         public override string Name => "Hierarchy";
-        public override void OnEnable()
-        {
-            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
-            Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
-            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
-        }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+        }
+        public override void OnEnable()
+        {
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
+            Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
+            Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
         }
 
+        private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
+        {
+            DisableUpdate = true;
+            this.CallDelayed(5, () =>
+            {
+                DisableUpdate = false;
+                UpdateAll();
+            });
+        }
+
+        private static bool DisableUpdate = false;
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             foreach (var item in RealPlayers.List.Where(p => p != ev.Player && p.Connection != null))
@@ -52,16 +65,13 @@ namespace Gamer.Mistaken.Systems.Misc
                 }, "LateForceNoBaseGameHierarchy");
             }
             if (ev.Player.IsAlive)
-            {
-                this.CallDelayed(1, () =>
-                {
-                    UpdateAll();
-                }, "ChangedRoleLate");
-            }   
+                this.CallDelayed(1, () => UpdateAll(), "ChangedRoleLate");
         }
 
         public static void UpdateAll()
         {
+            if (DisableUpdate)
+                return;
             foreach (var player in RealPlayers.List)
             {
                 if (player.Team != Team.MTF && player.Team != Team.RSC)
@@ -89,7 +99,6 @@ namespace Gamer.Mistaken.Systems.Misc
                 }
             }
         }
-
         private static string GetDiff(Player player1, Player player2)
         {
             int player1Lvl = GetHierarchiiLevel(player1, player2);
@@ -108,7 +117,6 @@ namespace Gamer.Mistaken.Systems.Misc
             
             return $"<b>Wykryto błąd (Niewykonalny kod się wykonał) ({player1Lvl})|({player2Lvl})</b>";
         }
-
         private static int GetHierarchiiLevel(Player player, Player compared)
         {
             int lvl = 0;
@@ -159,7 +167,12 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Server_RoundStarted()
         {
-
+            DisableUpdate = true;
+            this.CallDelayed(5, () =>
+            {
+                DisableUpdate = false;
+                UpdateAll();
+            });
         }
     }
 }
