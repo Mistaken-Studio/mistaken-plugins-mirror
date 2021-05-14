@@ -82,7 +82,6 @@ namespace Gamer.Utilities
         {
             me.Broadcast(duration, $"<color=orange>[<color=green>{tag}</color>]</color> {message}", flags);
         }
-
         /// <summary>
         /// Checks if player has base game permission
         /// </summary>
@@ -157,7 +156,6 @@ namespace Gamer.Utilities
         /// <param name="me">To Check</param>
         /// <returns>Result</returns>
         public static bool IsPlayer(this ICommandSender me) => GetPlayer(me) != null;
-
         /// <summary>
         /// If player has DNT and if it should be effective
         /// </summary>
@@ -243,8 +241,6 @@ namespace Gamer.Utilities
         /// <param name="name">Session Var</param>
         /// <param name="value">Value</param>
         public static void SetSessionVar(this Player me, string name, object value) => me.SessionVariables[name] = value;
-
-
         /// <summary>
         /// Returns if player has permission
         /// </summary>
@@ -337,14 +333,12 @@ namespace Gamer.Utilities
             }
             return false;
         }
-
         /// <summary>
         /// Returns <see cref="Player.DisplayNickname"/> or <see cref="Player.Nickname"/> if first is null or "NULL" if player is null
         /// </summary>
         /// <param name="player">Player</param>
         /// <returns>Name</returns>
         public static string GetDisplayName(this Player player) => player == null ? "NULL" : player.DisplayNickname ?? player.Nickname;
-
         private static bool HasGroupInheritancePermission(Group group, string permission)
         {
             foreach (string text in group.Inheritance.ToArray())
@@ -378,7 +372,6 @@ namespace Gamer.Utilities
             else
                 return false;
         }
-
         /// <summary>
         /// Drops greneade under player
         /// </summary>
@@ -423,5 +416,57 @@ namespace Gamer.Utilities
         /// <param name="me">Playet to check</param>
         /// <returns>If player is ready, real player</returns>
         public static bool IsReadyPlayer(this Player me) => me.IsConnected && me.IsVerified && !me.IsNPC() && me.UserId != null;
+
+        private static readonly string spaces = "                                                                    ";
+        /// <summary>
+        /// Prints components in console
+        /// </summary>
+        /// <param name="go">GameObject</param>
+        public static void PrintComponents(this GameObject go) => PrintComponents(go, 0);
+        /// <summary>
+        /// Prints components in console
+        /// </summary>
+        /// <param name="go">GameObject</param>
+        /// <param name="iteration">Indentation</param>
+        private static void PrintComponents(GameObject go, int iteration)
+        {
+            if (go == null)
+                return;
+            foreach (var c in go.GetComponents<Component>())
+            {
+                Log.Debug(spaces.Substring(0, iteration) + c?.GetType()?.Name);
+                Log.Debug(spaces.Substring(0, iteration) + c?.GetType()?.FullName);
+                Log.Debug("------------");
+            }
+            for (int i = go.transform.childCount; i > 0; i--)
+            {
+                PrintComponents(go.transform.GetChild(i - 1).gameObject, iteration + 1);
+            }
+        }
+        /// <summary>
+        /// Prints parents components in console
+        /// </summary>
+        /// <param name="go">GameObject</param>
+        public static void PrintParents(this GameObject go) => PrintParents(go, 0);
+        /// <summary>
+        /// Prints parents components in console
+        /// </summary>
+        /// <param name="go">GameObject</param>
+        /// <param name="iteration">Indentation</param>
+        private static void PrintParents(GameObject go, int iteration)
+        {
+            if (go == null)
+                return;
+            Log.Debug(spaces.Substring(0, iteration) + go.name);
+            Log.Debug("------------");
+            foreach (var c in go.GetComponents<Component>())
+            {
+                Log.Debug(spaces.Substring(0, iteration) + c?.GetType()?.Name);
+                Log.Debug(spaces.Substring(0, iteration) + c?.GetType()?.FullName);
+                Log.Debug("------------");
+            }
+            if (go.transform.parent != null)
+                PrintComponents(go.transform.parent.gameObject, iteration + 1);
+        }
     }
 }
