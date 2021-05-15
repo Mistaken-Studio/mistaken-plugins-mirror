@@ -77,6 +77,12 @@ namespace Gamer.Mistaken.Systems.Components
             Exiled.Events.Handlers.Player.ChangingRole += Player_ChangingRole;
         }
 
+        private void OnDestroy()
+        {
+            Exiled.Events.Handlers.Player.Died -= Player_Died;
+            Exiled.Events.Handlers.Player.ChangingRole -= Player_ChangingRole;
+        }
+
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (ev.ShouldPreservePosition)
@@ -85,12 +91,6 @@ namespace Gamer.Mistaken.Systems.Components
                 return;
             OnExit?.Invoke(ev.Player);
             ColliderInArea.Remove(ev.Player.GameObject);
-        }
-
-        private void OnDestroy()
-        {
-            Exiled.Events.Handlers.Player.Died -= Player_Died;
-            Exiled.Events.Handlers.Player.ChangingRole -= Player_ChangingRole;
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)

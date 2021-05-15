@@ -130,24 +130,20 @@ namespace Gamer.Mistaken.CassieRoom
             if (CamperEffects.ContainsKey(ev.Target))
                 CamperEffects[ev.Target].Clear();
         }
-
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             CamperPoints[ev.Player] = 0;
             if (CamperEffects.ContainsKey(ev.Player))
                 CamperEffects[ev.Player].Clear();
         }
-
         private void Server_RoundStarted()
         {
             this.RunCoroutine(DoRoundLoop(), "RoundLoop");
         }
-
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             DesyncFor(ev.Player);
         }
-
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (ev.Door == DoorUp || ev.Door == DoorDown)
@@ -399,7 +395,6 @@ namespace Gamer.Mistaken.CassieRoom
                 }
             }
         }
-
         public static DoorVariant SpawnElevator(Vector3 offset)
         {
             ItemType keycardType = ItemType.KeycardNTFLieutenant;
@@ -541,7 +536,7 @@ namespace Gamer.Mistaken.CassieRoom
                     {
                         if (item == null)
                         {
-                            InElevator.RemoveAll(i => i == null);
+                            InElevator.RemoveAll(i => i == null || i.IsDead || !i.IsConnected);
                             continue;
                         }
                         if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
@@ -584,7 +579,7 @@ namespace Gamer.Mistaken.CassieRoom
                     {
                         if (item == null)
                         {
-                            InElevator.RemoveAll(i => i == null);
+                            InElevator.RemoveAll(i => i == null || i.IsDead || !i.IsConnected);
                             continue;
                         }
                         if (item.IsConnected && item.IsAlive && item.Position.y > 1010)
