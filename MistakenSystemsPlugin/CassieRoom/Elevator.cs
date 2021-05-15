@@ -164,7 +164,6 @@ namespace Gamer.Mistaken.CassieRoom
         {
             Moving = false;
             networkIdentities.Clear();
-            InElevator.Clear();
             ElevatorUp = true;
 
             (DoorDown, DownTrigger) = SpawnElevator(Vector3.zero);
@@ -468,12 +467,10 @@ namespace Gamer.Mistaken.CassieRoom
                 new Vector3(3f, 4, 4f), 
                 (p) => 
                 { 
-                    InElevator.Add(p);
                     Log.Debug($"{p.Nickname} entered");
                 }, 
                 (p) => 
                 {
-                    InElevator.Remove(p);
                     Log.Debug($"{p.Nickname} exited");
                 }
             );
@@ -511,7 +508,6 @@ namespace Gamer.Mistaken.CassieRoom
             return mainDoor;
         }
 
-        public static readonly List<Player> InElevator = new List<Player>();
         public static Vector3 BottomMiddle = new Vector3(-16.58f, 1002f, -41f);
         public static bool ElevatorUp = true;
         public static bool Moving = false;
@@ -531,26 +527,21 @@ namespace Gamer.Mistaken.CassieRoom
             DoorDown.ServerChangeLock(DoorLockReason.AdminCommand, true);
             DoorUp.ServerChangeLock(DoorLockReason.AdminCommand, true);
             yield return Timing.WaitForSeconds(3);
-            Log.Debug($"{InElevator.Count} players to move");
             Log.Debug($"Colliders in up trigger: {UpTrigger.ColliderInArea.Count} and in down trigger: {DownTrigger.ColliderInArea.Count}");
             if (ElevatorUp)
             {
-                foreach (var item in InElevator.ToArray())
+                foreach (var item in DownTrigger.ColliderInArea.ToArray())
                 {
                     try
                     {
-                        if (item == null)
+                        var ply = Player.Get(item);
+                        if (ply.IsConnected && ply.IsAlive && ply.Position.y < 1010)
                         {
-                            InElevator.RemoveAll(i => i == null || i.IsDead || !i.IsConnected);
-                            continue;
-                        }
-                        if (item.IsConnected && item.IsAlive && item.Position.y < 1010)
-                        {
-                            item.Position += Offset;
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Up ({item.Position})");
+                            ply.Position += Offset;
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {ply.Nickname} Up ({ply.Position})");
                         }
                         else
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Up ({item.Position})");
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {ply.Nickname} Up ({ply.Position})");
                     }
                     catch(System.Exception ex)
                     {
@@ -578,22 +569,18 @@ namespace Gamer.Mistaken.CassieRoom
             }
             else
             {
-                foreach (var item in InElevator.ToArray())
+                foreach (var item in UpTrigger.ColliderInArea.ToArray())
                 {
                     try
                     {
-                        if (item == null)
+                        var ply = Player.Get(item);
+                        if (ply.IsConnected && ply.IsAlive && ply.Position.y > 1010)
                         {
-                            InElevator.RemoveAll(i => i == null || i.IsDead || !i.IsConnected);
-                            continue;
-                        }
-                        if (item.IsConnected && item.IsAlive && item.Position.y > 1010)
-                        {
-                            item.Position -= Offset;
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {item.Nickname} Down ({item.Position})");
+                            ply.Position -= Offset;
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {ply.Nickname} Down ({ply.Position})");
                         }
                         else
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {item.Nickname} Down ({item.Position})");
+                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {ply.Nickname} Down ({ply.Position})");
                     }
                     catch (System.Exception ex)
                     {

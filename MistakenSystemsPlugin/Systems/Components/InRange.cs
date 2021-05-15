@@ -86,21 +86,33 @@ namespace Gamer.Mistaken.Systems.Components
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
+            Log.Debug("CR_0", DEBUG);
             if (ev.ShouldPreservePosition)
+            {
+                Log.Debug("CR_1", DEBUG);
                 return;
+            }
             if (!ColliderInArea.Contains(ev.Player.GameObject))
+            {
+                Log.Debug("CR_2", DEBUG);
                 return;
+            }
+            Log.Debug("CR_3", DEBUG);
             OnExit?.Invoke(ev.Player);
             ColliderInArea.Remove(ev.Player.GameObject);
         }
 
         private void Player_Died(Exiled.Events.EventArgs.DiedEventArgs ev)
         {
+            Log.Debug("D_0", DEBUG);
             if (ColliderInArea.Contains(ev.Target.GameObject))
             {
+                Log.Debug("D_1", DEBUG);
                 OnExit?.Invoke(ev.Target);
                 ColliderInArea.Remove(ev.Target.GameObject);
+                Log.Debug("D_2", DEBUG);
             }
+            Log.Debug("D_3", DEBUG);
         }
 
         public readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
