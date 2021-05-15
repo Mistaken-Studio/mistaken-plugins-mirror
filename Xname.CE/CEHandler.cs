@@ -78,7 +78,7 @@ namespace Xname.CE
                             )
                         );
                         ev.Target.IsInvisible = true;
-                        ev.Target.ClearInventory();
+                        ev.Target.Inventory.Clear();
                         UnityEngine.Object.FindObjectOfType<RagdollManager>().SpawnRagdoll(
                             ev.Target.Position, Quaternion.Euler(ev.Target.GameObject.transform.eulerAngles),
                             (ev.Target.ReferenceHub.playerMovementSync == null) ? Vector3.zero : ev.Target.ReferenceHub.playerMovementSync.PlayerVelocity,
@@ -97,7 +97,6 @@ namespace Xname.CE
         {
             Player p = RealPlayers.Get(playerId);
             p.Role = role;
-            p.Position = pos;
             foreach (var item in inv)
             {
                 p.Inventory.items.Add(item);
@@ -105,9 +104,13 @@ namespace Xname.CE
             p.Ammo[(int)AmmoType.Nato9] = ammo9mm;
             p.Ammo[(int)AmmoType.Nato556] = ammo5mm;
             p.Ammo[(int)AmmoType.Nato762] = ammo7mm;
+            var old = Respawning.RespawnManager.CurrentSequence();
+            Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = unitType;
             if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(unitType, out var array))
                 p.UnitName = array[unitIndex];
+            Respawning.RespawnManager.Singleton._curSequence = old;
+            p.Position = pos;
             unconsciousPlayers.Remove(playerId);
         }
     }
