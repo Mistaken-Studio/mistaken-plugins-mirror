@@ -59,7 +59,7 @@ namespace Gamer.RaceGameMode
             {
                 for (int z = 0; z < max_z; z++)
                 {
-                    SpawnDoor(new Vector3(1000 + (-max_x + x) * 2, 1000, (-max_z + z) * 3));
+                    SpawnDoor(new Vector3(1000 + (-max_x + x) * 2, 1000, (-max_z + z) * 3.2f));
                 }
             }
         }
