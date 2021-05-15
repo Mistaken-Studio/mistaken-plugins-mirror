@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
+using Gamer.Mistaken.Systems.Components;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -166,8 +167,8 @@ namespace Gamer.Mistaken.CassieRoom
             InElevator.Clear();
             ElevatorUp = true;
 
-            DoorDown = SpawnElevator(Vector3.zero);
-            DoorUp = SpawnElevator(Offset);
+            (DoorDown,DownTrigger) = SpawnElevator(Vector3.zero);
+            (DoorUp,UpTrigger) = SpawnElevator(Offset);
             DoorUp.NetworkTargetState = true;
             Spawn1499ContainmentChamber();
 
@@ -395,7 +396,7 @@ namespace Gamer.Mistaken.CassieRoom
                 }
             }
         }
-        public static DoorVariant SpawnElevator(Vector3 offset)
+        public static (DoorVariant door, InRange trigger) SpawnElevator(Vector3 offset)
         {
             ItemType keycardType = ItemType.KeycardNTFLieutenant;
 
@@ -462,7 +463,7 @@ namespace Gamer.Mistaken.CassieRoom
             var collider = obj.AddComponent<BoxCollider>();
             obj.transform.position = new Vector3(-16.58f, 1004f, -41f) + offset;
             collider.size = new Vector3(4, 2, 5);
-            var inRange = Systems.Components.InRange.Spawn(
+            var elevatorTrigger = Systems.Components.InRange.Spawn(
                 new Vector3(-16.58f, 1002.7f, -41f) + offset, 
                 new Vector3(3f, 4, 4f), 
                 (p) => 
@@ -476,7 +477,7 @@ namespace Gamer.Mistaken.CassieRoom
                     Log.Debug($"{p.Nickname} exited");
                 }
             );
-            return elevatorDoor;
+            return (elevatorDoor, elevatorTrigger);
         }
         public static DoorVariant Spawn1499ContainmentChamber()
         {
@@ -515,6 +516,8 @@ namespace Gamer.Mistaken.CassieRoom
         public static bool Moving = false;
         public static DoorVariant DoorUp;
         public static DoorVariant DoorDown;
+        public static InRange UpTrigger;
+        public static InRange DownTrigger;
 
         public static IEnumerator<float> MoveElevator()
         {
@@ -528,6 +531,7 @@ namespace Gamer.Mistaken.CassieRoom
             DoorUp.ServerChangeLock(DoorLockReason.AdminCommand, true);
             yield return Timing.WaitForSeconds(3);
             Log.Debug($"{InElevator.Count} players to move");
+            Log.Debug($"Colliders in up trigger: {UpTrigger.ColliderInArea.Count} and in down trigger: {DownTrigger.ColliderInArea.Count}");
             if (ElevatorUp)
             {
                 foreach (var item in InElevator.ToArray())

@@ -105,6 +105,14 @@ namespace Gamer.Mistaken.Systems.Components
         public readonly HashSet<GameObject> ColliderInArea = new HashSet<GameObject>();
         private void OnTriggerEnter(Collider other)
         {
+            try
+            {
+                Log.Debug($"Trigger enter: {other.gameObject.name}");
+            }
+            catch
+            {
+
+            }
             if (!other.GetComponent<CharacterClassManager>())
                 return;
             var player = Player.Get(other.gameObject);
@@ -118,6 +126,14 @@ namespace Gamer.Mistaken.Systems.Components
 
         private void OnTriggerExit(Collider other)
         {
+            try
+            {
+                Log.Debug($"Trigger exit: {other.gameObject.name}");
+            }
+            catch
+            {
+
+            }
             if (!ColliderInArea.Contains(other.gameObject))
                 return;
             ColliderInArea.Remove(other.gameObject);
