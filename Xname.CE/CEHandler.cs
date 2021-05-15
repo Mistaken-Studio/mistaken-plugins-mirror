@@ -11,6 +11,7 @@ using Exiled.API.Enums;
 using Respawning;
 using Gamer.Utilities;
 using MEC;
+using Gamer.Mistaken.Base.Staff;
 
 namespace Xname.CE
 {
@@ -54,6 +55,10 @@ namespace Xname.CE
                 {
                     yield return Timing.WaitForSeconds(20f);
                     playerBpm[player.Id] = playerBpm[player.Id] - UnityEngine.Random.Range(10, maxWakeUpRate);
+                    foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                    {
+                        d.SendConsoleMessage($"{playerBpm[player.Id]} yes", "green");
+                    }
                 }
                 WakeUpPlayer(player.Id, data.Pos, data.Role, data.Inventory, data.Ammo9, data.Ammo762, data.Ammo556, data.UnitIndex, data.UnitType);
             }
@@ -91,7 +96,11 @@ namespace Xname.CE
                             ev.Target.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId,
                             ev.Target.Nickname,
                             ev.Target.Id);
-                        this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
+                        foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                        {
+                            d.SendConsoleMessage($"przeszło", "green");
+                        }
+                    this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
                     }
                 //}
             }
@@ -116,6 +125,10 @@ namespace Xname.CE
             p.Position = pos;
             unconsciousPlayers.Remove(playerId);
             playerBpm.Remove(playerId);
+            foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+            {
+                d.SendConsoleMessage($"how not work this", "green");
+            }
         }
     }
 }
