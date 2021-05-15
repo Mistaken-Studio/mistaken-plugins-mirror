@@ -83,6 +83,10 @@
       <Project>{4bffbb2d-a061-4e50-a8b0-99cbfbfb7184}</Project>
       <Name>Gamer.RoundLogger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MistakenBasePlugins\Gamer.Mistaken.Base.csproj">
+      <Project>{6eecbfa8-dbcb-47cd-9c23-ff15bc11b40c}</Project>
+      <Name>Gamer.Mistaken.Base</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
