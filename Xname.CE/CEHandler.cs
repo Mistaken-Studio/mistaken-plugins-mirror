@@ -90,7 +90,7 @@ namespace Xname.CE
                     playerBpm[player.Id] = playerBpm[player.Id] + UnityEngine.Random.Range(8f, maxBpmOnUpdate);
                 }
                 playerBpm.Remove(player.Id);
-                WakeUpPlayer(player.Id, data.Pos, data.Role, data.Inventory, data.Ammo9, data.Ammo762, data.Ammo556, data.UnitIndex, data.UnitType);
+                WakeUpPlayer(player);
             }
         }
         /// <summary>
@@ -127,41 +127,35 @@ namespace Xname.CE
         /// <summary>
         /// Makes player conscious.
         /// </summary>
-        /// <param name="playerId"></param>
-        /// <param name="pos"></param>
-        /// <param name="role"></param>
-        /// <param name="inv"></param>
-        /// <param name="ammo9mm"></param>
-        /// <param name="ammo7mm"></param>
-        /// <param name="ammo5mm"></param>
-        /// <param name="unitIndex"></param>
-        /// <param name="unitType"></param>
-        public static void WakeUpPlayer(int playerId, Vector3 pos, RoleType role, Inventory.SyncItemInfo[] inv, uint ammo9mm, uint ammo7mm, uint ammo5mm, int unitIndex, byte unitType)
+        /// <param name="player"></param>
+        public static void WakeUpPlayer(Player player)
         {
-            unconsciousPlayers.Remove(playerId);
-            Player p = RealPlayers.Get(playerId);
-            var old = Respawning.RespawnManager.CurrentSequence();
-            Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-            p.Role = role;
-            p.Inventory.Clear();
-            Respawning.RespawnManager.Singleton._curSequence = old;
-            foreach (var item in inv)
+            if (unconsciousPlayers.TryGetValue(player.Id, out (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
             {
-                p.Inventory.items.Add(item);
+                var old = Respawning.RespawnManager.CurrentSequence();
+                Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+                player.Role = data.Role;
+                player.Inventory.Clear();
+                Respawning.RespawnManager.Singleton._curSequence = old;
+                foreach (var item in data.Inventory)
+                {
+                    player.Inventory.items.Add(item);
+                }
+                player.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
+                player.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
+                player.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+                player.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
+                if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
+                    player.UnitName = array[data.UnitIndex];
+                player.EnableEffect<CustomPlayerEffects.Blinded>(10f);
+                player.EnableEffect<CustomPlayerEffects.Concussed>(20f);
+                player.EnableEffect<CustomPlayerEffects.Deafened>(20f);
+                player.EnableEffect<CustomPlayerEffects.Exhausted>(30f);
+                player.Health = UnityEngine.Random.Range(20f, 35f);
+                Timing.CallDelayed(0.5f, () => player.Position = data.Pos);
+                player.IsInvisible = false;
+                unconsciousPlayers.Remove(player.Id);
             }
-            p.Ammo[(int)AmmoType.Nato9] = ammo9mm;
-            p.Ammo[(int)AmmoType.Nato556] = ammo5mm;
-            p.Ammo[(int)AmmoType.Nato762] = ammo7mm;
-            p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = unitType;
-            if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(unitType, out var array))
-                p.UnitName = array[unitIndex];
-            p.EnableEffect<CustomPlayerEffects.Blinded>(10f);
-            p.EnableEffect<CustomPlayerEffects.Concussed>(20f);
-            p.EnableEffect<CustomPlayerEffects.Deafened>(20f);
-            p.EnableEffect<CustomPlayerEffects.Exhausted>(30f);
-            p.Health = UnityEngine.Random.Range(20f, 35f);
-            Timing.CallDelayed(0.5f, () => p.Position = pos);
-            p.IsInvisible = false;
         }
         /// <summary>
         /// Checks if player is unconscious.
