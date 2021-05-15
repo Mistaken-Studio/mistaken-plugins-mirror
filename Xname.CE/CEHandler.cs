@@ -10,6 +10,7 @@ using Exiled.API.Features;
 using Exiled.API.Enums;
 using Respawning;
 using Gamer.Utilities;
+using MEC;
 
 namespace Xname.CE
 {
@@ -18,7 +19,7 @@ namespace Xname.CE
     {
         internal readonly float unconsciousChance = 100f;
         internal readonly float maxWakeUpRate = 15f;
-        internal readonly float maxBpm = 130f;
+        internal readonly float maxBpm = 150f;
         public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, float Bpm, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, float Bpm, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         internal readonly string reason = "Osoba wydaje się oddychać normalnie, ale jej tętno jest za niskie by była przytomna";
         /// <inheritdoc/>
@@ -49,7 +50,7 @@ namespace Xname.CE
             {
                 while (data.Bpm > 80)
                 {
-                    yield return 20f;
+                    yield return Timing.WaitForSeconds(20f);
                     data.Bpm = data.Bpm - UnityEngine.Random.Range(10, maxWakeUpRate);
                 }
                 WakeUpPlayer(player.Id, data.Pos, data.Role, data.Inventory, data.Ammo9, data.Ammo762, data.Ammo556, data.UnitIndex, data.UnitType);
@@ -68,7 +69,7 @@ namespace Xname.CE
                             ev.Target.Position,
                             ev.Target.Role,
                             ev.Target.Inventory.items.ToArray(),
-                            UnityEngine.Random.Range(100f, maxBpm),
+                            UnityEngine.Random.Range(120f, maxBpm),
                             ev.Target.Ammo[(int)AmmoType.Nato9],
                             ev.Target.Ammo[(int)AmmoType.Nato556],
                             ev.Target.Ammo[(int)AmmoType.Nato762],
