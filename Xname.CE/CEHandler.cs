@@ -60,13 +60,14 @@ namespace Xname.CE
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            if (ev.Target != null)
+            if (ev.Target != null && !unconsciousPlayers.ContainsKey(ev.Target.Id))
             {
                 //if (ev.DamageType.isWeapon && ev.Amount > 25 && ev.Target.IsHuman)
                 //{
                     if (UnityEngine.Random.Range(0, 100) < unconsciousChance)
                     {
                         ev.IsAllowed = false;
+                        ev.Target.DisableAllEffects();
                         unconsciousPlayers.Add(ev.Target.Id, (
                             ev.Target.Position,
                             ev.Target.Role,
