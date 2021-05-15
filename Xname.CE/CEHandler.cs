@@ -76,14 +76,13 @@ namespace Xname.CE
                             ev.Target.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType
                             )
                         );
-                        ev.Target.Role = RoleType.None;
+                        ev.Target.IsInvisible = true;
                         ev.Target.ClearInventory();
                         UnityEngine.Object.FindObjectOfType<RagdollManager>().SpawnRagdoll(
                             ev.Target.Position, Quaternion.Euler(ev.Target.GameObject.transform.eulerAngles),
                             (ev.Target.ReferenceHub.playerMovementSync == null) ? Vector3.zero : ev.Target.ReferenceHub.playerMovementSync.PlayerVelocity,
-                            (int)ev.Target.ReferenceHub.characterClassManager.CurClass, new PlayerStats.HitInfo(ev.Amount, $"*{reason}",
-                            ev.DamageType,
-                            ev.Attacker.Id),
+                            (int)ev.Target.ReferenceHub.characterClassManager.CurClass,
+                            new PlayerStats.HitInfo(ev.Amount, $"*{reason}", ev.DamageType, ev.Attacker.Id),
                             (ev.Target.ReferenceHub.characterClassManager.CurRole.team > Team.SCP),
                             ev.Target.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId,
                             ev.Target.Nickname,
@@ -108,6 +107,7 @@ namespace Xname.CE
             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = unitType;
             if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(unitType, out var array))
                 p.UnitName = array[unitIndex];
+            unconsciousPlayers.Remove(playerId);
         }
     }
 }
