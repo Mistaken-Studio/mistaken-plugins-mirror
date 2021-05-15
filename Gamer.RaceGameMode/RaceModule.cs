@@ -53,18 +53,20 @@ namespace Gamer.RaceGameMode
 
         private void GenerateMap()
         {
-            for (int x = 0; x < 100; x++)
+            int max_x = 50;
+            int max_z = 50;
+            for (int x = 0; x < max_x; x++)
             {
-                for (int y = 0; y < 100; y++)
+                for (int z = 0; z < max_z; z++)
                 {
-                    SpawnDoor(new Vector3(1000 + -100 + x, 1000, -100 + y));
+                    SpawnDoor(new Vector3(1000 + (-max_x + x) * 2, 1000, (-max_z + z) * 5));
                 }
             }
         }
 
         private void SpawnDoor(Vector3 pos)
         {
-            DoorVariant doorVariant = UnityEngine.Object.Instantiate(doorPrefab, pos, Quaternion.identity);
+            DoorVariant doorVariant = UnityEngine.Object.Instantiate(doorPrefab, pos, Quaternion.Euler(90, 0, 0));
             var go = doorVariant.gameObject;
             GameObject.Destroy(doorVariant.GetComponent<DoorEventOpenerExtension>());
             if (doorVariant.TryGetComponent<Scp079Interactable>(out var scp079Interactable))
