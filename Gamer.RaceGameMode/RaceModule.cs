@@ -53,13 +53,13 @@ namespace Gamer.RaceGameMode
 
         private void GenerateMap()
         {
-            int max_x = 50;
-            int max_z = 50;
+            int max_x = 25;
+            int max_z = 25;
             for (int x = 0; x < max_x; x++)
             {
                 for (int z = 0; z < max_z; z++)
                 {
-                    SpawnDoor(new Vector3(1000 + (-max_x + x) * 2, 1000, (-max_z + z) * 5));
+                    SpawnDoor(new Vector3(1000 + (-max_x + x) * 2, 1000, (-max_z + z) * 3));
                 }
             }
         }
