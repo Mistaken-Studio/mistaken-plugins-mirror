@@ -499,7 +499,7 @@ namespace Gamer.Mistaken.CassieRoom
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
                     (player) =>
                     {
-                        if (player.Role == RoleType.Tutorial)
+                        if (player.Role == RoleType.Tutorial || player.Role == RoleType.Scp106)
                             return;
                         mainDoor.NetworkTargetState = true;
                         mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, true);
