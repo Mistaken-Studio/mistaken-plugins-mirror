@@ -108,7 +108,10 @@ namespace Xname.CE
         private void WakeUpPlayer(int playerId, Vector3 pos, RoleType role, Inventory.SyncItemInfo[] inv, uint ammo9mm, uint ammo7mm, uint ammo5mm, int unitIndex, byte unitType)
         {
             Player p = RealPlayers.Get(playerId);
+            var old = Respawning.RespawnManager.CurrentSequence();
+            Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
             p.Role = role;
+            Respawning.RespawnManager.Singleton._curSequence = old;
             foreach (var item in inv)
             {
                 p.Inventory.items.Add(item);
@@ -116,12 +119,9 @@ namespace Xname.CE
             p.Ammo[(int)AmmoType.Nato9] = ammo9mm;
             p.Ammo[(int)AmmoType.Nato556] = ammo5mm;
             p.Ammo[(int)AmmoType.Nato762] = ammo7mm;
-            var old = Respawning.RespawnManager.CurrentSequence();
-            Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = unitType;
             if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(unitType, out var array))
                 p.UnitName = array[unitIndex];
-            Respawning.RespawnManager.Singleton._curSequence = old;
             p.Position = pos;
             unconsciousPlayers.Remove(playerId);
             playerBpm.Remove(playerId);
