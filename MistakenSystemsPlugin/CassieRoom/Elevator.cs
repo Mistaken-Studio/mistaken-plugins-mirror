@@ -167,8 +167,8 @@ namespace Gamer.Mistaken.CassieRoom
             InElevator.Clear();
             ElevatorUp = true;
 
-            (DoorDown,DownTrigger) = SpawnElevator(Vector3.zero);
-            (DoorUp,UpTrigger) = SpawnElevator(Offset);
+            (DoorDown, DownTrigger) = SpawnElevator(Vector3.zero);
+            (DoorUp, UpTrigger) = SpawnElevator(Offset);
             DoorUp.NetworkTargetState = true;
             Spawn1499ContainmentChamber();
 
@@ -477,6 +477,7 @@ namespace Gamer.Mistaken.CassieRoom
                     Log.Debug($"{p.Nickname} exited");
                 }
             );
+            elevatorTrigger.DEBUG = true;
             return (elevatorDoor, elevatorTrigger);
         }
         public static DoorVariant Spawn1499ContainmentChamber()

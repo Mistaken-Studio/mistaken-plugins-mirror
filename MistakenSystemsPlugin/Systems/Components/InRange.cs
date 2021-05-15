@@ -9,6 +9,7 @@ namespace Gamer.Mistaken.Systems.Components
 {
     public class InRange : MonoBehaviour
     {
+        public bool DEBUG = false;
         public bool AllowNPCs = false;
         public Action<Player> OnEnter;
         public Action<Player> OnExit;
@@ -107,7 +108,7 @@ namespace Gamer.Mistaken.Systems.Components
         {
             try
             {
-                Log.Debug($"Trigger enter: {other.gameObject.name}");
+                Log.Debug($"Trigger enter: {other.gameObject.name}", DEBUG);
             }
             catch
             {
@@ -128,7 +129,7 @@ namespace Gamer.Mistaken.Systems.Components
         {
             try
             {
-                Log.Debug($"Trigger exit: {other.gameObject.name}");
+                Log.Debug($"Trigger exit: {other.gameObject.name}", DEBUG);
             }
             catch
             {
