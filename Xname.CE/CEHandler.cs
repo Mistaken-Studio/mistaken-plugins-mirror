@@ -55,14 +55,8 @@ namespace Xname.CE
                 {
                     yield return Timing.WaitForSeconds(20f);
                     playerBpm[player.Id] = playerBpm[player.Id] - UnityEngine.Random.Range(10, maxWakeUpRate);
-                    foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
-                    {
-                        d.SendConsoleMessage($"{playerBpm[player.Id]} yes", "green");
-                    }
                 }
-                Log.Debug(1);
                 WakeUpPlayer(player.Id, data.Pos, data.Role, data.Inventory, data.Ammo9, data.Ammo762, data.Ammo556, data.UnitIndex, data.UnitType);
-                Log.Debug(2);
             }
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
@@ -98,10 +92,6 @@ namespace Xname.CE
                             ev.Target.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId,
                             ev.Target.Nickname,
                             ev.Target.Id);
-                        foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
-                        {
-                            d.SendConsoleMessage($"przeszło", "green");
-                        }
                     this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
                     }
                 //}
@@ -109,17 +99,12 @@ namespace Xname.CE
         }
         private void WakeUpPlayer(int playerId, Vector3 pos, RoleType role, Inventory.SyncItemInfo[] inv, uint ammo9mm, uint ammo7mm, uint ammo5mm, int unitIndex, byte unitType)
         {
-            Log.Debug("1a");
             Player p = RealPlayers.Get(playerId);
-            Log.Debug("2a");
             var old = Respawning.RespawnManager.CurrentSequence();
-            Log.Debug("3a");
             Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
-            Log.Debug("4a");
             p.Role = role;
-            Log.Debug("5a");
+            p.Inventory.Clear();
             Respawning.RespawnManager.Singleton._curSequence = old;
-            Log.Debug("6a");
             foreach (var item in inv)
             {
                 p.Inventory.items.Add(item);
@@ -130,13 +115,9 @@ namespace Xname.CE
             p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = unitType;
             if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(unitType, out var array))
                 p.UnitName = array[unitIndex];
-            p.Position = pos;
+            Timing.CallDelayed(0.5f, () => p.Position = pos);
             unconsciousPlayers.Remove(playerId);
             playerBpm.Remove(playerId);
-            foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
-            {
-                d.SendConsoleMessage($"how not work this", "green");
-            }
         }
     }
 }
