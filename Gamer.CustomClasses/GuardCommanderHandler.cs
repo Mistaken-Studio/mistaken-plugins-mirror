@@ -186,7 +186,6 @@ namespace Gamer.CustomClasses
                 return;
             if (!(Mistaken.Base.CustomItems.CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem) is GuardCommanderKeycard guardCommanderKeycard))
                 return;
-            Log.Debug(guardCommanderKeycard.CurrentOwner?.Id + " " + guardCommanderKeycard.CurrentOwner?.Nickname);
             if (!GuardCommander.Instance.PlayingAsClass.Contains(ev.Player) && guardCommanderKeycard.CurrentOwner != ev.Player)
             {
                 ev.IsAllowed = false;
@@ -329,6 +328,8 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
+                if (CurrentOwner == null)
+                    return true;
                 CurrentOwner.SetSessionVar(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER, false);
                 CurrentOwner = null;
                 return true;

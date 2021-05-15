@@ -499,20 +499,25 @@ namespace Gamer.Mistaken.CassieRoom
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
                     (player) =>
                     {
+                        if (player.Role == RoleType.Tutorial)
+                            return;
                         mainDoor.NetworkTargetState = true;
                         mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, true);
                     },
                     (player) =>
                     {
-                        this.CallDelayed(5, () =>
+                        if (isSomeoneInside.ColliderInArea.Count == 0)
                         {
-                            if (isSomeoneInside.ColliderInArea.Count == 0)
+                            this.CallDelayed(5, () =>
                             {
-                                mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
-                                if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.REQUIREMENTS_NOT_MET) != 0)
-                                    mainDoor.NetworkTargetState = false;
-                            }
-                        }, "Unlock doors");
+                                if (isSomeoneInside.ColliderInArea.Count == 0)
+                                {
+                                    mainDoor.ServerChangeLock(PluginDoorLockReason.BLOCKED_BY_SOMETHING, false);
+                                    if (((PluginDoorLockReason)mainDoor.NetworkActiveLocks & PluginDoorLockReason.REQUIREMENTS_NOT_MET) != 0)
+                                        mainDoor.NetworkTargetState = false;
+                                }
+                            }, "Unlock doors");
+                        }
                     }
                 );
                 var obj = new GameObject();
