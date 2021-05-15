@@ -15,13 +15,13 @@ namespace Gamer.RaceGameMode
         public override string Name => "RaceGameMode";
         public override void OnDisabled()
         {
-            new RaceModule(this);
-
-            Diagnostics.Module.OnEnable(this);
             base.OnDisabled();
         }
         public override void OnEnabled()
         {
+            new RaceModule(this);
+
+            Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }
     }
