@@ -20,7 +20,8 @@ namespace Xname.CE
         internal readonly float unconsciousChance = 100f;
         internal readonly float maxWakeUpRate = 15f;
         internal readonly float maxBpm = 150f;
-        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, float Bpm, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, float Bpm, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
+        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
+        internal readonly Dictionary<int, float> playerBpm = new Dictionary<int, float>();
         internal readonly string reason = "Osoba wydaje się oddychać normalnie, ale jej tętno jest za niskie by była przytomna";
         /// <inheritdoc/>
         public CEHandler(IPlugin<IConfig> plugin) : base(plugin)
@@ -43,15 +44,16 @@ namespace Xname.CE
         private void Server_RoundStarted()
         {
             unconsciousPlayers.Clear();
+            playerBpm.Clear();
         }
         private IEnumerator<float> UpdateConsciousness(Player player)
         {
-            if (unconsciousPlayers.TryGetValue(player.Id, out (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, float Bpm, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
+            if (unconsciousPlayers.TryGetValue(player.Id, out (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
             {
-                while (data.Bpm > 80)
+                while (playerBpm[player.Id] > 80)
                 {
                     yield return Timing.WaitForSeconds(20f);
-                    data.Bpm = data.Bpm - UnityEngine.Random.Range(10, maxWakeUpRate);
+                    playerBpm[player.Id] = playerBpm[player.Id] - UnityEngine.Random.Range(10, maxWakeUpRate);
                 }
                 WakeUpPlayer(player.Id, data.Pos, data.Role, data.Inventory, data.Ammo9, data.Ammo762, data.Ammo556, data.UnitIndex, data.UnitType);
             }
@@ -69,7 +71,6 @@ namespace Xname.CE
                             ev.Target.Position,
                             ev.Target.Role,
                             ev.Target.Inventory.items.ToArray(),
-                            UnityEngine.Random.Range(120f, maxBpm),
                             ev.Target.Ammo[(int)AmmoType.Nato9],
                             ev.Target.Ammo[(int)AmmoType.Nato556],
                             ev.Target.Ammo[(int)AmmoType.Nato762],
@@ -77,6 +78,7 @@ namespace Xname.CE
                             ev.Target.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType
                             )
                         );
+                        playerBpm[ev.Target.Id] = UnityEngine.Random.Range(100f, maxBpm);
                         ev.Target.IsInvisible = true;
                         ev.Target.Inventory.Clear();
                         UnityEngine.Object.FindObjectOfType<RagdollManager>().SpawnRagdoll(
@@ -112,6 +114,7 @@ namespace Xname.CE
             Respawning.RespawnManager.Singleton._curSequence = old;
             p.Position = pos;
             unconsciousPlayers.Remove(playerId);
+            playerBpm.Remove(playerId);
         }
     }
 }
