@@ -60,7 +60,9 @@ namespace Xname.CE
                         d.SendConsoleMessage($"{playerBpm[player.Id]} yes", "green");
                     }
                 }
+                Log.Debug(1);
                 WakeUpPlayer(player.Id, data.Pos, data.Role, data.Inventory, data.Ammo9, data.Ammo762, data.Ammo556, data.UnitIndex, data.UnitType);
+                Log.Debug(2);
             }
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
@@ -107,11 +109,17 @@ namespace Xname.CE
         }
         private void WakeUpPlayer(int playerId, Vector3 pos, RoleType role, Inventory.SyncItemInfo[] inv, uint ammo9mm, uint ammo7mm, uint ammo5mm, int unitIndex, byte unitType)
         {
+            Log.Debug("1a");
             Player p = RealPlayers.Get(playerId);
+            Log.Debug("2a");
             var old = Respawning.RespawnManager.CurrentSequence();
+            Log.Debug("3a");
             Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
+            Log.Debug("4a");
             p.Role = role;
+            Log.Debug("5a");
             Respawning.RespawnManager.Singleton._curSequence = old;
+            Log.Debug("6a");
             foreach (var item in inv)
             {
                 p.Inventory.items.Add(item);
