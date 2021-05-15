@@ -59,8 +59,8 @@ namespace Xname.CE
         {
             if (ev.Target != null)
             {
-                if (ev.DamageType.isWeapon && ev.Amount > 25 && ev.Target.IsHuman)
-                {
+                //if (ev.DamageType.isWeapon && ev.Amount > 25 && ev.Target.IsHuman)
+                //{
                     if (UnityEngine.Random.Range(0, 100) < unconsciousChance)
                     {
                         ev.IsAllowed = false;
@@ -89,7 +89,7 @@ namespace Xname.CE
                             ev.Target.Id);
                         this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
                     }
-                }
+                //}
             }
         }
         private void WakeUpPlayer(int playerId, Vector3 pos, RoleType role, Inventory.SyncItemInfo[] inv, uint ammo9mm, uint ammo7mm, uint ammo5mm, int unitIndex, byte unitType)
