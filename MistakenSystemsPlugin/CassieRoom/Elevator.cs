@@ -532,6 +532,7 @@ namespace Gamer.Mistaken.CassieRoom
             DoorDown.ServerChangeLock(DoorLockReason.AdminCommand, true);
             DoorUp.ServerChangeLock(DoorLockReason.AdminCommand, true);
             yield return Timing.WaitForSeconds(3);
+            Log.Debug($"{InElevator.Count} players to move");
             if (ElevatorUp)
             {
                 foreach (var item in InElevator.ToArray())
