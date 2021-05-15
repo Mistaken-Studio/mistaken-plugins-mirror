@@ -84,7 +84,7 @@ namespace Xname.CE
         {
             if (unconsciousPlayers.TryGetValue(player.Id, out (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
             {
-                while (playerBpm[player.Id] > 60)
+                while (playerBpm[player.Id] < 60)
                 {
                     yield return Timing.WaitForSeconds(WakeUpRate);
                     playerBpm[player.Id] = playerBpm[player.Id] + UnityEngine.Random.Range(8f, maxBpmOnUpdate);
@@ -100,9 +100,10 @@ namespace Xname.CE
         /// <param name="type"></param>
         /// <param name="reason"></param>
         /// <param name="attackerid"></param>
-        public static void PutPlayerToSleep(Player player, DamageTypes.DamageType type = null, string reason = "Samobójstwo", int attackerid = 0)
+        public static void PutPlayerToSleep(Player player, DamageTypes.DamageType type = null, string reason = "Nieudana próba samobójcza, wciąż żyje", int attackerid = 0)
         {
             player.DisableAllEffects();
+            player.EnableEffect<CustomPlayerEffects.Ensnared>(float.MaxValue);
             unconsciousPlayers.Add(player.Id, (
                 player.Position,
                 player.Role,
@@ -154,6 +155,7 @@ namespace Xname.CE
                 player.Health = UnityEngine.Random.Range(20f, 35f);
                 Timing.CallDelayed(0.5f, () => player.Position = data.Pos);
                 player.IsInvisible = false;
+                player.DisableEffect<CustomPlayerEffects.Ensnared>();
                 unconsciousPlayers.Remove(player.Id);
             }
         }
