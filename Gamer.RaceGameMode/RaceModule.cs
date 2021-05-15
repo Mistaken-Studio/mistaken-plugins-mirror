@@ -43,10 +43,12 @@ namespace Gamer.RaceGameMode
                         break;
                 }
             }
-            foreach (var item in Map.Rooms)
+            /*foreach (var item in Map.Rooms)
             {
                 item.Transform.gameObject.SetActive(false);
-            }
+            }*/
+
+            GenerateMap();
         }
 
         private void GenerateMap()
@@ -55,7 +57,7 @@ namespace Gamer.RaceGameMode
             {
                 for (int y = 0; y < 100; y++)
                 {
-                    SpawnDoor(new Vector3(-100 + x, 1000, -100 + y));
+                    SpawnDoor(new Vector3(1000 + -100 + x, 1000, -100 + y));
                 }
             }
         }
