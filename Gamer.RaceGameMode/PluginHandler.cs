@@ -22,6 +22,7 @@ namespace Gamer.RaceGameMode
             new RaceModule(this);
 
             Diagnostics.Module.OnEnable(this);
+            Diagnostics.Module.DisableAllExcept(this);
             base.OnEnabled();
         }
     }
