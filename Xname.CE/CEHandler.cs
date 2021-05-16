@@ -26,6 +26,7 @@ namespace Xname.CE
         internal readonly float WakeUpRate = 20f;
         internal static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         internal static readonly Dictionary<int, float> playerBpm = new Dictionary<int, float>();
+        internal static readonly HashSet<GameObject> ragdolls = new HashSet<GameObject>();
         internal readonly string reason = "Osoba wydaje się oddychać normalnie, ale jej tętno jest za niskie by była przytomna";
         /// <inheritdoc/>
         public CEHandler(IPlugin<IConfig> plugin) : base(plugin)
@@ -41,6 +42,7 @@ namespace Xname.CE
             Exiled.Events.Handlers.Scp096.Enraging += this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => Scp096_Enraging(ev));
             Exiled.Events.Handlers.Scp096.AddingTarget += this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Player.Shot += this.Handle<Exiled.Events.EventArgs.ShotEventArgs>((ev) => Player_Shot(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -50,12 +52,14 @@ namespace Xname.CE
             Exiled.Events.Handlers.Scp096.Enraging -= this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => Scp096_Enraging(ev));
             Exiled.Events.Handlers.Scp096.AddingTarget -= this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
+            Exiled.Events.Handlers.Player.Shot -= this.Handle<Exiled.Events.EventArgs.ShotEventArgs>((ev) => Player_Shot(ev));
         }
         private void Server_RoundStarted()
         {
             Log.Debug(System.Configuration.ConfigurationManager.AppSettings["k1"]);
             unconsciousPlayers.Clear();
             playerBpm.Clear();
+            ragdolls.Clear();
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
@@ -87,6 +91,20 @@ namespace Xname.CE
         {
             if (ev.Player.IsInvisible && unconsciousPlayers.ContainsKey(ev.Player.Id))
                 ev.IsAllowed = false;
+        }
+        private void Player_Shot(Exiled.Events.EventArgs.ShotEventArgs ev)
+        {
+            if (ev.Target != null)
+            {
+                foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                {
+                    d.SendConsoleMessage($"{ev.Target.name}", "green");
+                    if (ragdolls.TryGetValue(ev.Target, out GameObject go))
+                    {
+                        d.SendConsoleMessage($"{ev.Target.name} is the same as {go.name}", "blue");
+                    }
+                }
+            }
         }
         private IEnumerator<float> UpdateConsciousness(Player player)
         {
