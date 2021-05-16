@@ -73,6 +73,9 @@ namespace Xname.CE
         [System.ComponentModel.Description("Durration of the effect Exhausted in seconds. Value 0 means no effect")]
         public int exhaustedTime { get; set; } = 30;
         /// <inheritdoc/>
+        [System.ComponentModel.Description("Durration of the effect Exhausted in seconds. Value 0 means no effect")]
+        public int amnesiaTime { get; set; } = 3;
+        /// <inheritdoc/>
         [System.ComponentModel.Description("Getting unconscious by only headshots. Works only if unconsciousWeaponOnly is set to true")]
         public bool unconsciousHeadShotOnly { get; set; } = true;
         /// <inheritdoc/>
