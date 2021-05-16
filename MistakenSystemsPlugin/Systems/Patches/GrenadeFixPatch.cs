@@ -129,6 +129,7 @@ namespace Gamer.Mistaken.Systems.Patches
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
             }
+            disabledGoList.Clear();
         }
     }
 }
