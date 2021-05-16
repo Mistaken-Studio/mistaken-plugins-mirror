@@ -22,7 +22,7 @@ namespace Xname.CE
     {
         internal static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         internal static readonly Dictionary<int, float> playerBpm = new Dictionary<int, float>();
-        internal static readonly HashSet<GameObject> ragdolls = new HashSet<GameObject>();
+        internal static readonly Dictionary<Player, GameObject> ragdolls = new Dictionary<Player, GameObject>();
         /// <inheritdoc/>
         public CEHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
@@ -65,7 +65,7 @@ namespace Xname.CE
                     {
                         ev.IsAllowed = false;
                         playerBpm[ev.Target.Id] = UnityEngine.Random.Range(PluginHandler.Config.minBpmOnShot, PluginHandler.Config.maxBpmOnShot);
-                        PutPlayerToSleep(ev.Target, ev.DamageType, PluginHandler.Config.reasonOnRagdoll, ev.Attacker.Id);
+                        PutPlayerToSleep(ev.Target, ev.DamageType, PluginHandler.Config.reasonOnUnconsciousRagdoll, ev.Attacker.Id);
                         this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
                     }
                 }
@@ -88,23 +88,15 @@ namespace Xname.CE
         }
         private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
         {
-            if (Physics.Raycast(ev.Shooter.CameraTransform.position, ev.Shooter.CameraTransform.forward, out RaycastHit hit))
+            foreach (var go in ragdolls)
             {
-                foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                if (Vector3.Distance(ev.Position, go.Value.transform.position) < 5)
                 {
-                    int value = hit.collider.gameObject.layer;
-                    for (int i = 0; i < 32; i++)
+                    foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
                     {
-                        int pow = (int)Math.Pow(i, 2);
-                        if ((value & pow) != 0)
-                            d.SendConsoleMessage(LayerMask.LayerToName(i), "blue");
-                    }
-                    if (ev.Target != null)
-                        d.SendConsoleMessage($"{ev.Target.name}", "green");
-                    d.SendConsoleMessage($"{hit.collider?.name}", "green");
-                    if (ragdolls.TryGetValue(hit.collider?.gameObject, out GameObject go))
-                    {
-                        d.SendConsoleMessage($"{hit.collider.gameObject.name} is the same as {go.name}", "blue");
+                        d.SendConsoleMessage("works", "green");
+                        Role role = go.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)go.Key.ReferenceHub.characterClassManager.CurClass);
+                        go.Value.GetComponent<Ragdoll>().Networkowner = new Ragdoll.Info(go.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, go.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, go.Key.Id);
                     }
                 }
             }
@@ -152,6 +144,7 @@ namespace Xname.CE
             component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attackerid == 0) ? player.Id : attackerid), role, player.Id);
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
+            ragdolls.Add(player, gameObject);
         }
         /// <summary>
         /// Makes player conscious.

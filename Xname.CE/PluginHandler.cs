@@ -82,7 +82,10 @@ namespace Xname.CE
         [System.ComponentModel.Description("Not being able to move when unconscious")]
         public bool unconsciousEnsnare { get; set; } = true;
         /// <inheritdoc/>
-        [System.ComponentModel.Description("Reason on ragdolls of unconscious player")]
-        public string reasonOnRagdoll { get; set; } = "Osoba wydaje się oddychać normalnie, ale jej tętno jest za niskie by była przytomna";
+        [System.ComponentModel.Description("Reason of death on ragdolls of unconscious player")]
+        public string reasonOnUnconsciousRagdoll { get; set; } = "Osoba wydaje się oddychać normalnie, ale jej tętno jest za niskie by była przytomna";
+        /// <inheritdoc/>
+        [System.ComponentModel.Description("Reason of death on ragdolls of unconscious player")]
+        public string reasonOnDeadRagdoll { get; set; } = "Brak oznak funkcji życiowych";
     }
 }
