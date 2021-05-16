@@ -27,6 +27,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+            Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
         }
         public override void OnEnable()
         {
@@ -34,6 +35,14 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+            Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
+        }
+
+        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            this.CallDelayed(1, () => UpdateAll(), "ChangedRoleLate");
         }
 
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
