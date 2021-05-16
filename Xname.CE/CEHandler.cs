@@ -88,17 +88,16 @@ namespace Xname.CE
         }
         private void Player_Shot(Exiled.Events.EventArgs.ShotEventArgs ev)
         {
-            if (ev.Target != null)
+
+            foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
             {
-                foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                d.SendConsoleMessage($"{ev.Target?.name}", "green");
+                if (ragdolls.TryGetValue(ev.Target, out GameObject go))
                 {
-                    d.SendConsoleMessage($"{ev.Target.name}", "green");
-                    if (ragdolls.TryGetValue(ev.Target, out GameObject go))
-                    {
-                        d.SendConsoleMessage($"{ev.Target.name} is the same as {go.name}", "blue");
-                    }
+                    d.SendConsoleMessage($"{ev.Target?.name} is the same as {go.name}", "blue");
                 }
             }
+
         }
         private IEnumerator<float> UpdateConsciousness(Player player)
         {
