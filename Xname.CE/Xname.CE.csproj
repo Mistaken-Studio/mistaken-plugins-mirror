@@ -67,6 +67,9 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\References\BaseGame\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CEHandler.cs" />
