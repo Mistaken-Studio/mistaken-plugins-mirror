@@ -92,6 +92,13 @@ namespace Xname.CE
             {
                 foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
+                    int value = hit.collider.gameObject.layer;
+                    for (int i = 0; i < 32; i++)
+                    {
+                        int pow = (int)Math.Pow(i, 2);
+                        if ((value & pow) != 0)
+                            d.SendConsoleMessage(LayerMask.LayerToName(i), "blue");
+                    }
                     if (ev.Target != null)
                         d.SendConsoleMessage($"1 {ev.Target.name}", "green");
                     d.SendConsoleMessage($"2 {hit.collider?.name}", "green");
