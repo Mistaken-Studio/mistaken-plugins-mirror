@@ -100,11 +100,11 @@ namespace Xname.CE
                             d.SendConsoleMessage(LayerMask.LayerToName(i), "blue");
                     }
                     if (ev.Target != null)
-                        d.SendConsoleMessage($"1 {ev.Target.name}", "green");
-                    d.SendConsoleMessage($"2 {hit.collider?.name}", "green");
+                        d.SendConsoleMessage($"{ev.Target.name}", "green");
+                    d.SendConsoleMessage($"{hit.collider?.name}", "green");
                     if (ragdolls.TryGetValue(hit.collider?.gameObject, out GameObject go))
                     {
-                        d.SendConsoleMessage($"3 {hit.collider.gameObject.name} is the same as {go.name}", "blue");
+                        d.SendConsoleMessage($"{hit.collider.gameObject.name} is the same as {go.name}", "blue");
                     }
                 }
             }
