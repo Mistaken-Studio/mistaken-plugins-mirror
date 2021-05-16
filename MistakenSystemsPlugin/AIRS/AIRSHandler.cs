@@ -1,20 +1,28 @@
-﻿using Exiled.API.Features;
+﻿using System.Collections.Generic;
+using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
-using System.Collections.Generic;
 
 namespace Gamer.Mistaken.AIRS
 {
-    public class Handler : Module
+    public class AIRSHandler : Module
     {
-        public override bool IsBasic => true;
-        public override string Name => "AIRS";
-        public Handler(PluginHandler plugin) : base(plugin)
+        public static readonly HashSet<int> AlreadyReported = new HashSet<int>();
+
+        public static int Reports = 0;
+        public static int ReportsOnThisServer = 0;
+
+        public AIRSHandler(PluginHandler plugin) : base(plugin)
         {
         }
+
+        public override bool IsBasic => true;
+
+        public override string Name => "AIRS";
+
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.LocalReporting += this.Handle<Exiled.Events.EventArgs.LocalReportingEventArgs>((ev) => Server_LocalReporting(ev));
@@ -22,6 +30,7 @@ namespace Gamer.Mistaken.AIRS
             Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Died += this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
+
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.LocalReporting -= this.Handle<Exiled.Events.EventArgs.LocalReportingEventArgs>((ev) => Server_LocalReporting(ev));
@@ -29,8 +38,25 @@ namespace Gamer.Mistaken.AIRS
             Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
             Exiled.Events.Handlers.Player.Died -= this.Handle<Exiled.Events.EventArgs.DiedEventArgs>((ev) => Player_Died(ev));
         }
-        public static int Reports = 0;
-        public static int ReportsOnThisServer = 0;
+
+        public static void UpdateAll()
+        {
+            foreach (var player in RealPlayers.List)
+            {
+                if (!player.IsStaff())
+                    continue;
+                if (player.Role == RoleType.Tutorial || player.Role == RoleType.Spectator)
+                    Update(player, false);
+                else
+                    Update(player, true);
+            }
+        }
+
+        private static void Update(Player p, bool hide)
+        {
+            p.SetGUI("AIRS", Base.GUI.PseudoGUIHandler.Position.TOP, hide ? null : $"Reports: <color=yellow>{Reports}</color> | Reports on #<color=yellow>{Server.Port - 7776}</color>: <color=yellow>{ReportsOnThisServer}</color>");
+        }
+
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
             if (!ev.Player.IsStaff())
@@ -47,24 +73,7 @@ namespace Gamer.Mistaken.AIRS
                 return;
             Update(ev.Target, false);
         }
-        public static void UpdateAll()
-        {
-            foreach (var player in RealPlayers.List)
-            {
-                if (!player.IsStaff())
-                    continue;
-                if (player.Role == RoleType.Tutorial || player.Role == RoleType.Spectator)
-                    Update(player, false);
-                else
-                    Update(player, true);
-            }
-        }
-        private static void Update(Player p, bool hide)
-        {
-            p.SetGUI("AIRS", Base.GUI.PseudoGUIHandler.Position.TOP, hide ? null : $"Reports: <color=yellow>{Reports}</color> | Reports on #<color=yellow>{Server.Port - 7776}</color>: <color=yellow>{ReportsOnThisServer}</color>");
-        }
 
-        public static readonly HashSet<int> AlreadyReported = new HashSet<int>();
         private void Server_LocalReporting(Exiled.Events.EventArgs.LocalReportingEventArgs ev)
         {
             string reason = ev.Reason;
@@ -74,12 +83,14 @@ namespace Gamer.Mistaken.AIRS
                 ev.IsAllowed = false;
                 return;
             }
+
             if (AlreadyReported.Contains(ev.Target.Id))
             {
                 ev.Issuer.Broadcast("REPORT", 10, "!! Ten gracz został już zgłoszony !!", Broadcast.BroadcastFlags.AdminChat);
                 ev.IsAllowed = false;
                 return;
             }
+
             RoundLogger.Log("AIRS", "REPORT", $"{ev.Target.PlayerToString()} was reportd by {ev.Issuer.PlayerToString()} for \"{ev.Reason}\"");
             int id = ev.Target.Id;
             AlreadyReported.Add(id);
@@ -87,7 +98,6 @@ namespace Gamer.Mistaken.AIRS
             ev.IsAllowed = ReportHandler.ExecuteReport(ev.Issuer.ReferenceHub, ev.Target.ReferenceHub, ref reason);
             ev.Reason = reason;
         }
-
 
         private void Server_RestartingRound()
         {

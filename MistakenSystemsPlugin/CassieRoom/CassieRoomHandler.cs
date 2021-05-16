@@ -1,4 +1,9 @@
-﻿using Exiled.API.Extensions;
+﻿#pragma warning disable IDE0060
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.CustomItems;
@@ -9,20 +14,17 @@ using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
 using MEC;
 using Mirror;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace Gamer.Mistaken.CassieRoom
 {
     public class CassieRoomHandler : Diagnostics.Module
     {
-        //public override bool Enabled => false;
+        // public override bool Enabled => false;
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
-            this.RunCoroutine(Loop(), "Loop");
-            this.RunCoroutine(UpdateSNav(), "UpdateSNav");
+            this.RunCoroutine(this.Loop(), "Loop");
+            this.RunCoroutine(this.UpdateSNav(), "UpdateSNav");
         }
 
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
@@ -82,9 +84,11 @@ namespace Gamer.Mistaken.CassieRoom
                     Log.Error(ex.StackTrace);
                     Gamer.Diagnostics.MasterHandler.LogError(ex, this, "UpdateSNav");
                 }
+
                 yield return Timing.WaitForSeconds(5);
             }
         }
+
         private void UpdateSNavSurface()
         {
             if (SNavSurface == null)
@@ -139,7 +143,7 @@ namespace Gamer.Mistaken.CassieRoom
                 if (player.ReferenceHub.networkIdentity.connectionToClient == null)
                     return;
                 Log.Debug($"Syncing cards for {player.Nickname}");
-                foreach (var netid in networkIdentities)
+                foreach (var netid in NetworkIdentities)
                 {
                     sendSpawnMessage.Invoke(null, new object[]
                     {
@@ -157,7 +161,7 @@ namespace Gamer.Mistaken.CassieRoom
             if (player.ReferenceHub.networkIdentity.connectionToClient == null)
                 return;
             Log.Debug($"DeSyncing cards for {player.Nickname}");
-            foreach (var netid in networkIdentities)
+            foreach (var netid in NetworkIdentities)
             {
                 ObjectDestroyMessage msg = new ObjectDestroyMessage
                 {
@@ -289,7 +293,7 @@ namespace Gamer.Mistaken.CassieRoom
         private static InRangeBall SNavEZHCZ;
         private void Server_WaitingForPlayers()
         {
-            networkIdentities.Clear();
+            NetworkIdentities.Clear();
             #region Helipad
             {
                 SpawnItem(ItemType.KeycardSeniorGuard, new Vector3(181f, 992.460f, -58.3f + 0.1f), new Vector3(90, 90, 0), new Vector3(18, 40, 0.05f));
@@ -558,6 +562,7 @@ namespace Gamer.Mistaken.CassieRoom
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
             return door;
         }
+
         public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation, string name, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool> onCall, Vector3 size = default)
         {
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos + buttonOffset, rotation, size == default ? Vector3.one : size);
@@ -574,17 +579,18 @@ namespace Gamer.Mistaken.CassieRoom
             });
             return door;
         }
+
         public static DoorVariant SpawnDoor(string name, Vector3 pos, Vector3 rotation, Vector3 size)
         {
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, name, pos, rotation, size);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
             Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
-            networkIdentities.Add(door.netIdentity);
+            NetworkIdentities.Add(door.netIdentity);
             return door;
         }
 
-        private static readonly List<Mirror.NetworkIdentity> networkIdentities = new List<Mirror.NetworkIdentity>();
+        private static readonly List<Mirror.NetworkIdentity> NetworkIdentities = new List<Mirror.NetworkIdentity>();
         public static void SpawnItem(ItemType type, Vector3 pos, Vector3 rot, Vector3 size, bool collide = false)
         {
             var gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
@@ -597,18 +603,19 @@ namespace Gamer.Mistaken.CassieRoom
                 gameObject.AddComponent<BoxCollider>();
                 gameObject.layer = LayerMask.GetMask("Default");
             }
+
             var pickup = gameObject.GetComponent<Pickup>();
             pickup.SetupPickup(type, 78253f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 4), gameObject.transform.position, gameObject.transform.rotation);
             pickup.Locked = true;
             foreach (var c in pickup.model.GetComponents<Component>())
                 GameObject.Destroy(c.gameObject);
-            networkIdentities.Add(pickup.netIdentity);
+            NetworkIdentities.Add(pickup.netIdentity);
             Pickup.Instances.Remove(pickup);
             GameObject.Destroy(pickup);
-            foreach (var _item in gameObject.GetComponents<Collider>())
-                GameObject.Destroy(_item);
-            foreach (var _item in gameObject.GetComponents<MeshRenderer>())
-                GameObject.Destroy(_item);
+            foreach (var item2 in gameObject.GetComponents<Collider>())
+                GameObject.Destroy(item2);
+            foreach (var item2 in gameObject.GetComponents<MeshRenderer>())
+                GameObject.Destroy(item2);
             Mirror.NetworkServer.Spawn(gameObject);
             gameObject.SetActive(false);
         }

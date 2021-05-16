@@ -1,22 +1,25 @@
-﻿using Exiled.API.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Utilities.APILib;
 using Gamer.RoundLoggerSystem;
 using Gamer.Utilities;
 using Grenades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 
 namespace Gamer.Mistaken.ATK
 {
     public class AntyTeamKillHandler : Diagnostics.Module
     {
-        //public override bool IsBasic => true;
+        // public override bool IsBasic => true;
+
         public static int CurrentRoundId = 0;
+
         public static readonly Dictionary<int, List<TeamKill>> TeamKills = new Dictionary<int, List<TeamKill>>();
+
         public static List<TeamKill> TeamKillsList
         {
             get
@@ -29,11 +32,15 @@ namespace Gamer.Mistaken.ATK
                 return tor;
             }
         }
+
         public class TeamKill
         {
             public int RoundId;
+
             public Player Killer;
+
             public Player Victim;
+
             public global::PlayerStats.HitInfo Info;
 
             private TeamKill(Exiled.Events.EventArgs.DyingEventArgs ev, string killerUserId)
@@ -54,14 +61,11 @@ namespace Gamer.Mistaken.ATK
                     Log.Error(ex.Message);
                     Log.Error(ex.StackTrace);
                 }
+
                 if (killerUserId != null)
-                {
                     Instance.SendTK(killerUserId, Team.RIP, Victim);
-                }
                 else
-                {
                     Instance.SendTK(Killer, Victim);
-                }
             }
 
             public static void Create(Exiled.Events.EventArgs.DyingEventArgs ev, string killerUserId)
@@ -71,15 +75,14 @@ namespace Gamer.Mistaken.ATK
         }
 
         public static readonly Dictionary<int, List<TeamAttack>> TeamAttacks = new Dictionary<int, List<TeamAttack>>();
+
         public static List<TeamAttack> TeamAttacksList
         {
             get
             {
                 var tor = new List<TeamAttack>();
                 foreach (var item in TeamAttacks.Values)
-                {
                     tor.AddRange(item);
-                }
                 return tor;
             }
         }
@@ -87,8 +90,11 @@ namespace Gamer.Mistaken.ATK
         public class TeamAttack
         {
             public int RoundId;
+
             public Player Killer;
+
             public Player Victim;
+
             public global::PlayerStats.HitInfo Info;
 
             private TeamAttack(Exiled.Events.EventArgs.HurtingEventArgs ev, string attackerUserId)
@@ -128,7 +134,9 @@ namespace Gamer.Mistaken.ATK
         private static AntyTeamKillHandler Instance;
 
         public override string Name => nameof(AntyTeamKillHandler);
+
         private static new __Log Log;
+
         public AntyTeamKillHandler(PluginHandler p) : base(p)
         {
             Instance = this;
@@ -152,9 +160,11 @@ namespace Gamer.Mistaken.ATK
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
             Exiled.Events.Handlers.Map.ExplodingGrenade -= this.Handle<Exiled.Events.EventArgs.ExplodingGrenadeEventArgs>((ev) => Map_ExplodingGrenade(ev));
         }
+
         public const bool Debug = true;
 
         public static readonly Dictionary<string, Player[]> TKGreneadedPlayers = new Dictionary<string, Player[]>();
+
         private void Map_ExplodingGrenade(Exiled.Events.EventArgs.ExplodingGrenadeEventArgs ev)
         {
             if (!ev.IsAllowed)
@@ -162,11 +172,13 @@ namespace Gamer.Mistaken.ATK
                 RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 2");
                 return;
             }
+
             if (!ev.IsFrag)
             {
                 RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 3");
                 return;
             }
+
             var frag = ev.Grenade.GetComponent<FragGrenade>();
             string userId = null;
             string name = null;
@@ -196,25 +208,30 @@ namespace Gamer.Mistaken.ATK
                     RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 1");
                     return;
                 }
+
                 userId = ev.Thrower.UserId;
                 name = ev.Thrower.PlayerToString();
                 nick = ev.Thrower.GetDisplayName();
             }
+
             foreach (var item in ev.TargetToDamages.ToArray())
             {
                 if (item.Key.IsDead)
                     ev.TargetToDamages.Remove(item.Key);
             }
+
             if (ev.TargetToDamages.Count == 0 || (ev.TargetToDamages.Count == 1 && ev.Thrower != null && ev.TargetToDamages.ContainsKey(ev.Thrower)))
             {
                 RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 4");
                 return;
             }
+
             if (!ev.TargetToDamages.Any(i => i.Key.Side == frag.TeamWhenThrown.GetSide() && !(i.Key.Role == RoleType.ClassD && frag.TeamWhenThrown == Team.CDP)))
             {
                 RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 5");
                 return;
             }
+
             var tkTargets = new List<Player>();
             foreach (var item in ev.TargetToDamages.ToArray())
             {
@@ -223,16 +240,19 @@ namespace Gamer.Mistaken.ATK
                 if (IsTeamkill(frag.TeamWhenThrown, item.Key.Team))
                     tkTargets.Add(item.Key);
             }
+
             if (TKGreneadedPlayers.ContainsKey(userId))
             {
                 RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 6");
                 return;
             }
+
             if (tkTargets.Count == 0)
             {
                 RoundLogger.Log("TK", "GRENADE", "ATK Skip Code: 7");
                 return;
             }
+
             RoundLogger.Log("TK", "GRENADE", "ATK Execute Code: 1");
             TKGreneadedPlayers.Add(userId, tkTargets.ToArray());
             this.CallDelayed(.1f, () => TKGreneadedPlayers.Remove(userId), "ExploadingGrenade");
@@ -240,7 +260,7 @@ namespace Gamer.Mistaken.ATK
 
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
-            //if (!ev.Attacker.IsReadyPlayer())
+            // if (!ev.Attacker.IsReadyPlayer())
             //    return;
             if (!ev.Target.IsReadyPlayer())
                 return;
@@ -255,7 +275,7 @@ namespace Gamer.Mistaken.ATK
 
         private void Player_Dying(Exiled.Events.EventArgs.DyingEventArgs ev)
         {
-            //if (!ev.Killer.IsReadyPlayer())
+            // if (!ev.Killer.IsReadyPlayer())
             //    return;
             if (!ev.Target.IsReadyPlayer())
                 return;
@@ -277,6 +297,7 @@ namespace Gamer.Mistaken.ATK
                         TeamKill.Create(ev, killer);
                 }
             }
+
             if (!LastDead.ContainsKey(ev.Target.UserId))
             {
                 LastDead.Add(ev.Target.UserId, ev.Target.Team);
@@ -285,6 +306,7 @@ namespace Gamer.Mistaken.ATK
                     LastDead.Remove(ev.Target.UserId);
                 }, "RemoveLastDead");
             }
+
             if (!AntiDuplicateTK.Contains(ev.Target.UserId))
             {
                 AntiDuplicateTK.Add(ev.Target.UserId);
@@ -294,7 +316,9 @@ namespace Gamer.Mistaken.ATK
                 }, "Remove DuplicateTK");
             }
         }
+
         public static readonly HashSet<string> AntiDuplicateTK = new HashSet<string>();
+
         public static readonly Dictionary<string, Team> LastDead = new Dictionary<string, Team>();
 
         public static bool IsTeamkill(Player killer, Player victim)
@@ -363,8 +387,6 @@ namespace Gamer.Mistaken.ATK
                     $"\n- Server: {Server.Port}",
                     "red");
             }
-
-
 
             if (!Punishing.Contains(killerUserId))
             {
@@ -478,7 +500,7 @@ namespace Gamer.Mistaken.ATK
                     Issuer = "AntyTeamKill",
                     IssuanceTime = DateTime.Now.Ticks,
                     Expires = DateTime.Now.AddMinutes(duration).Ticks,
-                    Reason = reason
+                    Reason = reason,
                 };
                 BanHandler.IssueBan(ban, BanHandler.BanType.UserId);
                 Exiled.Events.Handlers.Player.OnBanned(new Exiled.Events.EventArgs.BannedEventArgs(player, Server.Host, ban, BanHandler.BanType.UserId));
@@ -488,36 +510,38 @@ namespace Gamer.Mistaken.ATK
             }
         }
 
-        public void SendTK(Player Killer, Player Target)
+        public void SendTK(Player killer, Player target)
         {
             if (!Round.IsStarted)
             {
                 Log.Debug("Outside of round");
                 return;
             }
-            TeamKillsCounter.TryGetValue(Killer.UserId, out int num);
-            if (!Mistaken.Utilities.APILib.API.GetUrl(APIType.TK, out string url, Target.UserId, Killer.UserId, Target.Role.ToString(), Killer.Role.ToString(), ServerConsole.Ip, Server.Port.ToString(), num.ToString()))
+
+            TeamKillsCounter.TryGetValue(killer.UserId, out int num);
+            if (!Mistaken.Utilities.APILib.API.GetUrl(APIType.TK, out string url, target.UserId, killer.UserId, target.Role.ToString(), killer.Role.ToString(), ServerConsole.Ip, Server.Port.ToString(), num.ToString()))
                 return;
             using (var client = new WebClient())
             {
-                //Log.Debug(url);
+                // Log.Debug(url);
                 client.DownloadStringAsync(new Uri(url));
             }
         }
 
-        public void SendTK(string killerUserId, Team killerTeam, Player Target)
+        public void SendTK(string killerUserId, Team killerTeam, Player target)
         {
             if (!Round.IsStarted)
             {
                 Log.Debug("Outside of round");
                 return;
             }
+
             TeamKillsCounter.TryGetValue(killerUserId, out int num);
-            if (!Mistaken.Utilities.APILib.API.GetUrl(APIType.TK, out string url, Target.UserId, killerUserId, Target.Role.ToString(), killerTeam.ToString(), ServerConsole.Ip, Server.Port.ToString(), num.ToString()))
+            if (!Mistaken.Utilities.APILib.API.GetUrl(APIType.TK, out string url, target.UserId, killerUserId, target.Role.ToString(), killerTeam.ToString(), ServerConsole.Ip, Server.Port.ToString(), num.ToString()))
                 return;
             using (var client = new WebClient())
             {
-                //Log.Debug(url);
+                // Log.Debug(url);
                 client.DownloadStringAsync(new Uri(url));
             }
         }

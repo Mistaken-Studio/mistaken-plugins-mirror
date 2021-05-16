@@ -205,3 +205,17 @@ dotnet_naming_style.rozpoczyna_się_znakiem_i.required_prefix = I
 dotnet_naming_style.rozpoczyna_się_znakiem_i.required_suffix = 
 dotnet_naming_style.rozpoczyna_się_znakiem_i.word_separator = 
 dotnet_naming_style.rozpoczyna_się_znakiem_i.capitalization = pascal_case
+
+
+# Skip StyleCop
+
+# Odwołanie do podstawowego konstruktora (base()) musi być w nowej lini
+dotnet_diagnostic.SA1128.severity = none
+# Parametry muszą być w jednel lini lub każdy w odzielnej
+dotnet_diagnostic.SA1117.severity = none
+# Prefix local calls with this (Zmienne prywatne muszą zaczynać się od this?)
+dotnet_diagnostic.SA1101.severity = none
+# Wymagaj "{}" i nie zezwalaj na brak w np if/for/while/itp
+dotnet_diagnostic.SA1503.severity = none
+# The opening and closing braces of a chained if/else if/else construct were included for some clauses, but omitted for others.
+dotnet_diagnostic.SA1520.severity = none

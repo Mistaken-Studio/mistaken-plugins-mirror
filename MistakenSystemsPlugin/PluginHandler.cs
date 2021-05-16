@@ -43,7 +43,7 @@ namespace Gamer.Mistaken
             new Systems.Utilities.UtilitiesHandler(this);
             new Systems.Handler(this);
 
-            new AIRS.Handler(this);
+            new AIRS.AIRSHandler(this);
             new BetterMutes.Handler(this);
             new CustomWhitelist.Handler(this);
             new EVO.Handler(this);

@@ -119,7 +119,7 @@ namespace Gamer.Mistaken.LOFH
                                 sender.RaReply(query[0].ToUpper() + "#Invalid Player: " + query[1], false, true, "");
                                 return false;
                             }
-                            string reason = string.Empty;
+                            string reason = "";
                             if (query.Length > 3)
                             {
                                 reason = query.Skip(3).Aggregate((string current, string n) => current + " " + n);
@@ -418,7 +418,7 @@ namespace Gamer.Mistaken.LOFH
                                             if (player == null)
                                                 continue;
                                             QueryProcessor queryProcessor = player.ReferenceHub.queryProcessor;
-                                            string text4 = string.Empty;
+                                            string text4 = "";
                                             bool ovrm = false;
 
                                             string lofhData = LOFH.GetConstructedPrefix(player.UserId);
@@ -433,9 +433,9 @@ namespace Gamer.Mistaken.LOFH
                                             try
                                             {
                                                 if (string.IsNullOrEmpty(serverRoles.HiddenBadge) || (serverRoles.GlobalHidden && hiddenGlobalBages) || (!serverRoles.GlobalHidden && hiddenBages))
-                                                    text4 = (serverRoles.RaEverywhere ? "[~] " : (serverRoles.Staff ? "[@] " : lofhData != "" ? lofhData + " " : (serverRoles.RemoteAdmin ? "[RA] " : string.Empty)));
+                                                    text4 = (serverRoles.RaEverywhere ? "[~] " : (serverRoles.Staff ? "[@] " : lofhData != "" ? lofhData + " " : (serverRoles.RemoteAdmin ? "[RA] " : "")));
                                                 else
-                                                    text4 = lofhData != "" ? $"{lofhData} " : string.Empty;
+                                                    text4 = lofhData != "" ? $"{lofhData} " : "";
                                                 ovrm = player.IsOverwatchEnabled;
                                             }
                                             catch
@@ -451,9 +451,9 @@ namespace Gamer.Mistaken.LOFH
                                                 "(",
                                                 queryProcessor.PlayerId,
                                                 ") ",
-                                                player.ReferenceHub.nicknameSync.CombinedName.Replace("\n", string.Empty),
+                                                player.ReferenceHub.nicknameSync.CombinedName.Replace("\n", ""),
                                                 fname == null ? "" : $" *({fname})",
-                                                ovrm ? "<OVRM>" : string.Empty,
+                                                ovrm ? "<OVRM>" : "",
                                                 "</color>"
                                             });
                                             text3 += "\n";
