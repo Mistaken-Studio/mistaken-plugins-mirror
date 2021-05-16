@@ -20,14 +20,9 @@ namespace Xname.CE
     /// </summary>
     public class CEHandler : Module
     {
-        internal readonly float unconsciousChance = 100f;
-        internal readonly float maxBpmOnUpdate = 12f;
-        internal readonly float maxBpm = 50f;
-        internal readonly float WakeUpRate = 20f;
         internal static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         internal static readonly Dictionary<int, float> playerBpm = new Dictionary<int, float>();
         internal static readonly HashSet<GameObject> ragdolls = new HashSet<GameObject>();
-        internal readonly string reason = "Osoba wydaje się oddychać normalnie, ale jej tętno jest za niskie by była przytomna";
         /// <inheritdoc/>
         public CEHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
@@ -59,19 +54,6 @@ namespace Xname.CE
             unconsciousPlayers.Clear();
             playerBpm.Clear();
             ragdolls.Clear();
-            foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
-            {
-                try
-                {
-                    d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k1"]}", "yellow");
-                    d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k2"]}", "yellow");
-                    d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k3"]}", "yellow");
-                }
-                catch
-                {
-                    d.SendConsoleMessage($"wyjebało się nitka", "yellow");
-                }
-            }
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
@@ -79,11 +61,11 @@ namespace Xname.CE
             {
                 if (ev.DamageType.isWeapon && ev.Amount > 25 && ev.Target.IsHuman)
                 {
-                    if (UnityEngine.Random.Range(0, 100) < unconsciousChance)
+                    if (UnityEngine.Random.Range(0, 100) < PluginHandler.Config.unconsciousChance)
                     {
                         ev.IsAllowed = false;
-                        playerBpm[ev.Target.Id] = UnityEngine.Random.Range(30f, maxBpm);
-                        PutPlayerToSleep(ev.Target, ev.DamageType, reason, ev.Attacker.Id);
+                        playerBpm[ev.Target.Id] = UnityEngine.Random.Range(PluginHandler.Config.minBpmOnShot, PluginHandler.Config.maxBpmOnShot);
+                        PutPlayerToSleep(ev.Target, ev.DamageType, PluginHandler.Config.reasonOnRagdoll, ev.Attacker.Id);
                         this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
                     }
                 }
@@ -124,8 +106,8 @@ namespace Xname.CE
             {
                 while (playerBpm[player.Id] < 60)
                 {
-                    yield return Timing.WaitForSeconds(WakeUpRate);
-                    playerBpm[player.Id] = playerBpm[player.Id] + UnityEngine.Random.Range(8f, maxBpmOnUpdate);
+                    yield return Timing.WaitForSeconds(PluginHandler.Config.wakeUpRate);
+                    playerBpm[player.Id] = playerBpm[player.Id] + UnityEngine.Random.Range(PluginHandler.Config.minBpmOnUpdate, PluginHandler.Config.maxBpmOnUpdate);
                 }
                 playerBpm.Remove(player.Id);
                 WakeUpPlayer(player);
@@ -141,7 +123,8 @@ namespace Xname.CE
         public static void PutPlayerToSleep(Player player, DamageTypes.DamageType type = null, string reason = "Nieudana próba samobójcza, wciąż żyje", int attackerid = 0)
         {
             player.DisableAllEffects();
-            player.EnableEffect<CustomPlayerEffects.Ensnared>(float.MaxValue);
+            if (PluginHandler.Config.unconsciousEnsnare)
+                player.EnableEffect<CustomPlayerEffects.Ensnared>(float.MaxValue);
             unconsciousPlayers.Add(player.Id, (
                 player.Position,
                 player.Role,
@@ -184,14 +167,15 @@ namespace Xname.CE
                 player.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType = data.UnitType;
                 if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                     player.UnitName = array[data.UnitIndex];
-                player.EnableEffect<CustomPlayerEffects.Blinded>(10f);
-                player.EnableEffect<CustomPlayerEffects.Concussed>(20f);
-                player.EnableEffect<CustomPlayerEffects.Deafened>(20f);
-                player.EnableEffect<CustomPlayerEffects.Exhausted>(30f);
-                player.Health = UnityEngine.Random.Range(20f, 35f);
+                player.EnableEffect<CustomPlayerEffects.Blinded>(PluginHandler.Config.blindedTime);
+                player.EnableEffect<CustomPlayerEffects.Concussed>(PluginHandler.Config.concussedTime);
+                player.EnableEffect<CustomPlayerEffects.Deafened>(PluginHandler.Config.deafenedTime);
+                player.EnableEffect<CustomPlayerEffects.Exhausted>(PluginHandler.Config.exhaustedTime);
+                player.Health = UnityEngine.Random.Range(PluginHandler.Config.minHpOnWakeUp, PluginHandler.Config.maxHpOnWakeUp);
                 Timing.CallDelayed(0.5f, () => player.Position = data.Pos);
                 player.IsInvisible = false;
-                player.DisableEffect<CustomPlayerEffects.Ensnared>();
+                if (player.GetEffectActive<CustomPlayerEffects.Ensnared>())
+                    player.DisableEffect<CustomPlayerEffects.Ensnared>();
                 unconsciousPlayers.Remove(player.Id);
             }
         }
