@@ -37,7 +37,7 @@ namespace Xname.CE
             Exiled.Events.Handlers.Scp096.Enraging += this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => Scp096_Enraging(ev));
             Exiled.Events.Handlers.Scp096.AddingTarget += this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Player.Shot += this.Handle<Exiled.Events.EventArgs.ShotEventArgs>((ev) => Player_Shot(ev));
+            Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -47,7 +47,7 @@ namespace Xname.CE
             Exiled.Events.Handlers.Scp096.Enraging -= this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => Scp096_Enraging(ev));
             Exiled.Events.Handlers.Scp096.AddingTarget -= this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            Exiled.Events.Handlers.Player.Shot -= this.Handle<Exiled.Events.EventArgs.ShotEventArgs>((ev) => Player_Shot(ev));
+            Exiled.Events.Handlers.Player.Shooting -= this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
         }
         private void Server_RoundStarted()
         {
@@ -86,7 +86,7 @@ namespace Xname.CE
             if (ev.Player.IsInvisible && unconsciousPlayers.ContainsKey(ev.Player.Id))
                 ev.IsAllowed = false;
         }
-        private void Player_Shot(Exiled.Events.EventArgs.ShotEventArgs ev)
+        private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
         {
             if (Physics.Raycast(ev.Shooter.CameraTransform.position, ev.Shooter.CameraTransform.forward, out RaycastHit hit))
             {
