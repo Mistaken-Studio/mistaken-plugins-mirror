@@ -56,10 +56,13 @@ namespace Xname.CE
         }
         private void Server_RoundStarted()
         {
-            Log.Debug(System.Configuration.ConfigurationManager.AppSettings["k1"]);
             unconsciousPlayers.Clear();
             playerBpm.Clear();
             ragdolls.Clear();
+            foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+            {
+                d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k1"]}", "yellow");
+            }
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
         {
@@ -160,8 +163,8 @@ namespace Xname.CE
                 var old = Respawning.RespawnManager.CurrentSequence();
                 Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                 player.Role = data.Role;
-                player.Inventory.Clear();
                 Respawning.RespawnManager.Singleton._curSequence = old;
+                player.Inventory.Clear();
                 foreach (var item in data.Inventory)
                 {
                     player.Inventory.items.Add(item);
