@@ -88,17 +88,16 @@ namespace Xname.CE
         }
         private void Player_Shot(Exiled.Events.EventArgs.ShotEventArgs ev)
         {
-            if (ev.Target == null)
+            if (Physics.Raycast(ev.Shooter.CameraTransform.position, ev.Shooter.CameraTransform.forward, out RaycastHit hit))
             {
-                if (Physics.Raycast(ev.Shooter.CameraTransform.position, ev.Shooter.CameraTransform.forward, out RaycastHit hit))
+                foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
-                    foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                    if (ev.Target != null)
+                        d.SendConsoleMessage($"1 {ev.Target.name}", "green");
+                    d.SendConsoleMessage($"2 {hit.collider?.name}", "green");
+                    if (ragdolls.TryGetValue(hit.collider?.gameObject, out GameObject go))
                     {
-                        d.SendConsoleMessage($"{hit.collider?.name}", "green");
-                        if (ragdolls.TryGetValue(hit.collider?.gameObject, out GameObject go))
-                        {
-                            d.SendConsoleMessage($"{hit.collider.gameObject.name} is the same as {go.name}", "blue");
-                        }
+                        d.SendConsoleMessage($"3 {hit.collider.gameObject.name} is the same as {go.name}", "blue");
                     }
                 }
             }
