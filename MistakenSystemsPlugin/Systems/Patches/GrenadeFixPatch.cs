@@ -107,8 +107,28 @@ namespace Gamer.Mistaken.Systems.Patches
 
         public static void Postfix(FragGrenade __instance)
         {
-            foreach (var item in disabledGoList)
-                item.SetActive(true);
+            try
+            {
+                foreach (var item in disabledGoList)
+                {
+                    try
+                    {
+                        item.SetActive(true);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Log.Error("Got them inside");
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
+                    }
+                }
+            }
+            catch(System.Exception ex)
+            {
+                Log.Error("Got them outside");
+                Log.Error(ex.Message);
+                Log.Error(ex.StackTrace);
+            }
         }
     }
 }
