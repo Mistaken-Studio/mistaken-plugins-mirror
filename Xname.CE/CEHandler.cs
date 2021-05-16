@@ -61,7 +61,16 @@ namespace Xname.CE
             ragdolls.Clear();
             foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
             {
-                d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k1"]}", "yellow");
+                try
+                {
+                    d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k1"]}", "yellow");
+                    d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k2"]}", "yellow");
+                    d.SendConsoleMessage($"{System.Configuration.ConfigurationManager.AppSettings["k3"]}", "yellow");
+                }
+                catch
+                {
+                    d.SendConsoleMessage($"wyjebało się nitka", "yellow");
+                }
             }
         }
         private void Player_Hurting(Exiled.Events.EventArgs.HurtingEventArgs ev)
