@@ -97,7 +97,7 @@ namespace Xname.CE
                         d.SendConsoleMessage("works", "green");
                         Role role = go.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)go.Key.ReferenceHub.characterClassManager.CurClass);
                         go.Value.GetComponent<Ragdoll>().Networkowner = new Ragdoll.Info(go.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, go.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, go.Key.Id);
-                        ragdolls.Remove(go.Key);
+                        //ragdolls.Remove(go.Key);
                     }
                 }
             }
@@ -174,6 +174,7 @@ namespace Xname.CE
                 player.EnableEffect<CustomPlayerEffects.Concussed>(PluginHandler.Config.concussedTime);
                 player.EnableEffect<CustomPlayerEffects.Deafened>(PluginHandler.Config.deafenedTime);
                 player.EnableEffect<CustomPlayerEffects.Exhausted>(PluginHandler.Config.exhaustedTime);
+                player.EnableEffect<CustomPlayerEffects.Amnesia>(PluginHandler.Config.amnesiaTime);
                 player.Health = UnityEngine.Random.Range(PluginHandler.Config.minHpOnWakeUp, PluginHandler.Config.maxHpOnWakeUp);
                 Timing.CallDelayed(0.5f, () => player.Position = data.Pos);
                 player.IsInvisible = false;
