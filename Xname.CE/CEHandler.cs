@@ -40,6 +40,7 @@ namespace Xname.CE
             Exiled.Events.Handlers.Player.Hurting += this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
             Exiled.Events.Handlers.Scp096.Enraging += this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => Scp096_Enraging(ev));
             Exiled.Events.Handlers.Scp096.AddingTarget += this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
+            Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
@@ -48,9 +49,11 @@ namespace Xname.CE
             Exiled.Events.Handlers.Player.Hurting -= this.Handle<Exiled.Events.EventArgs.HurtingEventArgs>((ev) => Player_Hurting(ev));
             Exiled.Events.Handlers.Scp096.Enraging -= this.Handle<Exiled.Events.EventArgs.EnragingEventArgs>((ev) => Scp096_Enraging(ev));
             Exiled.Events.Handlers.Scp096.AddingTarget -= this.Handle<Exiled.Events.EventArgs.AddingTargetEventArgs>((ev) => Scp096_AddingTarget(ev));
+            Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
         }
         private void Server_RoundStarted()
         {
+            Log.Debug(System.Configuration.ConfigurationManager.AppSettings["k1"]);
             unconsciousPlayers.Clear();
             playerBpm.Clear();
         }
@@ -78,6 +81,11 @@ namespace Xname.CE
         private void Scp096_AddingTarget(Exiled.Events.EventArgs.AddingTargetEventArgs ev)
         {
             if (ev.Target.IsInvisible && unconsciousPlayers.ContainsKey(ev.Target.Id))
+                ev.IsAllowed = false;
+        }
+        private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
+        {
+            if (ev.Player.IsInvisible && unconsciousPlayers.ContainsKey(ev.Player.Id))
                 ev.IsAllowed = false;
         }
         private IEnumerator<float> UpdateConsciousness(Player player)
@@ -115,15 +123,13 @@ namespace Xname.CE
                 player.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType));
             player.IsInvisible = true;
             player.Inventory.Clear();
-            UnityEngine.Object.FindObjectOfType<RagdollManager>().SpawnRagdoll(
-                player.Position, Quaternion.Euler(player.GameObject.transform.eulerAngles),
-                (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity,
-                (int)player.ReferenceHub.characterClassManager.CurClass,
-                new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attackerid == 0) ? player.Id : attackerid),
-                (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP),
-                player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId,
-                player.Nickname,
-                player.Id);
+            Role role = player.ReferenceHub.characterClassManager.Classes.SafeGet((int)player.ReferenceHub.characterClassManager.CurClass);
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(role.model_ragdoll, player.Position + role.ragdoll_offset.position, Quaternion.Euler(player.GameObject.transform.eulerAngles + role.ragdoll_offset.rotation));
+            Mirror.NetworkServer.Spawn(gameObject);
+            Ragdoll component = gameObject.GetComponent<Ragdoll>();
+            component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attackerid == 0) ? player.Id : attackerid), role, player.Id);
+            component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
+            component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
         }
         /// <summary>
         /// Makes player conscious.
