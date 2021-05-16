@@ -29,6 +29,7 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
             //Exiled.Events.Handlers.CustomEvents.OnTransmitPositionData += this.Handle<Exiled.Events.EventArgs.TransmitPositionEventArgs>((ev) => CustomEvents_OnTransmitPositionData(ev));
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension += this.Handle<Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs>((ev) => Player_FailingEscapePocketDimension(ev));
+            Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
         }
         public override void OnDisable()
         {
@@ -40,6 +41,13 @@ namespace Gamer.Mistaken.BetterSCP.Pocket
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
             //Exiled.Events.Handlers.CustomEvents.OnTransmitPositionData -= this.Handle<Exiled.Events.EventArgs.TransmitPositionEventArgs>((ev) => CustomEvents_OnTransmitPositionData(ev));
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= this.Handle<Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs>((ev) => Player_FailingEscapePocketDimension(ev));
+            Exiled.Events.Handlers.Player.Shooting -= this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
+        }
+
+        private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
+        {
+            if (ev.Shooter.IsInPocketDimension)
+                ev.IsAllowed = false;
         }
 
         private void Player_FailingEscapePocketDimension(Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs ev)
