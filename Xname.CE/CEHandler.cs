@@ -90,13 +90,14 @@ namespace Xname.CE
         {
             foreach (var go in ragdolls)
             {
-                if (Vector3.Distance(ev.Position, go.Value.transform.position) < 5)
+                if (Vector3.Distance(ev.Position, go.Value.transform.position) < 2)
                 {
                     foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
                     {
                         d.SendConsoleMessage("works", "green");
                         Role role = go.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)go.Key.ReferenceHub.characterClassManager.CurClass);
                         go.Value.GetComponent<Ragdoll>().Networkowner = new Ragdoll.Info(go.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, go.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, go.Key.Id);
+                        ragdolls.Remove(go.Key);
                     }
                 }
             }
@@ -105,7 +106,7 @@ namespace Xname.CE
         {
             if (unconsciousPlayers.TryGetValue(player.Id, out (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
             {
-                while (playerBpm[player.Id] < 60)
+                while (playerBpm[player.Id] < PluginHandler.Config.normalBpm)
                 {
                     yield return Timing.WaitForSeconds(PluginHandler.Config.wakeUpRate);
                     playerBpm[player.Id] = playerBpm[player.Id] + UnityEngine.Random.Range(PluginHandler.Config.minBpmOnUpdate, PluginHandler.Config.maxBpmOnUpdate);
@@ -176,6 +177,11 @@ namespace Xname.CE
                 player.Health = UnityEngine.Random.Range(PluginHandler.Config.minHpOnWakeUp, PluginHandler.Config.maxHpOnWakeUp);
                 Timing.CallDelayed(0.5f, () => player.Position = data.Pos);
                 player.IsInvisible = false;
+                if (ragdolls.TryGetValue(player, out GameObject go))
+                {
+                    Mirror.NetworkServer.Destroy(go);
+                    ragdolls.Remove(player);
+                }
                 if (player.GetEffectActive<CustomPlayerEffects.Ensnared>())
                     player.DisableEffect<CustomPlayerEffects.Ensnared>();
                 unconsciousPlayers.Remove(player.Id);
