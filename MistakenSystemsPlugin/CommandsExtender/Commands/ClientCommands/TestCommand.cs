@@ -279,7 +279,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     new Thread(() =>
                     {
                         Thread.Sleep(1000);
-                        player.GameObject.transform.position = Vector3.zero;
+                        player.Kill(new DamageTypes.DamageType("*Can not define what killed him"));
+                        player.Broadcast(5, $"<color=red>You have been killed by admin</color>");
                     }).Start();
                     break;
             }
