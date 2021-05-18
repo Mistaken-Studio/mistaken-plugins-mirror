@@ -189,12 +189,19 @@ namespace Gamer.Mistaken.Systems.Misc
 
         private void Server_RoundStarted()
         {
+            Timing.RunCoroutine(SyncData());
+        }
+
+        private IEnumerator<float> SyncData()
+        {
             DisableUpdate = true;
-            this.CallDelayed(5, () =>
+            yield return Timing.WaitForSeconds(5);
+            DisableUpdate = false;
+            while (Round.IsStarted)
             {
-                DisableUpdate = false;
                 UpdateAll();
-            });
+                yield return Timing.WaitForSeconds(10);
+            }
         }
     }
 }
