@@ -221,26 +221,39 @@ namespace Gamer.Mistaken.CassieRoom
             else if(ev.Door == mainDoor)
             {
                 if (ev.Player.CurrentItemIndex == -1 || !ev.Player.CurrentItem.id.IsKeycard() || ev.Player.CurrentItem.id == ItemType.KeycardChaosInsurgency)
+                {
                     ev.IsAllowed = false;
+                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, wrong keycard or none");
+                }
                 else
                 {
-                    if(!unlocked)
+                    if (!unlocked)
                     {
                         var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
                         if (citem == null)
+                        {
                             ev.IsAllowed = false;
+                            RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, not custom item");
+                        }
                         else
                         {
                             switch (citem.SessionVarType)
                             {
                                 case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
                                     unlocked = true;
+                                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted, facility manager keycard");
                                     break;
                                 case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
                                     if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
+                                    {
                                         ev.IsAllowed = false;
+                                        RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, not working guard commander keycard");
+                                    }
                                     else
+                                    {
                                         unlocked = true;
+                                        RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted, guard commander keycard");
+                                    }
                                     break;
                                 default:
                                     ev.IsAllowed = false;
@@ -250,6 +263,7 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                     if (!ev.IsAllowed)
                         return;
+                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted");
                     mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     MEC.Timing.CallDelayed(5f, () =>
                     {
@@ -447,20 +461,29 @@ namespace Gamer.Mistaken.CassieRoom
                     {
                         var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
                         if (citem == null)
+                        {
+                            RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, not custom item");
                             return false;
+                        }
                         switch(citem.SessionVarType)
                         {
                             case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
+                                RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted, facility manager keycard");
                                 break;
                             case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
                                 if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
+                                {
+                                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, not working guard commander keycard");
                                     return false;
+                                }
+                                RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted, guard commander keycard");
                                 break;
                             default:
+                                RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, wrong custom item");
                                 return false;
                         }
                     }
-                        
+                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted");
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     CassieRoomOpenButton.NetworkTargetState = true;
