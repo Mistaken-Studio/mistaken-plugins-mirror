@@ -142,7 +142,12 @@ namespace Gamer.Mistaken.Base
                 return;
             ToUpdate.Add(player);
         }
-
+        /// <summary>
+        /// Sets CustomInfo for staff
+        /// </summary>
+        /// <param name="player">Player</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
         public static void SetStaff(Player player, string key, string value)
         {
             if (!CustomInfoStaffOnly.ContainsKey(player))
@@ -156,6 +161,13 @@ namespace Gamer.Mistaken.Base
             ToUpdate.Add(player);
         }
 
+        /// <summary>
+        /// Sets CustomInfo for specific player
+        /// </summary>
+        /// <param name="player">Player</param>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
+        /// <param name="target">Target</param>
         public static void SetTarget(Player player, string key, string value, Player target)
         {
             if (!CustomInfoTargeted.ContainsKey(player))
