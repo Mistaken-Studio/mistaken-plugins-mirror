@@ -325,6 +325,7 @@
     <Compile Include="Systems\Patches\RAPatch.cs" />
     <Compile Include="Systems\Patches\RagdollManagerPatch.cs" />
     <Compile Include="Systems\Patches\GrenadeFixPatch.cs" />
+    <Compile Include="Systems\Patches\AnnouncingNtfEntrancePatch.cs" />
     <Compile Include="Systems\Patches\SCPDeathFixPatch.cs" />
     <Compile Include="Systems\Patches\Vars\EnableVarPatchs.cs" />
     <Compile Include="Systems\Patches\Vars\GodModePatch.cs" />

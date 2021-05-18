@@ -3,6 +3,7 @@ using Exiled.API.Features;
 using Gamer.API;
 using Gamer.Mistaken.Systems.Patches.Vars;
 using MistakenSocket.Client.SL;
+using Respawning.NamingRules;
 using System;
 using System.Reflection;
 
@@ -66,6 +67,8 @@ namespace Gamer.Mistaken
             else
                 Log.SendRaw("Whitelist is NOT enabled", ConsoleColor.Green);
 
+            Exiled.Events.Events.DisabledPatchesHashSet.Add(typeof(NineTailedFoxNamingRule).GetMethod(nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement)));
+            Exiled.Events.Events.Instance.ReloadDisabledPatches();
             Harmony = new HarmonyLib.Harmony("com.gamer.mistaken");
             Harmony.Patch(typeof(PlayerMovementSync).GetMethod(nameof(PlayerMovementSync.ReceiveRotation), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.Fix1Patch).GetMethod(nameof(Systems.Patches.Fix1Patch.Prefix))), null, null, null);
             Harmony.Patch(typeof(PlayerMovementSync).GetMethod(nameof(PlayerMovementSync.ReceivePosition), BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), new HarmonyLib.HarmonyMethod(typeof(Systems.Patches.Fix2Patch).GetMethod(nameof(Systems.Patches.Fix2Patch.Prefix))), null, null, null);
