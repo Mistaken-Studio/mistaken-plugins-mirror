@@ -271,7 +271,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     break;
                 case "dequip":
                     player.Inventory.Network_curItemSynced = ItemType.None;
-                    player.Inventory.NetworkitemUniq = -1;
+                    player.Inventory.NetworkitemUniq = 0;
                     break;
             }
             success = true;
