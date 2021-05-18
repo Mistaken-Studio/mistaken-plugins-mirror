@@ -30,7 +30,8 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     "wpisz \".pref [name]\" aby przełączyć opcję o podanej nazwie",
                     "Nazwy:",
                     $"Colorful Entrance Zone (cez) (Wyłączenie działą tylko dla SCP-079 i Spectatorów): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079) ? "<color=red>Wyłączony dla SCP-079 i Spectatorów</color>" : "<color=green>Włączony</color>")}",
-                    $"Transkrypt (transkrypt): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT) ? "<color=red>Wyłączony</color>" : "<color=green>Włączony</color>")}"
+                    $"Transkrypt (transkrypt): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_TRANSCRYPT) ? "<color=red>Wyłączony</color>" : "<color=green>Włączony</color>")}",
+                    $"Fast Round Restart (Wyłącz to gdy masz problemy z dołączaniem do nowej rundy) (frr): {(prefs.HasFlag(API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART) ? "<color=red>Wyłączony</color>" : "<color=green>Włączony</color>")}"
                 };
             }
             switch (args[0].ToLower())
@@ -54,12 +55,25 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     else
                         prefs |= API.PlayerPreferences.DISABLE_COLORFUL_EZ_SPECTATOR_079;
                     break;
+                case "frr":
+                case "fastroundrestart":
+                case "frrestart":
+                case "restart":
+                case "fastrestart":
+                case "frestart":
+                case "fr":
+                    if (prefs.HasFlag(API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART))
+                        prefs &= ~API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART;
+                    else
+                        prefs |= API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART;
+                    break;
                 default:
                     return new string[]
                     {
                         "Nieznana nazwa, nazwy: ",
                         "cez -> Colorful Entrance Zone (Kolorowy Entrance Zone)",
-                        "transkrypt -> Transkrypt"
+                        "transkrypt -> Transkrypt",
+                        "frr -> Fast Round Restart (Wyłącz to gdy masz problemy z dołączaniem do nowej rundy)"
                     };
             }
             SSL.Client.Send(MessageType.SL_SET_PLAYER_PREFERENCES, new SL_Player_Set_Preferences

@@ -612,14 +612,10 @@ namespace Gamer.Mistaken.Systems
 
             Logs.LogManager.RoundStartTime[RoundPlus.RoundId] = DateTime.Now;
             foreach (var item in Logs.LogManager.DoorLogs)
-            {
                 NorthwoodLib.Pools.ListPool<Logs.DoorLog>.Shared.Return(item.Value);
-            }
             Logs.LogManager.DoorLogs.Clear();
             foreach (var item in Logs.LogManager.ElevatorLogs)
-            {
                 NorthwoodLib.Pools.ListPool<Logs.ElevatorLog>.Shared.Return(item.Value);
-            }
             Logs.LogManager.ElevatorLogs.Clear();
             Logs.LogManager.FlashLog.Clear();
 
@@ -630,6 +626,11 @@ namespace Gamer.Mistaken.Systems
             LOFH.LOFH.ClearVanish();
 
             spawnedPainKillers = false;
+
+            foreach (var item in RealPlayers.List)
+            {
+                Log.Debug($"{item.Nickname}: {Systems.Handler.PlayerPreferencesDict[item.UserId].HasFlag(PlayerPreferences.DISABLE_FAST_ROUND_RESTART)}");
+            }
         }
         private bool spawnedPainKillers = false;
         public IEnumerator<float> SpawnPainKillers()

@@ -27,6 +27,7 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
             Exiled.Events.Handlers.Player.Verified -= this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RespawningTeam -= this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+            Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
         }
         public override void OnEnable()
         {
@@ -34,6 +35,14 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
             Exiled.Events.Handlers.Player.Verified += this.Handle<Exiled.Events.EventArgs.VerifiedEventArgs>((ev) => Player_Verified(ev));
             Exiled.Events.Handlers.Server.RespawningTeam += this.Handle<Exiled.Events.EventArgs.RespawningTeamEventArgs>((ev) => Server_RespawningTeam(ev));
+            Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
+        }
+
+        private void Scp049_FinishingRecall(Exiled.Events.EventArgs.FinishingRecallEventArgs ev)
+        {
+            if (!ev.IsAllowed)
+                return;
+            this.CallDelayed(1, () => UpdateAll(), "ChangedRoleLate");
         }
 
         private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
@@ -50,7 +59,17 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             foreach (var item in RealPlayers.List.Where(p => p != ev.Player && p.Connection != null))
-                ev.Player.SendFakeSyncVar(item.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+            {
+                try
+                {
+                    ev.Player.SendFakeSyncVar(item.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+            }
         }
 
         private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
@@ -76,15 +95,18 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (player.Team != Team.MTF && player.Team != Team.RSC)
                 {
-                    CustomInfoHandler.SetTarget(player, "unit", null, player);
-                    CustomInfoHandler.SetTarget(player, "hierarchii", null, player);
+                    foreach (var p in RealPlayers.List)
+                    {
+                        CustomInfoHandler.SetTarget(p, "unit", null, player);
+                        CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
+                    }
                     continue;
                 }
                 foreach (var p in RealPlayers.List)
                 {
                     if (player == p)
                         continue;
-                    if (p.Team != Team.MTF && p.Team != Team.RSC)
+                    if ((p.Team != Team.MTF && p.Team != Team.RSC))
                     {
                         CustomInfoHandler.SetTarget(p, "unit", null, player);
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);

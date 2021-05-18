@@ -30,7 +30,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049.Commands
                 return new string[] { "You can only use this command on RP servers" };
             if (player.Side != Exiled.API.Enums.Side.Mtf && player.Role != RoleType.ChaosInsurgency)
                 return new string[] { "Only Foundation Personnel(MTF, Guards, Sciencists) can use this command" };
-            if (player.Position.y < -800 || player.Position.y > -700)
+            if (player.Position.y > -800 && player.Position.y < -700)
                 return new string[] { "You have to be in SCP-049 containment chamber" };
             var scps = RealPlayers.List.Where(p => p.Role == RoleType.Scp049 && (player.Position.y < -700 && player.Position.y > -800));
             if (scps.Count() == 0)

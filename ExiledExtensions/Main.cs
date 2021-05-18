@@ -408,7 +408,7 @@ namespace Gamer.Utilities
         /// <returns>String version of player</returns>
         public static string ToString(this Player me, bool userId)
         {
-            if (userId)
+            if (!userId)
                 return $"({me.Id}) {me.GetDisplayName()}";
             return $"({me.Id}) {me.GetDisplayName()} | {me.UserId}";
         }
@@ -470,5 +470,8 @@ namespace Gamer.Utilities
             if (go.transform.parent != null)
                 PrintComponents(go.transform.parent.gameObject, iteration + 1);
         }
+
+        public static bool IsPressingShift(this Player player) => player.ReferenceHub.animationController.curAnim == 1;
+        public static bool IsPressingSpaceBar(this Player player) => player.ReferenceHub.animationController.curAnim == 2;
     }
 }
