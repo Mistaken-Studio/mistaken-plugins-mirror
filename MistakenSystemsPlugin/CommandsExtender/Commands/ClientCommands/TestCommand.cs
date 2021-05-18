@@ -283,6 +283,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         player.Broadcast(5, $"<color=red>You have been killed by admin</color>");
                     }).Start();
                     break;
+                case "equip":
+                    player.Inventory.Network_curItemSynced = player.Inventory.items[0].id;
+                    player.Inventory.NetworkitemUniq = player.Inventory.items[0].uniq;
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
