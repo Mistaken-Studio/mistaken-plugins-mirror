@@ -630,8 +630,6 @@ namespace Gamer.Mistaken.Systems
             foreach (var item in RealPlayers.List)
             {
                 Log.Debug($"{item.Nickname}: {Systems.Handler.PlayerPreferencesDict[item.UserId].HasFlag(PlayerPreferences.DISABLE_FAST_ROUND_RESTART)}");
-                if(Systems.Handler.PlayerPreferencesDict[item.UserId].HasFlag(PlayerPreferences.DISABLE_FAST_ROUND_RESTART))
-                    MirrorExtensions.SendFakeTargetRpc(item, item.ReferenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), 10, true);
             }
         }
         private bool spawnedPainKillers = false;
