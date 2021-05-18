@@ -45,7 +45,7 @@ namespace Gamer.Mistaken.Systems.Misc
             this.CallDelayed(1, () => UpdateAll(), "ChangedRoleLate");
         }
 
-        private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs ev)
+        private void Server_RespawningTeam(Exiled.Events.EventArgs.RespawningTeamEventArgs _)
         {
             DisableUpdate = true;
             this.CallDelayed(5, () =>

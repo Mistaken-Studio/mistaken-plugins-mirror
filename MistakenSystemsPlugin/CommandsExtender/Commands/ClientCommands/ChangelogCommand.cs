@@ -29,8 +29,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 return;
             string currentVersion = File.ReadAllText(Paths.Configs + "/PluginsVersion.txt");
             var tokenAuth = new Credentials(key);
-            var github = new GitHubClient(new ProductHeaderValue("Mistaken.Plugins"));
-            github.Credentials = tokenAuth;
+            var github = new GitHubClient(new ProductHeaderValue("Mistaken.Plugins"))
+            {
+                Credentials = tokenAuth
+            };
             var release = await github.Repository.Release.GetLatest("grzes0071", "Mistaken.Plugins");
 
             List<string> tor = NorthwoodLib.Pools.ListPool<string>.Shared.Rent();
