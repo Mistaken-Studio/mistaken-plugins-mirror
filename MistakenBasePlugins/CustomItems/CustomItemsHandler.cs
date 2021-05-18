@@ -283,7 +283,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                     }
                 }
 
-                foreach (var player in RealPlayers.List)
+                /*foreach (var player in RealPlayers.List)
                 {
                     foreach (var item in CustomItem.CustomItemTypes)
                     {
@@ -298,7 +298,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                         }
                         player.SetSessionVar(item.SessionVarType, found);
                     }
-                }
+                }*/
 
                 yield return Timing.WaitForSeconds(5);
             }
