@@ -270,8 +270,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     player.UnitName = args[1];
                     break;
                 case "dequip":
+                    Log.Debug(player.CurrentItemIndex == -1 ? ItemType.None : player.CurrentItem.id);
                     player.Inventory.Network_curItemSynced = ItemType.None;
-                    player.Inventory.NetworkitemUniq = 0;
+                    player.Inventory.NetworkitemUniq = 0; // 0 not -1
                     break;
             }
             success = true;
