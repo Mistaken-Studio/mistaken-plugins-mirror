@@ -291,6 +291,8 @@ namespace Gamer.Mistaken.CassieRoom
         private static InRangeBall SNavEZHCZ;
         private void Server_WaitingForPlayers()
         {
+            unlocked = false;
+            DoorCallbacks.Clear();
             networkIdentities.Clear();
             #region Helipad
             {
