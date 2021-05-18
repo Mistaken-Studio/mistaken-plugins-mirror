@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Gamer.API;
+using HarmonyLib;
 
 namespace Gamer.Mistaken.Base
 {
@@ -29,6 +30,9 @@ namespace Gamer.Mistaken.Base
             new Staff.StaffHandler(this);
             new CustomItems.CustomItemsHandler(this);
             new ExperimentalHandler(this);
+
+            var harmony = new Harmony("gamer.mistaken.base");
+            harmony.PatchAll();
 
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();

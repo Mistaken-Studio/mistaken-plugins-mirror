@@ -2,6 +2,7 @@
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Utilities;
+using HarmonyLib;
 
 namespace Gamer.Mistaken.Base
 {
@@ -50,6 +51,15 @@ namespace Gamer.Mistaken.Base
         {
             success = true;
             return new string[] { "Version: " + Version.CurrentVersion, "Debug: " + Version.Debug,"Full commit SHA: "+ Version.commitSha, "Build timestamp: "+Version.buildTimeStamp, "Build Tools Version: " + Version.ciToolsVersion };
+        }
+    }
+
+    [HarmonyPatch(typeof(ServerConsole), "ReloadServerName")]
+    internal static class ServerNamePatch
+    {
+        private static void Postfix()
+        {
+            ServerConsole._serverName += "<color=#00000000><size=1>|MistakenPlugins:" + Version.CurrentVersion + "</size></color>";
         }
     }
 }
