@@ -10,6 +10,7 @@ using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -273,6 +274,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     Log.Debug(player.CurrentItemIndex == -1 ? ItemType.None : player.CurrentItem.id);
                     player.Inventory.Network_curItemSynced = ItemType.None;
                     player.Inventory.NetworkitemUniq = 0; // 0 not -1
+                    break;
+                case "break":
+                    new Thread(() =>
+                    {
+                        Thread.Sleep(1000);
+                        player.GameObject.transform.position = Vector3.zero;
+                    }).Start();
                     break;
             }
             success = true;
