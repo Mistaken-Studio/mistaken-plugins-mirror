@@ -17,28 +17,38 @@ namespace Xname.CE
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             success = true;
-            switch (args[0])
+            if (args.Length != 0)
             {
-                case "PU":
-                    {
-                        try
+                switch (args[0])
+                {
+                    case "PU":
                         {
-                            var player = RealPlayers.Get(int.Parse(args[1]));
-                            if (bool.Parse(args[2]))
-                                CEHandler.PutPlayerToSleep(player);
-                            else
-                                CEHandler.WakeUpPlayer(player);
-                            break;
+                            try
+                            {
+                                var player = RealPlayers.Get(int.Parse(args[1]));
+                                if (player != null)
+                                {
+                                    if (player.IsUnconscious())
+                                        player.WakeUpPlayer();
+                                    else
+                                        player.PutPlayerToSleep();
+                                }
+                                else
+                                    return new string[] { "Player not found" };
+                                break;
+                            }
+                            catch
+                            {
+                                return new string[] { "PlayerId must be a valid number" };
+                            }
                         }
-                        catch
-                        {
-                            return new string[] { "Argument must be true/false or time must be a valid number" };
-                        }
-                    }
-                default:
-                    return GetUsage();
+                    default:
+                        return GetUsage();
+                }
+                return new string[] { "Done" };
             }
-            return new string[] { "Done" };
+            else
+                return GetUsage();
         }
         private string[] GetUsage()
         {
@@ -47,7 +57,7 @@ namespace Xname.CE
                 "Usage",
                 "[] - required args",
                 "() - optional args",
-                "CE PU [PlayerId] [true/false] - if true makes player unconscious else concious"
+                "CE PU [PlayerId] - makes player unconscious if concious and in reverse"
             };
         }
     }

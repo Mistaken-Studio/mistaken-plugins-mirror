@@ -12,6 +12,7 @@ using Respawning;
 using Gamer.Utilities;
 using MEC;
 using Gamer.Mistaken.Base.Staff;
+using Gamer.Mistaken.Base.GUI;
 
 namespace Xname.CE
 {
@@ -65,7 +66,7 @@ namespace Xname.CE
                     {
                         ev.IsAllowed = false;
                         playerBpm[ev.Target.Id] = UnityEngine.Random.Range(PluginHandler.Config.minBpmOnShot, PluginHandler.Config.maxBpmOnShot);
-                        PutPlayerToSleep(ev.Target, ev.DamageType, PluginHandler.Config.reasonOnUnconsciousRagdoll, ev.Attacker.Id);
+                        Sleep(ev.Target, ev.DamageType, PluginHandler.Config.reasonOnUnconsciousRagdoll, ev.Attacker);
                         this.RunCoroutine(UpdateConsciousness(ev.Target), "UpdateConsciousness");
                     }
                 }
@@ -92,13 +93,9 @@ namespace Xname.CE
             {
                 if (Vector3.Distance(ev.Position, go.Value.transform.position) < 2)
                 {
-                    foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
-                    {
-                        d.SendConsoleMessage("works", "green");
-                        Role role = go.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)go.Key.ReferenceHub.characterClassManager.CurClass);
-                        go.Value.GetComponent<Ragdoll>().Networkowner = new Ragdoll.Info(go.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, go.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, go.Key.Id);
-                        //ragdolls.Remove(go.Key);
-                    }
+                    Role role = go.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)go.Key.ReferenceHub.characterClassManager.CurClass);
+                    go.Value.GetComponent<Ragdoll>().Networkowner = new Ragdoll.Info(go.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, go.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, go.Key.Id);
+                    ragdolls.Remove(go.Key);
                 }
             }
         }
@@ -109,10 +106,10 @@ namespace Xname.CE
                 while (playerBpm[player.Id] < PluginHandler.Config.normalBpm)
                 {
                     yield return Timing.WaitForSeconds(PluginHandler.Config.wakeUpRate);
-                    playerBpm[player.Id] = playerBpm[player.Id] + UnityEngine.Random.Range(PluginHandler.Config.minBpmOnUpdate, PluginHandler.Config.maxBpmOnUpdate);
+                    playerBpm[player.Id] += UnityEngine.Random.Range(PluginHandler.Config.minBpmOnUpdate, PluginHandler.Config.maxBpmOnUpdate);
                 }
                 playerBpm.Remove(player.Id);
-                WakeUpPlayer(player);
+                WakeUp(player);
             }
         }
         /// <summary>
@@ -121,8 +118,8 @@ namespace Xname.CE
         /// <param name="player"></param>
         /// <param name="type"></param>
         /// <param name="reason"></param>
-        /// <param name="attackerid"></param>
-        public static void PutPlayerToSleep(Player player, DamageTypes.DamageType type = null, string reason = "Nieudana próba samobójcza, wciąż żyje", int attackerid = 0)
+        /// <param name="attacker"></param>
+        internal static void Sleep(Player player, DamageTypes.DamageType type, string reason, Player attacker)
         {
             player.DisableAllEffects();
             if (PluginHandler.Config.unconsciousEnsnare)
@@ -142,16 +139,17 @@ namespace Xname.CE
             GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(role.model_ragdoll, player.Position + role.ragdoll_offset.position, Quaternion.Euler(player.GameObject.transform.eulerAngles + role.ragdoll_offset.rotation));
             Mirror.NetworkServer.Spawn(gameObject);
             Ragdoll component = gameObject.GetComponent<Ragdoll>();
-            component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attackerid == 0) ? player.Id : attackerid), role, player.Id);
+            component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attacker.Id == 0) ? player.Id : attacker.Id), role, player.Id);
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
             ragdolls.Add(player, gameObject);
+            player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś <color=yellow>nieprzytomny</color><br><mspace=0.5em><color=yellow>Nie możesz się ruszać. Wybudzisz się wkrótce</color></mspace>");
         }
         /// <summary>
         /// Makes player conscious.
         /// </summary>
         /// <param name="player"></param>
-        public static void WakeUpPlayer(Player player)
+        internal static void WakeUp(Player player)
         {
             if (unconsciousPlayers.TryGetValue(player.Id, out (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType) data))
             {
@@ -185,6 +183,7 @@ namespace Xname.CE
                 }
                 if (player.GetEffectActive<CustomPlayerEffects.Ensnared>())
                     player.DisableEffect<CustomPlayerEffects.Ensnared>();
+                player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 unconsciousPlayers.Remove(player.Id);
             }
         }
@@ -193,9 +192,37 @@ namespace Xname.CE
         /// </summary>
         /// <param name="player"></param>
         /// <returns>true if player is unconscious</returns>
-        public static bool IsUnconscious(Player player)
+        internal static bool Unconscious(Player player)
         {
             return unconsciousPlayers.ContainsKey(player.Id);
         }
+    }
+    /// <summary>
+    /// Extensions
+    /// </summary>
+    public static class Extensions
+    {
+        /// <summary>
+        /// Makes player unconscious.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="damagetype"></param>
+        /// <param name="reason"></param>
+        /// <param name="attacker"></param>
+        public static void PutPlayerToSleep(this Player player, DamageTypes.DamageType damagetype = null, string reason = "Nieudana próba samobójcza, wciąż żyje", Player attacker = null) =>
+            CEHandler.Sleep(player, damagetype, reason, attacker);
+        /// <summary>
+        /// Makes player conscious if he's unconscious.
+        /// </summary>
+        /// <param name="player"></param>
+        public static void WakeUpPlayer(this Player player) =>
+            CEHandler.WakeUp(player);
+        /// <summary>
+        /// Checks if player is unconscious.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>true if player is unconscious</returns>
+        public static bool IsUnconscious(this Player player) =>
+            CEHandler.Unconscious(player);
     }
 }
