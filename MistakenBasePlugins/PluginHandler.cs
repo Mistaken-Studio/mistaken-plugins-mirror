@@ -31,8 +31,8 @@ namespace Gamer.Mistaken.Base
             new CustomItems.CustomItemsHandler(this);
             new ExperimentalHandler(this);
 
-            var harmony = new Harmony("gamer.mistaken.base");
-            harmony.PatchAll();
+            /*var harmony = new Harmony("gamer.mistaken.base");
+            harmony.PatchAll();*/
 
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();

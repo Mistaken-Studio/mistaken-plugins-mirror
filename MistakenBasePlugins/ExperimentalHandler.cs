@@ -54,12 +54,12 @@ namespace Gamer.Mistaken.Base
         }
     }
 
-    [HarmonyPatch(typeof(ServerConsole), "ReloadServerName")]
+    /*[HarmonyPatch(typeof(ServerConsole), "ReloadServerName")]
     internal static class ServerNamePatch
     {
         private static void Postfix()
         {
             ServerConsole._serverName += "<color=#00000000><size=1>|MistakenPlugins:" + Version.CurrentVersion + "</size></color>";
         }
-    }
+    }*/
 }
