@@ -10,6 +10,7 @@ using Mirror;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -268,6 +269,23 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     break;
                 case "unit":
                     player.UnitName = args[1];
+                    break;
+                case "dequip":
+                    Log.Debug(player.CurrentItemIndex == -1 ? ItemType.None : player.CurrentItem.id);
+                    player.Inventory.Network_curItemSynced = ItemType.None;
+                    player.Inventory.NetworkitemUniq = 0; // 0 not -1
+                    break;
+                case "break":
+                    new Thread(() =>
+                    {
+                        Thread.Sleep(1000);
+                        player.Kill(new DamageTypes.DamageType("*Can not define what killed him"));
+                        player.Broadcast(5, $"<color=red>You have been killed by admin</color>");
+                    }).Start();
+                    break;
+                case "equip":
+                    player.Inventory.Network_curItemSynced = player.Inventory.items[0].id;
+                    player.Inventory.NetworkitemUniq = player.Inventory.items[0].uniq;
                     break;
             }
             success = true;

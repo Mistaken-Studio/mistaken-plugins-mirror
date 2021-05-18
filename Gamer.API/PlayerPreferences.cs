@@ -7,8 +7,9 @@
     {
 #pragma warning disable CS1591
         NONE = 0,
-        DISABLE_COLORFUL_EZ_SPECTATOR_079 = 1,
-        DISABLE_TRANSCRYPT = 2,
+        DISABLE_COLORFUL_EZ_SPECTATOR_079 = 2,
+        DISABLE_TRANSCRYPT = 4,
+        DISABLE_FAST_ROUND_RESTART = 8,
 #pragma warning restore CS1591
     }
 }

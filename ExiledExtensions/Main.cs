@@ -470,5 +470,8 @@ namespace Gamer.Utilities
             if (go.transform.parent != null)
                 PrintComponents(go.transform.parent.gameObject, iteration + 1);
         }
+
+        public static bool IsPressingShift(this Player player) => player.ReferenceHub.animationController.curAnim == 1;
+        public static bool IsPressingSpaceBar(this Player player) => player.ReferenceHub.animationController.curAnim == 2;
     }
 }

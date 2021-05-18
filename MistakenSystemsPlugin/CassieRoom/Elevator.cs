@@ -474,7 +474,7 @@ namespace Gamer.Mistaken.CassieRoom
                     Log.Debug($"{p.Nickname} exited");
                 }
             );
-            elevatorTrigger.DEBUG = true;
+            //elevatorTrigger.DEBUG = true;
             return (elevatorDoor, elevatorTrigger);
         }
         public static DoorVariant Spawn1499ContainmentChamber()
