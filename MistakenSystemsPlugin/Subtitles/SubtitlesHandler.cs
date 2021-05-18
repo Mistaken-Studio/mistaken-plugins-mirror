@@ -55,6 +55,7 @@ namespace Gamer.Mistaken.Subtitles
         private static void Update(Player player)
         {
             return;
+#pragma warning disable CS0162 // Wykryto nieosiągalny kod
             if ((Systems.Handler.PlayerPreferencesDict[player.UserId] & API.PlayerPreferences.DISABLE_TRANSCRYPT) != API.PlayerPreferences.NONE)
                 return;
             if (CassiePatch.Messages.Count == 0)

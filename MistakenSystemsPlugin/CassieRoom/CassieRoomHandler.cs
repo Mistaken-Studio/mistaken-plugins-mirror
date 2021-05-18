@@ -195,13 +195,13 @@ namespace Gamer.Mistaken.CassieRoom
             DesyncFor(ev.Player);
         }
 
-        private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs ev)
+        private void Warhead_Starting(Exiled.Events.EventArgs.StartingEventArgs _)
         {
             WarheadStartButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
             WarheadStopButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
         }
 
-        private void Warhead_Stopping(Exiled.Events.EventArgs.StoppingEventArgs ev)
+        private void Warhead_Stopping(Exiled.Events.EventArgs.StoppingEventArgs _)
         {
             WarheadStartButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
             WarheadStopButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
@@ -280,7 +280,9 @@ namespace Gamer.Mistaken.CassieRoom
         private DoorVariant WarheadStartButton;
         private DoorVariant WarheadStopButton;
         private DoorVariant WarheadLockButton;
+#pragma warning disable IDE0052 // Usuń nieodczytywane składowe prywatne
         private DoorVariant TeslaToggleButton;
+#pragma warning restore IDE0052 // Usuń nieodczytywane składowe prywatne
         private DoorVariant CassieRoomOpenButton;
         private DoorVariant mainDoor;
         internal static DoorVariant TeslaIndicator;
@@ -289,6 +291,8 @@ namespace Gamer.Mistaken.CassieRoom
         private static InRangeBall SNavEZHCZ;
         private void Server_WaitingForPlayers()
         {
+            unlocked = false;
+            DoorCallbacks.Clear();
             networkIdentities.Clear();
             #region Helipad
             {
@@ -455,8 +459,8 @@ namespace Gamer.Mistaken.CassieRoom
 
                 CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
                 {
-                    //if (!Map.IsLCZDecontaminated)
-                    //    return false;
+                    if (!Map.IsLCZDecontaminated)
+                        return false;
                     if(!unlocked)
                     {
                         var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);

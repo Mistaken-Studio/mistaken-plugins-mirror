@@ -51,7 +51,7 @@ namespace Gamer.CustomClasses
             Exiled.Events.Handlers.Scp914.UpgradingItems -= this.Handle<Exiled.Events.EventArgs.UpgradingItemsEventArgs>((ev) => Scp914_UpgradingItems(ev));
             Exiled.Events.Handlers.Map.Decontaminating -= this.Handle<Exiled.Events.EventArgs.DecontaminatingEventArgs>((ev) => Map_Decontaminating(ev));
         }
-        private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs ev)
+        private void Map_Decontaminating(Exiled.Events.EventArgs.DecontaminatingEventArgs _)
         {
             IsCommanderNow = true;
         }

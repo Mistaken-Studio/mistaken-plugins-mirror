@@ -262,7 +262,7 @@ namespace Gamer.Mistaken.Base.CustomItems
                         continue;
                     if (customItem.Size == Vector3.one || Vector3.Distance(customItem.Size, item.transform.localScale) < 0.1f)
                         continue;
-                    MapPlus.Spawn(new Inventory.SyncItemInfo
+                    var tmp = MapPlus.Spawn(new Inventory.SyncItemInfo
                     {
                         durability = item.durability,
                         id = customItem.Item,
@@ -270,8 +270,36 @@ namespace Gamer.Mistaken.Base.CustomItems
                         modSight = item.weaponMods.Sight,
                         modOther = item.weaponMods.Other
                     }, item.position, item.rotation, customItem.Size);
-                    item.Delete();
+                    try
+                    {
+                        item.Delete();
+                    }
+                    catch(System.Exception ex)
+                    {
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
+                        Log.Error("Failed to remove original item, removing custom item to avoide duplicating items");
+                        tmp.Delete();
+                    }
                 }
+
+                foreach (var player in RealPlayers.List)
+                {
+                    foreach (var item in CustomItem.CustomItemTypes)
+                    {
+                        bool found = false;
+                        foreach (var inventoryItem in player.Inventory.items)
+                        {
+                            if (GetCustomItem(inventoryItem) != null)
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        player.SetSessionVar(item.SessionVarType, found);
+                    }
+                }
+
                 yield return Timing.WaitForSeconds(5);
             }
         }

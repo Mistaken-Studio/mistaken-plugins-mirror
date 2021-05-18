@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.Systems.Logs.Commands
             {
                 foreach (var item in data)
                 {
-                    toWrite += $"\n[{item.Time.ToString("HH:mm:ss")}] {(item.Open ? "OPEN" : "CLOSE")} ({item.Player.Id}) {item.Player.Nickname} | {item.Player.UserId}";
+                    toWrite += $"\n[{item.Time:HH:mm:ss}] {(item.Open ? "OPEN" : "CLOSE")} ({item.Player.Id}) {item.Player.Nickname} | {item.Player.UserId}";
                 }
             }
 

@@ -287,6 +287,17 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     player.Inventory.Network_curItemSynced = player.Inventory.items[0].id;
                     player.Inventory.NetworkitemUniq = player.Inventory.items[0].uniq;
                     break;
+                case "equip2":
+                    var oldItem = player.CurrentItem;
+                    var targetItem = player.Inventory.items[player.Inventory.items.Count - 1];
+                    player.CurrentItem = targetItem;
+                    var newItem = player.CurrentItem;
+                    return new string[] 
+                    { 
+                        $"Old item: Id: {oldItem.id} | Uniq: {oldItem.uniq}",
+                        $"Target item: Id: {targetItem.id} | Uniq: {targetItem.uniq}",
+                        $"New item: Id: {newItem.id} | Uniq: {newItem.uniq}"
+                    };
             }
             success = true;
             return new string[] { "HMM" };
