@@ -630,6 +630,12 @@ namespace Gamer.Mistaken.Systems
             LOFH.LOFH.ClearVanish();
 
             spawnedPainKillers = false;
+
+            foreach (var item in RealPlayers.List)
+            {
+                if(Systems.Handler.PlayerPreferencesDict[item.UserId].HasFlag(PlayerPreferences.DISABLE_FAST_ROUND_RESTART))
+                    MirrorExtensions.SendFakeTargetRpc(item, item.ReferenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), 10, true);
+            }
         }
         private bool spawnedPainKillers = false;
         public IEnumerator<float> SpawnPainKillers()
