@@ -457,8 +457,8 @@ namespace Gamer.Mistaken.CassieRoom
 
                 CassieRoomOpenButton = SpawnButton(new Vector3(-16.3f, 1020, -48.7f), Vector3.zero, new Vector3(0, 90, 90), "", (ev) =>
                 {
-                    //if (!Map.IsLCZDecontaminated)
-                    //    return false;
+                    if (!Map.IsLCZDecontaminated)
+                        return false;
                     if(!unlocked)
                     {
                         var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
