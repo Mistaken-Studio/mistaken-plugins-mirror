@@ -59,7 +59,17 @@ namespace Gamer.Mistaken.Systems.Misc
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             foreach (var item in RealPlayers.List.Where(p => p != ev.Player && p.Connection != null))
-                ev.Player.SendFakeSyncVar(item.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+            {
+                try
+                {
+                    ev.Player.SendFakeSyncVar(item.Connection.identity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurSpawnableTeamType), 0);
+                }
+                catch(System.Exception ex)
+                {
+                    Log.Error(ex.Message);
+                    Log.Error(ex.StackTrace);
+                }
+            }
         }
 
         private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
@@ -85,15 +95,18 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (player.Team != Team.MTF && player.Team != Team.RSC)
                 {
-                    CustomInfoHandler.SetTarget(player, "unit", null, player);
-                    CustomInfoHandler.SetTarget(player, "hierarchii", null, player);
+                    foreach (var p in RealPlayers.List)
+                    {
+                        CustomInfoHandler.SetTarget(p, "unit", null, player);
+                        CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
+                    }
                     continue;
                 }
                 foreach (var p in RealPlayers.List)
                 {
                     if (player == p)
                         continue;
-                    if (p.Team != Team.MTF && p.Team != Team.RSC)
+                    if ((p.Team != Team.MTF && p.Team != Team.RSC))
                     {
                         CustomInfoHandler.SetTarget(p, "unit", null, player);
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
