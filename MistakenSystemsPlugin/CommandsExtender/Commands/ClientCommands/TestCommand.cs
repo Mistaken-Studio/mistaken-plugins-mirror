@@ -287,6 +287,9 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     player.Inventory.Network_curItemSynced = player.Inventory.items[0].id;
                     player.Inventory.NetworkitemUniq = player.Inventory.items[0].uniq;
                     break;
+                case "equip2":
+                    player.CurrentItem = player.Inventory.items[player.Inventory.items.Count - 1];
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
