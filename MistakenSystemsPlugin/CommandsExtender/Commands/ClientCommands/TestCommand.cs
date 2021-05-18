@@ -269,6 +269,10 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 case "unit":
                     player.UnitName = args[1];
                     break;
+                case "dequip":
+                    player.Inventory.Network_curItemSynced = ItemType.None;
+                    player.Inventory.NetworkitemUniq = -1;
+                    break;
             }
             success = true;
             return new string[] { "HMM" };
