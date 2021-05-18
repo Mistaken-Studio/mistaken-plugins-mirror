@@ -35,6 +35,19 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             "jail4",
             "jail5",
         });
+        internal readonly List<Vector3> afterDecontRooms = new List<Vector3>()
+        {
+            Gamer.Utilities.MapPlus.Rooms.First(x => x.Type == RoomType.HczChkpA).Position,
+            Gamer.Utilities.MapPlus.Rooms.First(x => x.Type == RoomType.HczChkpB).Position
+        };
+        internal readonly List<Vector3> afterWHRooms = new List<Vector3>()
+        {
+            Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.ChaosInsurgency),
+            Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.NtfCommander),
+            new Vector3(87f, 996f, -48f), // winda przy gate B
+            new Vector3(0f, 1003f, -58f), // most
+            new Vector3(0f, 1003f, 1f) // skrzyżowanie przed windą gate A
+        };
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
         public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
@@ -70,7 +83,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             {
                                 if (!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
                                     p.Position = data.Pos;
+                                else
+                                    p.Position = afterDecontRooms[UnityEngine.Random.Range(0, afterDecontRooms.Count)];
                             }
+                            else if (!(data.Pos.y > 900 && data.Pos.y < 1100))
+                                p.Position = afterWHRooms[UnityEngine.Random.Range(0, afterWHRooms.Count)];
+                            else
+                                p.Position = data.Pos;
                             p.Health = data.HP;
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
