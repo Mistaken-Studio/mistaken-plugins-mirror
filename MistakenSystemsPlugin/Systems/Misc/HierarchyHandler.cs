@@ -95,15 +95,18 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 if (player.Team != Team.MTF && player.Team != Team.RSC)
                 {
-                    CustomInfoHandler.SetTarget(player, "unit", null, player);
-                    CustomInfoHandler.SetTarget(player, "hierarchii", null, player);
+                    foreach (var p in RealPlayers.List)
+                    {
+                        CustomInfoHandler.SetTarget(p, "unit", null, player);
+                        CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
+                    }
                     continue;
                 }
                 foreach (var p in RealPlayers.List)
                 {
                     if (player == p)
                         continue;
-                    if (p.Team != Team.MTF && p.Team != Team.RSC)
+                    if ((p.Team != Team.MTF && p.Team != Team.RSC))
                     {
                         CustomInfoHandler.SetTarget(p, "unit", null, player);
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
