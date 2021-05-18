@@ -217,8 +217,15 @@ namespace Gamer.Mistaken.CassieRoom
         private void Player_InteractingDoor(Exiled.Events.EventArgs.InteractingDoorEventArgs ev)
         {
             if (ev.IsAllowed && DoorCallbacks.TryGetValue(ev.Door, out var callback))
+            {
+                if (ev.Player.Role == RoleType.Scp106)
+                {
+                    ev.IsAllowed = false;
+                    return;
+                }
                 ev.IsAllowed = callback(ev);
-            else if(ev.Door == mainDoor)
+            }
+            else if (ev.Door == mainDoor)
             {
                 if (ev.Player.CurrentItemIndex == -1 || !ev.Player.CurrentItem.id.IsKeycard() || ev.Player.CurrentItem.id == ItemType.KeycardChaosInsurgency)
                 {
