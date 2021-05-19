@@ -165,8 +165,8 @@ namespace Gamer.Taser
                         }
                     }
                     RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} didn't hit anyone");
+                    Cooldowns[dur] = DateTime.Now.AddSeconds(PluginHandler.Config.TaserMissCooldown);
                 }
-                Cooldowns[dur] = DateTime.Now.AddSeconds(PluginHandler.Config.TaserMissCooldown);
                 return false;
             }
 
