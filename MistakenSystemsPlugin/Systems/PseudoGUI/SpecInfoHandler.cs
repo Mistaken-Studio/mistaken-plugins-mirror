@@ -286,6 +286,8 @@ namespace Gamer.Mistaken.Systems.GUI
             var generatorString = plugin.ReadTranslation("generator_info", Patches.SCP079RecontainPatch.Recontained ? "5" : Map.ActivatedGenerators.ToString()) + (cache_nearestGenerator == null ? "" : $"(<color=yellow>{Math.Round(cache_nearestGenerator.remainingPowerup % 80)}</color>s)");
             var overchargeString = plugin.ReadTranslation("overcharge_info", Patches.SCP079RecontainPatch.ErrorMode ? $"[<color=red><b>ERROR</b></color>|Code: {(Patches.SCP079RecontainPatch.Recontained ? 1 : 0)}{(Patches.SCP079RecontainPatch.Waiting ? 1 : 0)}{Patches.SCP079RecontainPatch.SecondsLeft}]" : (Exiled.Events.Handlers.CustomEvents.SCP079.IsRecontainmentPaused ? $"<color=red>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>" : $"<color=yellow>{Exiled.Events.Handlers.CustomEvents.SCP079.TimeToRecontainment}</color>"));
             var genString = Exiled.Events.Handlers.CustomEvents.SCP079.IsBeingRecontained ? overchargeString : generatorString;
+            if (Warhead.IsDetonated)
+                genString = generatorString;
             var recontainmentReadyString = plugin.ReadTranslation("recontainment_ready");
             var recontainmentNotReadyString = plugin.ReadTranslation("recontainment_not_ready");
             var recontainmentContainedyString = plugin.ReadTranslation("recontainment_contained");

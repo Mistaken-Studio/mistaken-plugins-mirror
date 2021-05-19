@@ -90,7 +90,7 @@ namespace Gamer.Mistaken.EVO
                 Description = "Contain SCP 106 X times",
                 Levels = new (int Progress, string Name, string Color)[] {
                     (7, "Femur Breaker", null),
-                    (15, "Containmen Engineer", null),
+                    (15, "Containment Engineer", null),
                     (25, "O5 Council", null)
                 }
             },

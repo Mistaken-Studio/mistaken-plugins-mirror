@@ -55,9 +55,14 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 var pid = ev.Player.Id;
                 var isEscape = IsEscape(ev.Player);
+                ev.Player.SetSessionVar(Main.SessionVarType.SPAWN_PROTECT, true);
                 SpawnKillProtected.Add(new KeyValuePair<int, bool>(pid, !isEscape));
                 this.RunCoroutine(RemoveFromSpawnKillDetection(ev.Player, isEscape ? 4 : 8), "RemoveFromSpawnKillDetection");
-                this.CallDelayed(8, () => SpawnKillProtected.RemoveAll(i => i.Key == pid), "RemoveSpawnProtect");
+                this.CallDelayed(8, () =>
+                {
+                    SpawnKillProtected.RemoveAll(i => i.Key == pid);
+                    ev.Player.SetSessionVar(Main.SessionVarType.SPAWN_PROTECT, false);
+                }, "RemoveSpawnProtect");
             }
         }
 
@@ -123,6 +128,7 @@ namespace Gamer.Mistaken.Systems.Misc
             {
                 player.SetGUI("spawnProtect", Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 SpawnKillProtected.RemoveAll(i => i.Key == id);
+                player.SetSessionVar(Main.SessionVarType.SPAWN_PROTECT, false);
             }
             catch (System.Exception ex)
             {
