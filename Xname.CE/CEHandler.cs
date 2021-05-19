@@ -23,7 +23,7 @@ namespace Xname.CE
     {
         internal static readonly Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> unconsciousPlayers = new Dictionary<int, (Vector3 Pos, RoleType Role, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         internal static readonly Dictionary<int, float> playerBpm = new Dictionary<int, float>();
-        internal static readonly Dictionary<Player, Ragdoll> ragdolls = new Dictionary<Player, Ragdoll>();
+        internal static readonly Dictionary<Player, GameObject> ragdolls = new Dictionary<Player, GameObject>();
         /// <inheritdoc/>
         public CEHandler(IPlugin<IConfig> plugin) : base(plugin)
         {
@@ -89,13 +89,18 @@ namespace Xname.CE
         }
         private void Player_Shooting(Exiled.Events.EventArgs.ShootingEventArgs ev)
         {
-            foreach (var component in ragdolls)
+            foreach (var go in ragdolls)
             {
-                if (Vector3.Distance(ev.Position, component.Value.transform.position) <= 1)
+                Ragdoll component = go.Value.GetComponent<Ragdoll>();
+                if (Vector3.Distance(ev.Position, component.transform.position) <= 1)
                 {
-                    Role role = component.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)component.Key.ReferenceHub.characterClassManager.CurClass);
-                    component.Value.Networkowner = new Ragdoll.Info(component.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, component.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, component.Key.Id);
-                    ragdolls.Remove(component.Key);
+                    foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
+                    {
+                        d.SendConsoleMessage("works", "green");
+                    }
+                    Role role = go.Key.ReferenceHub.characterClassManager.Classes.SafeGet((int)go.Key.ReferenceHub.characterClassManager.CurClass);
+                    component.Networkowner = new Ragdoll.Info(go.Key.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, go.Key.Nickname, new PlayerStats.HitInfo(0f, $"*{PluginHandler.Config.reasonOnDeadRagdoll}", DamageTypes.Wall, ev.Shooter.Id), role, go.Key.Id);
+                    ragdolls.Remove(go.Key);
                 }
             }
         }
@@ -142,7 +147,7 @@ namespace Xname.CE
             component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attacker.Id == 0) ? player.Id : attacker.Id), role, player.Id);
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
-            ragdolls.Add(player, component);
+            ragdolls.Add(player, gameObject);
             player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś <color=yellow>nieprzytomny</color><br><mspace=0.5em><color=yellow>Nie możesz się ruszać. Wybudzisz się wkrótce</color></mspace>");
         }
         /// <summary>
@@ -176,9 +181,9 @@ namespace Xname.CE
                 player.Health = UnityEngine.Random.Range(PluginHandler.Config.minHpOnWakeUp, PluginHandler.Config.maxHpOnWakeUp);
                 Timing.CallDelayed(0.5f, () => player.Position = data.Pos);
                 player.IsInvisible = false;
-                if (ragdolls.TryGetValue(player, out Ragdoll component))
+                if (ragdolls.TryGetValue(player, out GameObject go))
                 {
-                    Mirror.NetworkServer.Destroy(component.gameObject);
+                    Mirror.NetworkServer.Destroy(go);
                     ragdolls.Remove(player);
                 }
                 if (player.GetEffectActive<CustomPlayerEffects.Ensnared>())
