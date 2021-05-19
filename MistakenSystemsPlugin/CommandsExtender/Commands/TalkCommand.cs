@@ -43,7 +43,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
         internal static readonly List<Vector3> AfterWarHeadRooms = new List<Vector3>();
 
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
-        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, CustomPlayerEffects.PlayerEffect[] effects)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, CustomPlayerEffects.PlayerEffect[] effects)>();
+        public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
         {
             var player = sender.GetPlayer();
@@ -51,7 +51,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 foreach (var playerId in players)
                 {
-                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, CustomPlayerEffects.PlayerEffect[] effects) data))
+                    if (SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
                     {
                         SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -122,11 +122,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
+
                             foreach (var item in data.effects)
                             {
-                                if(item.Enabled)
-                                    p.EnableEffect(item, item.Duration);
+                                item.effect.ServerChangeIntensity(item.intensity);
+                                item.effect.ServerChangeDuration(item.dur);
                             }
+
                             p.SetSessionVar(Main.SessionVarType.TALK, false);
                         }, "TalkRestore");
                     }
@@ -164,7 +166,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.Ammo[(int)AmmoType.Nato762],
                         RespawnManager.Singleton.NamingManager.AllUnitNames.FindIndex(x => x.UnitName == p.ReferenceHub.characterClassManager.NetworkCurUnitName),
                         p.ReferenceHub.characterClassManager.NetworkCurSpawnableTeamType,
-                        p.ReferenceHub.playerEffectsController.AllEffects.Values.ToArray()
+                        p.ReferenceHub.playerEffectsController.AllEffects.Values.Select(i => (i, i.Duration, i.Intensity)).ToArray()
                         )
                     );
                     var old = Respawning.RespawnManager.CurrentSequence();

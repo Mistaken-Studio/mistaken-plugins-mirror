@@ -133,7 +133,7 @@ namespace Gamer.Mistaken.CommandsExtender
             {
                 foreach (var playerId in players)
                 {
-                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, CustomPlayerEffects.PlayerEffect[] effects) data))
+                    if (TalkCommand.SavedInfo.TryGetValue(playerId, out (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType, (CustomPlayerEffects.PlayerEffect effect, float dur, byte intensity)[] effects) data))
                     {
                         TalkCommand.SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
@@ -164,8 +164,8 @@ namespace Gamer.Mistaken.CommandsExtender
 
                             foreach (var item in data.effects)
                             {
-                                if (item.Enabled)
-                                    p.EnableEffect(item, item.Duration);
+                                item.effect.ServerChangeIntensity(item.intensity);
+                                item.effect.ServerChangeDuration(item.dur);
                             }
                         }, "PlayerLeft");
                     }
