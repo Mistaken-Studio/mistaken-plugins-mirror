@@ -232,13 +232,13 @@ namespace Gamer.Mistaken.LOFH
                 case 8254:
                     return Execute(player, $"warhead {(!Warhead.IsKeycardActivated ? "open" : "close")}");
                 case 8255:
-                    return Execute(player, $"warhead lockstart {(!BetterWarheadHandler.Warhead.StartLock ? "true" : "false")}");
+                    return Execute(player, $"warhead lockstart {(!Base.BetterWarheadHandler.Warhead.StartLock ? "true" : "false")}");
                 case 8256:
-                    return Execute(player, $"warhead lockstop {(!BetterWarheadHandler.Warhead.StopLock ? "true" : "false")}");
+                    return Execute(player, $"warhead lockstop {(!Base.BetterWarheadHandler.Warhead.StopLock ? "true" : "false")}");
                 case 8257:
-                    return Execute(player, $"warhead buttonlock {(!BetterWarheadHandler.Warhead.ButtonLock ? "true" : "false")}");
+                    return Execute(player, $"warhead buttonlock {(!Base.BetterWarheadHandler.Warhead.ButtonLock ? "true" : "false")}");
                 case 8258:
-                    return Execute(player, $"warhead leverlock {(!BetterWarheadHandler.Warhead.LeverLock ? "true" : "false")}");
+                    return Execute(player, $"warhead leverlock {(!Base.BetterWarheadHandler.Warhead.LeverLock ? "true" : "false")}");
                 #endregion
                 #region PlayerList
                 case 8301:
@@ -410,10 +410,10 @@ namespace Gamer.Mistaken.LOFH
                     tor = tor.Replace("START/STOP", Warhead.IsInProgress ? "  STOP" : "START");
                     tor = tor.Replace("ON/OFF", Warhead.LeverStatus ? "OFF" : " ON");
                     tor = tor.Replace("OPEN/CLOSE", Warhead.IsKeycardActivated ? "CLOSE" : "  OPEN");
-                    tor = tor.Replace("$lstart", Systems.Misc.BetterWarheadHandler.Warhead.StartLock ? "green" : "red");
-                    tor = tor.Replace("$lstop", Systems.Misc.BetterWarheadHandler.Warhead.StopLock ? "green" : "red");
-                    tor = tor.Replace("$lbutton", Systems.Misc.BetterWarheadHandler.Warhead.ButtonLock ? "green" : "red");
-                    tor = tor.Replace("$llever", Systems.Misc.BetterWarheadHandler.Warhead.LeverLock ? "green" : "red");
+                    tor = tor.Replace("$lstart", Base.BetterWarheadHandler.Warhead.StartLock ? "green" : "red");
+                    tor = tor.Replace("$lstop", Base.BetterWarheadHandler.Warhead.StopLock ? "green" : "red");
+                    tor = tor.Replace("$lbutton", Base.BetterWarheadHandler.Warhead.ButtonLock ? "green" : "red");
+                    tor = tor.Replace("$llever", Base.BetterWarheadHandler.Warhead.LeverLock ? "green" : "red");
                     string time = Math.Round(Warhead.DetonationTimer).ToString();
                     if (time.Length < 3)
                         time = "  " + time;
@@ -534,8 +534,8 @@ namespace Gamer.Mistaken.LOFH
             stringBuilder.Append($"\n<color=#00AA00>Time Left</color>: <color=orange>{Math.Round(Mathf.Clamp(Warhead.RealDetonationTimer - Warhead.DetonationTimer, 0, 999))}</color>s");
             stringBuilder.Append($"\n<color=#00AA00>Cooldown</color>: <color=orange>{Math.Round(Mathf.Clamp(Warhead.DetonationTimer - Warhead.RealDetonationTimer, 0, 999))}</color>s");
 
-            stringBuilder.Append($"\n<color=#00AA00>Last Start</color>: (<color=orange>{(Systems.Misc.BetterWarheadHandler.Warhead.LastStartUser?.Id.ToString() ?? "?")}</color>) <color=orange>{(Systems.Misc.BetterWarheadHandler.Warhead.LastStartUser?.Nickname ?? "NOBODY")}</color>");
-            stringBuilder.Append($"\n<color=#00AA00>Last Stop </color>: (<color=orange>{(Systems.Misc.BetterWarheadHandler.Warhead.LastStopUser?.Id.ToString() ?? "?")}</color>) <color=orange>{(Systems.Misc.BetterWarheadHandler.Warhead.LastStopUser?.Nickname ?? "NOBODY")}</color>");
+            stringBuilder.Append($"\n<color=#00AA00>Last Start</color>: (<color=orange>{(Base.BetterWarheadHandler.Warhead.LastStartUser?.Id.ToString() ?? "?")}</color>) <color=orange>{(Base.BetterWarheadHandler.Warhead.LastStartUser?.Nickname ?? "NOBODY")}</color>");
+            stringBuilder.Append($"\n<color=#00AA00>Last Stop </color>: (<color=orange>{(Base.BetterWarheadHandler.Warhead.LastStopUser?.Id.ToString() ?? "?")}</color>) <color=orange>{(Base.BetterWarheadHandler.Warhead.LastStopUser?.Nickname ?? "NOBODY")}</color>");
             return stringBuilder.ToString();
         }
 

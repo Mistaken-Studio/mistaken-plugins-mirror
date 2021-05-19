@@ -8,11 +8,10 @@ using UnityEngine;
 using Exiled.API.Features;
 using Gamer.Mistaken.Utilities.APILib;
 using Mirror;
-using Gamer.Mistaken.Systems.Staff;
 using Gamer.Utilities;
 using Interactables.Interobjects.DoorUtils;
 
-namespace Gamer.Mistaken.Systems.Patches
+namespace Gamer.Mistaken.Base.Patches
 {
 	[HarmonyPatch(typeof(CommandProcessor), "ProcessDoorQuery", typeof(CommandSender), typeof(string), typeof(string))]
 	public static class DoorPatch

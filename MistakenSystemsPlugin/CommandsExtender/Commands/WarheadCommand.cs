@@ -31,14 +31,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.Start();
-                        BetterWarheadHandler.Warhead.CountingDown = true;
+                        Base.BetterWarheadHandler.Warhead.CountingDown = true;
                         success = true;
                         return new string[] { "Alpha Warhead engaged" };
                     }
                 case "stop":
                     {
                         Warhead.Stop();
-                        BetterWarheadHandler.Warhead.CountingDown = false;
+                        Base.BetterWarheadHandler.Warhead.CountingDown = false;
                         success = true;
                         return new string[] { "Alpha Warhead cancled" };
                     }
@@ -46,7 +46,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.LeverStatus = true;
-                        BetterWarheadHandler.Warhead.Enabled = true;
+                        Base.BetterWarheadHandler.Warhead.Enabled = true;
                         success = true;
                         return new string[] { "Alpha Warhead turned on" };
                     }
@@ -54,7 +54,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.LeverStatus = false;
-                        BetterWarheadHandler.Warhead.Enabled = false;
+                        Base.BetterWarheadHandler.Warhead.Enabled = false;
                         success = true;
                         return new string[] { "Alpha Warhead turned off" };
                     }
@@ -62,7 +62,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.IsKeycardActivated = true;
-                        BetterWarheadHandler.Warhead.ButtonOpen = true;
+                        Base.BetterWarheadHandler.Warhead.ButtonOpen = true;
                         success = true;
                         return new string[] { "Alpha Warhead button opened" };
                     }
@@ -70,7 +70,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                     {
                         if (!admin.CheckPermission($"{PluginName}.lock")) return new string[] { "No Permissions." };
                         Warhead.IsKeycardActivated = false;
-                        BetterWarheadHandler.Warhead.ButtonOpen = false;
+                        Base.BetterWarheadHandler.Warhead.ButtonOpen = false;
                         success = true;
                         return new string[] { "Alpha Warhead button closed" };
                     }
@@ -80,13 +80,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockstart true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.StartLock = true;
+                            Base.BetterWarheadHandler.Warhead.StartLock = true;
                             success = true;
                             return new string[] { "Alpha Warhead start lock turned on" };
                         }
                         else if (args[1] == "false")
                         {
-                            BetterWarheadHandler.Warhead.StartLock = false;
+                            Base.BetterWarheadHandler.Warhead.StartLock = false;
                             success = true;
                             return new string[] { "Alpha Warhead start lock turned off" };
                         }
@@ -101,14 +101,14 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockstop true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.StopLock = true;
+                            Base.BetterWarheadHandler.Warhead.StopLock = true;
                             success = true;
                             //plugin.CommandManager.CallCommand(sender, "nuke", new string[] { "lock" });
                             return new string[] { "Alpha Warhead stop lock turned on" };
                         }
                         else if (args[1] == "false")
                         {
-                            BetterWarheadHandler.Warhead.StopLock = false;
+                            Base.BetterWarheadHandler.Warhead.StopLock = false;
                             success = true;
                             //plugin.CommandManager.CallCommand(sender, "nuke", new string[] { "unlock" });
                             return new string[] { "Alpha Warhead stop lock turned off" };
@@ -124,13 +124,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead lockbutton true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.ButtonLock = true;
+                            Base.BetterWarheadHandler.Warhead.ButtonLock = true;
                             success = true;
                             return new string[] { "Alpha Warhead button lock turned on" };
                         }
                         else if (args[2] == "false")
                         {
-                            BetterWarheadHandler.Warhead.ButtonLock = false;
+                            Base.BetterWarheadHandler.Warhead.ButtonLock = false;
                             success = true;
                             return new string[] { "Alpha Warhead button lock turned off" };
                         }
@@ -145,13 +145,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (args.Length == 1) return new string[] { "Wrong arguments", "warhead locklever true/false" };
                         if (args[1] == "true")
                         {
-                            BetterWarheadHandler.Warhead.LeverLock = true;
+                            Base.BetterWarheadHandler.Warhead.LeverLock = true;
                             success = true;
                             return new string[] { "Alpha Warhead level locked" };
                         }
                         else if (args[1] == "false")
                         {
-                            BetterWarheadHandler.Warhead.LeverLock = false;
+                            Base.BetterWarheadHandler.Warhead.LeverLock = false;
                             success = true;
                             return new string[] { "Alpha Warhead level locked" };
                         }
@@ -165,25 +165,25 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (!admin.CheckPermission($"{PluginName}.data")) return new string[] { "No Permissions." };
                         success = true;
                         return new string[] {
-                            "Last Warhead Start User: " + (BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({BetterWarheadHandler.Warhead.LastStartUser.Id}) | {BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
-                            "Last Warhead Stop User: " + (BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown" : $"{BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({BetterWarheadHandler.Warhead.LastStopUser.Id}) | {BetterWarheadHandler.Warhead.LastStopUser.UserId}") };
+                            "Last Warhead Start User: " + (Base.BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown" : $"{Base.BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({Base.BetterWarheadHandler.Warhead.LastStartUser.Id}) | {Base.BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
+                            "Last Warhead Stop User: " + (Base.BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown" : $"{Base.BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({Base.BetterWarheadHandler.Warhead.LastStopUser.Id}) | {Base.BetterWarheadHandler.Warhead.LastStopUser.UserId}") };
                     }
                 case "stats":
                     {
                         if (!admin.CheckPermission($"{PluginName}.data")) return new string[] { "No Permissions." };
                         success = true;
                         return new string[] { "Alpha Warhead stats:",
-                            "Detonated: " +Warhead.IsDetonated,
-                            "Counting Down: " +BetterWarheadHandler.Warhead.CountingDown,
-                            "Enabled: " +Warhead.LeverStatus,
-                            "Time Left: " +BetterWarheadHandler.Warhead.TimeLeft,
-                            "StartLock: "+BetterWarheadHandler.Warhead.StartLock,
-                            "StopLock: "+BetterWarheadHandler.Warhead.StopLock,
-                            "LeverLock: "+BetterWarheadHandler.Warhead.LeverLock,
-                            "ButtonLock: "+BetterWarheadHandler.Warhead.ButtonLock,
-                            "Button Open: "+Warhead.IsLocked,
-                            "Last Start User: "+(BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown":$"{BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({BetterWarheadHandler.Warhead.LastStartUser.Id}) | {BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
-                            "Last Stop User: "+(BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown":$"{BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({BetterWarheadHandler.Warhead.LastStopUser.Id}) | {BetterWarheadHandler.Warhead.LastStopUser.UserId}")
+                            "Detonated: " + Warhead.IsDetonated,
+                            "Counting Down: " + Base.BetterWarheadHandler.Warhead.CountingDown,
+                            "Enabled: " + Warhead.LeverStatus,
+                            "Time Left: " + Base.BetterWarheadHandler.Warhead.TimeLeft,
+                            "StartLock: " + Base.BetterWarheadHandler.Warhead.StartLock,
+                            "StopLock: " + Base.BetterWarheadHandler.Warhead.StopLock,
+                            "LeverLock: " + Base.BetterWarheadHandler.Warhead.LeverLock,
+                            "ButtonLock: " + Base.BetterWarheadHandler.Warhead.ButtonLock,
+                            "Button Open: " + Warhead.IsLocked,
+                            "Last Start User: " + (Base.BetterWarheadHandler.Warhead.LastStartUser == null ? "Unknown":$"{Base.BetterWarheadHandler.Warhead.LastStartUser.Nickname} ({Base.BetterWarheadHandler.Warhead.LastStartUser.Id}) | {Base.BetterWarheadHandler.Warhead.LastStartUser.UserId}"),
+                            "Last Stop User: " + (Base.BetterWarheadHandler.Warhead.LastStopUser == null ? "Unknown":$"{Base.BetterWarheadHandler.Warhead.LastStopUser.Nickname} ({Base.BetterWarheadHandler.Warhead.LastStopUser.Id}) | {Base.BetterWarheadHandler.Warhead.LastStopUser.UserId}")
                         };
                     }
                 default:

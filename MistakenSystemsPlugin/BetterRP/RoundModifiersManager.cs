@@ -155,8 +155,8 @@ namespace Gamer.Mistaken.BetterRP
                 item.NetworkTargetState = false;
                 item.NetworkActiveLocks = 0;
             }
-            Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
-            Systems.Utilities.API.Map.Blackout.Enabled = false;
+            Base.Utilities.API.Map.TeslaMode = Base.Utilities.API.TeslaMode.ENABLED;
+            Base.Utilities.API.Map.Blackout.Enabled = false;
 
             if (_ae == 0)
             {
@@ -212,30 +212,30 @@ namespace Gamer.Mistaken.BetterRP
                             }
                         case RandomEvents.BLACKOUT_FOR_1_SECONDS_EVERY_30_SECONDS:
                             {
-                                Systems.Utilities.API.Map.Blackout.Delay = 30;
-                                Systems.Utilities.API.Map.Blackout.Length = 1;
-                                Systems.Utilities.API.Map.Blackout.Enabled = true;
+                                Base.Utilities.API.Map.Blackout.Delay = 30;
+                                Base.Utilities.API.Map.Blackout.Length = 1;
+                                Base.Utilities.API.Map.Blackout.Enabled = true;
                                 break;
                             }
                         case RandomEvents.BLACKOUT_FOR_20_SECONDS_EVERY_5_MINUTE:
                             {
-                                Systems.Utilities.API.Map.Blackout.Delay = 300;
-                                Systems.Utilities.API.Map.Blackout.Length = 20;
-                                Systems.Utilities.API.Map.Blackout.Enabled = true;
+                                Base.Utilities.API.Map.Blackout.Delay = 300;
+                                Base.Utilities.API.Map.Blackout.Length = 20;
+                                Base.Utilities.API.Map.Blackout.Enabled = true;
                                 break;
                             }
                         case RandomEvents.BLACKOUT_FOR_5_SECONDS_EVERY_1_MINUTE:
                             {
-                                Systems.Utilities.API.Map.Blackout.Delay = 60;
-                                Systems.Utilities.API.Map.Blackout.Length = 5;
-                                Systems.Utilities.API.Map.Blackout.Enabled = true;
+                                Base.Utilities.API.Map.Blackout.Delay = 60;
+                                Base.Utilities.API.Map.Blackout.Length = 5;
+                                Base.Utilities.API.Map.Blackout.Enabled = true;
                                 break;
                             }
                         case RandomEvents.BLACKOUT_FOR_5_SECONDS_EVERY_2_MINUTE:
                             {
-                                Systems.Utilities.API.Map.Blackout.Delay = 120;
-                                Systems.Utilities.API.Map.Blackout.Length = 5;
-                                Systems.Utilities.API.Map.Blackout.Enabled = true;
+                                Base.Utilities.API.Map.Blackout.Delay = 120;
+                                Base.Utilities.API.Map.Blackout.Length = 5;
+                                Base.Utilities.API.Map.Blackout.Enabled = true;
                                 break;
                             }
                         case RandomEvents.CASSIE_AUTO_SCAN_10_MINUTES:
@@ -381,7 +381,7 @@ namespace Gamer.Mistaken.BetterRP
                             }
                         case RandomEvents.TESLA_GATES_DISABLED:
                             {
-                                Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
+                                Base.Utilities.API.Map.TeslaMode = Base.Utilities.API.TeslaMode.DISABLED;
                                 teslaOff = true;
                                 break;
                             }
@@ -430,7 +430,7 @@ namespace Gamer.Mistaken.BetterRP
 
         public static void Restart()
         {
-            Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
+            Base.Utilities.API.Map.TeslaMode = Base.Utilities.API.TeslaMode.ENABLED;
             RoundModifiersManager.Instance._ae = RandomEvents.NONE;
         }
 

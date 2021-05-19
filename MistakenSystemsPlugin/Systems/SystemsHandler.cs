@@ -55,7 +55,6 @@ namespace Gamer.Mistaken.Systems
             new Misc.RespawnPlayerHandler(plugin);
             new Misc.SpawnProtectHandler(plugin);
             new Misc.ArmorHandler(plugin);
-            new Misc.BetterWarheadHandler(plugin);
             new Misc.ResurectionHandler(plugin);
             new Misc.PlayerRoundStatisticsHandler(plugin);
             new Misc.MassTKDetectionHandler(plugin);
