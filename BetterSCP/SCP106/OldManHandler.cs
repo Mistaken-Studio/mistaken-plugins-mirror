@@ -324,7 +324,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             if (ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Ensnared>().Enabled)
             {
                 ev.IsAllowed = false;
-                ev.Player.SendConsoleMessage("[106] Ensnared active | Code: 3.2", "red");
+                if(Round.ElapsedTime.TotalSeconds > 25)
+                    ev.Player.SendConsoleMessage("[106] Ensnared active | Code: 3.2", "red");
                 return;
             }
             if (InTeleportExecution.Contains(ev.Player.Id))
