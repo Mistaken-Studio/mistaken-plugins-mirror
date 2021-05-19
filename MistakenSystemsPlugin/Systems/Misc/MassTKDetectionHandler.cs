@@ -146,7 +146,7 @@ namespace Gamer.Mistaken.Systems.Misc
             DeathInfo.Add(ev.Target, (ev.Target.Role, ev.Target.Position));
             if (ev.HitInformation.GetDamageType() != DamageTypes.Grenade)
             {
-                RoundLogger.Log("MASS TK", "SKIP", $"MTKD Skip Code: 11 | {ev.HitInformation.GetDamageType()}");
+                RoundLogger.Log("MASS TK", "SKIP", $"MTKD Skip Code: 11 | {ev.HitInformation.GetDamageType().name}");
                 return;
             }
             if (ev.Target.Id == ev.Killer.Id && !GreneadedPlayers.Any(i => i.Value.Contains(ev.Target)))
