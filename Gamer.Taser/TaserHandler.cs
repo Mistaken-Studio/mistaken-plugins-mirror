@@ -139,6 +139,7 @@ namespace Gamer.Taser
                                 //targetPlayer.DropItem(targetPlayer.CurrentItem);
                                 targetPlayer.RemoveItem(targetPlayer.CurrentItem);
                                 Exiled.Events.Handlers.Player.OnItemDropped(new Exiled.Events.EventArgs.ItemDroppedEventArgs(targetPlayer, pickup));
+                                targetPlayer.CurrentItem = default;
                             }
                             RoundLogger.Log("TASER", "HIT", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()}");
                             targetPlayer.Broadcast("<color=yellow>Taser</color>", 10, $"<color=yellow>You have been tased by: {player.Nickname} [{player.Role}]</color>");
