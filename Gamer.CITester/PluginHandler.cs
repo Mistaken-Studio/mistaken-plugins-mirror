@@ -383,4 +383,14 @@ namespace Gamer.CITester
             return true;
         }
     }
+
+    [HarmonyPatch(typeof(Log), nameof(Log.Error))]
+    internal static class Log_Error
+    {
+        private static bool Prefix(object message)
+        {
+            Diagnostics.MasterHandler.LogError(new Exception(message.ToString()), null, "Error Log Catch");
+            return true;
+        }
+    }
 }
