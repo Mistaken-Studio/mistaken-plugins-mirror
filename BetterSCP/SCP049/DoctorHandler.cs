@@ -152,6 +152,9 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                 yield return Timing.WaitForSeconds(1);
             }
             Gamer.Mistaken.Systems.Shield.ShieldedManager.Remove(player);
+            player.SetGUI("scp049", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
+            yield return Timing.WaitForSeconds(5);
+            player.SetGUI("scp049", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
         }
     }
 }
