@@ -81,15 +81,24 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                 return;
                             if (!Warhead.IsDetonated)
                             {
-                                if (!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
-                                    p.Position = data.Pos;
+                                if (Map.IsLCZDecontaminated)
+                                {
+                                    if (!(data.Pos.y > -100 && data.Pos.y < 100))
+                                        p.Position = data.Pos;
+                                    else
+                                        p.Position = afterDecontRooms[UnityEngine.Random.Range(0, afterDecontRooms.Count)];
+                                }
                                 else
-                                    p.Position = afterDecontRooms[UnityEngine.Random.Range(0, afterDecontRooms.Count)];
+                                    p.Position = data.Pos;
                             }
-                            else if (!(data.Pos.y > 900 && data.Pos.y < 1100))
-                                p.Position = afterWHRooms[UnityEngine.Random.Range(0, afterWHRooms.Count)];
                             else
-                                p.Position = data.Pos;
+                            {
+                                if (data.Pos.y > 900)
+                                    p.Position = data.Pos; 
+                                else
+                                    p.Position = afterWHRooms[UnityEngine.Random.Range(0, afterWHRooms.Count)];
+                            }
+                            
                             p.Health = data.HP;
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
@@ -112,9 +121,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Warps.Enqueue(pos);
                 List<Player> talkPlayers = new List<Player>();
                 for (int i = 0; i < targets.Length; i++)
-                {
                     talkPlayers.Add(RealPlayers.Get(targets[i]));
-                }
                 if (talkPlayers.Any(x => x.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
                 {
                     success = true;
