@@ -221,9 +221,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
             while (Round.ElapsedTime.TotalSeconds < 25)
             {
                 foreach (var player in RealPlayers.Get(RoleType.Scp106))
-                {
-                    TeleportOldMan(player, new Vector3(UnityEngine.Random.Range(-2, 2), -2000, UnityEngine.Random.Range(-2, 2)));
-                }
+                    TeleportOldMan(player, new Vector3(UnityEngine.Random.Range(-2, 2), -2000, UnityEngine.Random.Range(-2, 2)), true);
                 Gamer.Mistaken.Systems.InfoMessage.InfoMessageManager.WelcomeMessages[RoleType.Scp106] = $"{WelcomeMessage}<br>Zostaniesz wypuszczony za <color=yellow>{Mathf.RoundToInt(25 - (float)Round.ElapsedTime.TotalSeconds)}</color>s";
                 yield return Timing.WaitForSeconds(1);
             }
@@ -285,7 +283,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                     player.SendConsoleMessage("[106] Detonated | Code: 1.4", "red");
                     return;
                 }
-                if (Cooldown.Contains(player.Id) && Round.ElapsedTime.TotalSeconds > 25)
+                if (Cooldown.Contains(player.Id))
                 {
                     player.SendConsoleMessage("[106] Cooldown | Code: 1.5", "red");
                     return;
