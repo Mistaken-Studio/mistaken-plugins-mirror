@@ -30,9 +30,12 @@ namespace Gamer.Mistaken.Base
             new Staff.StaffHandler(this);
             new CustomItems.CustomItemsHandler(this);
             new ExperimentalHandler(this);
+            new BetterWarheadHandler(this);
 
-            /*var harmony = new Harmony("gamer.mistaken.base");
-            harmony.PatchAll();*/
+            new Utilities.UtilitiesHandler(this);
+
+            var harmony = new Harmony("gamer.mistaken.base");
+            harmony.PatchAll();
 
             Diagnostics.Module.OnEnable(this);
             base.OnEnabled();

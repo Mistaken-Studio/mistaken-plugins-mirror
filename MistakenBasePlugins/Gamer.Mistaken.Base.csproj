@@ -58,6 +58,10 @@
     <Reference Include="0Harmony">
       <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="0NPCS, Version=1.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\0NPCS.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\Assembly-CSharp-firstpass.dll</HintPath>
@@ -102,8 +106,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\References\BaseGame\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BetterWarheadHandler.cs" />
+    <Compile Include="Components\Escape.cs" />
+    <Compile Include="Components\InRange.cs" />
+    <Compile Include="Components\InRangeBall.cs" />
+    <Compile Include="Components\Killer.cs" />
+    <Compile Include="Patches\DoorPatch.cs" />
     <Compile Include="ExperimentalHandler.cs" />
     <Compile Include="CustomInfoHandler.cs" />
     <Compile Include="CustomItems\CustomItemsHandler.cs" />
@@ -111,6 +124,8 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="GUI\PseudoGUIHandler.cs" />
     <Compile Include="Staff\StaffHandler.cs" />
+    <Compile Include="Utilities\API.cs" />
+    <Compile Include="Utilities\UtilitiesHandler.cs" />
     <Compile Include="Version.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -131,5 +146,6 @@
       <Name>Gamer.RoundLogger</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

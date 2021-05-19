@@ -46,7 +46,7 @@ namespace Gamer.EventManager.Events
         {
             #region ini
             LightContainmentZoneDecontamination.DecontaminationController.Singleton.disableDecontamination = true;
-            Mistaken.Systems.Utilities.API.Map.RespawnLock = true;
+            Mistaken.Base.Utilities.API.Map.RespawnLock = true;
             Round.IsLocked = true;
             var doors = Map.Doors;
             foreach (var door in doors)

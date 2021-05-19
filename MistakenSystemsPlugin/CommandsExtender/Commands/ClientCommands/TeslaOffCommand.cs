@@ -15,14 +15,13 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             var player = sender.GetPlayer();
             if (player.Role != RoleType.NtfCommander)
                 return new string[] { "Nie jesteś dowódcą" };
-            if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.DISABLED)
+            if (Base.Utilities.API.Map.TeslaMode == Base.Utilities.API.TeslaMode.DISABLED)
                 return new string[] { "Tesle są już wyłączone" };
             if (TeslaOnCommand.AlreadyUsed.Contains(player.UserId))
                 return new string[] { "Możesz użyć .taslaOff lub .teslaOn tylko raz na runde" };
-            Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
+            Base.Utilities.API.Map.TeslaMode = Base.Utilities.API.TeslaMode.DISABLED;
             TeslaOnCommand.AlreadyUsed.Add(player.UserId);
             Cassie.Message("Tesla gates deactivated by order of NINETAILEDFOX COMMANDER");
-            CassieRoom.CassieRoomHandler.TeslaIndicator.NetworkTargetState = true;
             success = true;
             return new string[] { "Zrobione" };
         }

@@ -263,7 +263,7 @@ namespace Gamer.Mistaken.Systems.GUI
             //string masterAdminMessage = "";//"[<color=yellow>No warning active</color>]";
             if (Round.IsLocked)
                 masterAdminMessage = "[<color=yellow>ROUND LOCK <b>ACTIVE</b></color>]";
-            else if (Utilities.API.Map.RespawnLock)
+            else if (Base.Utilities.API.Map.RespawnLock)
                 masterAdminMessage = "[<color=yellow>RESPAWN LOCK <b>ACTIVE</b></color>]";
             else if (RealPlayers.List.Count() < 4)
                 masterAdminMessage = "[<color=yellow>LESS THAN 4 PLAYERS | <b>NOT SAVING</b> ACTIVITY</color>]";
@@ -296,7 +296,19 @@ namespace Gamer.Mistaken.Systems.GUI
             var classDTime_s = classDTime % 60;
             var classDString = "[<color=yellow>REDACTED</color>]";//Misc.ClassDCellsDecontaminationHandler.Decontaminated ? plugin.ReadTranslation("classd_decontaminated") : plugin.ReadTranslation("classd_decontamination", (classDTime - classDTime_s) / 60, (classDTime_s < 10 ? "0" : "") + classDTime_s);
             var miscString = Is106 ? recontainmentString : classDString;
-            var adminWarheadString = plugin.ReadTranslation("admin_warhead_info", (Warhead.LeverStatus ? (Warhead.CanBeStarted ? "<color=green>Ready</color>" : "<color=blue>Cooldown</color>") : "<color=red>Disabled</color>"), Warhead.IsKeycardActivated, Misc.BetterWarheadHandler.Warhead.LastStartUser?.Id.ToString() ?? "?", Misc.BetterWarheadHandler.Warhead.LastStartUser?.Nickname ?? "UNKNOWN", Misc.BetterWarheadHandler.Warhead.LastStopUser?.Id.ToString() ?? "?", Misc.BetterWarheadHandler.Warhead.LastStopUser?.Nickname ?? "UNKNOWN", Misc.BetterWarheadHandler.Warhead.StartLock, Misc.BetterWarheadHandler.Warhead.StopLock);
+            var adminWarheadString = plugin.ReadTranslation("admin_warhead_info", 
+                (Warhead.LeverStatus ? 
+                    (Warhead.CanBeStarted ? 
+                        "<color=green>Ready</color>" : 
+                        "<color=blue>Cooldown</color>") : 
+                    "<color=red>Disabled</color>"), 
+                Warhead.IsKeycardActivated, 
+                Base.BetterWarheadHandler.Warhead.LastStartUser?.Id.ToString() ?? "?", 
+                Base.BetterWarheadHandler.Warhead.LastStartUser?.Nickname ?? "UNKNOWN", 
+                Base.BetterWarheadHandler.Warhead.LastStopUser?.Id.ToString() ?? "?", 
+                Base.BetterWarheadHandler.Warhead.LastStopUser?.Nickname ?? "UNKNOWN", 
+                Base.BetterWarheadHandler.Warhead.StartLock, 
+                Base.BetterWarheadHandler.Warhead.StopLock);
             var adminString = plugin.ReadTranslation("admin_info", masterAdminMessage, cache_ticketsMTF, cache_ticketsCI, adminWarheadString);
             return $"<br><br><br>{repsawnString}<br>{specatorString}<br><size=50%>{roundTimeString}   |   [<color=yellow>REDACTED</color>]   |   {playersString}<br>{lczString}   |   {systemTimeString}<br>{genString}   |   {miscString}</size>" + (admin ? $"<br>{adminString}" : "");
         }

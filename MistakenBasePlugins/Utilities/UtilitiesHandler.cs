@@ -1,6 +1,6 @@
 ﻿using Gamer.Diagnostics;
 
-namespace Gamer.Mistaken.Systems.Utilities
+namespace Gamer.Mistaken.Base.Utilities
 {
     internal class UtilitiesHandler : Module
     {

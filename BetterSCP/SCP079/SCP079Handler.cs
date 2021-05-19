@@ -128,6 +128,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                 else
                 {
                     Generator079 nearestGenerator = null;
+                    List<Generator079> gens = new List<Generator079>();
                     int generators = 0;
                     foreach (var generator in Generator079.Generators)
                     {
@@ -136,13 +137,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
                             generators++;
                             if ((nearestGenerator?.NetworkremainingPowerup ?? float.MaxValue) > generator.NetworkremainingPowerup)
                                 nearestGenerator = generator;
+                            gens.Add(generator);
                         }
                     }
 
                     if (nearestGenerator != null)
                     {
-                        var seconds = nearestGenerator.remainingPowerup % 60;
-                        msg = $"<color=yellow>{generators}</color> generator{(generators > 1 ? "s are" : " is")} being activated<br>Time left: <color=yellow>{((nearestGenerator.remainingPowerup - seconds) / 60):00}</color>m <color=yellow>{seconds:00}</color>s";
+                        var seconds = nearestGenerator.remainingPowerup;
+                        msg = $"<color=yellow>{generators}</color> generator{(generators > 1 ? "s are" : " is")} being activated<br>Time left: <color=yellow>{seconds:00}</color>s<br><size=50%><color=yellow>{string.Join("<br>", gens.Select(i => i.CurRoom))}</color></size>";
                     }
                     else if (Exiled.Events.Handlers.CustomEvents.SCP079.IsBeingRecontained)
                     {

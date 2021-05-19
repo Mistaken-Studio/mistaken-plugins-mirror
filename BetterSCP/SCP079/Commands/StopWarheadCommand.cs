@@ -36,7 +36,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
             success = false;
             if (player.Role != RoleType.Scp079) return new string[] { "Only SCP 079" };
             if (!Warhead.IsInProgress) return new string[] { "Warhead is not detonating" };
-            if (Warhead.IsLocked || Systems.Misc.BetterWarheadHandler.Warhead.StopLock) return new string[] { "Warhead is locked" };
+            if (Warhead.IsLocked || Base.BetterWarheadHandler.Warhead.StopLock) return new string[] { "Warhead is locked" };
             if (player.Level >= ReqLvl - 1)
             {
                 if (player.Energy >= Cost)

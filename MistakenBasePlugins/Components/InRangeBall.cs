@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gamer.Mistaken.Systems.Components
+namespace Gamer.Mistaken.Base.Components
 {
     public class InRangeBall : MonoBehaviour
     {

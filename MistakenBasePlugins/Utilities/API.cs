@@ -1,14 +1,25 @@
 ﻿using Exiled.API.Features;
 using Gamer.Utilities;
 using MEC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gamer.Mistaken.Systems.Utilities.API
+namespace Gamer.Mistaken.Base.Utilities.API
 {
     public static class Map
     {
-        public static TeslaMode TeslaMode = TeslaMode.ENABLED;
+        public static TeslaMode TeslaMode
+        {
+            get => teslaMode;
+            set
+            {
+                OnTeslaModeChange?.Invoke(value);
+                teslaMode = value;
+            }
+        }
+        private static TeslaMode teslaMode;
+        public static event Action<TeslaMode> OnTeslaModeChange;
         public static bool FriendlyFire = true;
         public static bool RespawnLock = false;
         private static int _rl = 0;

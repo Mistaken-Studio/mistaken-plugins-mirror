@@ -43,7 +43,7 @@ namespace Gamer.EventManager.Events
 
             #region ini
             LightContainmentZoneDecontamination.DecontaminationController.Singleton.disableDecontamination = true;
-            Mistaken.Systems.Utilities.API.Map.RespawnLock = true;
+            Gamer.Mistaken.Base.Utilities.API.Map.RespawnLock = true;
             Round.IsLocked = true;
             #endregion
             foreach (var player in Gamer.Utilities.RealPlayers.List)

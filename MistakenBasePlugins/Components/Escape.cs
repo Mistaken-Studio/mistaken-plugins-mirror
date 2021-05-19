@@ -3,7 +3,7 @@ using NPCS;
 using System;
 using UnityEngine;
 
-namespace Gamer.Mistaken.Systems.Components
+namespace Gamer.Mistaken.Base.Components
 {
     public class Escape : MonoBehaviour
     {

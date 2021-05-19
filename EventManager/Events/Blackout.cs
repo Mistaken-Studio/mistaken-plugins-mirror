@@ -43,10 +43,10 @@ namespace Gamer.EventManager.Events
         private void Server_RoundStarted()
         {
             Cassie.Message("LIGHT SYSTEM ERRROR . LIGHTS OUT", false, true);
-            Mistaken.Systems.Utilities.API.Map.Blackout.Enabled = true;
-            Mistaken.Systems.Utilities.API.Map.Blackout.OnlyHCZ = false;
-            Mistaken.Systems.Utilities.API.Map.Blackout.Delay = 10;
-            Mistaken.Systems.Utilities.API.Map.Blackout.Length = 10;
+            Mistaken.Base.Utilities.API.Map.Blackout.Enabled = true;
+            Mistaken.Base.Utilities.API.Map.Blackout.OnlyHCZ = false;
+            Mistaken.Base.Utilities.API.Map.Blackout.Delay = 10;
+            Mistaken.Base.Utilities.API.Map.Blackout.Length = 10;
         }
 
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
@@ -68,7 +68,7 @@ namespace Gamer.EventManager.Events
             {
                 Timing.CallDelayed(70, () =>
                 {
-                    Mistaken.Systems.Utilities.API.Map.Blackout.Enabled = false;
+                    Mistaken.Base.Utilities.API.Map.Blackout.Enabled = false;
                 });
             }
         }

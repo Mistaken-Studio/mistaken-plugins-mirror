@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
 using Gamer.Diagnostics;
 
-namespace Gamer.Mistaken.Systems.Misc
+namespace Gamer.Mistaken.Base
 {
     public class BetterWarheadHandler : Module
     {

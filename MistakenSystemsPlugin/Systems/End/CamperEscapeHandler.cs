@@ -66,7 +66,7 @@ namespace Gamer.Mistaken.Systems.End
             }
 
             //SCP012
-            Components.Killer.Spawn(
+            Base.Components.Killer.Spawn(
                 Center012 + new Vector3(0.25f, -0, 0),
                 new Vector3(1.4f, 4, 1),
                 5,
@@ -75,7 +75,7 @@ namespace Gamer.Mistaken.Systems.End
                 (p) => p.Team == Team.SCP
             );
             //SCP106
-            Components.Killer.Spawn(
+            Base.Components.Killer.Spawn(
                 Map.Rooms.First(r => r.Type == RoomType.Hcz106).GetByRoomOffset(new Vector3(15f, -10, -7.5f)),
                 new Vector3(33, 1, 33),
                 0,
@@ -84,7 +84,7 @@ namespace Gamer.Mistaken.Systems.End
                 (p) => p.Team == Team.SCP
             );
             //Escape
-            Components.Killer.Spawn(
+            Base.Components.Killer.Spawn(
                 new Vector3(179.5f, 990, 32.5f),
                 new Vector3(13, 20, 19),
                 5,
@@ -92,7 +92,7 @@ namespace Gamer.Mistaken.Systems.End
                 false,
                 (p) => p.Team == Team.CDP || p.Team == Team.RSC || p.IsCuffed
             );
-            Components.Killer.Spawn(
+            Base.Components.Killer.Spawn(
                 new Vector3(174.5f, 990, 37),
                 new Vector3(21, 20, 10),
                 5,
@@ -101,7 +101,7 @@ namespace Gamer.Mistaken.Systems.End
                 (p) => p.Team == Team.CDP || p.Team == Team.RSC || p.IsCuffed
             );
             //Escape
-            Components.Escape.Spawn(
+            Base.Components.Escape.Spawn(
                 new Vector3(179.5f, 990, 32.5f),
                 new Vector3(13, 20, 19),
                 (p) =>
@@ -124,7 +124,7 @@ namespace Gamer.Mistaken.Systems.End
                     RoundLogger.Log("ESCAPE", "ESCAPE", $"{p.PlayerToString()} has escaped");
                 }
             );
-            Components.Escape.Spawn(
+            Base.Components.Escape.Spawn(
                 new Vector3(174.5f, 990, 37),
                 new Vector3(21, 20, 10),
                 (p) =>

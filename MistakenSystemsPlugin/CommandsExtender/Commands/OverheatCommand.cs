@@ -22,7 +22,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             success = false;
             if (args.Length == 0 || !int.TryParse(args[0], out int proggressLevel))
                 return new string[] { "Proggress level has to be an int" };
-            Systems.Utilities.API.Map.Overheat.OverheatLevel = proggressLevel;
+            Base.Utilities.API.Map.Overheat.OverheatLevel = proggressLevel;
             success = true;
             switch (proggressLevel)
             {

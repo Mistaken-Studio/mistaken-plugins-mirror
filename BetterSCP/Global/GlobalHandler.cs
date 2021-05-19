@@ -65,9 +65,9 @@ namespace Gamer.Mistaken.BetterSCP.Global
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             //Panic
-            Mistaken.Systems.Components.InRange.Spawn(ev.Player.CameraTransform, Vector3.forward * 10f, new Vector3(10, 5, 20), OnEnterVision(ev.Player));
+            Mistaken.Base.Components.InRange.Spawn(ev.Player.CameraTransform, Vector3.forward * 10f, new Vector3(10, 5, 20), OnEnterVision(ev.Player));
             //AntyDuo
-            Mistaken.Systems.Components.InRange.Spawn(ev.Player.CameraTransform, Vector3.zero, new Vector3(PluginHandler.Anty173_096DuoDistance, 5, PluginHandler.Anty173_096DuoDistance), OnEnter(ev.Player), OnExit(ev.Player));
+            Mistaken.Base.Components.InRange.Spawn(ev.Player.CameraTransform, Vector3.zero, new Vector3(PluginHandler.Anty173_096DuoDistance, 5, PluginHandler.Anty173_096DuoDistance), OnEnter(ev.Player), OnExit(ev.Player));
         }
         #endregion
         #region AntyDuo
