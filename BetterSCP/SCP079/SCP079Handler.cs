@@ -143,8 +143,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP079
 
                     if (nearestGenerator != null)
                     {
-                        var seconds = nearestGenerator.remainingPowerup % 60;
-                        msg = $"<color=yellow>{generators}</color> generator{(generators > 1 ? "s are" : " is")} being activated<br>Time left: <color=yellow>{((nearestGenerator.remainingPowerup - seconds) / 60):00}</color>m <color=yellow>{seconds:00}</color>s<br>{string.Join("<br>", gens.Select(i => i.CurRoom))}";
+                        var seconds = nearestGenerator.remainingPowerup;
+                        msg = $"<color=yellow>{generators}</color> generator{(generators > 1 ? "s are" : " is")} being activated<br>Time left: <color=yellow>{seconds:00}</color>s<br><size=50%><color=yellow>{string.Join("<br>", gens.Select(i => i.CurRoom))}</color></size>";
                     }
                     else if (Exiled.Events.Handlers.CustomEvents.SCP079.IsBeingRecontained)
                     {
