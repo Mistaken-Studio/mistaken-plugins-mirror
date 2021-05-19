@@ -119,6 +119,12 @@ namespace Gamer.Taser
                             RoundLogger.Log("TASER", "BLOCKED", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()} but effects were blocked by an armor");
                             return false;
                         }
+                        if (targetPlayer.GetSessionVar<bool>(Main.SessionVarType.SPAWN_PROTECT))
+                        {
+                            RoundLogger.Log("TASER", "REVERSED", $"{player.PlayerToString()} hit {targetPlayer.PlayerToString()} but effects were reversed because of spawn protect");
+                            targetPlayer = player;
+                            //return false;
+                        }
                         if (targetPlayer.IsHuman)
                         {
                             targetPlayer.EnableEffect<CustomPlayerEffects.Ensnared>(2);
