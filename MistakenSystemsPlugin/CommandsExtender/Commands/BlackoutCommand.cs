@@ -25,7 +25,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             {
                 if (bool.TryParse(args[0], out bool value))
                 {
-                    Systems.Utilities.API.Map.Blackout.Enabled = value;
+                    Base.Utilities.API.Map.Blackout.Enabled = value;
                     success = true;
                     if (value)
                         return new string[] { "Enabled" };

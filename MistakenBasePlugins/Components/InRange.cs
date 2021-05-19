@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
-namespace Gamer.Mistaken.Systems.Components
+namespace Gamer.Mistaken.Base.Components
 {
     public class InRange : MonoBehaviour
     {

@@ -255,10 +255,6 @@
     <Compile Include="Suicide\Command.cs" />
     <Compile Include="Suicide\SuicideHandler.cs" />
     <Compile Include="Systems\Bans\BansAnalizer.cs" />
-    <Compile Include="Systems\Components\Escape.cs" />
-    <Compile Include="Systems\Components\InRangeBall.cs" />
-    <Compile Include="Systems\Components\InRange.cs" />
-    <Compile Include="Systems\Components\Killer.cs" />
     <Compile Include="Systems\End\RoundLogHandler.cs" />
     <Compile Include="Systems\End\OverwatchHandler.cs" />
     <Compile Include="Systems\End\AutoUpdateHandler.cs" />
@@ -309,13 +305,11 @@
     <Compile Include="Systems\Logs\LogManager.cs" />
     <Compile Include="Systems\Misc\PlayerRoundStatisticsHandler.cs" />
     <Compile Include="Systems\Misc\CustomSpeedHandler.cs" />
-    <Compile Include="Systems\Misc\BetterWarheadHandler.cs" />
     <Compile Include="Systems\End\CamperEscapeHandler.cs" />
     <Compile Include="Systems\Misc\ClassDCellsDecontaminationHandler.cs" />
     <Compile Include="Systems\Misc\CustomMaxHealthHandler.cs" />
     <Compile Include="Systems\Misc\ResurectionHandler.cs" />
     <Compile Include="Systems\Patches\RoundRestartPatch.cs" />
-    <Compile Include="Systems\Patches\DoorPatch.cs" />
     <Compile Include="Systems\Patches\NicknamePatch.cs" />
     <Compile Include="Systems\Patches\ACSmolPatch.cs" />
     <Compile Include="Systems\Patches\DisarmPatch.cs" />
@@ -353,13 +347,9 @@
     <Compile Include="Systems\Seasonal\PrimaAprilisHanlder.cs" />
     <Compile Include="Systems\Shield\ShieldedManager.cs" />
     <Compile Include="Systems\ThreatLevel\ThreatLevelManager.cs" />
-    <Compile Include="Systems\Utilities\API.cs" />
-    <Compile Include="Systems\Utilities\UtilitiesHandler.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Systems\Bans\BansManager.cs" />
     <Compile Include="Systems\SystemsHandler.cs" />
-    <Compile Include="CassieRoom\CassieRoomHandler.cs" />
-    <Compile Include="CassieRoom\Elevator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

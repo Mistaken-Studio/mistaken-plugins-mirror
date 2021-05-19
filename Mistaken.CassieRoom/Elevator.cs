@@ -1,8 +1,8 @@
 ﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.Components;
 using Gamer.Mistaken.Base.GUI;
-using Gamer.Mistaken.Systems.Components;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -14,9 +14,9 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Gamer.Mistaken.CassieRoom
+namespace Mistaken.CassieRoom
 {
-    internal class Elevator : Diagnostics.Module
+    internal class Elevator : Gamer.Diagnostics.Module
     {
         //public override bool Enabled => false;
         private static new __Log Log;
@@ -206,7 +206,7 @@ namespace Gamer.Mistaken.CassieRoom
 
 
             //Spawn Killer
-            inRange = Systems.Components.InRange.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), null, null);
+            inRange = InRange.Spawn(new Vector3(-20, 1019, -43), new Vector3(20, 5, 20), null, null);
 
             //Lights
             //-19.5 1021.5 -52 -20 180 0 .01 .01 .01
@@ -224,7 +224,7 @@ namespace Gamer.Mistaken.CassieRoom
                 }
             }*/
         }
-        private Systems.Components.InRange inRange;
+        private InRange inRange;
         private readonly Dictionary<Player, int> CamperPoints = new Dictionary<Player, int>();
         private readonly Dictionary<Player, HashSet<Type>> CamperEffects = new Dictionary<Player, HashSet<Type>>();
         private IEnumerator<float> DoRoundLoop()
@@ -404,7 +404,7 @@ namespace Gamer.Mistaken.CassieRoom
             var elevatorDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15f, 1000f, -41.2f) + offset, Vector3.up * 90, Vector3.one);
             //elevatorDoor.RequiredPermissions.RequiredPermissions = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.ArmoryLevelThree | KeycardPermissions.AlphaWarhead;
             (elevatorDoor as BreakableDoor)._brokenPrefab = null;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(elevatorDoor);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(elevatorDoor);
             //networkIdentities.Add(elevatorDoor.netIdentity);
 
             DoorVariant door;
@@ -415,7 +415,7 @@ namespace Gamer.Mistaken.CassieRoom
                 door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, Pos + offset, Rot, Size);
                 door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
                 (door as BreakableDoor)._brokenPrefab = null;
-                Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+                Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
                 networkIdentities.Add(door.netIdentity);
                 //Card
                 SpawnItem(keycardType, Pos - new Vector3(1.65f, 0, 0) + offset, Rot, new Vector3(Size.x * 9, Size.y * 410, Size.z * 2));
@@ -431,13 +431,13 @@ namespace Gamer.Mistaken.CassieRoom
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15, 1001.34f, -43) + offset, new Vector3(0, 90, 90), new Vector3(2, 0.25f, 1));
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
             networkIdentities.Add(door.netIdentity);
             //-15 1001.9 -40 0 0 90 1.4 1 1
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-15, 1001.9f, -39.5f) + offset, new Vector3(0, 0, 90), new Vector3(1.4f, 1, 1));
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
             networkIdentities.Add(door.netIdentity);
 
             //-16.58 1003.7 -41 90 180 0 15 550 6
@@ -456,13 +456,13 @@ namespace Gamer.Mistaken.CassieRoom
             door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, new Vector3(-17.78f, 1001.47f, -42.5f) + offset, new Vector3(0, 90, 90), new Vector3(1.5f, 1.1f, 1));
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
             networkIdentities.Add(door.netIdentity);
             var obj = new GameObject();
             var collider = obj.AddComponent<BoxCollider>();
             obj.transform.position = new Vector3(-16.58f, 1004f, -41f) + offset;
             collider.size = new Vector3(4, 2, 5);
-            var elevatorTrigger = Systems.Components.InRange.Spawn(
+            var elevatorTrigger = Gamer.Mistaken.Base.Components.InRange.Spawn(
                 new Vector3(-16.58f, 1002.7f, -41f) + offset, 
                 new Vector3(3f, 4, 4f), 
                 (p) => 
@@ -538,10 +538,10 @@ namespace Gamer.Mistaken.CassieRoom
                         if (ply.IsConnected && ply.IsAlive && ply.Position.y < 1010)
                         {
                             ply.Position += Offset;
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {ply.Nickname} Up ({ply.Position})");
+                            Gamer.RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {ply.Nickname} Up ({ply.Position})");
                         }
                         else
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {ply.Nickname} Up ({ply.Position})");
+                            Gamer.RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {ply.Nickname} Up ({ply.Position})");
                     }
                     catch(System.Exception ex)
                     {
@@ -577,10 +577,10 @@ namespace Gamer.Mistaken.CassieRoom
                         if (ply.IsConnected && ply.IsAlive && ply.Position.y > 1010)
                         {
                             ply.Position -= Offset;
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {ply.Nickname} Down ({ply.Position})");
+                            Gamer.RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "TELEPORT", $"Teleported {ply.Nickname} Down ({ply.Position})");
                         }
                         else
-                            RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {ply.Nickname} Down ({ply.Position})");
+                            Gamer.RoundLoggerSystem.RoundLogger.Log("ELEVATOR", "DENY", $"Denied teleporting {ply.Nickname} Down ({ply.Position})");
                     }
                     catch (System.Exception ex)
                     {
@@ -646,7 +646,7 @@ namespace Gamer.Mistaken.CassieRoom
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, null, pos, rot, size);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
             networkIdentities.Add(door.netIdentity);
             return door;
         }

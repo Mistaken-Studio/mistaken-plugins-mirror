@@ -41,7 +41,6 @@ namespace Gamer.Mistaken
             Instance = this;
             Config = base.Config;
 
-            new Systems.Utilities.UtilitiesHandler(this);
             new Systems.Handler(this);
 
             new AIRS.Handler(this);
@@ -60,8 +59,6 @@ namespace Gamer.Mistaken
             new Logger.LoggerHandler(this);
             new PStats.PlayerStatsHandler(this);
             new ATK.AntyTeamKillHandler(this);
-            new CassieRoom.CassieRoomHandler(this);
-            new CassieRoom.Elevator(this);
             if (Config.WhitelistEnabled)
                 Log.SendRaw("! Whitelist is enabled !", ConsoleColor.Red);
             else

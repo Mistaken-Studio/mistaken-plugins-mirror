@@ -1,9 +1,9 @@
 ﻿using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Diagnostics;
+using Gamer.Mistaken.Base.Components;
 using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
-using Gamer.Mistaken.Systems.Components;
 using Gamer.Utilities;
 using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
@@ -14,15 +14,21 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
-namespace Gamer.Mistaken.CassieRoom
+namespace Mistaken.CassieRoom
 {
-    public class CassieRoomHandler : Diagnostics.Module
+    public class CassieRoomHandler : Gamer.Diagnostics.Module
     {
         //public override bool Enabled => false;
         public CassieRoomHandler(PluginHandler plugin) : base(plugin)
         {
             this.RunCoroutine(Loop(), "Loop");
             this.RunCoroutine(UpdateSNav(), "UpdateSNav");
+            Gamer.Mistaken.Base.Utilities.API.Map.OnTeslaModeChange += (newValue) =>
+            {
+                if (TeslaToggleButton == null)
+                    return;
+                TeslaIndicator.NetworkTargetState = newValue != Gamer.Mistaken.Base.Utilities.API.TeslaMode.ENABLED;
+            };
         }
 
         internal static readonly HashSet<Player> LoadedAll = new HashSet<Player>();
@@ -91,7 +97,7 @@ namespace Gamer.Mistaken.CassieRoom
                 return;
             if (SNavSurface.ColliderInArea.Count > 0)
             {
-                string[] toWrite = SNAV.SNavHandler.GenerateSurfaceSNav(true);
+                string[] toWrite = Gamer.SNAV.SNavHandler.GenerateSurfaceSNav(true);
                 var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
                 list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
                 while (list.Count < 65)
@@ -114,7 +120,7 @@ namespace Gamer.Mistaken.CassieRoom
                 return;
             if (SNavEZHCZ.ColliderInArea.Count > 0)
             {
-                string[] toWrite = SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
+                string[] toWrite = Gamer.SNAV.SNavHandler.GenerateEZ_HCZSNav(null, true);
                 var list = NorthwoodLib.Pools.ListPool<string>.Shared.Rent(toWrite);
                 list.RemoveAll(i => string.IsNullOrWhiteSpace(i));
                 while (list.Count < 65)
@@ -230,7 +236,7 @@ namespace Gamer.Mistaken.CassieRoom
                 if (ev.Player.CurrentItemIndex == -1 || !ev.Player.CurrentItem.id.IsKeycard() || ev.Player.CurrentItem.id == ItemType.KeycardChaosInsurgency)
                 {
                     ev.IsAllowed = false;
-                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, wrong keycard or none");
+                    Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, wrong keycard or none");
                 }
                 else
                 {
@@ -240,7 +246,7 @@ namespace Gamer.Mistaken.CassieRoom
                         if (citem == null)
                         {
                             ev.IsAllowed = false;
-                            RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, not custom item");
+                            Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, not custom item");
                         }
                         else
                         {
@@ -248,18 +254,18 @@ namespace Gamer.Mistaken.CassieRoom
                             {
                                 case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
                                     unlocked = true;
-                                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted, facility manager keycard");
+                                    Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted, facility manager keycard");
                                     break;
                                 case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
                                     if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                                     {
                                         ev.IsAllowed = false;
-                                        RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, not working guard commander keycard");
+                                        Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access denied, not working guard commander keycard");
                                     }
                                     else
                                     {
                                         unlocked = true;
-                                        RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted, guard commander keycard");
+                                        Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted, guard commander keycard");
                                     }
                                     break;
                                 default:
@@ -270,7 +276,7 @@ namespace Gamer.Mistaken.CassieRoom
                     }
                     if (!ev.IsAllowed)
                         return;
-                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted");
+                    Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "ACCESS", "Access granted");
                     mainDoor.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     MEC.Timing.CallDelayed(5f, () =>
                     {
@@ -287,9 +293,7 @@ namespace Gamer.Mistaken.CassieRoom
         private DoorVariant WarheadStartButton;
         private DoorVariant WarheadStopButton;
         private DoorVariant WarheadLockButton;
-#pragma warning disable IDE0052 // Usuń nieodczytywane składowe prywatne
         private DoorVariant TeslaToggleButton;
-#pragma warning restore IDE0052 // Usuń nieodczytywane składowe prywatne
         private DoorVariant CassieRoomOpenButton;
         private DoorVariant mainDoor;
         internal static DoorVariant TeslaIndicator;
@@ -360,7 +364,7 @@ namespace Gamer.Mistaken.CassieRoom
                 mainDoor = DoorUtils.SpawnDoor(DoorUtils.DoorType.EZ_BREAKABLE, null, new Vector3(190f, 992.5f, -73), Vector3.zero, Vector3.one);
                 (mainDoor as BreakableDoor)._brokenPrefab = null;
                 mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
-                Systems.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
+                Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(mainDoor);
                 //UpperDoor
                 SpawnDoor(null, new Vector3(190f, 995.75f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
                 SpawnDoor(null, new Vector3(190f, 995.75f + 3.25f, -73), Vector3.zero, new Vector3(1, 1, 0.1f));
@@ -422,7 +426,7 @@ namespace Gamer.Mistaken.CassieRoom
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     this.CallDelayed(5, () =>
                     {
-                        if (Systems.Misc.BetterWarheadHandler.Warhead.StopLock)
+                        if (Gamer.Mistaken.Base.BetterWarheadHandler.Warhead.StopLock)
                             return;
                         Warhead.Stop();
                         this.CallDelayed(2 * 60, () =>
@@ -436,7 +440,7 @@ namespace Gamer.Mistaken.CassieRoom
                 //Disable warhead
                 WarheadLockButton = SpawnButton(new Vector3(181, 994, -87), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Disable</color> Warhead</size>", (ev) =>
                 {
-                    Systems.Misc.BetterWarheadHandler.Warhead.StartLock = true;
+                    Gamer.Mistaken.Base.BetterWarheadHandler.Warhead.StartLock = true;
                     Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . warhead is now in permanent lockdown");
                     WarheadLockButton.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, true);
                     return false;
@@ -445,15 +449,15 @@ namespace Gamer.Mistaken.CassieRoom
                 TeslaToggleButton = SpawnButton(new Vector3(181, 994, -91), new Vector3(-1.5f, 2, -2), new Vector3(0, 90, 90), "<size=150%><color=yellow>Toggles</color> all Tesla gates</size><br><color=blue>Enabled</color> | <color=green>Disabled</color>", (ev) =>
                 {
                     ev.Door.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
-                    if (Systems.Utilities.API.Map.TeslaMode == Systems.Utilities.API.TeslaMode.ENABLED)
+                    if (Gamer.Mistaken.Base.Utilities.API.Map.TeslaMode == Gamer.Mistaken.Base.Utilities.API.TeslaMode.ENABLED)
                     {
-                        Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.DISABLED;
+                        Gamer.Mistaken.Base.Utilities.API.Map.TeslaMode = Gamer.Mistaken.Base.Utilities.API.TeslaMode.DISABLED;
                         TeslaIndicator.NetworkTargetState = true;
                         Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Tesla gates are now deactivated");
                     }
                     else
                     {
-                        Systems.Utilities.API.Map.TeslaMode = Systems.Utilities.API.TeslaMode.ENABLED;
+                        Gamer.Mistaken.Base.Utilities.API.Map.TeslaMode = Gamer.Mistaken.Base.Utilities.API.TeslaMode.ENABLED;
                         TeslaIndicator.NetworkTargetState = false;
                         Cassie.Message(".g4 .g4 CASSIE ROOM OVERRIDE .g4 .g4 . Tesla gates are now activated");
                     }
@@ -473,28 +477,28 @@ namespace Gamer.Mistaken.CassieRoom
                         var citem = CustomItemsHandler.GetCustomItem(ev.Player.CurrentItem);
                         if (citem == null)
                         {
-                            RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, not custom item");
+                            Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, not custom item");
                             return false;
                         }
                         switch(citem.SessionVarType)
                         {
                             case Main.SessionVarType.CC_DEPUTY_FACILITY_MANAGER_KEYCARD:
-                                RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted, facility manager keycard");
+                                Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted, facility manager keycard");
                                 break;
                             case Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD:
                                 if (!ev.Player.GetSessionVar<bool>(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER) && !ev.Player.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER))
                                 {
-                                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, not working guard commander keycard");
+                                    Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, not working guard commander keycard");
                                     return false;
                                 }
-                                RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted, guard commander keycard");
+                                Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted, guard commander keycard");
                                 break;
                             default:
-                                RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, wrong custom item");
+                                Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access denied, wrong custom item");
                                 return false;
                         }
                     }
-                    RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted");
+                    Gamer.RoundLoggerSystem.RoundLogger.Log("CASSIE ROOM", "TOWER ACCESS", "Access granted");
                     mainDoor.ServerChangeLock(PluginDoorLockReason.REQUIREMENTS_NOT_MET, false);
                     CassieRoomOpenButton.ServerChangeLock(PluginDoorLockReason.COOLDOWN, true);
                     CassieRoomOpenButton.NetworkTargetState = true;
@@ -515,19 +519,19 @@ namespace Gamer.Mistaken.CassieRoom
                 SNavSurface = InRangeBall.Spawn(new Vector3(188, 993, -91), 1, 1, 
                     (player) => 
                     {
-                        Base.GUI.PseudoGUIHandler.Ignore(player);
+                        Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Ignore(player);
                         UpdateSNavSurface();
                     },
-                    (player) => Base.GUI.PseudoGUIHandler.StopIgnore(player)
+                    (player) => Gamer.Mistaken.Base.GUI.PseudoGUIHandler.StopIgnore(player)
                 );
                 SpawnItem(ItemType.SCP018, new Vector3(192, 992.46f, -91), new Vector3(180, 0, 0), new Vector3(10, 0.001f, 10));
                 SNavEZHCZ = InRangeBall.Spawn(new Vector3(192, 993, -91), 1, 1,
                     (player) =>
                     {
-                        Base.GUI.PseudoGUIHandler.Ignore(player);
+                        Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Ignore(player);
                         UpdateSNavEZHCZ();
                     },
-                    (player) => Base.GUI.PseudoGUIHandler.StopIgnore(player)
+                    (player) => Gamer.Mistaken.Base.GUI.PseudoGUIHandler.StopIgnore(player)
                 );
                 InRange isSomeoneInside = null;
                 isSomeoneInside = InRange.Spawn(new Vector3(188, 993f, -85), new Vector3(23, 10, 23),
@@ -566,7 +570,7 @@ namespace Gamer.Mistaken.CassieRoom
             (door as BreakableDoor)._brokenPrefab = null;
             door.NetworkTargetState = false;
             DoorCallbacks[door] = (ev) => false;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
             return door;
         }
         public static DoorVariant SpawnButton(Vector3 pos, Vector3 buttonOffset, Vector3 rotation, string name, Func<Exiled.Events.EventArgs.InteractingDoorEventArgs, bool> onCall, Vector3 size = default)
@@ -575,13 +579,13 @@ namespace Gamer.Mistaken.CassieRoom
             (door as BreakableDoor)._brokenPrefab = null;
             door.NetworkTargetState = true;
             DoorCallbacks[door] = onCall;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
-            Systems.Components.InRange.Spawn(pos, Vector3.one * 2, (p) =>
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Components.InRange.Spawn(pos, Vector3.one * 2, (p) =>
             {
-                p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, name);
+                p.SetGUI("cassie_room_display", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, name);
             }, (p) =>
             {
-                p.SetGUI("cassie_room_display", Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
+                p.SetGUI("cassie_room_display", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
             });
             return door;
         }
@@ -590,7 +594,7 @@ namespace Gamer.Mistaken.CassieRoom
             var door = DoorUtils.SpawnDoor(DoorUtils.DoorType.HCZ_BREAKABLE, name, pos, rotation, size);
             door.NetworkActiveLocks |= (ushort)DoorLockReason.AdminCommand;
             (door as BreakableDoor)._brokenPrefab = null;
-            Systems.Patches.DoorPatch.IgnoredDoor.Add(door);
+            Gamer.Mistaken.Base.Patches.DoorPatch.IgnoredDoor.Add(door);
             networkIdentities.Add(door.netIdentity);
             return door;
         }

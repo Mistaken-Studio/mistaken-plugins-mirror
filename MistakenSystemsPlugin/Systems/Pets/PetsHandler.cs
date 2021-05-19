@@ -89,7 +89,7 @@ namespace Gamer.Mistaken.Systems.Pets
         private void Player_Verified(Exiled.Events.EventArgs.VerifiedEventArgs ev)
         {
             if (ev.Player.IsReadyPlayer())
-                Components.InRangeBall.Spawn(ev.Player.GameObject.transform, Vector3.zero, 2, 4, OnEnter(ev.Player), OnExit(ev.Player)).AllowNPCs = true;
+                Base.Components.InRangeBall.Spawn(ev.Player.GameObject.transform, Vector3.zero, 2, 4, OnEnter(ev.Player), OnExit(ev.Player)).AllowNPCs = true;
         }
 
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
