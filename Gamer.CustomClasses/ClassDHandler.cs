@@ -28,9 +28,9 @@ namespace Gamer.CustomClasses
             }
             else
             {
-                int rand = UnityEngine.Random.Range(-10, 10);
+                int rand = UnityEngine.Random.Range(-5, 5);
                 Log.Debug(rand);
-                ev.Player.MaxHealth -= rand * 2;
+                ev.Player.MaxHealth -= rand * 3;
                 ev.Player.Health = ev.Player.MaxHealth;
                 ev.Player.SetSpeed(ServerConfigSynchronizer.Singleton.HumanWalkSpeedMultiplier * (1f + rand / 100f), ServerConfigSynchronizer.Singleton.HumanSprintSpeedMultiplier * (1f + rand / 100f));
             }
