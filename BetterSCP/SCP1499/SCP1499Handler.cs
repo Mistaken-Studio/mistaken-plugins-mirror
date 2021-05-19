@@ -144,6 +144,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP1499
             /// <inheritdoc/>
             public override void OnForceclass(Player player)
             {
+                base.OnForceclass(player);
                 player.SetGUI("scp1499", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
             }
         }

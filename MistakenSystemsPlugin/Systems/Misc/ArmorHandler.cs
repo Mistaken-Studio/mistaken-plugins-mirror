@@ -100,6 +100,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override void OnForceclass(Player player)
             {
+                base.OnForceclass(player);
                 player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
@@ -245,6 +246,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override void OnForceclass(Player player)
             {
+                base.OnForceclass(player);
                 player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
@@ -395,6 +397,7 @@ namespace Gamer.Mistaken.Systems.Misc
             }
             public override void OnForceclass(Player player)
             {
+                base.OnForceclass(player);
                 player.SetGUI("ArmorWear", Base.GUI.PseudoGUIHandler.Position.BOTTOM, null);
                 OnUnWear(player, true);
             }
