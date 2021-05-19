@@ -23,24 +23,18 @@ namespace Xname.CE
                 {
                     case "PU":
                         {
-                            try
+
+                            var player = RealPlayers.Get(int.Parse(args[1]));
+                            if (player != null)
                             {
-                                var player = RealPlayers.Get(int.Parse(args[1]));
-                                if (player != null)
-                                {
-                                    if (player.IsUnconscious())
-                                        player.WakeUpPlayer();
-                                    else
-                                        player.PutPlayerToSleep();
-                                }
+                                if (player.IsUnconscious())
+                                    player.WakeUpPlayer();
                                 else
-                                    return new string[] { "Player not found" };
-                                break;
+                                    player.PutPlayerToSleep();
                             }
-                            catch
-                            {
-                                return new string[] { "PlayerId must be a valid number" };
-                            }
+                            else
+                                return new string[] { "Player not found" };
+                            break;
                         }
                     default:
                         return GetUsage();

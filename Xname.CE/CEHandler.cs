@@ -148,6 +148,7 @@ namespace Xname.CE
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
             ragdolls.Add(player, gameObject);
+            player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś <color=yellow>nieprzytomny</color><br><mspace=0.5em><color=yellow>Nie możesz się ruszać. Wybudzisz się wkrótce</color></mspace>");
         }
         /// <summary>
         /// Makes player conscious.
@@ -187,6 +188,7 @@ namespace Xname.CE
                 }
                 if (player.GetEffectActive<CustomPlayerEffects.Ensnared>())
                     player.DisableEffect<CustomPlayerEffects.Ensnared>();
+                player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, null);
                 unconsciousPlayers.Remove(player.Id);
             }
         }
