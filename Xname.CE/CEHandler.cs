@@ -144,7 +144,7 @@ namespace Xname.CE
             GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(role.model_ragdoll, player.Position + role.ragdoll_offset.position, Quaternion.Euler(player.GameObject.transform.eulerAngles + role.ragdoll_offset.rotation));
             Mirror.NetworkServer.Spawn(gameObject);
             Ragdoll component = gameObject.GetComponent<Ragdoll>();
-            component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attacker.Id == 0) ? player.Id : attacker.Id), role, player.Id);
+            component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attacker == null) ? player.Id : attacker.Id), role, player.Id);
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
             ragdolls.Add(player, gameObject);
