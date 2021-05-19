@@ -94,6 +94,7 @@ namespace Xname.CE
                 Ragdoll component = go.Value.GetComponent<Ragdoll>();
                 if (Vector3.Distance(ev.Position, component.transform.position) <= 1)
                 {
+
                     foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
                     {
                         d.SendConsoleMessage("works", "green");
@@ -141,14 +142,14 @@ namespace Xname.CE
             player.IsInvisible = true;
             player.Inventory.Clear();
             Role role = player.ReferenceHub.characterClassManager.Classes.SafeGet((int)player.ReferenceHub.characterClassManager.CurClass);
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(role.model_ragdoll, player.Position + role.ragdoll_offset.position, Quaternion.Euler(player.GameObject.transform.eulerAngles + role.ragdoll_offset.rotation));
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(role.model_ragdoll, player.Position, Quaternion.Euler(player.GameObject.transform.eulerAngles + role.ragdoll_offset.rotation));
             Mirror.NetworkServer.Spawn(gameObject);
             Ragdoll component = gameObject.GetComponent<Ragdoll>();
             component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attacker == null) ? player.Id : attacker.Id), role, player.Id);
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
             ragdolls.Add(player, gameObject);
-            player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś <color=yellow>nieprzytomny</color><br><mspace=0.5em><color=yellow>Nie możesz się ruszać. Wybudzisz się wkrótce</color></mspace>");
+            player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś <color=yellow>nieprzytomny</color><br><mspace=0.5em><color=yellow>nie możesz się ruszać. wybudzisz się wkrótce</color></mspace>");
         }
         /// <summary>
         /// Makes player conscious.
