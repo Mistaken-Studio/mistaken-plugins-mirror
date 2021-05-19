@@ -52,10 +52,10 @@ namespace Gamer.EventManager.Events
             #region ini
             Pickup.Instances.ForEach(x => x.name.ToUpper().StartsWith("KEYCARD"));
             LightContainmentZoneDecontamination.DecontaminationController.Singleton.disableDecontamination = true;
-            Mistaken.Systems.Utilities.API.Map.RespawnLock = true;
+            Mistaken.Base.Utilities.API.Map.RespawnLock = true;
             Round.IsLocked = true;
             Decontaminated = 0;
-            Mistaken.Systems.Utilities.API.Map.TeslaMode = Mistaken.Systems.Utilities.API.TeslaMode.DISABLED_FOR_ALL;
+            Mistaken.Base.Utilities.API.Map.TeslaMode = Mistaken.Base.Utilities.API.TeslaMode.DISABLED_FOR_ALL;
             foreach (var e in Map.Lifts)
             {
                 if (!e.elevatorName.StartsWith("El"))

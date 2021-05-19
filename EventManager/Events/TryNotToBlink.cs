@@ -44,7 +44,7 @@ namespace Gamer.EventManager.Events
         {
             #region ini
             Pickup.Instances.ForEach(x => x.Delete());
-            Mistaken.Systems.Utilities.API.Map.RespawnLock = true;
+            Mistaken.Base.Utilities.API.Map.RespawnLock = true;
             Round.IsLocked = true;
             foreach (var door in Map.Doors.Where(d => d.Type() == DoorType.CheckpointLczA && d.Type() == DoorType.CheckpointLczB))
             {

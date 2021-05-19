@@ -49,9 +49,9 @@ namespace Gamer.EventManager.Events
             Pickup.Instances.ForEach(x => x.Delete());
             Decontaminated = 0;
             LightContainmentZoneDecontamination.DecontaminationController.Singleton.disableDecontamination = true;
-            Mistaken.Systems.Utilities.API.Map.RespawnLock = true;
+            Mistaken.Base.Utilities.API.Map.RespawnLock = true;
             Round.IsLocked = true;
-            Mistaken.Systems.Utilities.API.Map.TeslaMode = Mistaken.Systems.Utilities.API.TeslaMode.DISABLED_FOR_ALL;
+            Mistaken.Base.Utilities.API.Map.TeslaMode = Mistaken.Base.Utilities.API.TeslaMode.DISABLED_FOR_ALL;
             #endregion
             foreach (var e in Map.Lifts)
             {
