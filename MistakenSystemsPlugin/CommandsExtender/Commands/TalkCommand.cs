@@ -37,19 +37,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             "jail4",
             "jail5",
         });
-        internal readonly List<Vector3> afterDecontRooms = new List<Vector3>()
-        {
-            Gamer.Utilities.MapPlus.Rooms.First(x => x.Type == RoomType.HczChkpA).Position,
-            Gamer.Utilities.MapPlus.Rooms.First(x => x.Type == RoomType.HczChkpB).Position
-        };
-        internal readonly List<Vector3> afterWHRooms = new List<Vector3>()
-        {
-            Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.ChaosInsurgency),
-            Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.NtfCommander),
-            new Vector3(87f, 996f, -48f), // winda przy gate B
-            new Vector3(0f, 1003f, -58f), // most
-            new Vector3(0f, 1003f, 1f) // skrzyżowanie przed windą gate A
-        };
+
+        internal static readonly List<Vector3> AfterDecontRooms = new List<Vector3>();
+
+        internal static readonly List<Vector3> AfterWarHeadRooms = new List<Vector3>();
+
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
         public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
@@ -88,7 +80,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                     if (!(data.Pos.y > -100 && data.Pos.y < 100))
                                         p.Position = data.Pos;
                                     else
-                                        p.Position = afterDecontRooms[UnityEngine.Random.Range(0, afterDecontRooms.Count)];
+                                        p.Position = AfterDecontRooms[UnityEngine.Random.Range(0, AfterDecontRooms.Count)];
                                 }
                                 else
                                     p.Position = data.Pos;
@@ -98,7 +90,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                 if (data.Pos.y > 900)
                                     p.Position = data.Pos; 
                                 else
-                                    p.Position = afterWHRooms[UnityEngine.Random.Range(0, afterWHRooms.Count)];
+                                    p.Position = AfterWarHeadRooms[UnityEngine.Random.Range(0, AfterWarHeadRooms.Count)];
                             }
                             
                             p.Health = data.HP;

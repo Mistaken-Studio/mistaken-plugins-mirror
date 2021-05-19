@@ -48,6 +48,15 @@ namespace Gamer.Mistaken.CommandsExtender
 
         private void Server_RoundStarted()
         {
+            TalkCommand.AfterWarHeadRooms.Add(Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.ChaosInsurgency));
+            TalkCommand.AfterWarHeadRooms.Add(Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType.NtfCommander));
+            TalkCommand.AfterWarHeadRooms.Add(new Vector3(87f, 996f, -48f)); // winda przy gate B
+            TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, -58f)); // most
+            TalkCommand.AfterWarHeadRooms.Add(new Vector3(0f, 1003f, 1f)); // skrzyżowanie przed windą gate A
+
+            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpA).Position);
+            TalkCommand.AfterDecontRooms.Add(Map.Rooms.First(x => x.Type == RoomType.HczChkpB).Position);
+            
             this.CallDelayed(5, () =>
             {
                 foreach (var item in SwapSCPCommand.SwapCooldown.ToArray())
