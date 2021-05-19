@@ -148,7 +148,7 @@ namespace Xname.CE
             component.Networkowner = new Ragdoll.Info(player.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId, player.Nickname, new PlayerStats.HitInfo(0f, $"*{reason}", type ?? DamageTypes.Wall, (attacker == null) ? player.Id : attacker.Id), role, player.Id);
             component.NetworkallowRecall = (player.ReferenceHub.characterClassManager.CurRole.team > Team.SCP);
             component.NetworkPlayerVelo = (player.ReferenceHub.playerMovementSync == null) ? Vector3.zero : player.ReferenceHub.playerMovementSync.PlayerVelocity;
-            component.RpcSetRootPosition(player.Position);
+            component.RpcSetRootPosition(player.Position + role.ragdoll_offset.position);
             ragdolls.Add(player, gameObject);
             //player.SetGUI("unconciousness", Gamer.Mistaken.Base.GUI.PseudoGUIHandler.Position.MIDDLE, $"Jesteś <color=yellow>nieprzytomny</color><br><mspace=0.5em><color=yellow>nie możesz się ruszać. wybudzisz się wkrótce</color></mspace>");
         }
