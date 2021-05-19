@@ -1,8 +1,10 @@
 ﻿using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
+using Gamer.Mistaken.Systems.Misc;
 using Gamer.Utilities;
 using MEC;
 using Respawning;
@@ -35,6 +37,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
             "jail4",
             "jail5",
         });
+
+        internal static readonly List<Vector3> AfterDecontRooms = new List<Vector3>();
+
+        internal static readonly List<Vector3> AfterWarHeadRooms = new List<Vector3>();
+
         public static readonly Dictionary<string, int[]> Active = new Dictionary<string, int[]>();
         public static readonly Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)> SavedInfo = new Dictionary<int, (Vector3 Pos, RoleType Role, float HP, float AP, Inventory.SyncItemInfo[] Inventory, uint Ammo9, uint Ammo556, uint Ammo762, int UnitIndex, byte UnitType)>();
         public override string[] Execute(ICommandSender sender, string[] args, out bool success)
@@ -68,14 +75,50 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                                 return;
                             if (!Warhead.IsDetonated)
                             {
-                                if (!(data.Pos.y > -100 && data.Pos.y < 100 && Map.IsLCZDecontaminated))
+                                if (Map.IsLCZDecontaminated)
+                                {
+                                    if (!(data.Pos.y > -100 && data.Pos.y < 100))
+                                        p.Position = data.Pos;
+                                    else
+                                        p.Position = AfterDecontRooms[UnityEngine.Random.Range(0, AfterDecontRooms.Count)];
+                                }
+                                else
                                     p.Position = data.Pos;
                             }
+                            else
+                            {
+                                if (data.Pos.y > 900)
+                                    p.Position = data.Pos; 
+                                else
+                                    p.Position = AfterWarHeadRooms[UnityEngine.Random.Range(0, AfterWarHeadRooms.Count)];
+                            }
+                            
                             p.Health = data.HP;
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
                             foreach (var item in data.Inventory)
+                            {
+                                var citem = CustomItemsHandler.GetCustomItem(item);
+                                if (citem != null)
+                                {
+                                    if (citem is ArmorHandler.Armor armor)
+                                    {
+                                        ArmorHandler.Armor.Give(p, (int)armor.GetInternalDurability(item.durability));
+                                        continue;
+                                    }
+                                    else if (citem is ArmorHandler.LiteArmor liteArmor)
+                                    {
+                                        ArmorHandler.LiteArmor.Give(p, (int)liteArmor.GetInternalDurability(item.durability));
+                                        continue;
+                                    }
+                                    else if (citem is ArmorHandler.HeavyArmor heavyArmor)
+                                    {
+                                        ArmorHandler.HeavyArmor.Give(p, (int)heavyArmor.GetInternalDurability(item.durability));
+                                        continue;
+                                    }
+                                }
                                 p.Inventory.items.Add(item);
+                            }
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
@@ -93,9 +136,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                 Warps.Enqueue(pos);
                 List<Player> talkPlayers = new List<Player>();
                 for (int i = 0; i < targets.Length; i++)
-                {
                     talkPlayers.Add(RealPlayers.Get(targets[i]));
-                }
                 if (talkPlayers.Any(x => x.Side == Side.Scp) && Round.ElapsedTime.TotalSeconds < 35)
                 {
                     success = true;

@@ -44,7 +44,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                         return new string[] { "Usage: " + GetUsage() };
                     else
                     {
-                        if (float.TryParse(args[0], out float duration))
+                        if (int.TryParse(args[0], out int duration))
                         {
                             var ToDrain = duration * Cost;
                             float Cooldown = duration * BlackoutCommand.Cooldown;

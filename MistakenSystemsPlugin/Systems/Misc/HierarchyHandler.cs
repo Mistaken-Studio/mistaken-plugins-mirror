@@ -97,6 +97,8 @@ namespace Gamer.Mistaken.Systems.Misc
                 {
                     foreach (var p in RealPlayers.List)
                     {
+                        if (player == p)
+                            continue;
                         CustomInfoHandler.SetTarget(p, "unit", null, player);
                         CustomInfoHandler.SetTarget(p, "hierarchii", null, player);
                     }
@@ -197,8 +199,8 @@ namespace Gamer.Mistaken.Systems.Misc
             DisableUpdate = true;
             yield return Timing.WaitForSeconds(5);
             DisableUpdate = false;
-            UpdateAll();
-            yield break;
+            //UpdateAll();
+            //yield break;
             while (Round.IsStarted)
             {
                 UpdateAll();

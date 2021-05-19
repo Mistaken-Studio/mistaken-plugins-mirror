@@ -328,6 +328,7 @@ namespace Gamer.CustomClasses
             /// <inheritdoc/>
             public override bool OnDrop(Player player, Inventory.SyncItemInfo item)
             {
+                base.OnDrop(player, item);
                 if (CurrentOwner == null)
                     return true;
                 CurrentOwner.SetSessionVar(Main.SessionVarType.CI_GUARD_COMMANDER_KEYCARD_OWNER, false);
