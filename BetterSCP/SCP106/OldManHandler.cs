@@ -89,6 +89,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 MapPlus.Broadcast("BetterSCP.SCP106", 10, $"{ev.Target?.ToString(false)} killed by {ev.Killer?.ToString(false)} using {ev.HitInformation.GetDamageName()}", Broadcast.BroadcastFlags.AdminChat);
                 InTeleportExecution.Add(ev.Target.Id);
                 ev.Target.IsGodModeEnabled = true;
+                ev.Target.Health = 0;
+                ev.Target.Hurt(0, ev.Killer, ev.HitInformation.GetDamageType());
                 ev.IsAllowed = false;
                 this.CallDelayed(3, () =>
                 {
