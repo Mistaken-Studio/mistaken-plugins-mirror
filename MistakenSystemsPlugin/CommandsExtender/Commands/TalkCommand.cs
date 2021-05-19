@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
@@ -56,7 +57,11 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         SavedInfo.Remove(playerId);
                         Player p = RealPlayers.Get(playerId);
                         if (p == null)
+                        {
+                            if(data.Role.GetTeam() == Team.SCP)
+                                NineTailedFoxAnnouncer.CheckForZombies(Server.Host.GameObject);
                             continue;
+                        }
                         p.DisableAllEffects();
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
