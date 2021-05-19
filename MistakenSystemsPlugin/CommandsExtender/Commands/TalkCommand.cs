@@ -1,8 +1,10 @@
 ﻿using CommandSystem;
 using Exiled.API.Enums;
 using Exiled.API.Features;
+using Gamer.Mistaken.Base.CustomItems;
 using Gamer.Mistaken.Base.GUI;
 using Gamer.Mistaken.Base.Staff;
+using Gamer.Mistaken.Systems.Misc;
 using Gamer.Utilities;
 using MEC;
 using Respawning;
@@ -103,7 +105,28 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                             p.ArtificialHealth = data.AP;
                             p.Inventory.Clear();
                             foreach (var item in data.Inventory)
+                            {
+                                var citem = CustomItemsHandler.GetCustomItem(item);
+                                if (citem != null)
+                                {
+                                    if (citem is ArmorHandler.Armor armor)
+                                    {
+                                        ArmorHandler.Armor.Give(p, (int)armor.GetInternalDurability(item.durability));
+                                        continue;
+                                    }
+                                    else if (citem is ArmorHandler.LiteArmor liteArmor)
+                                    {
+                                        ArmorHandler.LiteArmor.Give(p, (int)liteArmor.GetInternalDurability(item.durability));
+                                        continue;
+                                    }
+                                    else if (citem is ArmorHandler.HeavyArmor heavyArmor)
+                                    {
+                                        ArmorHandler.HeavyArmor.Give(p, (int)heavyArmor.GetInternalDurability(item.durability));
+                                        continue;
+                                    }
+                                }
                                 p.Inventory.items.Add(item);
+                            }
                             p.Ammo[(int)AmmoType.Nato9] = data.Ammo9;
                             p.Ammo[(int)AmmoType.Nato556] = data.Ammo556;
                             p.Ammo[(int)AmmoType.Nato762] = data.Ammo762;
