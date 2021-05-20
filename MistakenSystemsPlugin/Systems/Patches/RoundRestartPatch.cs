@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
-    //[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
+    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
     public static class RoundRestartPatch
     {
         public static bool Prefix(PlayerStats __instance)
@@ -23,22 +23,34 @@ namespace Gamer.Mistaken.Systems.Patches
             {
                 foreach (ReferenceHub referenceHub in ReferenceHub.GetAllHubs().Values)
                 {
-                    if (referenceHub.isDedicatedServer)
-                        continue;
-                    var item = Player.Get(referenceHub);
-                    if (Systems.Handler.PlayerPreferencesDict[referenceHub.characterClassManager.UserId].HasFlag(API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART))
-                        MirrorExtensions.SendFakeTargetRpc(item, referenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), (float)PlayerPrefsSl.Get("LastRoundrestartTime", 5000) / 1000f, true);
-                    else
+                    try
                     {
-                        try
+                        if (referenceHub.isDedicatedServer)
+                            continue;
+                        if (string.IsNullOrWhiteSpace(referenceHub.characterClassManager.UserId))
+                            continue;
+                        if (referenceHub.networkIdentity?.connectionToClient == null)
+                            continue;
+                        var item = Player.Get(referenceHub);
+                        if (Systems.Handler.PlayerPreferencesDict[referenceHub.characterClassManager.UserId].HasFlag(API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART))
+                            MirrorExtensions.SendFakeTargetRpc(item, referenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), (float)PlayerPrefsSl.Get("LastRoundrestartTime", 5000) / 1000f, true);
+                        else
                         {
-                            CustomLiteNetLib4MirrorTransport.UserIdFastReload.Add(referenceHub.characterClassManager.UserId);
+                            try
+                            {
+                                CustomLiteNetLib4MirrorTransport.UserIdFastReload.Add(referenceHub.characterClassManager.UserId);
+                            }
+                            catch (Exception ex)
+                            {
+                                ServerConsole.AddLog("Exception occured during processing online player list for Fast Restart: " + ex.Message, ConsoleColor.Yellow);
+                            }
+                            MirrorExtensions.SendFakeTargetRpc(item, referenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcFastRestart));
                         }
-                        catch (Exception ex)
-                        {
-                            ServerConsole.AddLog("Exception occured during processing online player list for Fast Restart: " + ex.Message, ConsoleColor.Yellow);
-                        }
-                        MirrorExtensions.SendFakeTargetRpc(item, referenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcFastRestart));
+                    }
+                    catch(System.Exception ex)
+                    {
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
                     }
                 }
                 //__instance.RpcFastRestart();
