@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Gamer.Mistaken.Systems.Patches
 {
-    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
+    //[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
     public static class RoundRestartPatch
     {
         public static bool Prefix(PlayerStats __instance)
