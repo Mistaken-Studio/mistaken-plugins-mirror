@@ -123,6 +123,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                 Log.Error(ex.Message);
                 Log.Error(ex.StackTrace);
             }
+            var inRange = Base.Components.InRangeBall.Spawn(player.GameObject.transform, Vector3.zero, 10, 5);
             while (player?.Role == RoleType.Scp049)
             {
                 if (player == null)
@@ -130,14 +131,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                 try
                 {
                     int shield = 60;
-                    foreach (var zombie in RealPlayers.Get(RoleType.Scp0492))
+                    foreach (var zombie in inRange.ColliderInArea)
                     {
-                        if (Vector3.Distance(player.Position, zombie.Position) <= 10)
-                        {
-                            shield += 100;
-                            if (zombie.MaxHealth > zombie.Health)
-                                zombie.Health += 0.5f;
-                        }
+                        var zombiePlayer = Player.Get(zombie);
+                        if ((zombiePlayer?.Role ?? RoleType.None) != RoleType.Scp0492)
+                            continue;
+                        shield += 100;
+                        if (zombiePlayer.MaxHealth > zombiePlayer.Health)
+                            zombiePlayer.Health += 0.5f;
                     }
                     if (Systems.Shield.ShieldedManager.Shieldeds.Any(i => i.player.Id == player.Id))
                         Systems.Shield.ShieldedManager.Get(player).MaxShield = shield;
