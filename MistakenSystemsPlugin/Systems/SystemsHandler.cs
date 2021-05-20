@@ -332,21 +332,34 @@ namespace Gamer.Mistaken.Systems
         {
             yield return Timing.WaitForSeconds(1);
             bool wasAlive = false;
+            bool wasGuardCommander = false;
             int rid = RoundPlus.RoundId;
             while (Round.IsStarted && rid == RoundPlus.RoundId)
             {
+                var player = RealPlayers.Get(RoleType.NtfCommander).FirstOrDefault();
                 if (!wasAlive)
-                    wasAlive = RealPlayers.Any(RoleType.NtfCommander);
+                {
+                    wasAlive = player != null;
+                    wasGuardCommander = player?.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER) ?? false;
+                }
                 else
                 {
-                    var tmp = RealPlayers.Any(RoleType.NtfCommander);
-                    if (!tmp)
-                        this.CallDelayed(60, () =>
+                    wasAlive = player != null;
+                    if(wasAlive)
+                        wasGuardCommander = player?.GetSessionVar<bool>(Main.SessionVarType.CC_GUARD_COMMANDER) ?? false;
+                    else
+                    {
+                        //this.CallDelayed(60, () =>
+                        //{
+                        if (rid == RoundPlus.RoundId)
                         {
-                            if (rid == RoundPlus.RoundId)
+                            if (wasGuardCommander)
+                                Cassie.GlitchyMessage("WARNING . . . GUARD COMMANDER IS DEAD", 0.3f, 0.15f);
+                            else
                                 Cassie.GlitchyMessage("WARNING . . . NINETAILEDFOX COMMANDER IS DEAD", 0.3f, 0.15f);
-                        }, "InformCommanderDeath");
-                    wasAlive = tmp;
+                        }
+                        //}, "InformCommanderDeath");
+                    }
                 }
                 yield return Timing.WaitForSeconds(60);
             }
