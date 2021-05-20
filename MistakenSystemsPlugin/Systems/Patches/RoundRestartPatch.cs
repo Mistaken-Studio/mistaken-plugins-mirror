@@ -29,6 +29,8 @@ namespace Gamer.Mistaken.Systems.Patches
                             continue;
                         if (string.IsNullOrWhiteSpace(referenceHub.characterClassManager.UserId))
                             continue;
+                        if (referenceHub.networkIdentity?.connectionToClient == null)
+                            continue;
                         var item = Player.Get(referenceHub);
                         if (Systems.Handler.PlayerPreferencesDict[referenceHub.characterClassManager.UserId].HasFlag(API.PlayerPreferences.DISABLE_FAST_ROUND_RESTART))
                             MirrorExtensions.SendFakeTargetRpc(item, referenceHub.networkIdentity, typeof(PlayerStats), nameof(PlayerStats.RpcRoundrestart), (float)PlayerPrefsSl.Get("LastRoundrestartTime", 5000) / 1000f, true);
