@@ -65,6 +65,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         p.DisableAllEffects();
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, true);
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, true);
+                        p.SetSessionVar(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE, true);
                         var old = Respawning.RespawnManager.CurrentSequence();
                         Respawning.RespawnManager.Singleton._curSequence = RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
                         p.Role = data.Role;
@@ -72,6 +73,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         if (Respawning.RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup(data.UnitType, out var array))
                             p.UnitName = array[data.UnitIndex];
                         Respawning.RespawnManager.Singleton._curSequence = old;
+                        p.SetSessionVar(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE, false);
                         p.SetSessionVar(Main.SessionVarType.CC_IGNORE_CHANGE_ROLE, false);
                         p.SetSessionVar(Main.SessionVarType.NO_SPAWN_PROTECT, false);
                         Gamer.Utilities.BetterCourotines.CallDelayed(0.5f, () =>
