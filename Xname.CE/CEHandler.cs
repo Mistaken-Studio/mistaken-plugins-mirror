@@ -92,7 +92,7 @@ namespace Xname.CE
             foreach (var go in ragdolls)
             {
                 Ragdoll component = go.Value.GetComponent<Ragdoll>();
-                if (Vector3.Distance(ev.Position, component.transform.position) < 1.5f)
+                if (Vector3.Distance(ev.Position, component.transform.position) < 2f)
                 {
 
                     foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
