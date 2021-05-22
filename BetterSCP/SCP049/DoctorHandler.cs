@@ -133,12 +133,22 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
                     int shield = 60;
                     foreach (var zombie in inRange.ColliderInArea)
                     {
-                        var zombiePlayer = Player.Get(zombie);
-                        if ((zombiePlayer?.Role ?? RoleType.None) != RoleType.Scp0492)
-                            continue;
-                        shield += 100;
-                        if (zombiePlayer.MaxHealth > zombiePlayer.Health)
-                            zombiePlayer.Health += 0.5f;
+                        try
+                        {
+                            if (zombie == null)
+                                continue;
+                            var zombiePlayer = Player.Get(zombie);
+                            if ((zombiePlayer?.Role ?? RoleType.None) != RoleType.Scp0492)
+                                continue;
+                            shield += 100;
+                            if (zombiePlayer.MaxHealth > zombiePlayer.Health)
+                                zombiePlayer.Health += 0.5f;
+                        }
+                        catch(System.Exception ex)
+                        {
+                            Log.Error(ex.Message);
+                            Log.Error(ex.StackTrace);
+                        }
                     }
                     if (Systems.Shield.ShieldedManager.Shieldeds.Any(i => i.player.Id == player.Id))
                         Systems.Shield.ShieldedManager.Get(player).MaxShield = shield;
