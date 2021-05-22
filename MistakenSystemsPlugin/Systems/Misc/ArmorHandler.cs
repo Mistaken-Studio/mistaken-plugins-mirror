@@ -45,7 +45,6 @@ namespace Gamer.Mistaken.Systems.Misc
             public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_ARMOR;
             public override ItemType Item => ItemType.Coin;
             public override int Durability => 001;
-
             public static readonly HashSet<Player> BlockInteractions = new HashSet<Player>();
             public override void OnRestart()
             {
@@ -209,7 +208,6 @@ namespace Gamer.Mistaken.Systems.Misc
             public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_LIGHT_ARMOR;
             public override ItemType Item => ItemType.Coin;
             public override int Durability => 002;
-
             public void OnWear(Player player, Pickup pickup, bool fast) => OnWear(player, pickup.durability, fast);
             public void OnWear(Player player, float pickupDurability, bool fast)
             {
@@ -361,7 +359,6 @@ namespace Gamer.Mistaken.Systems.Misc
             public override Main.SessionVarType SessionVarType => Main.SessionVarType.CI_HEAVY_ARMOR;
             public override ItemType Item => ItemType.Coin;
             public override int Durability => 003;
-
             public void OnWear(Player player, Pickup pickup, bool fast) => OnWear(player, pickup.durability, fast);
             public void OnWear(Player player, float pickupDurability, bool fast)
             {

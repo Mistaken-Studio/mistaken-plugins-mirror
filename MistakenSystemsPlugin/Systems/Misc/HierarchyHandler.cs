@@ -199,8 +199,8 @@ namespace Gamer.Mistaken.Systems.Misc
             DisableUpdate = true;
             yield return Timing.WaitForSeconds(5);
             DisableUpdate = false;
-            //UpdateAll();
-            //yield break;
+            UpdateAll();
+            yield break;
             while (Round.IsStarted)
             {
                 UpdateAll();
