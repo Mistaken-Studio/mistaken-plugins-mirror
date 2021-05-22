@@ -149,7 +149,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        int rand = UnityEngine.Random.Range(0, 2);
+                        int rand = UnityEngine.Random.Range(0, 3);
                         if(rand == 0)
                             pickup.Networkdurability = LiteArmor.Instance.Durability * 1000f + 15;
                         else if(rand == 1)
@@ -301,7 +301,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         pickup.Networkdurability = Durability * 1000f + 5;
                         break;
                     case Scp914Knob.OneToOne:
-                        int rand = UnityEngine.Random.Range(0, 2);
+                        int rand = UnityEngine.Random.Range(0, 3);
                         if (rand == 0)
                             pickup.Networkdurability = LiteArmor.Instance.Durability * 1000f + 15;
                         else if (rand == 1)
@@ -458,7 +458,7 @@ namespace Gamer.Mistaken.Systems.Misc
                         pickup.Networkdurability = Durability * 1000f + 50;
                         break;
                     case Scp914Knob.OneToOne:
-                        int rand = UnityEngine.Random.Range(0, 2);
+                        int rand = UnityEngine.Random.Range(0, 3);
                         if (rand == 0)
                             pickup.Networkdurability = LiteArmor.Instance.Durability * 1000f + 15;
                         else if (rand == 1)
