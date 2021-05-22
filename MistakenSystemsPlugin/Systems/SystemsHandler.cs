@@ -117,6 +117,7 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Scp049.FinishingRecall += this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating += this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
+            Exiled.Events.Handlers.Player.RemovingHandcuffs += this.Handle<Exiled.Events.EventArgs.RemovingHandcuffsEventArgs>((ev) => Player_RemovingHandcuffs(ev));
         }
 
         public override void OnDisable()
@@ -144,7 +145,15 @@ namespace Gamer.Mistaken.Systems
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Scp049.FinishingRecall -= this.Handle<Exiled.Events.EventArgs.FinishingRecallEventArgs>((ev) => Scp049_FinishingRecall(ev));
             Exiled.Events.Handlers.Player.PreAuthenticating -= this.Handle<Exiled.Events.EventArgs.PreAuthenticatingEventArgs>((ev) => Player_PreAuthenticating(ev));
+            Exiled.Events.Handlers.Player.RemovingHandcuffs -= this.Handle<Exiled.Events.EventArgs.RemovingHandcuffsEventArgs>((ev) => Player_RemovingHandcuffs(ev));
         }
+
+        private void Player_RemovingHandcuffs(Exiled.Events.EventArgs.RemovingHandcuffsEventArgs ev)
+        {
+            if (ev.Cuffer.IsCuffed)
+                ev.IsAllowed = false;
+        }
+
         public static readonly Dictionary<string, PlayerPreferences> PlayerPreferencesDict = new Dictionary<string, PlayerPreferences>();
         private void Player_PreAuthenticating(Exiled.Events.EventArgs.PreAuthenticatingEventArgs ev)
         {
