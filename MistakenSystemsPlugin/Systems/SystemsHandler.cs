@@ -500,7 +500,7 @@ namespace Gamer.Mistaken.Systems
         private readonly Dictionary<string, RoleType> LeftOnStart = new Dictionary<string, RoleType>();
         private void Player_Left(Exiled.Events.EventArgs.LeftEventArgs ev)
         {
-            AutoRoundRestart();
+            //AutoRoundRestart();
             JoinedButNotLeft.Remove(ev.Player.UserId);
             if (Round.ElapsedTime.TotalSeconds < 30)
                 LeftOnStart[ev.Player.UserId] = ev.Player.Role;
