@@ -149,7 +149,13 @@ namespace Gamer.Mistaken.Systems.Misc
                         pickup.Networkdurability = Durability * 1000f + 10;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = Durability * 1000f + 25;
+                        int rand = UnityEngine.Random.Range(0, 2);
+                        if(rand == 0)
+                            pickup.Networkdurability = LiteArmor.Instance.Durability * 1000f + 15;
+                        else if(rand == 1)
+                            pickup.Networkdurability = Armor.Instance.Durability * 1000f + 25;
+                        else if(rand == 2)
+                            pickup.Networkdurability = HeavyArmor.Instance.Durability * 1000f + 100;
                         break;
                     case Scp914Knob.Fine:
                         pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
@@ -292,16 +298,22 @@ namespace Gamer.Mistaken.Systems.Misc
                         pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = Durability * 1000f + 10;
+                        pickup.Networkdurability = Durability * 1000f + 5;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = Durability * 1000f + 25;
+                        int rand = UnityEngine.Random.Range(0, 2);
+                        if (rand == 0)
+                            pickup.Networkdurability = LiteArmor.Instance.Durability * 1000f + 15;
+                        else if (rand == 1)
+                            pickup.Networkdurability = Armor.Instance.Durability * 1000f + 25;
+                        else if (rand == 2)
+                            pickup.Networkdurability = HeavyArmor.Instance.Durability * 1000f + 100;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(15, 20);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 30);
                         break;
                 }
                 return pickup;
@@ -443,16 +455,22 @@ namespace Gamer.Mistaken.Systems.Misc
                         pickup.Networkdurability = Durability * 1000f + 1;
                         break;
                     case Scp914Knob.Coarse:
-                        pickup.Networkdurability = Durability * 1000f + 10;
+                        pickup.Networkdurability = Durability * 1000f + 50;
                         break;
                     case Scp914Knob.OneToOne:
-                        pickup.Networkdurability = Durability * 1000f + 25;
+                        int rand = UnityEngine.Random.Range(0, 2);
+                        if (rand == 0)
+                            pickup.Networkdurability = LiteArmor.Instance.Durability * 1000f + 15;
+                        else if (rand == 1)
+                            pickup.Networkdurability = Armor.Instance.Durability * 1000f + 25;
+                        else if (rand == 2)
+                            pickup.Networkdurability = HeavyArmor.Instance.Durability * 1000f + 100;
                         break;
                     case Scp914Knob.Fine:
-                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(25, 30);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(100, 150);
                         break;
                     case Scp914Knob.VeryFine:
-                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 40);
+                        pickup.Networkdurability = Durability * 1000f + UnityEngine.Random.Range(1, 200);
                         break;
                 }
                 return pickup;
