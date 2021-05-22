@@ -91,7 +91,15 @@ namespace Gamer.Mistaken.BetterSCP.SCP106
                 if (ev.Target.IsConnected)
                 {
                     ev.Target.Health = 2;
-                    ev.Target.Hurt(1, ev.Killer, ev.HitInformation.GetDamageType());
+                    try
+                    {
+                        ev.Target.Hurt(1, ev.Killer, ev.HitInformation.GetDamageType());
+                    }
+                    catch(System.Exception ex)
+                    {
+                        Log.Error(ex.Message);
+                        Log.Error(ex.StackTrace);
+                    }
                     ev.Target.Health = 0;
                 }
                 ev.Target.IsGodModeEnabled = true;

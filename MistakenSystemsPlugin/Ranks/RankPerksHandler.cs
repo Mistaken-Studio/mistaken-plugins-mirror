@@ -37,6 +37,8 @@ namespace Gamer.Mistaken.Ranks
         {
             if (!RanksHandler.VipList.TryGetValue(ev.Player?.UserId, out RanksHandler.PlayerInfo role))
                 return;
+            if (ev.Player.GetSessionVar<bool>(Main.SessionVarType.ITEM_LESS_CLSSS_CHANGE))
+                return;
             if (role.VipLevel != RanksHandler.VipLevel.NONE)
             {
                 if (ev.NewRole.GetTeam() == Team.SCP || ev.NewRole == global::RoleType.Spectator)
