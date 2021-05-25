@@ -43,7 +43,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
                 {
                     if (IsReady)
                     {
-                        if (args.Length == 0 || !int.TryParse(args[0], out int reason) || reason < 1 || reason > 5)
+                        if (args.Length == 0 || !int.TryParse(args[0], out int reason) || reason < 1 || reason > 6)
                         {
                             return new string[] 
                             { 
