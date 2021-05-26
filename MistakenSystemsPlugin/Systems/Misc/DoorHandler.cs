@@ -25,14 +25,14 @@ namespace Gamer.Mistaken.Systems.Misc
             Exiled.Events.Handlers.Player.Shooting += this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers += this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            //Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Player.Shooting -= this.Handle<Exiled.Events.EventArgs.ShootingEventArgs>((ev) => Player_Shooting(ev));
             Exiled.Events.Handlers.Server.WaitingForPlayers -= this.Handle(() => Server_WaitingForPlayers(), "WaitingForPlayers");
             Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Player_InteractingDoor(ev));
-            //Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
         }
 
         private void Server_RoundStarted()
@@ -67,7 +67,7 @@ namespace Gamer.Mistaken.Systems.Misc
                 Map.Doors.First(d => d.Type() == DoorType.EscapeSecondary).NetworkTargetState = ev.Door.NetworkTargetState;
             else if (type == DoorType.EscapeSecondary)
                 Map.Doors.First(d => d.Type() == DoorType.EscapePrimary).NetworkTargetState = ev.Door.NetworkTargetState;
-            /*else if ((type == DoorType.GateA || type == DoorType.GateB) && !ev.Door.NetworkTargetState)
+            else if ((type == DoorType.GateA || type == DoorType.GateB) && !ev.Door.NetworkTargetState)
             {
                 if (type == DoorType.GateA)
                     IgnoreGateA = true;
@@ -82,7 +82,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     else
                         IgnoreGateB = false;
                 }, "Closing Gate");
-            }*/
+            }
         }
 
         public static readonly Dictionary<GameObject, BreakableDoor> Doors = new Dictionary<GameObject, BreakableDoor>();
