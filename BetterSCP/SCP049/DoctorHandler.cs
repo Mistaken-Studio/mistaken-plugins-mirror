@@ -114,6 +114,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP049
         private IEnumerator<float> UpdateShield(Player player)
         {
             yield return MEC.Timing.WaitForSeconds(1);
+            if (player.Role != RoleType.Scp049) yield break;
             try
             {
                 Systems.Shield.ShieldedManager.Add(new Systems.Shield.Shielded(player, 60, 20, 15, 0, 1));

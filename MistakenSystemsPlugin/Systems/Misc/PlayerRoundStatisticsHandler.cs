@@ -48,38 +48,41 @@ namespace Gamer.Mistaken.Systems.Misc
         internal static readonly Dictionary<int, (uint Kills, uint TkKills, uint TkDeaths, uint Escapes, float DmgToSCP)> LastStats = new Dictionary<int, (uint Kills, uint TkKills, uint TkDeaths, uint Escapes, float DmgToSCP)>();
         private void DisplayStats(Player player)
         {
-            if (PStats.PlayerStatsHandler.Stats.ContainsKey(player.UserId))
+            this.CallDelayed(1f, () => 
             {
-                var stats = PStats.PlayerStatsHandler.Stats[player.UserId];
-                var kills = stats.Kills;
-                var tk_kills = stats.Tk_kills;
-                var tk_deaths = stats.Tk_deaths;
-                var escapes = stats.Escapes;
-                var scpDmg = 0f;
-                if (LastStats.TryGetValue(player.Id, out (uint Kills, uint TkKills, uint TkDeaths, uint Escapes, float DmgToSCP) oldStats))
+                if (PStats.PlayerStatsHandler.Stats.ContainsKey(player.UserId))
                 {
-                    kills -= oldStats.Kills;
-                    tk_kills -= oldStats.TkKills;
-                    tk_deaths -= oldStats.TkDeaths;
-                    escapes -= oldStats.Escapes;
-                    scpDmg -= oldStats.DmgToSCP;
+                    var stats = PStats.PlayerStatsHandler.Stats[player.UserId];
+                    var kills = stats.Kills;
+                    var tk_kills = stats.Tk_kills;
+                    var tk_deaths = stats.Tk_deaths;
+                    var escapes = stats.Escapes;
+                    var scpDmg = 0f;
+                    if (LastStats.TryGetValue(player.Id, out (uint Kills, uint TkKills, uint TkDeaths, uint Escapes, float DmgToSCP) oldStats))
+                    {
+                        kills -= oldStats.Kills;
+                        tk_kills -= oldStats.TkKills;
+                        tk_deaths -= oldStats.TkDeaths;
+                        escapes -= oldStats.Escapes;
+                        scpDmg -= oldStats.DmgToSCP;
+                    }
+                    string message = "";
+                    if (kills > 0)
+                        message += $"Kills: <color=yellow>{kills}</color><br>";
+                    if (scpDmg > 0)
+                        message += $"Dmg done to SCP: <color=yellow>{scpDmg}</color><br>";
+                    if (escapes > 0)
+                        message += $"You have <color=yellow>Escaped</color><br>";
+                    else if (tk_deaths > 0)
+                        message += $"You have been <color=yellow>team killed</color><br>";
+                    if (tk_kills > 0)
+                        message += $"TeamKill Kills: <color=yellow>{tk_kills}</color><br>";
+                    if (LastStats.ContainsKey(player.Id))
+                        LastStats.Remove(player.Id);
+                    LastStats.Add(player.Id, (kills, tk_kills, tk_deaths, escapes, scpDmg));
+                    GUI.SpecInfoHandler.AddDeathMessage(player, message);
                 }
-                string message = "";
-                if (kills > 0)
-                    message += $"Kills: <color=yellow>{kills}</color><br>";
-                if (scpDmg > 0)
-                    message += $"Dmg done to SCP: <color=yellow>{scpDmg}</color><br>";
-                if (escapes > 0)
-                    message += $"You have <color=yellow>Escaped</color><br>";
-                else if (tk_deaths > 0)
-                    message += $"You have been <color=yellow>team killed</color><br>";
-                if (tk_kills > 0)
-                    message += $"TeamKill Kills: <color=yellow>{tk_kills}</color><br>";
-                if (LastStats.ContainsKey(player.Id))
-                    LastStats.Remove(player.Id);
-                LastStats.Add(player.Id, (kills, tk_kills, tk_deaths, escapes, scpDmg));
-                GUI.SpecInfoHandler.AddDeathMessage(player, message);
-            }
+            }, "StatisticsOnDeath");
         }
     }
 }
