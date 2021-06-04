@@ -94,6 +94,7 @@ namespace Gamer.Mistaken.Base.Utilities.API
 
         public static class Overheat
         {
+            public static bool LockBlackout { get; internal set; } = false;
             private static int _ohl = -1;
             public static int OverheatLevel
             {
@@ -279,7 +280,8 @@ namespace Gamer.Mistaken.Base.Utilities.API
                                 0.35f,
                                 0.30f
                             );
-                            Generator079.mainGenerator.ServerOvercharge(300, false);
+                            Generator079.mainGenerator.ServerOvercharge(3000, false);
+                            LockBlackout = true;
                             yield return MEC.Timing.WaitForSeconds(90);
                             break;
                         }
@@ -294,6 +296,7 @@ namespace Gamer.Mistaken.Base.Utilities.API
                                     0.40f,
                                     0.35f
                                 );
+                                RespawnLock = true;
                                 while (Cassie.IsSpeaking)
                                     yield return Timing.WaitForOneFrame;
                                 Cassie.Message(
@@ -301,7 +304,8 @@ namespace Gamer.Mistaken.Base.Utilities.API
                                     false,
                                     false
                                 );
-                                Generator079.mainGenerator.ServerOvercharge(300, false);
+                                Generator079.mainGenerator.ServerOvercharge(3000, false);
+                                LockBlackout = true;
                             }
                             else
                             {
@@ -390,6 +394,8 @@ namespace Gamer.Mistaken.Base.Utilities.API
                                 player.Role = RoleType.Spectator;
                             }
                             Round.IsLocked = false;
+                            LockBlackout = false;
+                            Generator079.mainGenerator.ServerOvercharge(0, false);
                             //RoundSummary.singleton.ForceEnd();
                             break;
                         }
@@ -412,6 +418,7 @@ namespace Gamer.Mistaken.Base.Utilities.API
 
             Blackout.Restart();
             Overheat.OverheatLevel = -1;
+            Overheat.LockBlackout = false;
         }
 
         private static IEnumerator<float> ExecuteRoundLimit()

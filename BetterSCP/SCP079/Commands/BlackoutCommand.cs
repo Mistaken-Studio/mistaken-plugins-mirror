@@ -36,6 +36,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP079.Commands
             var player = sender.GetPlayer();
             success = false;
             if (player.Role != RoleType.Scp079) return new string[] { "Only SCP 079" };
+            if (Gamer.Mistaken.Base.Utilities.API.Map.Overheat.LockBlackout) return new string[] { "Access denied\nFacility blackout system lockdown is active" };
             if (player.Level >= ReqLvl - 1)
             {
                 if (IsReady)
