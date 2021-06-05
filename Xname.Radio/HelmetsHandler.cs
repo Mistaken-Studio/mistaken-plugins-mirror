@@ -44,7 +44,7 @@ namespace Xname.Radio
             NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.Flashlight, 0, inv.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), Vector3.zero, Quaternion.identity);
             gameObject.transform.localPosition = Vector3.zero;
-            gameObject.transform.localRotation = Quaternion.identity;
+            gameObject.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
             this.CallDelayed(1f, () => ev.Player.SendConsoleMessage($"{gameObject.transform.position}", "green"), "helmetdelay");
         }
     }
