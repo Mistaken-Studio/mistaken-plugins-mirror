@@ -512,7 +512,7 @@ namespace Gamer.Mistaken.LOFH
                     }
                     if (item.Status == ReportStatusType.NONE || item.Status == ReportStatusType.PROCCEDING)
                     {
-                        if (item.Report.ReportedData.UserId == null)
+                        if (item.Report.ReportedData.UserId != null)
                             Reported.Add(item.Report.ReportedData.UserId);
                         ReportIssuers.Add(item.Report.ReporterUserId);
                     }
