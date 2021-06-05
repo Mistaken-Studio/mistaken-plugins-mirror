@@ -60,7 +60,7 @@ namespace Gamer.Mistaken.LOFH
                 yield return Timing.WaitForSeconds(3);
                 foreach (var player in RealPlayers.List.Where(p => p.RemoteAdminAccess))
                 {
-                    if (LOFH.LastSelectedPlayer.TryGetValue(player, out string query))
+                    if (LOFH.LastSelectedPlayer.TryGetValue(player, out string query) && MenuSystem.CurrentMenus[player.Id] == 0 && Player.Get(int.Parse(query.Split(' ').Where(x => x.Contains(".")).First().Split('.')[0])) != null)
                         LOFHPatch.Prefix(query + " SILENT", player.Sender);
                 }
             }
