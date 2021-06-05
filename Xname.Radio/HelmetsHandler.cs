@@ -38,7 +38,9 @@ namespace Xname.Radio
             GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(inv.pickupPrefab, ev.Player.CameraTransform);
             gameObject.transform.rotation = Quaternion.identity;
             //gameObject.transform.localPosition = new Vector3(0, 0.2f, 0);
-            UnityEngine.Object.Destroy(gameObject.GetComponent<Rigidbody>());
+            var component = gameObject.GetComponent<Rigidbody>();
+            component.constraints = RigidbodyConstraints.FreezeAll;
+            UnityEngine.Object.Destroy(component);
             NetworkServer.Spawn(gameObject);
             gameObject.GetComponent<Pickup>().SetupPickup(ItemType.Flashlight, 0, inv.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), Vector3.zero, Quaternion.identity);
             gameObject.transform.localPosition = Vector3.zero;
