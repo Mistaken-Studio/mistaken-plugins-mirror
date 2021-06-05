@@ -9,9 +9,9 @@ namespace Xname.Radio
         /// <inheritdoc/>
         public override string Author => "Xname";
         /// <inheritdoc/>
-        public override string Name => "Radio";
+        public override string Name => "Helmets";
         /// <inheritdoc/>
-        public override string Prefix => "radio";
+        public override string Prefix => "hats";
         /// <inheritdoc/>
         public override void OnEnabled()
         {

@@ -21,18 +21,18 @@ namespace Xname.Radio
         {
         }
         /// <inheritdoc/>
-        public override string Name => "RadioHandler";
+        public override string Name => "HelmetsHandler";
         /// <inheritdoc/>
         public override void OnEnable()
         {
-            Exiled.Events.Handlers.Player.ChangingRole += this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.ChangedRole += this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
         }
         /// <inheritdoc/>
         public override void OnDisable()
         {
-            Exiled.Events.Handlers.Player.ChangingRole -= this.Handle<Exiled.Events.EventArgs.ChangingRoleEventArgs>((ev) => Player_ChangingRole(ev));
+            Exiled.Events.Handlers.Player.ChangedRole -= this.Handle<Exiled.Events.EventArgs.ChangedRoleEventArgs>((ev) => Player_ChangedRole(ev));
         }
-        private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
+        private void Player_ChangedRole(Exiled.Events.EventArgs.ChangedRoleEventArgs ev)
         {
             var inv = Server.Host.Inventory;
             GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(inv.pickupPrefab, ev.Player.CameraTransform);
@@ -43,4 +43,4 @@ namespace Xname.Radio
             gameObject.transform.localPosition = ev.Player.CameraTransform.position;
         }
     }
-}
+}   
