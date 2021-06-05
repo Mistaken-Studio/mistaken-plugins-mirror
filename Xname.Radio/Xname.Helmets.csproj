@@ -59,12 +59,14 @@
     <Reference Include="UnityEngine">
       <HintPath>..\References\BaseGame\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\References\BaseGame\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="PluginHandler.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="RadioHandler.cs" />
+    <Compile Include="HelmetsHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExiledExtensions\Gamer.Utilities.csproj">
