@@ -1,8 +1,10 @@
 ﻿using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using Gamer.Diagnostics;
 using Gamer.Mistaken.Base.Staff;
 using Gamer.Utilities;
+using Mirror;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +34,13 @@ namespace Xname.Radio
         }
         private void Player_ChangingRole(Exiled.Events.EventArgs.ChangingRoleEventArgs ev)
         {
-            ev.Player.GameObject.transform.parent = ItemType.Flashlight.Spawn(0f, ev.Player.Position + Vector3.up, ev.Player.GameObject.transform.rotation).transform;
+            var inv = Server.Host.Inventory;
+            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(inv.pickupPrefab, ev.Player.CameraTransform);
+            gameObject.transform.rotation = Quaternion.identity;
+            //gameObject.transform.localPosition = new Vector3(0, 0.2f, 0);
+            NetworkServer.Spawn(gameObject);
+            gameObject.GetComponent<Pickup>().SetupPickup(ItemType.Flashlight, 0, inv.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), Vector3.zero, Quaternion.identity);
+            gameObject.transform.localPosition = ev.Player.CameraTransform.position;
         }
     }
 }
