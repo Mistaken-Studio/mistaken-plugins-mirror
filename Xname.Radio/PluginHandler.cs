@@ -15,7 +15,7 @@ namespace Xname.Radio
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            new RadioHandler(this);
+            new HelmetsHandler(this);
             Gamer.Diagnostics.Module.OnEnable(this);
             base.OnEnabled();
         }

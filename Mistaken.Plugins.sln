@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gamer.CITester", "Gamer.CIT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mistaken.CassieRoom", "Mistaken.CassieRoom\Mistaken.CassieRoom.csproj", "{6F445384-738B-4676-83AD-AB52898F9BF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xname.Radio", "Xname.Radio\Xname.Radio.csproj", "{D8DD4C1E-C768-4B73-8521-38662915F6B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xname.Helmets", "Xname.Radio\Xname.Helmets.csproj", "{D8DD4C1E-C768-4B73-8521-38662915F6B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
