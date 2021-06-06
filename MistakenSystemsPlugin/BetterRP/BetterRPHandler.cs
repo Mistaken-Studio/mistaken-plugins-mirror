@@ -69,7 +69,8 @@ namespace Gamer.Mistaken.BetterRP
                     {
                         if (item.id == ItemType.KeycardO5)
                         {
-                            ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
+                            if(ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
+                                ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
                             if (ev.Player.Inventory.items.Count >= 8)
                                 ItemType.KeycardO5.Spawn(0, ev.Player.Position);
                             else
