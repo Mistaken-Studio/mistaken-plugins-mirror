@@ -76,7 +76,7 @@ namespace Gamer.Mistaken.Systems.Misc
                     else if (tk_deaths > 0)
                         message += $"You have been <color=yellow>team killed</color><br>";
                     if (tk_kills > 0)
-                        message += $"TeamKill Kills: <color=yellow>{tk_kills}</color><br>";
+                        message += $"TeamKills: <color=yellow>{tk_kills}</color><br>";
                     if (LastStats.ContainsKey(player.Id))
                         LastStats.Remove(player.Id);
                     LastStats.Add(player.Id, (kills, tk_kills, tk_deaths, escapes, scpDmg));
