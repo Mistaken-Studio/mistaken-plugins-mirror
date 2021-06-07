@@ -69,23 +69,46 @@ namespace Gamer.Mistaken.BetterRP
                     {
                         if (item.id == ItemType.KeycardO5)
                         {
-                            ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
-                            if (ev.Player.Inventory.items.Count >= 8)
-                                ItemType.KeycardO5.Spawn(0, ev.Player.Position);
-                            else
-                                ev.Player.AddItem(ItemType.KeycardO5);
-                            continue;
-                        }
-                        else if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
-                        {
-                            if (item.id == ItemType.KeycardFacilityManager || item.id == ItemType.KeycardContainmentEngineer)
+                            try
                             {
-                                ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
+                                if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
+                                    ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
                                 if (ev.Player.Inventory.items.Count >= 8)
                                     ItemType.KeycardO5.Spawn(0, ev.Player.Position);
                                 else
                                     ev.Player.AddItem(ItemType.KeycardO5);
                                 continue;
+                            }
+                            catch (System.Exception ex)
+                            {
+                                Log.Error("Error converting moving O5");
+                                foreach (var i in ev.Player.Inventory.items)
+                                    Log.Warn(i.id + $" ({i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant})");
+                                Log.Error(ex.Message);
+                                Log.Error(ex.StackTrace);
+                            }
+                    }
+                        else if (ev.Player.Inventory.items.Any(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant))
+                        {
+                            if (item.id == ItemType.KeycardFacilityManager || item.id == ItemType.KeycardContainmentEngineer)
+                            {
+                                try
+                                {
+                                    ev.Player.RemoveItem(ev.Player.Inventory.items.First(i => i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant));
+                                    if (ev.Player.Inventory.items.Count >= 8)
+                                        ItemType.KeycardO5.Spawn(0, ev.Player.Position);
+                                    else
+                                        ev.Player.AddItem(ItemType.KeycardO5);
+                                    continue;
+                                }
+                                catch(System.Exception ex)
+                                {
+                                    Log.Error("Error converting cards into O5");
+                                    foreach (var i in ev.Player.Inventory.items)
+                                        Log.Warn(i.id + $" ({i.id == ItemType.KeycardChaosInsurgency || i.id == ItemType.KeycardNTFLieutenant})");
+                                    Log.Error(ex.Message);
+                                    Log.Error(ex.StackTrace);   
+                                }
                             }
                         }
                         if (ev.Player.Inventory.items.Count >= 8 ||
