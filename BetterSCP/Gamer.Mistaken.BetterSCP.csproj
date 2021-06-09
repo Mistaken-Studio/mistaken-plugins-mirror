@@ -114,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterPocket\PocketHandler.cs" />
+    <Compile Include="SCP012\ScrollHandler.cs" />
     <Compile Include="SCP049-2\SCP0492Handler.cs" />
     <Compile Include="SCP049\ContainCommand.cs" />
     <Compile Include="SCP079\Commands\CassieCommand.cs" />

@@ -115,7 +115,7 @@ namespace Gamer.Mistaken.CommandsExtender.Commands
                         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                         Mirror.NetworkServer.Spawn(gameObject);
                         keycard = gameObject.GetComponent<Pickup>();
-                        keycard.SetupPickup(ItemType.KeycardFacilityManager, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
+                        keycard.SetupPickup(ItemType.WeaponManagerTablet, 0, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
                         return new string[] { player.CurrentRoom.Type + "", basePos.x + "", basePos.y + "", basePos.z + "", player.CurrentRoom.Type.ToString() + "" };
                     }
                 case "spawn2":

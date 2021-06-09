@@ -37,6 +37,7 @@ namespace Gamer.Mistaken.BetterSCP
             new SCP914.SCP914Handler(this);
             new Pocket.PocketHandler(this);
             new SCP939.SCP939Handler(this);
+            new SCP012.SCP012Handler(this);
             new SCP1499.SCP1499Handler(this);
 
             new SCP0492.SCP0492Handler(this);
