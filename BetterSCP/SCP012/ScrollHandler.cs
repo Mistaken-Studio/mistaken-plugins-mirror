@@ -36,14 +36,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
         private void Server_RoundStarted()
         {
             var room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
-            /*var instances = Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10));
-            foreach (var instance in instances)
-            {
-                foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
-                {
-                    d.SendConsoleMessage($"{instance?.name}" ,"green");
-                }
-            }*/
+            //var instances = Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10));
             foreach (var item in scpItems)
             {
                 var basePos = room.Position;
@@ -53,6 +46,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
                 gameObject.transform.position = basePos;
                 gameObject.transform.localScale = item.Item3;
                 gameObject.transform.rotation = Quaternion.Euler(room.transform.eulerAngles + item.Item4);
+                Mirror.NetworkServer.Spawn(gameObject);
                 gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                 var keycard = gameObject.GetComponent<Pickup>();
                 keycard.Locked = true;
