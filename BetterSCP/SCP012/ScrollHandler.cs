@@ -47,14 +47,13 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
             foreach (var item in scpItems)
             {
                 var basePos = room.Position;
-                var offset = room.transform.forward * -item.Item2.x + room.transform.right * -item.Item2.z + UnityEngine.Vector3.up * item.Item2.y;
+                var offset = room.transform.forward * -item.Item2.x + room.transform.right * -item.Item2.z + Vector3.up * item.Item2.y;
                 basePos += offset;
                 GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Server.Host.Inventory.pickupPrefab);
                 gameObject.transform.position = basePos;
                 gameObject.transform.localScale = item.Item3;
                 gameObject.transform.rotation = Quaternion.Euler(room.transform.eulerAngles + item.Item4);
                 gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-                gameObject.layer = 0;
                 var keycard = gameObject.GetComponent<Pickup>();
                 keycard.Locked = true;
                 keycard.SetupPickup(item.Item1, 9991026f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
