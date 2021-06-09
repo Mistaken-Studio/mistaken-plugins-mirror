@@ -21,6 +21,11 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
             (ItemType.KeycardO5, new Vector3(-3.68f, -6.34f, -4.66f), new Vector3(7.4f, 210f, 0.43f), Vector3.right * 90f),
             (ItemType.WeaponManagerTablet, new Vector3(-3.68f, -6.31f, -4.3f), new Vector3(1f, 2f, 1f), new Vector3(0f, 180f, 70f))
         };
+        internal readonly List<Vector3> itemOffset = new List<Vector3>()
+        {
+            new Vector3(-8.5f, -7.8f, -7.5f),
+            new Vector3(1.6f, -7.8f, -7.5f)
+        };
         public SCP012Handler(IPlugin<IConfig> plugin) : base(plugin)
         {
         }
@@ -36,7 +41,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
         private void Server_RoundStarted()
         {
             var room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
-            //var instances = Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10));
+            foreach (var item in Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10) && (i.NetworkitemId == ItemType.KeycardZoneManager || i.NetworkitemId == ItemType.GunCOM15)))
+            {
+                int index = UnityEngine.Random.Range(0, itemOffset.Count);
+                var basePos = room.Position;
+                var offset = room.transform.forward * -itemOffset[index].x + room.transform.right * -itemOffset[index].z + Vector3.up * itemOffset[index].y;
+                basePos += offset;
+                item.Networkposition = basePos;
+            }
             foreach (var item in scpItems)
             {
                 var basePos = room.Position;
