@@ -52,7 +52,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
                     var basePos = room.Position;
                     var offset = room.transform.forward * -itemOffset[index].x + room.transform.right * -itemOffset[index].z + Vector3.up * itemOffset[index].y;
                     basePos += offset;
-                    item.Networkposition = basePos;
+                    this.CallDelayed(0.5f, () => { item.Networkposition = basePos; }, "Scp012ChangingItemPosition");
                 }
             }
         }
