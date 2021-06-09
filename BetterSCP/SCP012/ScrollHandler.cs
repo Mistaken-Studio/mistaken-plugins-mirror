@@ -11,6 +11,8 @@ using UnityEngine;
 using Gamer.Utilities;
 using Gamer.Mistaken.Base.Staff;
 using Exiled.API.Features;
+using Exiled.Events.EventArgs;
+using Exiled.API.Extensions;
 
 namespace Gamer.Mistaken.BetterSCP.SCP012
 {
@@ -33,22 +35,31 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
         public override void OnEnable()
         {
             Exiled.Events.Handlers.Server.RoundStarted += this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.InteractingDoor += this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Interacting_Door(ev));
         }
         public override void OnDisable()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= this.Handle(() => Server_RoundStarted(), "RoundStart");
+            Exiled.Events.Handlers.Player.InteractingDoor -= this.Handle<Exiled.Events.EventArgs.InteractingDoorEventArgs>((ev) => Interacting_Door(ev));
         }
+        private void Interacting_Door(InteractingDoorEventArgs ev)
+        {
+            if (ev.Door.Type() == DoorType.Scp012 && ev.IsAllowed)
+            {
+                foreach (var item in Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10) && (i.NetworkitemId == ItemType.KeycardZoneManager || i.NetworkitemId == ItemType.GunCOM15)))
+                {
+                    int index = UnityEngine.Random.Range(0, itemOffset.Count);
+                    var basePos = room.Position;
+                    var offset = room.transform.forward * -itemOffset[index].x + room.transform.right * -itemOffset[index].z + Vector3.up * itemOffset[index].y;
+                    basePos += offset;
+                    item.Networkposition = basePos;
+                }
+            }
+        }
+        internal Room room;
         private void Server_RoundStarted()
         {
-            var room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
-            foreach (var item in Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10) && (i.NetworkitemId == ItemType.KeycardZoneManager || i.NetworkitemId == ItemType.GunCOM15)))
-            {
-                int index = UnityEngine.Random.Range(0, itemOffset.Count);
-                var basePos = room.Position;
-                var offset = room.transform.forward * -itemOffset[index].x + room.transform.right * -itemOffset[index].z + Vector3.up * itemOffset[index].y;
-                basePos += offset;
-                item.Networkposition = basePos;
-            }
+            room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
             foreach (var item in scpItems)
             {
                 var basePos = room.Position;
