@@ -36,14 +36,14 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
         private void Server_RoundStarted()
         {
             var room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
-            var instances = Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10));
+            /*var instances = Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10));
             foreach (var instance in instances)
             {
                 foreach (var d in RealPlayers.List.Where(x => x.IsActiveDev()))
                 {
                     d.SendConsoleMessage($"{instance?.name}" ,"green");
                 }
-            }
+            }*/
             foreach (var item in scpItems)
             {
                 var basePos = room.Position;
