@@ -46,14 +46,17 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
         {
             if (ev.Door.Type() == DoorType.Scp012 && ev.IsAllowed)
             {
-                foreach (var item in Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10) && (i.NetworkitemId == ItemType.KeycardZoneManager || i.NetworkitemId == ItemType.GunCOM15)))
+                this.CallDelayed(0.5f, () => 
                 {
-                    int index = UnityEngine.Random.Range(0, itemOffset.Count);
-                    var basePos = room.Position;
-                    var offset = room.transform.forward * -itemOffset[index].x + room.transform.right * -itemOffset[index].z + Vector3.up * itemOffset[index].y;
-                    basePos += offset;
-                    this.CallDelayed(0.5f, () => { item.Networkposition = basePos; }, "Scp012ChangingItemPosition");
-                }
+                    foreach (var item in Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10) && (i.NetworkitemId == ItemType.KeycardZoneManager || i.NetworkitemId == ItemType.GunCOM15)))
+                    {
+                        int index = UnityEngine.Random.Range(0, itemOffset.Count);
+                        var basePos = room.Position;
+                        var offset = room.transform.forward * -itemOffset[index].x + room.transform.right * -itemOffset[index].z + Vector3.up * itemOffset[index].y;
+                        basePos += offset;
+                        item.Networkposition = basePos;
+                    }
+                }, "Scp012ChangingItemPosition");
             }
         }
         internal Room room;
