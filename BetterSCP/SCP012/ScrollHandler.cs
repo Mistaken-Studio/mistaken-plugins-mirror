@@ -18,8 +18,8 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
     {
         internal readonly List<(ItemType, Vector3, Vector3, Vector3)> scpItems = new List<(ItemType, Vector3, Vector3, Vector3)>()
         {
-            (ItemType.KeycardO5, new Vector3(3.68f, 6.34f, 4.66f), new Vector3(7.4f, 210f, 0.43f), Vector3.right * 90f),
-            (ItemType.WeaponManagerTablet, new Vector3(), new Vector3(), new Vector3())
+            (ItemType.KeycardO5, new Vector3(-3.68f, -6.34f, -4.66f), new Vector3(7.4f, 210f, 0.43f), Vector3.right * 90f),
+            (ItemType.WeaponManagerTablet, new Vector3(-3.68f, -6.31f, -4.3f), new Vector3(1f, 2f, 1f), new Vector3(0f, 180f, 70f))
         };
         public SCP012Handler(IPlugin<IConfig> plugin) : base(plugin)
         {
@@ -35,7 +35,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
         }
         private void Server_RoundStarted()
         {
-            /*var room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
+            var room = Gamer.Utilities.MapPlus.Rooms.First(r => r.Type == RoomType.Lcz012);
             var instances = Pickup.Instances.Where(i => (Vector3.Distance(i.Networkposition, room.Position) <= 10));
             foreach (var instance in instances)
             {
@@ -58,7 +58,7 @@ namespace Gamer.Mistaken.BetterSCP.SCP012
                 var keycard = gameObject.GetComponent<Pickup>();
                 keycard.Locked = true;
                 keycard.SetupPickup(item.Item1, 9991026f, Server.Host.Inventory.gameObject, new Pickup.WeaponModifiers(true, 0, 0, 0), gameObject.transform.position, gameObject.transform.rotation);
-            }*/
+            }
         }
     }
 }
