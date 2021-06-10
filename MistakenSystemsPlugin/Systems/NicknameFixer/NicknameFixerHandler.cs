@@ -80,6 +80,7 @@ namespace Gamer.Mistaken.Systems.NicknameFixer
             "casedrop.gg",
             "casedrop",
             "keydrop",
+            "key drop",
 
             "~~",
             "```",
