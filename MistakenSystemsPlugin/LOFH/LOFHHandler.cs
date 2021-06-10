@@ -55,13 +55,22 @@ namespace Gamer.Mistaken.LOFH
         private IEnumerator<float> DoRoundLoop()
         {
             yield return Timing.WaitForSeconds(1);
-            while(Round.IsStarted)
+            while (Round.IsStarted)
             {
                 yield return Timing.WaitForSeconds(3);
                 foreach (var player in RealPlayers.List.Where(p => p.RemoteAdminAccess))
                 {
-                    if (LOFH.LastSelectedPlayer.TryGetValue(player, out string query) && MenuSystem.CurrentMenus[player.Id] == 0 && Player.Get(int.Parse(query.Split(' ').Where(x => x.Contains(".")).First().Split('.')[0])) != null)
-                        LOFHPatch.Prefix(query + " SILENT", player.Sender);
+                    if (LOFH.LastSelectedPlayer.TryGetValue(player, out string query) && MenuSystem.CurrentMenus[player.Id] == 0)
+                    {
+                        int id = int.Parse(query.Split(' ').Where(x => x.Contains(".")).First().Split('.')[0]);
+                        if (Player.Get(id) != null)
+                            LOFHPatch.Prefix(query + " SILENT", player.Sender);
+                        else
+                        {
+                            Log.Debug($"Player with id {id} not found | {query}");
+                            player.SendConsoleMessage($"Player with id {id} not found | {query}", "grey");
+                        }
+                    }
                 }
             }
         }
