@@ -82,7 +82,8 @@ namespace Gamer.Mistaken.Systems.Misc
                         spectators[0].Energy = currentSCP.Energy;
                         spectators[0].Level = currentSCP.Level;
                         spectators[0].Experience = currentSCP.Experience;
-                        spectators[0].Camera = currentSCP.Camera;
+                        if(currentSCP.Camera != null)
+                            spectators[0].Camera = currentSCP.Camera;
                     }
                     else
                     {
