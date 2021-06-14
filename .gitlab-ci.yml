@@ -15,7 +15,7 @@ build-code-job:
   tags:
     - Windows
   script:
-    - dotnet publish --output build --version-suffix 1.0.%CI_CONCURRENT_ID% -p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
+    - "CI Builder.exe" %CI_COMMIT_REF_NAME% %CI_COMMIT_SHA% %CI_COMMIT_REF_NAME% true
   artifacts:
     paths:
       - plugins.tar.gz 
