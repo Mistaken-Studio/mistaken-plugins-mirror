@@ -1,0 +1,21 @@
+stages:
+  - prebuild
+  - build
+
+download-builder:
+  stage: prebuild
+  tags:
+    - Windows
+  script:
+    - curl -L --header "PRIVATE-TOKEN:%CI_JOB_TOKEN%" "https://git.mistaken.pl/Barwa/CI-Tools/-/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"
+
+build-code-job:
+  needs: [download-builder]
+  stage: build
+  tags:
+    - Windows
+  script:
+    - dotnet publish --output build --version-suffix 1.0.%CI_CONCURRENT_ID% -p:PublishProfile=Properties\PublishProfiles\FolderProfile.pubxml
+  artifacts:
+    paths:
+      - plugins.tar.gz 
