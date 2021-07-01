@@ -2,7 +2,6 @@ stages:
   - build
 
 build-plugins:
-  needs: [download-builder]
   stage: build
   tags:
     - Windows
