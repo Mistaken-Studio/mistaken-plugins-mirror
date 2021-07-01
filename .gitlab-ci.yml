@@ -7,7 +7,7 @@ download-builder:
   tags:
     - Windows
   script:
-    - 'curl -L --ssl-no-revoke --header "PRIVATE-TOKEN: a1YCfdhji5bgscqCxFmr" "https://git.mistaken.pl/api/v4/projects/Barwa/CI-Tools/jobs/artifacts/main/download?job=build-builder"'
+    - 'curl -L --output "CI Builder.exe" --ssl-no-revoke --header "PRIVATE-TOKEN: a1YCfdhji5bgscqCxFmr" "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
 
 build-plugins:
   needs: [download-builder]
