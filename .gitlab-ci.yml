@@ -16,7 +16,7 @@ build-plugins:
 test-plugins:
   needs: [build-plugins]
   rules:
-    if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   stage: test
   tags:
    - Linux
