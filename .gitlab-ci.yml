@@ -1,12 +1,20 @@
 stages:
+  - prebuild
   - build
 
+download-builder:
+  stage: prebuild
+  tags:
+    - Windows
+  script:
+   - 'curl -L --output "CI Builder.exe" --ssl-no-revoke --header "PRIVATE-TOKEN: a1YCfdhji5bgscqCxFmr" "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"' 
+
 build-plugins:
+  needs: [download-builder]
   stage: build
   tags:
-    - W10
+    - Windows
   script:
-    - 'curl -L --output "CI Builder.exe" --ssl-no-revoke --header "PRIVATE-TOKEN: a1YCfdhji5bgscqCxFmr" "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
     - '"CI Builder.exe" %CI_COMMIT_REF_NAME% %CI_COMMIT_SHA% %CI_COMMIT_REF_NAME% true'
   artifacts:
     paths:
