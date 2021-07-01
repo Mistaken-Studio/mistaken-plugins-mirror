@@ -5,7 +5,7 @@ stages:
 build-plugins:
   stage: build
   rules:
-    - if: $$CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'push'
       when: always
     - if: $CI_MERGE_REQUEST_IID
   tags:
