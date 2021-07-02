@@ -1,6 +1,16 @@
 stages:
   - build
   - test
+  - publish
+
+variables:
+  typ:
+    value: build
+    description: "Typ pipeline. Poprawne wersje to 'build', 'test' i 'release'."
+  wersja:
+    value: 1.0.0
+    description: "Numer obecnej wersji"
+
 
 build-plugins:
   stage: build
@@ -8,6 +18,8 @@ build-plugins:
     - if: $CI_PIPELINE_SOURCE == 'push'
       when: always
     - if: $CI_MERGE_REQUEST_IID
+    - if: $typ == 'build'
+    - if: $typ == 'test'
   tags:
     - W11
   script:
@@ -21,10 +33,43 @@ test-plugins:
   needs: [build-plugins]
   rules:
     - if: $CI_MERGE_REQUEST_IID
+    - if: $typ == 'test'
   stage: test
   tags:
    - Linux
   script:
     - 'echo aaaa'
   
+build-plugins-publish:
+  stage: build
+  rules:
+    - if: $typ == 'publish'
+  tags:
+    - W11
+  script:
+    - 'curl -o "CI Builder.exe" -H @{"PRIVATE-TOKEN"= "a1YCfdhji5bgscqCxFmr"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
+    - './"CI Builder.exe" $CI_COMMIT_REF_NAME $CI_COMMIT_SHA $CI_CONCURRENT_ID true $wersja $CI_COMMIT_REF_NAME'
+  artifacts:
+    paths:
+      - plugins.tar.gz 
+
+test-plugins-publish:
+  needs: [build-plugins-publish]
+  rules:
+    - if: $typ == 'publish'
+  stage: test
+  tags:
+   - Linux
+  script:
+    - 'echo aaaa'
+  
+publish-plugins:
+  needs: [test-plugins-publish]
+  rules:
+    - if: $typ == 'publish'
+  stage: publish
+  tags:
+    - Windows
+  script:
+    - echo bbbbb
 
