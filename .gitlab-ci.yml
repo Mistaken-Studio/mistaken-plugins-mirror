@@ -72,7 +72,6 @@ publish-plugins:
     - Windows
   script:
     - echo $wersja > version
-    - 'curl -o "plugins.tar.gz" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/jobs/$CI_JOB_ID/artifacts/plugins.tar.gz"'
     - 'curl --upload-file "plugins.tar.gz" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz"'
     - $env:asset = "{`"name`":`"Plugins`",`"url`":`"https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz`"}"
     - $env:assetjson = $env:asset | ConvertTo-Json
