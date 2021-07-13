@@ -73,11 +73,6 @@ publish-plugins:
   dependencies:
     - build-plugins-publish
   script:
-    - remove-item alias:curl
-    - echo $profile
-    - notepad $profile
-    - echo $wersja > version
-    - ls
     - 'curl -InFile "plugins.tar.gz" -Method "Put" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz" -UseBasicParsing'
     - $env:asset = "{`"name`":`"Plugins`",`"url`":`"https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz`"}"
     - $env:assetjson = $env:asset | ConvertTo-Json
@@ -86,6 +81,8 @@ publish-plugins:
     - git config commit.gpgsign false
     - git config user.email "ci@git.mistaken.pl"
     - git config user.name "Gitlab-CI"
+    - git checkout master
+    - echo $wersja > version
     - git add version
     - git commit -m "bump version"
     - git push origin2 master
