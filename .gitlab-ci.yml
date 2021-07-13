@@ -21,7 +21,7 @@ build-plugins:
     - if: $typ == 'build'
     - if: $typ == 'test'
   tags:
-    - W11
+    - Windows
   script:
     - 'curl -o "CI Builder.exe" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
     - './"CI Builder.exe" $CI_COMMIT_REF_NAME $CI_COMMIT_SHA $CI_CONCURRENT_ID true'
@@ -37,8 +37,12 @@ test-plugins:
   stage: test
   tags:
    - Linux
+  dependencies:
+   - build-plugins
   script:
-    - 'echo aaaa'
+    - ls -la
+    - 'curl -o "CI Tester" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Tester?job=build-code-job"'
+    - /home/barwa/unzip_gitlab.sh
   
 build-plugins-publish:
   stage: build
@@ -60,8 +64,12 @@ test-plugins-publish:
   stage: test
   tags:
    - Linux
+  dependencies:
+    - build-plugins-publish
   script:
-    - 'echo aaaa'
+    - ls -la
+    - 'curl -o "CI Tester" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Tester?job=build-code-job"'
+    - /home/barwa/unzip_gitlab.sh
   
 publish-plugins:
   needs: [build-plugins-publish, test-plugins-publish]
@@ -69,7 +77,7 @@ publish-plugins:
     - if: $typ == 'release'
   stage: publish
   tags:
-    - W11
+    - Windows
   dependencies:
     - build-plugins-publish
   script:
@@ -84,5 +92,5 @@ publish-plugins:
     - git checkout master
     - echo $wersja > version
     - git add version
-    - git commit -m "bump version"
+    - git commit -m "[ci skip] bump version"
     - git push origin master
