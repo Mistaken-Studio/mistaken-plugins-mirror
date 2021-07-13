@@ -41,7 +41,7 @@ test-plugins:
    - build-plugins
   script:
     - ls -la
-    - 'curl -o "CI Tester" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Tester?job=build-code-job"'
+    - 'curl -o "CI Tester" -H "PRIVATE-TOKEN: $API_KEY" "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Tester?job=build-code-job"'
     - /home/barwa/unzip_gitlab.sh
   
 build-plugins-publish:
@@ -68,7 +68,7 @@ test-plugins-publish:
     - build-plugins-publish
   script:
     - ls -la
-    - 'curl -o "CI Tester" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Tester?job=build-code-job"'
+    - 'curl -o "CI Tester" -H "PRIVATE-TOKEN: $API_KEY" "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Tester?job=build-code-job"'
     - /home/barwa/unzip_gitlab.sh
   
 publish-plugins:
