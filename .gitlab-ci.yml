@@ -69,10 +69,11 @@ publish-plugins:
     - if: $typ == 'release'
   stage: publish
   tags:
-    - Windows
+    - W11
   dependencies:
     - build-plugins-publish
   script:
+    - remove-item alias:curl
     - echo $profile
     - notepad $profile
     - echo $wersja > version
