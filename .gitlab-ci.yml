@@ -64,12 +64,14 @@ test-plugins-publish:
     - 'echo aaaa'
   
 publish-plugins:
-  needs: [test-plugins-publish]
+  needs: [build-plugins-publish, test-plugins-publish]
   rules:
     - if: $typ == 'release'
   stage: publish
   tags:
     - Windows
+  dependencies:
+    - build-plugins-publish
   script:
     - echo $wersja > version
     - ls
