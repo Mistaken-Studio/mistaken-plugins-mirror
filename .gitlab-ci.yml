@@ -23,7 +23,7 @@ build-plugins:
   tags:
     - W11
   script:
-    - 'curl.exe -o "CI Builder.exe" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
+    - 'curl -o "CI Builder.exe" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
     - './"CI Builder.exe" $CI_COMMIT_REF_NAME $CI_COMMIT_SHA $CI_CONCURRENT_ID true'
   artifacts:
     paths:
@@ -47,7 +47,7 @@ build-plugins-publish:
   tags:
     - W11
   script:
-    - 'curl.exe -o "CI Builder.exe" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
+    - 'curl -o "CI Builder.exe" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/Barwa%2FCI-Tools/jobs/artifacts/main/raw/build/CI%20Builder.exe?job=build-code-job"'
     - './"CI Builder.exe" $CI_COMMIT_REF_NAME $CI_COMMIT_SHA $CI_CONCURRENT_ID true $wersja $CI_COMMIT_REF_NAME'
   artifacts:
     paths:
@@ -78,7 +78,7 @@ publish-plugins:
     - notepad $profile
     - echo $wersja > version
     - ls
-    - 'curl.exe --upload-file "plugins.tar.gz" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz"'
+    - 'curl -InFile "plugins.tar.gz" -Method "Put" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz"'
     - $env:asset = "{`"name`":`"Plugins`",`"url`":`"https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz`"}"
     - $env:assetjson = $env:asset | ConvertTo-Json
     - release-cli create --name $CI_COMMIT_TAG --description "Release $CI_COMMIT_TAG" --ref $CI_COMMIT_TAG --tag-name $CI_COMMIT_TAG --assets-link=$env:assetjson
