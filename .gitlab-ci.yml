@@ -82,7 +82,7 @@ publish-plugins:
     - $env:asset = "{`"name`":`"Plugins`",`"url`":`"https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz`"}"
     - $env:assetjson = $env:asset | ConvertTo-Json
     - C:\GitLab\Release-CLI\bin\release-cli create --name $wersja --description "Release $wersja" --tag-name $wersja --assets-link=$env:assetjson
-    - $env:sign = <git config --global commit.gpgsign>
+    - $env:sign = git config --global commit.gpgsign
     - git config --global commit.gpgsign false
     - git add version
     - git commit -m "bump version"
