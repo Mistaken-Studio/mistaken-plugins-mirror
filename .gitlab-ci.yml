@@ -81,12 +81,10 @@ publish-plugins:
     - 'curl -InFile "plugins.tar.gz" -Method "Put" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz" -UseBasicParsing'
     - $env:asset = "{`"name`":`"Plugins`",`"url`":`"https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz`"}"
     - $env:assetjson = $env:asset | ConvertTo-Json
-    - release-cli create --name $CI_COMMIT_TAG --description "Release $CI_COMMIT_TAG" --ref $CI_COMMIT_TAG --tag-name $CI_COMMIT_TAG --assets-link=$env:assetjson
+    - C:\GitLab\Release-CLI\bin\release-cli create --name $CI_COMMIT_TAG --description "Release $wersja" --ref $CI_COMMIT_TAG --tag-name $CI_COMMIT_TAG --assets-link=$env:assetjson
     - $env:sign = <git config --global commit.gpgsign>
     - git config --global commit.gpgsign false
     - git add version
     - git commit -m "bump version"
     - git push
     - git config --global commit.gpgsign $env:sign
-
-
