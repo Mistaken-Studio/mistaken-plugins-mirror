@@ -74,7 +74,7 @@ publish-plugins:
     - build-plugins-publish
   script:
     - echo $profile
-    - $profile
+    - notepad $profile
     - echo $wersja > version
     - ls
     - 'curl --upload-file "plugins.tar.gz" -H @{"PRIVATE-TOKEN"= "$API_KEY"} "https://git.mistaken.pl/api/v4/projects/scp-sl%2FMistaken-plugins/packages/generic/plugins/$wersja/plugins.tar.gz"'
